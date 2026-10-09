@@ -1,0 +1,86 @@
+import { describe, expect, it } from 'vitest';
+import { GROUND, ROWS } from '../engine/constants';
+import { buildLevel } from '../engine/level/build';
+import { isSolidTile } from '../engine/tiles';
+import { ALL_LEVELS, nextLevelId, WORLDS } from './worlds';
+
+/** Salto en carrera: ~8 bloques de alcance horizontal; dejamos margen. */
+const MAX_PLAIN_PIT = 6;
+
+describe('campaña', () => {
+  it('los ids de nivel son únicos', () => {
+    const ids = ALL_LEVELS.map((l) => l.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('cada mundo tiene niveles y el orden es consecutivo', () => {
+    for (const w of WORLDS) expect(w.levels.length).toBeGreaterThan(0);
+    expect(nextLevelId(ALL_LEVELS[0].id)).toBe(ALL_LEVELS[1].id);
+    expect(nextLevelId(ALL_LEVELS[ALL_LEVELS.length - 1].id)).toBeNull();
+  });
+});
+
+describe.each(ALL_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, def) => {
+  const lvl = buildLevel(def);
+  const solid = (x: number, y: number): boolean => y >= 0 && y < ROWS && x >= 0 && x < lvl.width && isSolidTile(lvl.grid[y][x]);
+
+  it('tiene la cuadrícula con el tamaño correcto', () => {
+    expect(lvl.grid).toHaveLength(ROWS);
+    for (const row of lvl.grid) expect(row).toHaveLength(def.width);
+  });
+
+  it('la meta y el templo están dentro del nivel y con suelo bajo la bandera', () => {
+    expect(lvl.flagX).toBeLessThan(def.width);
+    expect(lvl.templeX).toBeLessThan(def.width);
+    expect(solid(lvl.flagX, GROUND)).toBe(true);
+  });
+
+  it('el punto de inicio y el punto de control tienen suelo', () => {
+    expect(solid(3, GROUND)).toBe(true);
+    const cp = def.checkpoint ?? Math.floor(def.width / 2);
+    let x = cp;
+    while (x < def.width && !solid(x, GROUND)) x++;
+    expect(x).toBeLessThan(lvl.flagX);
+  });
+
+  it('ningún hoyo es imposible de cruzar', () => {
+    let start = -1;
+    for (let x = 0; x <= def.width; x++) {
+      const isPit = x < def.width && !solid(x, GROUND);
+      if (isPit && start < 0) start = x;
+      if (!isPit && start >= 0) {
+        const width = x - start;
+        if (width > MAX_PLAIN_PIT) {
+          // Los hoyos anchos deben ofrecer plataformas para cruzarlos.
+          let platforms = 0;
+          for (let px = start; px < x; px++) for (let y = 0; y < GROUND; y++) if (solid(px, y)) platforms++;
+          expect(platforms, `hoyo ancho en ${start}-${x - 1}`).toBeGreaterThan(0);
+        }
+        start = -1;
+      }
+    }
+  });
+
+  it('los enemigos no nacen dentro de bloques sólidos', () => {
+    for (const e of lvl.enemies) expect(solid(e.tx, e.ty), `${e.id} en ${e.tx},${e.ty}`).toBe(false);
+  });
+
+  it('los enemigos terrestres tienen suelo debajo', () => {
+    for (const e of lvl.enemies.filter((s) => s.id !== 'bat')) {
+      expect(solid(e.tx, e.ty + 1), `${e.id} en ${e.tx}`).toBe(true);
+    }
+  });
+
+  it('el jefe (si existe) tiene arena y muro de salida', () => {
+    if (!def.boss) return;
+    const [a0, a1] = def.boss.arena;
+    expect(a0).toBeLessThan(a1);
+    expect(solid(a1 + 1, 0)).toBe(true);
+    expect(def.boss.x).toBeGreaterThanOrEqual(a0);
+    expect(def.boss.x).toBeLessThanOrEqual(a1);
+  });
+
+  it('cuenta monedas para calcular las estrellas', () => {
+    expect(lvl.totalCoins).toBeGreaterThan(0);
+  });
+});

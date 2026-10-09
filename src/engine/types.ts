@@ -1,0 +1,23 @@
+export interface Rect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface Body extends Rect {
+  vx: number;
+  vy: number;
+  onGround: boolean;
+}
+
+export type EnemyId = 'coati' | 'urchin' | 'bat';
+export type BossId = 'puas';
+export type ThemeId = 'jungle' | 'beach' | 'lair' | 'cave';
+
+/** Estado de una partida que se arrastra de un nivel al siguiente. */
+export interface Session {
+  score: number;
+  coins: number;
+  lives: number;
+}
