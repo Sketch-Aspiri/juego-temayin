@@ -1,0 +1,45 @@
+{
+  "id": "scorpion",
+  "image": "scorpion.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "paso 1",
+    "paso 2",
+    "alerta",
+    "carrera"
+  ],
+  "frames": [
+    {
+      "state": "paso 1",
+      "x": 62,
+      "y": 158,
+      "width": 560,
+      "height": 406
+    },
+    {
+      "state": "paso 2",
+      "x": 651,
+      "y": 165,
+      "width": 585,
+      "height": 411
+    },
+    {
+      "state": "alerta",
+      "x": 37,
+      "y": 644,
+      "width": 575,
+      "height": 500
+    },
+    {
+      "state": "carrera",
+      "x": 629,
+      "y": 764,
+      "width": 604,
+      "height": 374
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar."
+}

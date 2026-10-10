@@ -1,0 +1,75 @@
+{
+  "image": "utileria.png",
+  "width": 1536,
+  "height": 1024,
+  "mode": "RGBA",
+  "alpha": true,
+  "transparentFraction": 0.5377,
+  "frames": [
+    {
+      "state": "caja",
+      "x": 75,
+      "y": 21,
+      "width": 349,
+      "height": 302
+    },
+    {
+      "state": "barril",
+      "x": 558,
+      "y": 8,
+      "width": 295,
+      "height": 319
+    },
+    {
+      "state": "barca",
+      "x": 935,
+      "y": 79,
+      "width": 584,
+      "height": 273
+    },
+    {
+      "state": "palapa",
+      "x": 28,
+      "y": 330,
+      "width": 487,
+      "height": 354
+    },
+    {
+      "state": "cañón",
+      "x": 566,
+      "y": 386,
+      "width": 531,
+      "height": 304
+    },
+    {
+      "state": "antorcha",
+      "x": 1191,
+      "y": 346,
+      "width": 249,
+      "height": 332
+    },
+    {
+      "state": "cristales",
+      "x": 94,
+      "y": 650,
+      "width": 350,
+      "height": 358
+    },
+    {
+      "state": "cartel",
+      "x": 532,
+      "y": 692,
+      "width": 472,
+      "height": 311
+    },
+    {
+      "state": "tortuga",
+      "x": 1043,
+      "y": 717,
+      "width": 480,
+      "height": 266
+    }
+  ],
+  "coordinates": "Rectángulos fuente en píxeles; no redimensionan ni modifican el PNG.",
+  "qa": "Recortes calculados por componentes alpha y posición esperada; la galería permite comprobar cada región. Mantener escala fija por animación."
+}

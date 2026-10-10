@@ -1,0 +1,54 @@
+{
+  "image": "historia.png",
+  "width": 1536,
+  "height": 1024,
+  "mode": "RGBA",
+  "alpha": true,
+  "transparentFraction": 0.4763,
+  "frames": [
+    {
+      "state": "sol dormido",
+      "x": 65,
+      "y": 12,
+      "width": 444,
+      "height": 433
+    },
+    {
+      "state": "sol cargado",
+      "x": 553,
+      "y": 12,
+      "width": 444,
+      "height": 433
+    },
+    {
+      "state": "sol restaurado",
+      "x": 1032,
+      "y": 10,
+      "width": 477,
+      "height": 443
+    },
+    {
+      "state": "jaula de sombra",
+      "x": 33,
+      "y": 451,
+      "width": 506,
+      "height": 555
+    },
+    {
+      "state": "llave",
+      "x": 624,
+      "y": 468,
+      "width": 273,
+      "height": 527
+    },
+    {
+      "state": "arco",
+      "x": 938,
+      "y": 460,
+      "width": 593,
+      "height": 533
+    }
+  ],
+  "coordinates": "Rectángulos fuente en píxeles; no redimensionan ni modifican el PNG.",
+  "qa": "Recortes calculados por componentes alpha y posición esperada; la galería permite comprobar cada región. Mantener escala fija por animación."
+}

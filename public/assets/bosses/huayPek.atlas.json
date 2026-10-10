@@ -1,0 +1,89 @@
+{
+  "id": "huayPek",
+  "image": "huayPek.png",
+  "width": 1536,
+  "height": 1024,
+  "alpha": true,
+  "layout": "3x2 irregular",
+  "coordinates": "Recortes medidos por componentes alfa>=8, incluyendo efectos separados de su pose. Rectangulos independientes, no cortar por celdas nominales. Mantener proporcion y escala uniforme por personaje.",
+  "states": [
+    "acecho",
+    "salto",
+    "ladrido",
+    "desaparecer",
+    "vulnerable",
+    "descanso"
+  ],
+  "frames": [
+    {
+      "state": "acecho",
+      "x": 11,
+      "y": 122,
+      "width": 485,
+      "height": 385,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "salto",
+      "x": 498,
+      "y": 169,
+      "width": 510,
+      "height": 317,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "ladrido",
+      "x": 1027,
+      "y": 152,
+      "width": 509,
+      "height": 358,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "desaparecer",
+      "x": 43,
+      "y": 569,
+      "width": 460,
+      "height": 387,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "vulnerable",
+      "x": 539,
+      "y": 567,
+      "width": 479,
+      "height": 382,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "descanso",
+      "x": 1033,
+      "y": 673,
+      "width": 476,
+      "height": 290,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    }
+  ],
+  "qa": "RGBA aut?ntico; el RGB del fondo permanece coloreado donde alfa=0. No usar RGB sin alfa. Poses completas, efectos incluidos en el recorte. Los arcos del ladrido llegan al borde derecho de la hoja; la silueta del perro est? completa.",
+  "alphaQa": {
+    "mode": "RGBA",
+    "range": [
+      0,
+      254
+    ],
+    "transparentRatio": 0.577812,
+    "corners": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "overlappingBounds": []
+}

@@ -1,0 +1,45 @@
+{
+  "id": "lionfish",
+  "image": "lionfish.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "aletas abiertas",
+    "aletas medias",
+    "defensa",
+    "giro leve"
+  ],
+  "frames": [
+    {
+      "state": "aletas abiertas",
+      "x": 27,
+      "y": 42,
+      "width": 595,
+      "height": 523
+    },
+    {
+      "state": "aletas medias",
+      "x": 686,
+      "y": 78,
+      "width": 551,
+      "height": 454
+    },
+    {
+      "state": "defensa",
+      "x": 24,
+      "y": 589,
+      "width": 607,
+      "height": 630
+    },
+    {
+      "state": "giro leve",
+      "x": 686,
+      "y": 655,
+      "width": 519,
+      "height": 530
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar."
+}

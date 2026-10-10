@@ -1,0 +1,45 @@
+{
+  "id": "wheel",
+  "image": "wheel.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "giro 1",
+    "giro 2",
+    "giro 3",
+    "giro 4"
+  ],
+  "frames": [
+    {
+      "state": "giro 1",
+      "x": 47,
+      "y": 39,
+      "width": 538,
+      "height": 524
+    },
+    {
+      "state": "giro 2",
+      "x": 677,
+      "y": 41,
+      "width": 543,
+      "height": 525
+    },
+    {
+      "state": "giro 3",
+      "x": 51,
+      "y": 674,
+      "width": 548,
+      "height": 529
+    },
+    {
+      "state": "giro 4",
+      "x": 675,
+      "y": 672,
+      "width": 551,
+      "height": 528
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar. Rotaciones ilustradas aproximadas; no representan ángulos exactos."
+}

@@ -1,0 +1,68 @@
+{
+  "image": "banderas.png",
+  "width": 1774,
+  "height": 887,
+  "mode": "RGBA",
+  "alpha": true,
+  "transparentFraction": 0.7316,
+  "frames": [
+    {
+      "state": "ondear 1",
+      "x": 15,
+      "y": 14,
+      "width": 414,
+      "height": 320
+    },
+    {
+      "state": "ondear 2",
+      "x": 460,
+      "y": 17,
+      "width": 412,
+      "height": 318
+    },
+    {
+      "state": "ondear 3",
+      "x": 903,
+      "y": 17,
+      "width": 412,
+      "height": 319
+    },
+    {
+      "state": "ondear 4",
+      "x": 1339,
+      "y": 17,
+      "width": 421,
+      "height": 319
+    },
+    {
+      "state": "poste completo",
+      "x": 108,
+      "y": 321,
+      "width": 222,
+      "height": 542
+    },
+    {
+      "state": "poste",
+      "x": 553,
+      "y": 395,
+      "width": 222,
+      "height": 468
+    },
+    {
+      "state": "checkpoint",
+      "x": 960,
+      "y": 412,
+      "width": 298,
+      "height": 447
+    },
+    {
+      "state": "remate",
+      "x": 1476,
+      "y": 513,
+      "width": 160,
+      "height": 233
+    }
+  ],
+  "coordinates": "Rectángulos fuente en píxeles; no redimensionan ni modifican el PNG.",
+  "qa": "Recortes calculados por componentes alpha y posición esperada; la galería permite comprobar cada región. Mantener escala fija por animación."
+}

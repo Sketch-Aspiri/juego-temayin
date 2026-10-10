@@ -1,0 +1,45 @@
+{
+  "id": "blueCrab",
+  "image": "blueCrab.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "paso 1",
+    "paso 2",
+    "pinzas levantadas",
+    "pinzazo"
+  ],
+  "frames": [
+    {
+      "state": "paso 1",
+      "x": 71,
+      "y": 254,
+      "width": 538,
+      "height": 304
+    },
+    {
+      "state": "paso 2",
+      "x": 662,
+      "y": 253,
+      "width": 552,
+      "height": 309
+    },
+    {
+      "state": "pinzas levantadas",
+      "x": 57,
+      "y": 687,
+      "width": 562,
+      "height": 476
+    },
+    {
+      "state": "pinzazo",
+      "x": 675,
+      "y": 862,
+      "width": 539,
+      "height": 300
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar."
+}

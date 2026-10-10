@@ -1,0 +1,145 @@
+{
+  "id": "camazotz",
+  "image": "camazotz.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "3x3 irregular",
+  "coordinates": "Recortes medidos por componentes alfa>=8, incluyendo efectos separados de su pose. Rectangulos independientes, no cortar por celdas nominales. Mantener proporcion y escala uniforme por personaje.",
+  "states": [
+    "noche reposo",
+    "noche vuelo",
+    "noche picada",
+    "camara acecho",
+    "camara invocacion",
+    "camara aturdido",
+    "eclipse vuelo",
+    "eclipse rayo",
+    "derrotado"
+  ],
+  "frames": [
+    {
+      "state": "noche reposo",
+      "x": 19,
+      "y": 93,
+      "width": 373,
+      "height": 324,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "noche vuelo",
+      "x": 398,
+      "y": 1,
+      "width": 451,
+      "height": 429,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "noche picada",
+      "x": 859,
+      "y": 100,
+      "width": 381,
+      "height": 309,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "camara acecho",
+      "x": 10,
+      "y": 503,
+      "width": 404,
+      "height": 289,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "camara invocacion",
+      "x": 429,
+      "y": 449,
+      "width": 448,
+      "height": 356,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "camara aturdido",
+      "x": 838,
+      "y": 552,
+      "width": 406,
+      "height": 248,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "eclipse vuelo",
+      "x": 6,
+      "y": 808,
+      "width": 451,
+      "height": 382,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "eclipse rayo",
+      "x": 428,
+      "y": 820,
+      "width": 502,
+      "height": 420,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "derrotado",
+      "x": 914,
+      "y": 924,
+      "width": 325,
+      "height": 276,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    }
+  ],
+  "qa": "RGBA aut?ntico; el RGB del fondo permanece coloreado donde alfa=0. No usar RGB sin alfa. Poses completas, efectos incluidos en el recorte. Ala de vuelo cerca del borde superior; no a?adir padding mediante recorte nominal. Tres fases visuales y derrota.",
+  "alphaQa": {
+    "mode": "RGBA",
+    "range": [
+      0,
+      255
+    ],
+    "transparentRatio": 0.519606,
+    "corners": [
+      0,
+      0,
+      1,
+      0
+    ]
+  },
+  "overlappingBounds": [
+    {
+      "frames": [
+        4,
+        5
+      ],
+      "intersectionWidth": 39,
+      "intersectionHeight": 248
+    },
+    {
+      "frames": [
+        6,
+        7
+      ],
+      "intersectionWidth": 29,
+      "intersectionHeight": 370
+    },
+    {
+      "frames": [
+        7,
+        8
+      ],
+      "intersectionWidth": 16,
+      "intersectionHeight": 276
+    }
+  ],
+  "cropNote": "Algunas poses tienen l?mites rectangulares superpuestos pese a siluetas separadas; al extraer un PNG independiente usar la m?scara de componente de la pose para evitar fragmentos de la vecina. No adaptar por cuadr?cula uniforme."
+}

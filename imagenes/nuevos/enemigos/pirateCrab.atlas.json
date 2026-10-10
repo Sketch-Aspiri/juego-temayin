@@ -1,0 +1,45 @@
+{
+  "id": "pirateCrab",
+  "image": "pirateCrab.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "reposo",
+    "salto",
+    "preparación",
+    "lanzamiento"
+  ],
+  "frames": [
+    {
+      "state": "reposo",
+      "x": 48,
+      "y": 256,
+      "width": 602,
+      "height": 345
+    },
+    {
+      "state": "salto",
+      "x": 650,
+      "y": 96,
+      "width": 561,
+      "height": 469
+    },
+    {
+      "state": "preparación",
+      "x": 22,
+      "y": 820,
+      "width": 599,
+      "height": 317
+    },
+    {
+      "state": "lanzamiento",
+      "x": 630,
+      "y": 811,
+      "width": 613,
+      "height": 326
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar. La última pose incluye la estela del ataque; no es un proyectil separado."
+}

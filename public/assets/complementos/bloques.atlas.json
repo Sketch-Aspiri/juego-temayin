@@ -1,0 +1,124 @@
+{
+  "image": "bloques.png",
+  "width": 1312,
+  "height": 1199,
+  "mode": "RGBA",
+  "alpha": true,
+  "transparentFraction": 0.3454,
+  "frames": [
+    {
+      "state": "césped",
+      "x": 42,
+      "y": 22,
+      "width": 300,
+      "height": 283
+    },
+    {
+      "state": "tierra",
+      "x": 368,
+      "y": 52,
+      "width": 269,
+      "height": 252
+    },
+    {
+      "state": "arena superior",
+      "x": 672,
+      "y": 50,
+      "width": 278,
+      "height": 254
+    },
+    {
+      "state": "arena",
+      "x": 991,
+      "y": 52,
+      "width": 274,
+      "height": 252
+    },
+    {
+      "state": "caliza superior",
+      "x": 42,
+      "y": 320,
+      "width": 291,
+      "height": 272
+    },
+    {
+      "state": "caliza",
+      "x": 368,
+      "y": 337,
+      "width": 274,
+      "height": 254
+    },
+    {
+      "state": "roca superior",
+      "x": 673,
+      "y": 332,
+      "width": 279,
+      "height": 259
+    },
+    {
+      "state": "roca",
+      "x": 989,
+      "y": 332,
+      "width": 280,
+      "height": 259
+    },
+    {
+      "state": "madera",
+      "x": 44,
+      "y": 613,
+      "width": 288,
+      "height": 248
+    },
+    {
+      "state": "cristal",
+      "x": 362,
+      "y": 616,
+      "width": 280,
+      "height": 238
+    },
+    {
+      "state": "ladrillo",
+      "x": 673,
+      "y": 616,
+      "width": 276,
+      "height": 239
+    },
+    {
+      "state": "interrogación",
+      "x": 998,
+      "y": 609,
+      "width": 272,
+      "height": 255
+    },
+    {
+      "state": "bloque usado",
+      "x": 46,
+      "y": 879,
+      "width": 278,
+      "height": 267
+    },
+    {
+      "state": "tubo superior izquierdo",
+      "x": 355,
+      "y": 878,
+      "width": 287,
+      "height": 277
+    },
+    {
+      "state": "tubo superior derecho",
+      "x": 674,
+      "y": 875,
+      "width": 290,
+      "height": 280
+    },
+    {
+      "state": "tubo",
+      "x": 1006,
+      "y": 870,
+      "width": 246,
+      "height": 285
+    }
+  ],
+  "coordinates": "Rectángulos fuente en píxeles; no redimensionan ni modifican el PNG.",
+  "qa": "Recortes calculados por componentes alpha y posición esperada; la galería permite comprobar cada región. Mantener escala fija por animación."
+}

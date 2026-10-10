@@ -1,0 +1,99 @@
+{
+  "id": "kaiman",
+  "image": "kaiman.png",
+  "width": 1536,
+  "height": 1024,
+  "alpha": true,
+  "layout": "3x2 irregular",
+  "coordinates": "Recortes medidos por componentes alfa>=8, incluyendo efectos separados de su pose. Rectangulos independientes, no cortar por celdas nominales. Mantener proporcion y escala uniforme por personaje.",
+  "states": [
+    "reposo",
+    "embestida",
+    "coletazo",
+    "sumergirse",
+    "vulnerable",
+    "derrotado"
+  ],
+  "frames": [
+    {
+      "state": "reposo",
+      "x": 15,
+      "y": 182,
+      "width": 517,
+      "height": 297,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "embestida",
+      "x": 522,
+      "y": 207,
+      "width": 520,
+      "height": 253,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "coletazo",
+      "x": 1056,
+      "y": 111,
+      "width": 470,
+      "height": 381,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "sumergirse",
+      "x": 13,
+      "y": 616,
+      "width": 495,
+      "height": 308,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "vulnerable",
+      "x": 524,
+      "y": 648,
+      "width": 490,
+      "height": 278,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "derrotado",
+      "x": 1038,
+      "y": 656,
+      "width": 491,
+      "height": 270,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    }
+  ],
+  "qa": "RGBA aut?ntico; el RGB del fondo permanece coloreado donde alfa=0. No usar RGB sin alfa. Poses completas, efectos incluidos en el recorte.",
+  "alphaQa": {
+    "mode": "RGBA",
+    "range": [
+      0,
+      254
+    ],
+    "transparentRatio": 0.648905,
+    "corners": [
+      0,
+      0,
+      1,
+      0
+    ]
+  },
+  "overlappingBounds": [
+    {
+      "frames": [
+        0,
+        1
+      ],
+      "intersectionWidth": 10,
+      "intersectionHeight": 253
+    }
+  ],
+  "cropNote": "Algunas poses tienen l?mites rectangulares superpuestos pese a siluetas separadas; al extraer un PNG independiente usar la m?scara de componente de la pose para evitar fragmentos de la vecina. No adaptar por cuadr?cula uniforme."
+}

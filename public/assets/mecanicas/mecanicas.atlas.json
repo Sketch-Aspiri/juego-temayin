@@ -1,0 +1,75 @@
+{
+  "image": "mecanicas.png",
+  "width": 1536,
+  "height": 1024,
+  "mode": "RGBA",
+  "alpha": true,
+  "transparentFraction": 0.6778,
+  "frames": [
+    {
+      "state": "hamaca",
+      "x": 27,
+      "y": 88,
+      "width": 605,
+      "height": 223
+    },
+    {
+      "state": "cuerda colgante",
+      "x": 751,
+      "y": 0,
+      "width": 111,
+      "height": 350
+    },
+    {
+      "state": "tronco",
+      "x": 994,
+      "y": 154,
+      "width": 517,
+      "height": 149
+    },
+    {
+      "state": "plataforma frágil",
+      "x": 44,
+      "y": 464,
+      "width": 531,
+      "height": 177
+    },
+    {
+      "state": "aro",
+      "x": 668,
+      "y": 368,
+      "width": 265,
+      "height": 341
+    },
+    {
+      "state": "burbujas",
+      "x": 1135,
+      "y": 423,
+      "width": 272,
+      "height": 244
+    },
+    {
+      "state": "sargazo",
+      "x": 17,
+      "y": 739,
+      "width": 592,
+      "height": 239
+    },
+    {
+      "state": "resina",
+      "x": 628,
+      "y": 776,
+      "width": 398,
+      "height": 185
+    },
+    {
+      "state": "estromatolito",
+      "x": 1077,
+      "y": 725,
+      "width": 444,
+      "height": 266
+    }
+  ],
+  "coordinates": "Rectángulos fuente en píxeles; no redimensionan ni modifican el PNG.",
+  "qa": "Recortes calculados por componentes alpha y posición esperada; la galería permite comprobar cada región. Mantener escala fija por animación."
+}

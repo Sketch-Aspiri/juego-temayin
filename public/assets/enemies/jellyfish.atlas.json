@@ -1,0 +1,45 @@
+{
+  "id": "jellyfish",
+  "image": "jellyfish.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "expandida",
+    "contracción inicial",
+    "contraída",
+    "expansión inicial"
+  ],
+  "frames": [
+    {
+      "state": "expandida",
+      "x": 48,
+      "y": 100,
+      "width": 609,
+      "height": 472
+    },
+    {
+      "state": "contracción inicial",
+      "x": 735,
+      "y": 153,
+      "width": 465,
+      "height": 424
+    },
+    {
+      "state": "contraída",
+      "x": 167,
+      "y": 773,
+      "width": 352,
+      "height": 390
+    },
+    {
+      "state": "expansión inicial",
+      "x": 687,
+      "y": 701,
+      "width": 519,
+      "height": 464
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar."
+}

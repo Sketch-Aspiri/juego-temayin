@@ -1,0 +1,99 @@
+{
+  "id": "sargazo",
+  "image": "sargazo.png",
+  "width": 1536,
+  "height": 1024,
+  "alpha": true,
+  "layout": "3x2 irregular",
+  "coordinates": "Recortes medidos por componentes alfa>=8, incluyendo efectos separados de su pose. Rectangulos independientes, no cortar por celdas nominales. Mantener proporcion y escala uniforme por personaje.",
+  "states": [
+    "reposo",
+    "marcha",
+    "lanzamiento",
+    "preparacion",
+    "nucleo expuesto",
+    "derrotado"
+  ],
+  "frames": [
+    {
+      "state": "reposo",
+      "x": 15,
+      "y": 69,
+      "width": 499,
+      "height": 447,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "marcha",
+      "x": 536,
+      "y": 76,
+      "width": 487,
+      "height": 448,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "lanzamiento",
+      "x": 1036,
+      "y": 13,
+      "width": 490,
+      "height": 510,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "preparacion",
+      "x": 12,
+      "y": 577,
+      "width": 505,
+      "height": 383,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "nucleo expuesto",
+      "x": 531,
+      "y": 542,
+      "width": 491,
+      "height": 422,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "derrotado",
+      "x": 1007,
+      "y": 691,
+      "width": 523,
+      "height": 290,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    }
+  ],
+  "qa": "RGBA aut?ntico; el RGB del fondo permanece coloreado donde alfa=0. No usar RGB sin alfa. Poses completas, efectos incluidos en el recorte.",
+  "alphaQa": {
+    "mode": "RGBA",
+    "range": [
+      0,
+      254
+    ],
+    "transparentRatio": 0.473303,
+    "corners": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "overlappingBounds": [
+    {
+      "frames": [
+        4,
+        5
+      ],
+      "intersectionWidth": 15,
+      "intersectionHeight": 273
+    }
+  ],
+  "cropNote": "Algunas poses tienen l?mites rectangulares superpuestos pese a siluetas separadas; al extraer un PNG independiente usar la m?scara de componente de la pose para evitar fragmentos de la vecina. No adaptar por cuadr?cula uniforme."
+}

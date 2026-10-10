@@ -1,0 +1,96 @@
+{
+  "image": "efectos.png",
+  "width": 1448,
+  "height": 1086,
+  "mode": "RGBA",
+  "alpha": true,
+  "transparentFraction": 0.7781,
+  "frames": [
+    {
+      "state": "fuego 1",
+      "x": 53,
+      "y": 137,
+      "width": 239,
+      "height": 148
+    },
+    {
+      "state": "fuego 2",
+      "x": 384,
+      "y": 128,
+      "width": 293,
+      "height": 156
+    },
+    {
+      "state": "fuego 3",
+      "x": 728,
+      "y": 133,
+      "width": 333,
+      "height": 153
+    },
+    {
+      "state": "fuego 4",
+      "x": 1107,
+      "y": 120,
+      "width": 315,
+      "height": 168
+    },
+    {
+      "state": "brazada 1",
+      "x": 71,
+      "y": 486,
+      "width": 229,
+      "height": 174
+    },
+    {
+      "state": "brazada 2",
+      "x": 403,
+      "y": 450,
+      "width": 302,
+      "height": 216
+    },
+    {
+      "state": "brazada 3",
+      "x": 733,
+      "y": 415,
+      "width": 355,
+      "height": 257
+    },
+    {
+      "state": "brazada 4",
+      "x": 1119,
+      "y": 427,
+      "width": 289,
+      "height": 233
+    },
+    {
+      "state": "luz 1",
+      "x": 74,
+      "y": 839,
+      "width": 219,
+      "height": 173
+    },
+    {
+      "state": "luz 2",
+      "x": 400,
+      "y": 758,
+      "width": 279,
+      "height": 267
+    },
+    {
+      "state": "luz 3",
+      "x": 753,
+      "y": 734,
+      "width": 307,
+      "height": 292
+    },
+    {
+      "state": "luz 4",
+      "x": 1134,
+      "y": 774,
+      "width": 251,
+      "height": 248
+    }
+  ],
+  "coordinates": "Rectángulos fuente en píxeles; no redimensionan ni modifican el PNG.",
+  "qa": "Recortes calculados por componentes alpha y posición esperada; la galería permite comprobar cada región. Mantener escala fija por animación."
+}

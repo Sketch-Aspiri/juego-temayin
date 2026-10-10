@@ -1,0 +1,45 @@
+{
+  "id": "barracuda",
+  "image": "barracuda.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "nado",
+    "cola ondulada",
+    "preparación",
+    "embestida"
+  ],
+  "frames": [
+    {
+      "state": "nado",
+      "x": 16,
+      "y": 221,
+      "width": 608,
+      "height": 252
+    },
+    {
+      "state": "cola ondulada",
+      "x": 642,
+      "y": 173,
+      "width": 597,
+      "height": 338
+    },
+    {
+      "state": "preparación",
+      "x": 24,
+      "y": 752,
+      "width": 550,
+      "height": 274
+    },
+    {
+      "state": "embestida",
+      "x": 604,
+      "y": 802,
+      "width": 643,
+      "height": 221
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar. La última pose incluye la estela del ataque; no es un proyectil separado."
+}

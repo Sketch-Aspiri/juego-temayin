@@ -1,0 +1,54 @@
+{
+  "image": "toh.png",
+  "width": 1536,
+  "height": 1024,
+  "mode": "RGBA",
+  "alpha": true,
+  "transparentFraction": 0.6935,
+  "frames": [
+    {
+      "state": "reposo",
+      "x": 24,
+      "y": 20,
+      "width": 446,
+      "height": 452
+    },
+    {
+      "state": "mirar",
+      "x": 522,
+      "y": 20,
+      "width": 399,
+      "height": 454
+    },
+    {
+      "state": "cola péndulo",
+      "x": 1088,
+      "y": 15,
+      "width": 427,
+      "height": 425
+    },
+    {
+      "state": "alas arriba",
+      "x": 20,
+      "y": 460,
+      "width": 562,
+      "height": 529
+    },
+    {
+      "state": "alas abajo",
+      "x": 503,
+      "y": 568,
+      "width": 555,
+      "height": 377
+    },
+    {
+      "state": "guía",
+      "x": 970,
+      "y": 555,
+      "width": 554,
+      "height": 456
+    }
+  ],
+  "coordinates": "Rectángulos fuente en píxeles; no redimensionan ni modifican el PNG.",
+  "qa": "Recortes calculados por componentes alpha y posición esperada; la galería permite comprobar cada región. Mantener escala fija por animación."
+}

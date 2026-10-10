@@ -1,0 +1,88 @@
+{
+  "id": "jugador-mecanicas",
+  "image": "jugador-mecanicas.png",
+  "width": 1536,
+  "height": 1024,
+  "alpha": true,
+  "layout": "3x2 irregular; cuerda empieza por encima del medio nominal",
+  "coordinates": "Recortes medidos por componentes alfa>=8, incluyendo efectos separados de su pose. Rectangulos independientes, no cortar por celdas nominales. Mantener proporcion y escala uniforme por personaje.",
+  "states": [
+    "nado avance",
+    "nado patada",
+    "brazada ascendente",
+    "colgar de cuerda",
+    "balancearse",
+    "lanzar pelota"
+  ],
+  "frames": [
+    {
+      "state": "nado avance",
+      "x": 60,
+      "y": 93,
+      "width": 439,
+      "height": 270,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "nado patada",
+      "x": 553,
+      "y": 80,
+      "width": 418,
+      "height": 274,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "brazada ascendente",
+      "x": 1089,
+      "y": 40,
+      "width": 381,
+      "height": 387,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "colgar de cuerda",
+      "x": 105,
+      "y": 464,
+      "width": 264,
+      "height": 494,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "balancearse",
+      "x": 555,
+      "y": 465,
+      "width": 400,
+      "height": 481,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "lanzar pelota",
+      "x": 1025,
+      "y": 600,
+      "width": 489,
+      "height": 365,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    }
+  ],
+  "qa": "RGBA aut?ntico, seis poses. Cuerda incluida en poses 4/5 y pelota+trazos en pose6; la pelota no es un proyectil independiente. Identidad preservada con traje verde y pendiente dorado.",
+  "alphaQa": {
+    "mode": "RGBA",
+    "range": [
+      0,
+      254
+    ],
+    "transparentRatio": 0.732465,
+    "corners": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

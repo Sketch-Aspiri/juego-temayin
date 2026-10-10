@@ -2,3 +2,10 @@ node_modules
 dist
 *.local
 .DS_Store
+
+# Copias de trabajo y archivos temporales de las herramientas.
+.claude/worktrees/
+imagenes/.temp/
+__pycache__/
+*.pyc
+*.stackdump

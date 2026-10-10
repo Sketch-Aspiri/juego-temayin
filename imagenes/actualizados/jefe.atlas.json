@@ -1,0 +1,78 @@
+{
+  "id": "puas",
+  "image": "jefe.png",
+  "width": 2173,
+  "height": 724,
+  "alpha": true,
+  "layout": "cinco poses en una fila con m?rgenes irregulares",
+  "coordinates": "Recortes medidos por componentes alfa>=8, incluyendo efectos separados de su pose. Rectangulos independientes, no cortar por celdas nominales. Mantener proporcion y escala uniforme por personaje.",
+  "states": [
+    "reposo",
+    "carrera 1",
+    "carrera 2",
+    "rodar",
+    "derrotado"
+  ],
+  "frames": [
+    {
+      "state": "reposo",
+      "x": 22,
+      "y": 186,
+      "width": 383,
+      "height": 333,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "carrera 1",
+      "x": 459,
+      "y": 185,
+      "width": 403,
+      "height": 335,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "carrera 2",
+      "x": 892,
+      "y": 205,
+      "width": 406,
+      "height": 316,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "rodar",
+      "x": 1339,
+      "y": 184,
+      "width": 360,
+      "height": 344,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "derrotado",
+      "x": 1728,
+      "y": 238,
+      "width": 435,
+      "height": 286,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    }
+  ],
+  "qa": "Hoja fuente actualizada; cinco poses reales separadas por margen irregular. No es tira de cinco celdas iguales y requiere recortes expl?citos.",
+  "alphaQa": {
+    "mode": "RGBA",
+    "range": [
+      0,
+      255
+    ],
+    "transparentRatio": 0.704805,
+    "corners": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

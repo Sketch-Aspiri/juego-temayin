@@ -1,0 +1,89 @@
+{
+  "id": "lorencillo",
+  "image": "lorencillo.png",
+  "width": 1536,
+  "height": 1024,
+  "alpha": true,
+  "layout": "3x2 irregular",
+  "coordinates": "Recortes medidos por componentes alfa>=8, incluyendo efectos separados de su pose. Rectangulos independientes, no cortar por celdas nominales. Mantener proporcion y escala uniforme por personaje.",
+  "states": [
+    "reposo",
+    "avance",
+    "estocada",
+    "preparacion",
+    "espalda expuesta",
+    "derrotado"
+  ],
+  "frames": [
+    {
+      "state": "reposo",
+      "x": 45,
+      "y": 90,
+      "width": 457,
+      "height": 420,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "avance",
+      "x": 532,
+      "y": 99,
+      "width": 475,
+      "height": 387,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "estocada",
+      "x": 1007,
+      "y": 147,
+      "width": 517,
+      "height": 352,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "preparacion",
+      "x": 54,
+      "y": 555,
+      "width": 442,
+      "height": 396,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "espalda expuesta",
+      "x": 568,
+      "y": 556,
+      "width": 428,
+      "height": 402,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "derrotado",
+      "x": 1053,
+      "y": 605,
+      "width": 431,
+      "height": 361,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    }
+  ],
+  "qa": "RGBA aut?ntico; el RGB del fondo permanece coloreado donde alfa=0. No usar RGB sin alfa. Poses completas, efectos incluidos en el recorte.",
+  "alphaQa": {
+    "mode": "RGBA",
+    "range": [
+      0,
+      254
+    ],
+    "transparentRatio": 0.651614,
+    "corners": [
+      0,
+      0,
+      1,
+      0
+    ]
+  },
+  "overlappingBounds": []
+}

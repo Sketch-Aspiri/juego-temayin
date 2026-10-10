@@ -1,0 +1,45 @@
+{
+  "id": "shade",
+  "image": "shade.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "reposo",
+    "desplazamiento",
+    "expansión",
+    "disolución"
+  ],
+  "frames": [
+    {
+      "state": "reposo",
+      "x": 134,
+      "y": 74,
+      "width": 391,
+      "height": 498
+    },
+    {
+      "state": "desplazamiento",
+      "x": 654,
+      "y": 160,
+      "width": 549,
+      "height": 356
+    },
+    {
+      "state": "expansión",
+      "x": 45,
+      "y": 680,
+      "width": 629,
+      "height": 506
+    },
+    {
+      "state": "disolución",
+      "x": 709,
+      "y": 679,
+      "width": 511,
+      "height": 516
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar."
+}

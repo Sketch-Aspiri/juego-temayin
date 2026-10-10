@@ -1,0 +1,45 @@
+{
+  "id": "xtabay",
+  "image": "xtabay.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "reposo",
+    "flores luminosas",
+    "raíz extendida",
+    "raíz replegada"
+  ],
+  "frames": [
+    {
+      "state": "reposo",
+      "x": 134,
+      "y": 176,
+      "width": 356,
+      "height": 358
+    },
+    {
+      "state": "flores luminosas",
+      "x": 761,
+      "y": 175,
+      "width": 357,
+      "height": 359
+    },
+    {
+      "state": "raíz extendida",
+      "x": 109,
+      "y": 771,
+      "width": 512,
+      "height": 342
+    },
+    {
+      "state": "raíz replegada",
+      "x": 757,
+      "y": 771,
+      "width": 354,
+      "height": 342
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar."
+}

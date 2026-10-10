@@ -1,0 +1,45 @@
+{
+  "id": "nauyaca",
+  "image": "nauyaca.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "enroscada",
+    "erguida",
+    "embestida",
+    "repliegue"
+  ],
+  "frames": [
+    {
+      "state": "enroscada",
+      "x": 99,
+      "y": 272,
+      "width": 477,
+      "height": 289
+    },
+    {
+      "state": "erguida",
+      "x": 715,
+      "y": 133,
+      "width": 458,
+      "height": 432
+    },
+    {
+      "state": "embestida",
+      "x": 45,
+      "y": 730,
+      "width": 670,
+      "height": 363
+    },
+    {
+      "state": "repliegue",
+      "x": 733,
+      "y": 739,
+      "width": 471,
+      "height": 393
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar."
+}

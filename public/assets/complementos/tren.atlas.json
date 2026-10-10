@@ -1,0 +1,40 @@
+{
+  "image": "tren.png",
+  "width": 1774,
+  "height": 887,
+  "mode": "RGBA",
+  "alpha": true,
+  "transparentFraction": 0.5263,
+  "frames": [
+    {
+      "state": "locomotora (mira a la izquierda)",
+      "x": 0,
+      "y": 0,
+      "width": 887,
+      "height": 443
+    },
+    {
+      "state": "vagón",
+      "x": 887,
+      "y": 0,
+      "width": 887,
+      "height": 443
+    },
+    {
+      "state": "vía",
+      "x": 0,
+      "y": 443,
+      "width": 1099,
+      "height": 444
+    },
+    {
+      "state": "tren para mapa",
+      "x": 1153,
+      "y": 443,
+      "width": 621,
+      "height": 444
+    }
+  ],
+  "coordinates": "Rectángulos fuente en píxeles; no redimensionan ni modifican el PNG.",
+  "qa": "Recortes calculados por componentes alpha y posición esperada; la galería permite comprobar cada región. Mantener escala fija por animación."
+}

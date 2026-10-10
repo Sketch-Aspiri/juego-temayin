@@ -1,0 +1,54 @@
+{
+  "image": "temayina.png",
+  "width": 1536,
+  "height": 1024,
+  "mode": "RGBA",
+  "alpha": true,
+  "transparentFraction": 0.6827,
+  "frames": [
+    {
+      "state": "reposo",
+      "x": 63,
+      "y": 4,
+      "width": 370,
+      "height": 493
+    },
+    {
+      "state": "correr",
+      "x": 510,
+      "y": 45,
+      "width": 503,
+      "height": 429
+    },
+    {
+      "state": "saltar",
+      "x": 1081,
+      "y": 6,
+      "width": 415,
+      "height": 491
+    },
+    {
+      "state": "Sol de Jade",
+      "x": 58,
+      "y": 505,
+      "width": 389,
+      "height": 505
+    },
+    {
+      "state": "esperar rescate",
+      "x": 585,
+      "y": 546,
+      "width": 324,
+      "height": 437
+    },
+    {
+      "state": "saludar",
+      "x": 1051,
+      "y": 493,
+      "width": 470,
+      "height": 520
+    }
+  ],
+  "coordinates": "Rectángulos fuente en píxeles; no redimensionan ni modifican el PNG.",
+  "qa": "Recortes calculados por componentes alpha y posición esperada; la galería permite comprobar cada región. Mantener escala fija por animación."
+}

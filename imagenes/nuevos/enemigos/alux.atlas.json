@@ -1,0 +1,45 @@
+{
+  "id": "alux",
+  "image": "alux.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "curioso",
+    "recoger cacao",
+    "correr",
+    "devolver cacao"
+  ],
+  "frames": [
+    {
+      "state": "curioso",
+      "x": 90,
+      "y": 63,
+      "width": 463,
+      "height": 514
+    },
+    {
+      "state": "recoger cacao",
+      "x": 715,
+      "y": 70,
+      "width": 463,
+      "height": 506
+    },
+    {
+      "state": "correr",
+      "x": 120,
+      "y": 655,
+      "width": 446,
+      "height": 514
+    },
+    {
+      "state": "devolver cacao",
+      "x": 666,
+      "y": 687,
+      "width": 541,
+      "height": 485
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar."
+}

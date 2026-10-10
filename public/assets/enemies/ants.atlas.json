@@ -1,0 +1,45 @@
+{
+  "id": "ants",
+  "image": "ants.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "paso 1",
+    "paso 2",
+    "paso 3",
+    "paso 4"
+  ],
+  "frames": [
+    {
+      "state": "paso 1",
+      "x": 63,
+      "y": 184,
+      "width": 537,
+      "height": 365
+    },
+    {
+      "state": "paso 2",
+      "x": 692,
+      "y": 187,
+      "width": 536,
+      "height": 362
+    },
+    {
+      "state": "paso 3",
+      "x": 60,
+      "y": 764,
+      "width": 547,
+      "height": 375
+    },
+    {
+      "state": "paso 4",
+      "x": 689,
+      "y": 771,
+      "width": 554,
+      "height": 382
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar."
+}

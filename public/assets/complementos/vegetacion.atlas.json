@@ -1,0 +1,54 @@
+{
+  "image": "vegetacion.png",
+  "width": 1536,
+  "height": 1024,
+  "mode": "RGBA",
+  "alpha": true,
+  "transparentFraction": 0.5221,
+  "frames": [
+    {
+      "state": "ceiba",
+      "x": 9,
+      "y": 7,
+      "width": 619,
+      "height": 507
+    },
+    {
+      "state": "palmera",
+      "x": 637,
+      "y": 8,
+      "width": 422,
+      "height": 506
+    },
+    {
+      "state": "arbusto",
+      "x": 1057,
+      "y": 202,
+      "width": 465,
+      "height": 312
+    },
+    {
+      "state": "henequén",
+      "x": 9,
+      "y": 535,
+      "width": 525,
+      "height": 464
+    },
+    {
+      "state": "mangle",
+      "x": 549,
+      "y": 527,
+      "width": 548,
+      "height": 484
+    },
+    {
+      "state": "lianas",
+      "x": 1155,
+      "y": 527,
+      "width": 314,
+      "height": 486
+    }
+  ],
+  "coordinates": "Rectángulos fuente en píxeles; no redimensionan ni modifican el PNG.",
+  "qa": "Recortes calculados por componentes alpha y posición esperada; la galería permite comprobar cada región. Mantener escala fija por animación."
+}

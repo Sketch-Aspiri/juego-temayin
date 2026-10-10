@@ -1,39 +1,40 @@
-# Inventario de arte — Temayin
+# Arte de Temayin
 
-Coordinación de generación de imágenes, 9 de octubre de 2026.
+Biblioteca completada el 10 de octubre de 2026 con el motor integrado `image_gen` y agentes en paralelo, siguiendo el AGENTS.md de Claude. El alcance solicitado es crear arte y poses de animación para las mecánicas.
 
-## Actualización de imágenes existentes
+## Entrega
 
-| Recurso | Archivo del juego | Contrato actual |
-| --- | --- | --- |
-| Protagonista | `public/assets/guepardo.png` | 1360 × 800; 8 columnas × 5 filas; celdas de 170 × 160; correr, saltar, caer, reposo, victoria |
-| Coatí | `public/assets/coati.png` | 1260 × 160; celdas de 140 × 80; 8 fotogramas de movimiento y 7 de derrota consumidos |
-| Erizo | `public/assets/erizo.png` | 810 × 240; 9 columnas × 3 filas; celdas de 90 × 80 |
-| Púas | `public/assets/jefe.png` | 1200 × 190; 5 poses de 240 × 190: reposo, caminar, correr, bola, derrota |
-| Retrato de Púas | `public/assets/jefe_grande.png` | Retrato independiente para interfaz |
-| Ilustración de título | `public/assets/jaguar_titulo.png` | Ilustración independiente para interfaz |
+Abre [galeria.html](galeria.html) para revisar las imágenes y sus recortes. [catalogo.json](catalogo.json) contiene rutas, dimensiones, transparencia, prompts y metadatos. Los PNG fuente están en `nuevos/` y `actualizados/`; los recursos nuevos tienen copias en `public/assets/`.
 
-Los originales se conservan en `imagenes/originales/`. Las propuestas y sus prompts se guardan en `imagenes/actualizados/`. Una propuesta solo sustituye un recurso del juego después de verificar su compatibilidad; generar una imagen no significa haberla integrado.
+| Familia | Imágenes |
+| --- | ---: |
+| Enemigos: cuatro poses por enemigo | 19 |
+| Jefes nuevos | 6 |
+| Paisajes de los biomas | 18 |
+| Toh, Temayina y poses de mecánicas de Temayin | 3 |
+| Objetos y mejoras | 1 |
+| Mecánicas y efectos | 2 |
+| Tren, pirámide, banderas, vegetación, utilería, bloques e historia | 7 |
+| Arte existente actualizado | 6 |
+| **Total** | **62** |
 
-## Pendiente del AGENTS.md de Claude
+Los originales se conservan en `originales/`. Los prompts están junto a cada PNG o en `actualizados/prompts/`. Las variantes descartadas se conservan fuera del catálogo final.
 
-La creación de recursos faltantes y la definición de mecánicas esperan el archivo terminado en la raíz del proyecto, conforme a la solicitud del usuario.
+## Uso de los atlas
 
-Inventario del código previo a esas instrucciones:
+Las hojas generadas tienen distribuciones irregulares. Usa los rectángulos de sus archivos `.atlas.json`, una escala constante por animación y un ancla adecuada al dibujarlas. Las hojas actualizadas del jugador, coatí, erizo y Púas requieren adaptar sus recortes antes de sustituir las cuadrículas originales del motor.
 
-- El murciélago ya tiene comportamiento, pero se dibuja con Canvas y carece de hoja raster.
-- Los escenarios de selva, playa, guarida y cenote se dibujan con Canvas.
-- Las monedas, vida, chile, escudo, fuego y púas se dibujan con Canvas.
-- La bandera y la pirámide de meta se dibujan con Canvas; la bandera desciende durante la secuencia final.
-- Los bloques, plataformas, tubos y superficies utilizan texturas procedurales.
-- No se encontró un tren ni su comportamiento implementado.
-- Hay cinco niveles repartidos entre dos mundos. El lienzo lógico mide 960 × 560 y cada bloque 40 × 40.
+Los PNG de sprites tienen transparencia real. El color RGB que pueda existir detrás de píxeles de alfa cero no aparece al dibujarlos. Algunos efectos, cuerdas y proyectiles están incluidos en los recortes; ciertos rectángulos se aproximan o solapan por su extensión. Las ruedas y el truck tienen variantes ilustradas de giro, sin representar ángulos exactos. Los fondos son panoramas opacos y no garantizan repetición sin costuras.
 
-Este inventario no presupone cuáles serán las nuevas mecánicas. El AGENTS.md terminado determinará sus requisitos y la lista definitiva de recursos.
+El jugador actualizado conserva un halo naranja tenue de baja opacidad. La prueba adicional de limpieza no se promovió porque no mejoró el resultado. Los archivos de cada familia documentan sus observaciones particulares.
 
-## Verificación inicial
+Este catálogo entrega los recursos visuales para integrar las mecánicas, enemigos y escenas en el juego.
 
-- `npm test`: 68 pruebas aprobadas en 5 archivos.
+## Verificación
+
+- `python imagenes/build_catalog.py`: reconstruye el catálogo y la galería sin modificar los PNG.
+- `python imagenes/validate_catalog.py`: comprueba cobertura, transparencia y recortes visibles dentro de cada imagen.
+- `python imagenes/verify_runtime.py`: comprueba la galería, el título y el primer nivel con Chromium. Usa `TEMAYIN_QA_URL` para indicar la dirección del servidor local.
+- Resultados y capturas: `verificacion/`.
+- `npm test`: 544 pruebas aprobadas en 29 archivos tras integrar el Mundo 4.
 - `npm run build`: compilación aprobada.
-
-Estas comprobaciones corresponden al estado anterior a la sustitución de imágenes.

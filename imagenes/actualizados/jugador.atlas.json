@@ -1,0 +1,570 @@
+{
+  "id": "player",
+  "image": "jugador.png",
+  "width": 1635,
+  "height": 962,
+  "alpha": true,
+  "layout": "cinco filas; 7 run, 8 jump, 7 fall, 7 idle, 7 win",
+  "coordinates": "Recortes de componentes alfa>=8 con dos pixeles de margen; no cortar por celdas nominales. Conservar proporcion y escala constante por animacion.",
+  "frames": [
+    {
+      "state": "run",
+      "index": 0,
+      "x": 32,
+      "y": 32,
+      "width": 175,
+      "height": 156,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "run",
+      "index": 1,
+      "x": 226,
+      "y": 32,
+      "width": 181,
+      "height": 158,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "run",
+      "index": 2,
+      "x": 425,
+      "y": 33,
+      "width": 181,
+      "height": 154,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "run",
+      "index": 3,
+      "x": 620,
+      "y": 32,
+      "width": 185,
+      "height": 158,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "run",
+      "index": 4,
+      "x": 823,
+      "y": 32,
+      "width": 179,
+      "height": 157,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "run",
+      "index": 5,
+      "x": 1020,
+      "y": 32,
+      "width": 182,
+      "height": 154,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "run",
+      "index": 6,
+      "x": 1220,
+      "y": 31,
+      "width": 184,
+      "height": 158,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "jump",
+      "index": 0,
+      "x": 17,
+      "y": 226,
+      "width": 177,
+      "height": 148,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "jump",
+      "index": 1,
+      "x": 212,
+      "y": 215,
+      "width": 183,
+      "height": 161,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "jump",
+      "index": 2,
+      "x": 414,
+      "y": 204,
+      "width": 180,
+      "height": 168,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "jump",
+      "index": 3,
+      "x": 619,
+      "y": 203,
+      "width": 186,
+      "height": 168,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "jump",
+      "index": 4,
+      "x": 823,
+      "y": 215,
+      "width": 172,
+      "height": 159,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "jump",
+      "index": 5,
+      "x": 1023,
+      "y": 224,
+      "width": 173,
+      "height": 153,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "jump",
+      "index": 6,
+      "x": 1218,
+      "y": 233,
+      "width": 180,
+      "height": 143,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "jump",
+      "index": 7,
+      "x": 1432,
+      "y": 229,
+      "width": 177,
+      "height": 147,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "fall",
+      "index": 0,
+      "x": 24,
+      "y": 403,
+      "width": 181,
+      "height": 156,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "fall",
+      "index": 1,
+      "x": 229,
+      "y": 405,
+      "width": 179,
+      "height": 159,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "fall",
+      "index": 2,
+      "x": 438,
+      "y": 409,
+      "width": 165,
+      "height": 154,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "fall",
+      "index": 3,
+      "x": 633,
+      "y": 414,
+      "width": 169,
+      "height": 147,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "fall",
+      "index": 4,
+      "x": 831,
+      "y": 413,
+      "width": 167,
+      "height": 149,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "fall",
+      "index": 5,
+      "x": 1020,
+      "y": 427,
+      "width": 191,
+      "height": 136,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "fall",
+      "index": 6,
+      "x": 1229,
+      "y": 430,
+      "width": 180,
+      "height": 133,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "idle",
+      "index": 0,
+      "x": 31,
+      "y": 587,
+      "width": 145,
+      "height": 161,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "idle",
+      "index": 1,
+      "x": 234,
+      "y": 587,
+      "width": 149,
+      "height": 161,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "idle",
+      "index": 2,
+      "x": 435,
+      "y": 587,
+      "width": 144,
+      "height": 161,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "idle",
+      "index": 3,
+      "x": 634,
+      "y": 588,
+      "width": 146,
+      "height": 160,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "idle",
+      "index": 4,
+      "x": 833,
+      "y": 588,
+      "width": 151,
+      "height": 160,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "idle",
+      "index": 5,
+      "x": 1043,
+      "y": 589,
+      "width": 148,
+      "height": 160,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "idle",
+      "index": 6,
+      "x": 1249,
+      "y": 588,
+      "width": 148,
+      "height": 160,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "win",
+      "index": 0,
+      "x": 21,
+      "y": 766,
+      "width": 185,
+      "height": 163,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "win",
+      "index": 1,
+      "x": 236,
+      "y": 758,
+      "width": 172,
+      "height": 166,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "win",
+      "index": 2,
+      "x": 436,
+      "y": 762,
+      "width": 168,
+      "height": 167,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "win",
+      "index": 3,
+      "x": 635,
+      "y": 762,
+      "width": 171,
+      "height": 167,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "win",
+      "index": 4,
+      "x": 834,
+      "y": 758,
+      "width": 179,
+      "height": 169,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "win",
+      "index": 5,
+      "x": 1038,
+      "y": 761,
+      "width": 175,
+      "height": 166,
+      "anchor": "centro inferior"
+    },
+    {
+      "state": "win",
+      "index": 6,
+      "x": 1240,
+      "y": 761,
+      "width": 181,
+      "height": 167,
+      "anchor": "centro inferior"
+    }
+  ],
+  "run": [
+    [
+      32,
+      32,
+      175,
+      156
+    ],
+    [
+      226,
+      32,
+      181,
+      158
+    ],
+    [
+      425,
+      33,
+      181,
+      154
+    ],
+    [
+      620,
+      32,
+      185,
+      158
+    ],
+    [
+      823,
+      32,
+      179,
+      157
+    ],
+    [
+      1020,
+      32,
+      182,
+      154
+    ],
+    [
+      1220,
+      31,
+      184,
+      158
+    ]
+  ],
+  "jump": [
+    [
+      17,
+      226,
+      177,
+      148
+    ],
+    [
+      212,
+      215,
+      183,
+      161
+    ],
+    [
+      414,
+      204,
+      180,
+      168
+    ],
+    [
+      619,
+      203,
+      186,
+      168
+    ],
+    [
+      823,
+      215,
+      172,
+      159
+    ],
+    [
+      1023,
+      224,
+      173,
+      153
+    ],
+    [
+      1218,
+      233,
+      180,
+      143
+    ],
+    [
+      1432,
+      229,
+      177,
+      147
+    ]
+  ],
+  "fall": [
+    [
+      24,
+      403,
+      181,
+      156
+    ],
+    [
+      229,
+      405,
+      179,
+      159
+    ],
+    [
+      438,
+      409,
+      165,
+      154
+    ],
+    [
+      633,
+      414,
+      169,
+      147
+    ],
+    [
+      831,
+      413,
+      167,
+      149
+    ],
+    [
+      1020,
+      427,
+      191,
+      136
+    ],
+    [
+      1229,
+      430,
+      180,
+      133
+    ]
+  ],
+  "idle": [
+    [
+      31,
+      587,
+      145,
+      161
+    ],
+    [
+      234,
+      587,
+      149,
+      161
+    ],
+    [
+      435,
+      587,
+      144,
+      161
+    ],
+    [
+      634,
+      588,
+      146,
+      160
+    ],
+    [
+      833,
+      588,
+      151,
+      160
+    ],
+    [
+      1043,
+      589,
+      148,
+      160
+    ],
+    [
+      1249,
+      588,
+      148,
+      160
+    ]
+  ],
+  "win": [
+    [
+      21,
+      766,
+      185,
+      163
+    ],
+    [
+      236,
+      758,
+      172,
+      166
+    ],
+    [
+      436,
+      762,
+      168,
+      167
+    ],
+    [
+      635,
+      762,
+      171,
+      167
+    ],
+    [
+      834,
+      758,
+      179,
+      169
+    ],
+    [
+      1038,
+      761,
+      175,
+      166
+    ],
+    [
+      1240,
+      761,
+      181,
+      167
+    ]
+  ],
+  "qa": "Las 36 poses e identidad est?n completas. Persisten p?xeles tenues naranjas junto a bordes; candidato de limpieza no promovido. Fuente art?stica con distribuci?n irregular, no compatible con runtime que corta 170x160 sin adaptaci?n de atlas.",
+  "alphaQa": {
+    "mode": "RGBA",
+    "range": [
+      0,
+      255
+    ],
+    "transparentRatio": 0.629552
+  }
+}
