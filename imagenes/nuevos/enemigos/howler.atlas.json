@@ -1,0 +1,45 @@
+{
+  "id": "howler",
+  "image": "howler.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "reposo agachado",
+    "grito antes de lanzar",
+    "brazo hacia atrás con fruto",
+    "lanzar fruto hacia la derecha"
+  ],
+  "frames": [
+    {
+      "state": "reposo agachado",
+      "x": 83,
+      "y": 121,
+      "width": 490,
+      "height": 454
+    },
+    {
+      "state": "grito antes de lanzar",
+      "x": 661,
+      "y": 129,
+      "width": 487,
+      "height": 448
+    },
+    {
+      "state": "brazo hacia atrás con fruto",
+      "x": 54,
+      "y": 706,
+      "width": 536,
+      "height": 446
+    },
+    {
+      "state": "lanzar fruto hacia la derecha",
+      "x": 589,
+      "y": 705,
+      "width": 636,
+      "height": 446
+    }
+  ],
+  "qa": "Pose 4 incluye fruto y estela unidos al lanzamiento; no es proyectil separado."
+}

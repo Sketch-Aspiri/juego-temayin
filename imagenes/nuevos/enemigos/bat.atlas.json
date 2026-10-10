@@ -1,0 +1,45 @@
+{
+  "id": "bat",
+  "image": "bat.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "alas arriba",
+    "alas extendidas",
+    "alas abajo",
+    "alas recogidas"
+  ],
+  "frames": [
+    {
+      "state": "alas arriba",
+      "x": 108,
+      "y": 107,
+      "width": 460,
+      "height": 424
+    },
+    {
+      "state": "alas extendidas",
+      "x": 593,
+      "y": 216,
+      "width": 648,
+      "height": 313
+    },
+    {
+      "state": "alas abajo",
+      "x": 178,
+      "y": 711,
+      "width": 378,
+      "height": 447
+    },
+    {
+      "state": "alas recogidas",
+      "x": 803,
+      "y": 727,
+      "width": 317,
+      "height": 354
+    }
+  ],
+  "qa": "Pose 2 ocupa ancho mayor; usar rectángulos reales. Puntito residual diminuto fuera de componentes principales. Alas y cuerpo completos."
+}

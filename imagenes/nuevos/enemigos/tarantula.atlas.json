@@ -1,0 +1,45 @@
+{
+  "id": "tarantula",
+  "image": "tarantula.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "patas abiertas",
+    "patas retraídas",
+    "bajando de una hebra corta de seda",
+    "pose de aterrizaje"
+  ],
+  "frames": [
+    {
+      "state": "patas abiertas",
+      "x": 41,
+      "y": 142,
+      "width": 620,
+      "height": 386
+    },
+    {
+      "state": "patas retraídas",
+      "x": 780,
+      "y": 191,
+      "width": 406,
+      "height": 323
+    },
+    {
+      "state": "bajando de una hebra corta de seda",
+      "x": 143,
+      "y": 568,
+      "width": 418,
+      "height": 576
+    },
+    {
+      "state": "pose de aterrizaje",
+      "x": 646,
+      "y": 823,
+      "width": 569,
+      "height": 339
+    }
+  ],
+  "qa": "La hebra de la pose 3 comienza por encima del límite nominal de fila. Usar rectángulos reales. Anatomía caricaturesca; patas parcialmente ocluidas."
+}
