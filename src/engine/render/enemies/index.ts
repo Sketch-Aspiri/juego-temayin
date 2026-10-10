@@ -13,6 +13,8 @@ import { drawNauyaca } from './nauyaca';
 import { drawTarantula } from './tarantula';
 import type { EnemyDrawFn } from './types';
 import { drawUrchin } from './urchin';
+import { drawMoray } from './moray';
+import { drawPirateCrab } from './pirateCrab';
 
 export type { EnemyDrawFn } from './types';
 
@@ -27,6 +29,8 @@ export const ENEMY_SPRITES: Readonly<Record<EnemyId, EnemyDrawFn>> = {
   ants: drawAnts,
   blueCrab: drawBlueCrab,
   barracuda: drawBarracuda,
+  pirateCrab: drawPirateCrab,
+  moray: drawMoray,
 };
 
 const OFFSCREEN_MARGIN = 60;

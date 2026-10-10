@@ -21,7 +21,10 @@ export type EnemyId =
   | 'nauyaca'
   | 'ants'
   | 'blueCrab'
-  | 'barracuda';
+  | 'barracuda'
+  // Mundo 2 · Golfo de Campeche (AGENTS.md §4.5)
+  | 'pirateCrab'
+  | 'moray';
 export type BossId = 'puas';
 export type ThemeId =
   | 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque'

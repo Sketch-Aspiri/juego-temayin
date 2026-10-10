@@ -19,8 +19,11 @@ export const tarantula = spawnMany('tarantula');
 export const nauyaca = spawnMany('nauyaca');
 export const ants = spawnMany('ants');
 export const blueCrab = spawnMany('blueCrab');
+export const pirateCrab = spawnMany('pirateCrab');
 
 /** Murciélagos: pares [x, fila]. */
 export const bats = spawnAt('bat');
 /** Barracudas (nadan, no necesitan suelo): pares [x, fila] dentro de una zona de agua. */
 export const barracudas = spawnAt('barracuda');
+/** Morenas: pares [x, fila] en un bloque de agua junto a la pared o el fondo donde está su grieta. */
+export const morays = spawnAt('moray');
