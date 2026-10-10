@@ -6,13 +6,14 @@ import { bats, shades, tarantula } from '../helpers';
  * en la carretera entre Valladolid y Cancún (AGENTS.md §4.3). Nivel de jefe del
  * Mundo 4: Huay Pek.
  *
- * Línea de Toh (cuando `LevelDef` admita texto): «Nuevo Xcán está justo donde
+ * Referencia narrativa para Toh: «Nuevo Xcán está justo donde
  * Yucatán se vuelve Quintana Roo. En maya, *pek'* quiere decir perro: las abuelas
  * cuentan que de noche, entre la niebla de los caminos, ronda el Huay Pek, un perro
  * de sombra con ojos que brillan. ¡Cuando se le encienden los ojos, es tu momento!»
- * TODO(cultura): revisar con fuentes yucatecas la descripción del Huay Pek (en
- * algunas versiones es un brujo que toma forma de perro); aquí es solo un ser de
- * leyenda, apto para niños.
+ * Los relatos de transformación en perro se documentan en «La instrumentalización
+ * del way según las escenas de los vasos pintados» (Península, 2009):
+ * https://www.scielo.org.mx/scielo.php?pid=S1870-57662009000100002&script=sci_arttext
+ * Aquí se adapta como personaje de fantasía familiar, sin juzgar creencias actuales.
  *
  * Recorrido (selva de noche):
  *   0-56     Camino entre la selva: hoyos cortos, rama alta con saraguato,
@@ -28,6 +29,8 @@ import { bats, shades, tarantula } from '../helpers';
 export const LEVEL_4_5: LevelDef = {
   id: '4-5',
   name: 'Nuevo Xcán',
+  hint: '¡Salta sobre los ladridos! Cuando brillen sus ojos, puedes golpear a Huay Pek.',
+  darkness: { radius: 250, alpha: 0.42 },
   width: 107,
   theme: 'jungleNight',
   checkpoint: 50,

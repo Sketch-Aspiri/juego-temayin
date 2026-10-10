@@ -1,0 +1,45 @@
+{
+  "id": "axolotl",
+  "image": "axolotl.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "nado",
+    "cola ondulada",
+    "aparición",
+    "desvanecimiento"
+  ],
+  "frames": [
+    {
+      "state": "nado",
+      "x": 93,
+      "y": 265,
+      "width": 456,
+      "height": 198
+    },
+    {
+      "state": "cola ondulada",
+      "x": 727,
+      "y": 266,
+      "width": 431,
+      "height": 220
+    },
+    {
+      "state": "aparición",
+      "x": 91,
+      "y": 786,
+      "width": 452,
+      "height": 277
+    },
+    {
+      "state": "desvanecimiento",
+      "x": 716,
+      "y": 786,
+      "width": 452,
+      "height": 278
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar."
+}

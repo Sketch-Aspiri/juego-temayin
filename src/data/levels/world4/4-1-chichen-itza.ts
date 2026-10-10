@@ -9,7 +9,7 @@ import { nauyaca, shades, tarantula } from '../helpers';
  * escalinata norte. El Gran Juego de Pelota es la cancha más grande de Mesoamérica,
  * con dos aros de piedra empotrados en lo alto de sus muros.
  *
- * Línea de Toh para el cartel (LevelDef aún no tiene campo de texto por nivel):
+ * Referencia para el consejo de Toh:
  *   «En el equinoccio, la luz dibuja una serpiente en la escalinata del Templo de
  *    Kukulcán. ¡Lanza la pelota de hule por los aros del Gran Juego de Pelota!»
  *
@@ -32,6 +32,7 @@ import { nauyaca, shades, tarantula } from '../helpers';
 export const LEVEL_4_1: LevelDef = {
   id: '4-1',
   name: 'Chichén Itzá',
+  hint: '¡Lanza la pelota de hule por los aros del Gran Juego de Pelota!',
   width: 222,
   theme: 'ruins',
   checkpoint: 112,

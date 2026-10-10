@@ -1,5 +1,5 @@
 import type { LevelDef } from '../../../engine/level/types';
-import { cavernCeiling, floodedTunnel, rockBlock } from '../caves';
+import { cavernCeiling, floodedTunnel, mesa, rockBlock } from '../caves';
 import { axolotls, bats, shades } from '../helpers';
 
 /** Superficie del agua (y techo de los túneles) en las dos cuevas inundadas. */
@@ -17,8 +17,7 @@ const CEILING_ROWS = 2;
  * casas, como la Casa de los Murciélagos. El paradero del Tren Maya que lleva su
  * nombre está muy cerca de Chichén Itzá, tierra de cenotes».
  *
- * TODO(oscuridad): darkness { radius: 200, alpha: 0.85 } y antorchas en
- *   (20, 10), (72, 10), (104, 10), (160, 6), (205, 10) (filas de bloques).
+ * Oscuridad con antorchas en las salas secas; el fuego también ilumina el camino.
  *
  *   0-29     Entrada: bloques `?` y chile (el fuego disuelve las sombras), poza oscura.
  *  30-70     Primera cueva inundada: poza abierta, muro de roca que obliga a bucear y
@@ -34,11 +33,15 @@ const CEILING_ROWS = 2;
 export const LEVEL_4_2: LevelDef = {
   id: '4-2',
   name: 'Xibalbá',
+  hint: 'El fuego ilumina y disuelve las sombras. ¡Busca aire en las cuevas inundadas!',
+  darkness: { radius: 200, alpha: 0.85 },
   width: 226,
   theme: 'xibalba',
   time: 360,
   checkpoint: 106,
   ops: [
+    ['torch', 20, 10], ['torch', 72, 10], ['torch', 104, 10],
+    ['torch', 160, 6], ['torch', 205, 10],
     // --- Entrada ---
     ['row', 8, 8, '?F?'], ['coins', 13, 5, 3],
     ['stairs', 15, 3, 1], ['stairs', 18, 3, -1],
@@ -57,7 +60,9 @@ export const LEVEL_4_2: LevelDef = {
     // --- Casa de los Murciélagos ---
     ['row', 74, 8, 'B?B?B'], ['coins', 75, 4, 3],
     ['pit', 80, 85], ['plat', 82, 9, 2], ['coins', 81, 6, 4],
-    ['stairs', 88, 4, 1], ['plat', 93, 7, 3], ['coins', 93, 5, 3], ['stairs', 96, 4, -1],
+    // La meseta continua evita caer en un hueco de una columna junto a la bajada.
+    ['stairs', 88, 4, 1], ...mesa(92, 1, 8), ...mesa(93, 3, 7),
+    ['coins', 93, 5, 3], ['stairs', 96, 4, -1],
     ['row', 101, 8, '?M?'],
 
     // --- Gran sala inundada ---

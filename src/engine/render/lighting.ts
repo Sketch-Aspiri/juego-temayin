@@ -7,6 +7,7 @@ export interface LightSource { readonly x: number; readonly y: number; readonly 
 const FIRE_RADIUS = 85;
 const TORCH_RADIUS = 110;
 const CRYSTAL_RADIUS = 55;
+const BOSS_EYE_RADIUS = 80;
 
 /** Coordenadas del mundo, consultables sin DOM por enemigos y pruebas. */
 export function lightSources(world: World): readonly LightSource[] {
@@ -16,6 +17,11 @@ export function lightSources(world: World): readonly LightSource[] {
   const result: LightSource[] = [{ x: p.x + p.w / 2, y: p.y + p.h / 2, radius: dark.radius }];
   for (const f of world.fireballs) if (!f.gone) result.push({ x: f.x, y: f.y, radius: FIRE_RADIUS });
   for (const t of world.level.lights) result.push(t);
+  const boss = world.boss;
+  // Los ojos encendidos señalan la ventana de daño, incluso fuera de la luz del jugador.
+  if (boss?.id === 'huayPek' && boss.hittable) {
+    result.push({ x: boss.x + boss.w / 2, y: boss.y + boss.h / 2, radius: BOSS_EYE_RADIUS });
+  }
   if (world.def.theme === 'cave') {
     const left = Math.max(0, Math.floor(world.camX / T));
     const right = Math.min(world.width, left + VW / T + 2);

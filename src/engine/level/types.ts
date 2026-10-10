@@ -66,6 +66,11 @@ import type { Darkness } from '../render/lighting';
  *                                           suavemente hasta (x+dx, y+dy) y vuelve en
  *                                           `periodo` segundos
  *
+ * Franjas pegajosas sobre suelo firme (ver `level/slowZones.ts`):
+ *  ['resin', x0, x1, y]                    resina de chicle, frena carrera y salto
+ *  ['sargassum', x0, x1, y]                sargazo, mismos efectos; el fuego lo quema
+ *                                           fila y libre, con suelo en y+1
+ *
  * Juego de pelota (AGENTS.md §4.3 · 4-1 Chichén Itzá, ver `entities/hoops.ts`). No
  * toca la cuadrícula: va a `BuiltLevel.hoops`.
  *  ['hoop', x, y]                           aro de piedra empotrado en el muro de la
@@ -127,6 +132,8 @@ export interface LevelDef {
   darkness?: Darkness;
   /** Consejo de Toh mostrado al entrar, en español. */
   hint?: string;
+  /** Lluvia escénica: no altera la física ni el progreso. */
+  weather?: 'rain';
   ops: readonly Op[];
 }
 

@@ -82,6 +82,8 @@ export function updateEnemies(world: World, dt: number): void {
     }
 
     ENEMIES[e.id].move(e, world, dt);
+    // Una sombra disuelta por la luz no puede herir en el mismo paso.
+    if (e.dead || !e.alive) continue;
 
     for (const o of world.enemies) {
       if (o !== e && o.alive && !o.dead && o.active && overlap(e, o) && e.x < o.x === e.vx > 0) e.vx = -e.vx;

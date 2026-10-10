@@ -142,6 +142,7 @@ export function drawHuayPek(c: Ctx, b: HuayPek, camX: number): void {
       lightY: b.lightY,
       fog: b.fog,
       clock: b.clock,
+      globalDarkness: true,
     });
   }
   drawEyeGlow(c, b, x);

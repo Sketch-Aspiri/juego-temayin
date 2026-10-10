@@ -4,6 +4,7 @@ import type { Body, EnemyId } from '../types';
 import type { World } from '../World';
 import { hoopAt, scoreHoop } from './hoops';
 import { makeParticle } from './particles';
+import { isTangible } from './enemies/registry';
 
 /**
  * Pelota de pok ta pok (AGENTS.md §4.6). Se consigue en un bloque `P` y dura hasta
@@ -56,7 +57,7 @@ const THROW_HAND_Y = 22;
  * Enemigos a los que la pelota atraviesa sin dañarlos: las sombras de Xibalbá
  * solo se disuelven con luz o fuego (AGENTS.md §4.5).
  */
-const BALL_IMMUNE: ReadonlySet<EnemyId> = new Set<EnemyId>(['shade']);
+const BALL_IMMUNE: ReadonlySet<EnemyId> = new Set<EnemyId>(['shade', 'xtabay']);
 
 /** Lanza una pelota si el jugador la tiene y no hay demasiadas en el aire. */
 export function throwBall(world: World): boolean {
@@ -142,7 +143,7 @@ function isOut(world: World, b: Ball): boolean {
 /** Derriba enemigos (salvo inmunes) y golpea al jefe vulnerable. */
 function hitTargets(world: World, b: Ball): void {
   for (const e of world.enemies) {
-    if (!e.alive || e.dead || !e.active || BALL_IMMUNE.has(e.id) || !overlap(b, e)) continue;
+    if (!e.alive || e.dead || !e.active || !isTangible(e) || BALL_IMMUNE.has(e.id) || !overlap(b, e)) continue;
     world.killEnemy(e, true);
     b.vx = -b.vx;
     bounce(world, b);

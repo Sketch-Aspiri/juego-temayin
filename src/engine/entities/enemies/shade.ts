@@ -13,15 +13,23 @@ const SHADE_GIVE_UP_RANGE = 11 * T;
 export const SHADE_SPEED = 55;
 const HOVER_AMPLITUDE = 10;
 const HOVER_FREQUENCY = 1.6;
+/** La penumbra exterior del halo no basta: debe entrar en su parte iluminada. */
+const LIGHT_DISSOLVE_RATIO = 0.65;
 
 /**
  * Sombra de Xibalbá (menor): figura de leyenda del inframundo maya (AGENTS.md §4.5).
  * Flota en su sitio hasta que el jugador se acerca y entonces deriva despacio hacia
  * él, atravesando los bloques. No se puede pisar; el fuego la disuelve.
- * TODO(oscuridad §5.3): cuando exista el radio de luz, la luz también la disolverá.
+ * La parte iluminada de un halo también la disuelve.
  * `vx` guarda la dirección horizontal (para orientar el dibujo).
  */
 const moveShade: EnemyMove = (e, world, dt) => {
+  const x = e.x + e.w / 2;
+  const y = e.y + e.h / 2;
+  if (world.lightSources().some(l => Math.hypot(x - l.x, y - l.y) < l.radius * LIGHT_DISSOLVE_RATIO)) {
+    world.killEnemy(e, true);
+    return;
+  }
   const { dx, dy } = toPlayer(e, world);
   const dist = Math.hypot(dx, dy);
   if (e.state === SHADE_STATE.idle) {

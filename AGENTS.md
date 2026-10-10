@@ -126,7 +126,8 @@ temayin_juego/
         helpers.ts             Atajos coati(...), urchin(...), howler(...), bats([x, fila]...), barracudas([x, fila]...)
         world1/                1-1-palenque.ts … 1-6-escarcega.ts (un archivo por nivel)
         world2/                2-1-carrillo-puerto.ts … 2-7-calkini.ts (jefe Kaimán)
-        world4/                4-1-chichen-itza.ts, 4-2-xibalba.ts, 4-3-valladolid.ts
+        world3/                3-1-maxcanu.ts … 3-5-izamal.ts (jefe Huay Chivo)
+        world4/                4-1-chichen-itza.ts … 4-5-nuevo-xcan.ts (jefe Huay Pek)
         world5/                5-3-playa-del-carmen.ts
     store/                     Zustand + persistencia
       appStore.ts              useAppStore: screen, progress, settings, run, startLevel, finishLevel…
@@ -204,7 +205,7 @@ data/worlds.ts (WORLDS) ──> store/appStore.ts (startLevel) ──> ui/screen
 | Jefe M1 | **Púas el puercoespín** | Embiste, rueda y dispara púas. | **Existe** (`bosses/puas.ts`, `BossId` `'puas'`). |
 | Jefe M2 | **Kaimán Moreleti** | Cocodrilo de pantano (*Crocodylus moreletii*). | **Existe** (`bosses/kaiman/`, `BossId` `'kaiman'`; nivel 2-7). |
 | Jefe M3 | **Huay Chivo** | Brujo-cabra del folclor yucateco. | **Existe** (`bosses/huayChivo/`, `'huayChivo'`; nivel 3-5). |
-| Jefe M4 | **Huay Pek** | Perro espectral de la leyenda. | Por crear (`'huayPek'`). |
+| Jefe M4 | **Huay Pek** | Perro espectral de la leyenda. | **Existe** (`bosses/huayPek/`, `'huayPek'`; nivel 4-5). |
 | Jefe M5 | **Capitán Sargazo** | Monstruo de sargazo; mensaje ecológico. | Por crear (`'sargazo'`). |
 | Jefe M6 | **Lorencillo** | Pirata barracuda inspirado en el pirata histórico que atacó Campeche (1685). | Por crear (`'lorencillo'`). |
 
@@ -269,7 +270,7 @@ Temas: `ruins`, `cave`, `xibalba` (nuevo), `jungle`. Cenotes azules, inframundo 
 | 4-2 | Xibalbá | Paradero real cercano a Chichén Itzá; en el juego, entrada al inframundo | `xibalba` | subterráneo + acuático | Oscuridad + nado: cuevas inundadas | sombras de Xibalbá, ajolote fantasma, `bat` |
 | 4-3 | Valladolid | Ciudad colonial con el cenote Zací en pleno centro | `cave` | acuático / subterráneo | Descenso al cenote; bolsas de aire | ajolote fantasma, `bat`, `urchin` |
 | 4-4 | Leona Vicario | Pueblo chiclero entre chicozapotes | `jungle`, lluvia | jungla | Resina de chicle pegajosa que frena (variante de zona lenta); árboles de chicozapote | saraguato, hormigas arrieras, Xtabay (trampa) |
-| 4-5 | Nuevo Xcán | Paradero en el límite Yucatán–Quintana Roo | `xibalba`, noche | jefe | Arena con niebla y oscuridad parcial | **Jefe: Huay Pek** (`'huayPek'`) |
+| 4-5 | Nuevo Xcán | Paradero en el límite Yucatán–Quintana Roo | `jungleNight`, noche | jefe | Arena con niebla y oscuridad parcial | **Jefe: Huay Pek** (`'huayPek'`) |
 
 #### Mundo 5 · Riviera Maya (Tramo Cancún–Akumal)
 
@@ -368,15 +369,15 @@ Estado: **Existe** = id en `EnemyId` y en `ENEMIES`; **Nuevo** = id propuesto. L
 | Murciélago | `bat` | **Existe** | Vuela ondulando (`flying: true`) | Sí |
 | Estalactita | `stalactite` | **Existe** | Cae cuando el jugador pasa debajo; se rompe al tocar el suelo | No |
 | Escorpión ciego | `scorpion` | **Existe** | Camina; reacciona a sonidos (salto cercano) acelerando | Sí |
-| Ajolote fantasma | `axolotl` | Nuevo | Translúcido; aparece y desaparece en el agua de cenote | Sí (cuando es visible) |
+| Ajolote fantasma | `axolotl` | **Existe** (criatura de fantasía) | Translúcido; aparece y desaparece en el agua de cenote | Sí (cuando es visible) |
 
 #### Folclor (tratados como seres de leyenda)
 
 | Enemigo | Id propuesto | Estado | Comportamiento | ¿Pisable? |
 |---|---|---|---|---|
 | Aluxes | `alux` | **Existe** | Traviesos: roban hasta 5 de cacao al tocarte (no quitan vida, gancho `EnemyDef.onTouch`) y huyen; pisados devuelven el doble | Sí |
-| Sombras de Xibalbá | `shade` | **Existe** (sin luz aún: `TODO(oscuridad)`) | Flotan hacia el jugador en la oscuridad; la luz las disuelve | No (solo luz/fuego) |
-| Xtabay | `xtabay` | Nuevo | **Trampa**, no enemigo móvil: ceiba con flores que atrae al jugador hacia una espina si se queda quieto cerca | No |
+| Sombras de Xibalbá | `shade` | **Existe** | Flotan hacia el jugador; fuego y núcleo iluminado de los halos las disuelven | No (solo luz/fuego) |
+| Xtabay | `xtabay` | **Existe** | Ceiba encantada fija: atrae a quien queda quieto; moverse o saltar libera; el fuego cierra sus flores | No |
 
 #### Ciudad y hacienda
 
@@ -412,7 +413,7 @@ Estado: **Existe** = id en `EnemyId` y en `ENEMIES`; **Nuevo** = id propuesto. L
 
 ### 4.7 Temas visuales (`ThemeId`)
 
-Hoy `ThemeId = 'jungle' | 'beach' | 'lair' | 'cave'`, registrados en `THEMES` (`src/engine/render/themes.ts`) con escenarios `jungleScenery`, `beachScenery`, `caveScenery` (`render/backgrounds.ts`). `lair` reutiliza `jungleScenery` con cielo morado y `tint`.
+Los temas implementados figuran en `ThemeId` (`src/engine/types.ts`) y en `THEMES` (`src/engine/render/themes.ts`). Además de los escenarios base de `render/backgrounds.ts`, sus variantes viven en `render/scenery/`; `lair` reutiliza la selva con cielo morado y `tint`.
 
 | ThemeId | Estado | Mundos | Cielo / ambiente | Suelo / plataformas | Extras |
 |---|---|---|---|---|---|
@@ -427,7 +428,8 @@ Hoy `ThemeId = 'jungle' | 'beach' | 'lair' | 'cave'`, registrados en `THEMES` (`
 | `mangrove` | **Existe** | 2 | Cielo húmedo | Raíces de mangle | Agua salobre |
 | `hacienda` | **Existe** | 2, 3 | Atardecer cálido | Mampostería / tierra roja | Pencas de henequén, chimeneas |
 | `yellowCity` | **Existe** | 3 | Azul intenso | Muros amarillos y blancos | Arcos del convento |
-| `xibalba` | Nuevo | 4 | Negro y rojo | Roca volcánica / hueso | `dark` (5.3), niebla |
+| `xibalba` | **Existe** | 4 | Negro y rojo | Roca volcánica / hueso | `LevelDef.darkness`, niebla |
+| `jungleNight` | **Existe** | 4 | Selva bajo velo azul | Hierba y piedra | Oscuridad parcial y arena de Huay Pek |
 | `reef` | Nuevo | 5 | Bajo el agua (azul profundo) | Coral / arena | Todo el nivel es agua (5.1) |
 | `cliff` | Nuevo | 6 | Caribe turquesa | Roca de acantilado | Viento |
 | `lagoon` | Nuevo | 6 | Degradado de los 7 azules de Bacalar | Arena blanca / estromatolitos | Agua clara |
@@ -701,6 +703,16 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 
 ## 10. Definición de terminado
 
+### Estado implementado del Mundo 4
+
+- Los cinco niveles `4-1` a `4-5` están en `WORLDS`, entre Izamal y Playa del Carmen. Se conservan los ids publicados `4-2` y `4-3` y sus récords guardados.
+- `4-1` incorpora pelota de pok ta pok (bloque `P`, `Player.ball`, misma tecla de disparo) y `['hoop', x, y]`: cada aro otorga una vez 2000 puntos y cinco granos de cacao, incluidos en `totalCoins`. `HudState.ball` participa en `hudKey`.
+- `4-2` combina oscuridad, antorchas, agua, corrientes y bolsas de aire. `4-3` desciende al cenote y se cruza a nado; `data/levels/caves.ts` reúne techos, roca y túneles. Los ajolotes fantasma son criaturas de fantasía, no una afirmación sobre la fauna real de Yucatán.
+- `4-4` usa `['resin', x0, x1, y]`, Xtabay y `LevelDef.weather: 'rain'`. Las zonas pegajosas no son bloques y requieren suelo firme en `y+1`. La op compartida `sargassum` se reserva para costa; el fuego la elimina sin quemar la resina.
+- `4-5` incorpora Huay Pek, seis PV, ondas saltables y ojos encendidos como ventana de daño. La fase 2 reutiliza `render/lighting.ts` con radio 170; conserva niebla ambiental y restaura la oscuridad del nivel al abrir el muro. La representación es una adaptación familiar de relatos de transformación en perro ([Península, 2009](https://www.scielo.org.mx/scielo.php?pid=S1870-57662009000100002&script=sci_arttext)).
+- Las sombras se disuelven dentro del núcleo iluminado de los halos. El ajolote solo es tangible al hacerse visible, también frente a la pelota; Xtabay permanece como trampa fija resistente a ella. Todos los niveles tienen `hint` de Toh.
+- Cobertura de integración: `src/engine/World4.test.ts`; revisión de recorridos en Chromium: `imagenes/verify_world4.py`.
+
 ### Ajustes del Mundo 2
 
 - Los siete niveles muestran consejos de Toh mediante `LevelDef.hint`.
@@ -710,7 +722,7 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 
 ### Estado implementado del Mundo 3
 
-- Los cinco niveles `3-1` a `3-5` están en `src/data/levels/world3/` y registrados en `WORLDS`, entre Calkiní y Xibalbá. Mundo estable: `yucatan-haciendas`.
+- Los cinco niveles `3-1` a `3-5` están en `src/data/levels/world3/` y registrados en `WORLDS`, entre Calkiní y Chichén Itzá. Mundo estable: `yucatan-haciendas`.
 - `hacienda` se comparte con Mundo 2; `yellowCity` utiliza el panorama de Izamal. Maxcanú y Teya usan `LevelDef.darkness` y consejos de Toh mediante `LevelDef.hint`.
 - Ops nuevas: `['hammock', x, y, largo]`, `['rope', x, y, largo]`, `['torch', x, y]`, `['truck', x, y, largo, dx, periodo]`. Coordenadas y largos en bloques; período en segundos. `buildLevel` devuelve `hammocks`, `ropes` y `lights`; las vagonetas reutilizan `PlatformSpec` de Mundo 2 con `appearance: 'truck'`.
 - `entities/hammocks.ts` resuelve el rebote de una sola cara. `entities/ropes.ts` resuelve el péndulo, agarre, bombeo y liberación con salto; `Player.swinging` y `ropeCooldown` son estado temporal, sin cambios al guardado.

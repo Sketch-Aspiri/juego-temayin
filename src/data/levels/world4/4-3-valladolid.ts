@@ -1,29 +1,45 @@
 import type { LevelDef } from '../../../engine/level/types';
-import { bats, coati, urchin } from '../helpers';
+import { cavernCeiling, floodedTunnel, mesa, rockBlock } from '../caves';
+import { axolotls, bats, urchin } from '../helpers';
 
 export const LEVEL_4_3: LevelDef = {
   id: '4-3',
   name: 'Valladolid',
-  width: 190,
+  width: 216,
   theme: 'cave',
+  time: 360,
+  checkpoint: 99,
+  darkness: { radius: 230, alpha: 0.5 },
+  hint: 'Busca las bolsas de aire sobre el agua para recuperar el oxígeno.',
   ops: [
-    ['pit', 30, 33], ['pit', 62, 70], ['pit', 100, 104], ['pit', 130, 139],
-    ['row', 10, 8, '?B?'], ['coins', 14, 5, 4],
-    ['pipe', 22, 2],
-    ['row', 36, 8, 'B?BMB'], ['coins', 37, 4, 3],
-    ['plat', 63, 9, 3], ['plat', 67, 7, 3], ['coins', 67, 5, 3],
-    ['stairs', 44, 4, 1], ['stairs', 50, 4, -1],
-    ['row', 78, 8, 'BFB'], ['row', 80, 4, '?'],
-    ['pipe', 88, 3],
-    ['row', 94, 8, 'BB'],
-    ['plat', 101, 9, 2],
-    ['row', 112, 8, 'B?LB'], ['coins', 113, 4, 3],
-    ['plat', 131, 9, 3], ['plat', 135, 7, 3], ['coins', 135, 5, 3],
-    ['stairs', 146, 5, 1], ['stairs', 152, 5, -1],
-    ['row', 160, 8, '?M?'],
-    ['flag', 172], ['temple', 177],
-    ...coati(18, 40, 56, 84, 108, 120, 145, 158),
-    ...urchin(26, 74, 116),
-    ...bats([20, 7], [48, 6], [92, 6], [125, 7], [150, 5]),
+    // Plaza de entrada y terrazas de descenso al cenote Zací.
+    ['row', 9, 8, '?M?'], ['coins', 14, 5, 4],
+    ['stairs', 18, 4, 1], ...mesa(22, 4, 8),
+    ['coins', 22, 7, 4], ['torch', 24, 6],
+    // Primera galería: el pilar exige bucear; las bolsas permiten respirar.
+    ['water', 28, 86, 5], ...cavernCeiling(35, 80, 2),
+    ['coins', 30, 7, 3], ['coins', 33, 10, 4],
+    ...rockBlock(39, 1, 2, 4), ...floodedTunnel(40, 79, 5, [50, 66]),
+    ['coins', 43, 9, 4], ['coins', 54, 10, 4], ['coins', 70, 9, 4],
+    ['bubbles', 58, 11], ['current', 40, 48, 6, 11, 1, 0],
+    ...mesa(83, 4, 7), ['coins', 83, 6, 4], ['torch', 85, 5],
+    // Isla seca: punto de control y nuevo snorkel al reaparecer.
+    ['row', 91, 8, '?F?'], ['row', 102, 8, '?S?'],
+    ['coins', 95, 10, 3], ['torch', 99, 9],
+    // Segunda galería: tres refugios de aire y corriente remontable.
+    ['water', 114, 170, 6], ...cavernCeiling(119, 165, 2),
+    ...rockBlock(123, 1, 2, 5), ...floodedTunnel(124, 164, 6, [132, 145, 157]),
+    ['coins', 116, 10, 3], ['coins', 126, 9, 4], ['coins', 138, 10, 4],
+    ['coins', 149, 9, 4], ['bubbles', 141, 11],
+    ['current', 148, 155, 7, 11, -1.5, 0],
+    ...mesa(167, 4, 8), ['torch', 169, 6],
+    // Ascenso a la luz y un último salto corto.
+    ['stairs', 174, 4, 1], ['coins', 177, 6, 3], ['stairs', 180, 4, -1],
+    ['row', 187, 8, '?L?'], ['pit', 192, 195], ['coins', 192, 8, 4],
+    ['flag', 200], ['temple', 205],
+    // Criaturas de fantasía: no se presentan como fauna real del cenote.
+    ...axolotls([46, 9], [61, 10], [73, 9], [128, 10], [150, 9], [161, 10]),
+    ...bats([16, 6], [96, 6], [109, 5], [179, 4], [190, 6]),
+    ...urchin(89, 184),
   ],
 };

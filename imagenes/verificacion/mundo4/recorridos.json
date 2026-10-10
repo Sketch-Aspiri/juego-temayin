@@ -1,0 +1,80 @@
+{
+  "levels": [
+    {
+      "id": "4-1",
+      "mode": "recorrido asistido contra daño de contacto; pelota y chile de prueba",
+      "phase": "done",
+      "x": 205.55,
+      "y": 414,
+      "lives": 3,
+      "bossHp": null,
+      "hoopsLit": 1,
+      "farthest": 205.55,
+      "minOxygen": 10,
+      "t": 26.958333333332444,
+      "checkpoint": true
+    },
+    {
+      "id": "4-2",
+      "mode": "recorrido asistido contra daño de contacto; pelota y chile de prueba",
+      "phase": "done",
+      "x": 207.55,
+      "y": 414,
+      "lives": 3,
+      "bossHp": null,
+      "hoopsLit": 0,
+      "farthest": 207.55,
+      "minOxygen": 6.116666666666687,
+      "t": 38.84999999999844,
+      "swam": true,
+      "airStops": 4,
+      "checkpoint": true
+    },
+    {
+      "id": "4-3",
+      "mode": "recorrido asistido contra daño de contacto; pelota y chile de prueba",
+      "phase": "done",
+      "x": 199.55,
+      "y": 414,
+      "lives": 3,
+      "bossHp": null,
+      "hoopsLit": 0,
+      "farthest": 199.55,
+      "minOxygen": 5.450000000000109,
+      "t": 38.258333333331805,
+      "swam": true,
+      "airStops": 4,
+      "checkpoint": true
+    },
+    {
+      "id": "4-4",
+      "mode": "recorrido asistido contra daño de contacto; pelota y chile de prueba",
+      "phase": "done",
+      "x": 207.55,
+      "y": 414,
+      "lives": 3,
+      "bossHp": null,
+      "hoopsLit": 0,
+      "farthest": 207.55,
+      "minOxygen": 10,
+      "t": 24.75833333333257,
+      "checkpoint": true
+    },
+    {
+      "id": "4-5",
+      "mode": "recorrido asistido contra daño de contacto; pelota y chile de prueba",
+      "phase": "done",
+      "x": 91.55,
+      "y": 414,
+      "lives": 3,
+      "bossHp": 0,
+      "hoopsLit": 0,
+      "farthest": 91.55,
+      "minOxygen": 10,
+      "t": 67.65833333333325,
+      "checkpoint": true,
+      "phase2": true
+    }
+  ],
+  "errors": []
+}

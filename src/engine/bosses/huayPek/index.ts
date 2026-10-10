@@ -315,6 +315,7 @@ export class HuayPek implements Boss {
     } else if (!this.phase2 && this.hp <= this.maxHp / 2) {
       // Fase 2: aúlla y la niebla cubre la arena durante `RISE_TIME`.
       this.phase2 = true;
+      world.darkness = { radius: K.FOG_LIGHT_RADIUS, alpha: K.FOG_ALPHA };
       this.cycle = 0;
       world.shake = 0.6;
       this.set('rising');
@@ -325,6 +326,7 @@ export class HuayPek implements Boss {
   private vanish(world: World): void {
     this.set('gone');
     this.fog = 0;
+    world.darkness = world.def.darkness ?? null;
     rewardBurst(world, this);
     openExit(world, this.a1);
     world.audio.play('brk');

@@ -3,12 +3,9 @@ import type { Ctx } from '../../render/drawUtils';
 import { FOG_ALPHA, FOG_AMBIENT, FOG_LIGHT_RADIUS } from './tuning';
 
 /**
- * Niebla propia de la arena del Huay Pek. No usa la oscuridad global del motor:
- * es un velo semitransparente que el jefe dibuja sobre su arena (detrás del jugador),
- * con un claro alrededor de Temayin. Los ojos del perro se pintan después, encima,
- * para que brillen a través de la niebla.
- * TODO(oscuridad): cuando exista `LevelDef.darkness` / `render/lighting.ts`, la fase 2
- * podría activar la oscuridad global con radio de luz en lugar de este velo.
+ * Niebla propia de la arena del Huay Pek. Sus jirones se dibujan detrás del jugador;
+ * `render/lighting.ts` proporciona la oscuridad compartida y el halo de Temayin.
+ * El velo local queda como alternativa para vistas sin esa máscara global.
  */
 
 const FOG_RGB = '26,36,58';
@@ -31,6 +28,7 @@ export interface FogView {
   readonly lightY: number;
   readonly fog: number;
   readonly clock: number;
+  readonly globalDarkness?: boolean;
 }
 
 /** Jirones de niebla a ras de suelo: siempre presentes en el claro de la selva. */
@@ -64,7 +62,7 @@ export function drawFog(c: Ctx, v: FogView): void {
   c.beginPath();
   c.rect(v.x0, 0, v.x1 - v.x0, VH);
   c.clip();
-  drawVeil(c, v);
+  if (!v.globalDarkness) drawVeil(c, v);
   drawWisps(c, v);
   c.restore();
 }

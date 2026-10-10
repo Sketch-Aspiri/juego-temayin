@@ -1,5 +1,6 @@
 import type { Assets } from '../assets';
 import { Lighting } from './lighting';
+import { drawWeather } from './weather';
 import { drawHaciendaProps, drawTohHint } from './haciendaProps';
 import { drawBalls, drawHoops } from './ball';
 import { GROUND, ROWS, T, TAU, VH, VW } from '../constants';
@@ -97,6 +98,7 @@ export class Renderer {
     drawParticles(c, world.particles, world.popups, world.camX);
     c.restore();
     this.lighting.draw(c, world);
+    drawWeather(c, world, now);
     drawTohHint(c, world);
   }
 
