@@ -124,6 +124,7 @@ temayin_juego/
         world1/                1-1-palenque.ts … 1-6-escarcega.ts (un archivo por nivel)
         world4/                4-2-xibalba.ts, 4-3-valladolid.ts
         world5/                5-3-playa-del-carmen.ts
+        world2/                2-1-carrillo-puerto.ts, 2-5-tenabo.ts
     store/                     Zustand + persistencia
       appStore.ts              useAppStore: screen, progress, settings, run, startLevel, finishLevel…
       progress.ts (+ .test)    Progress, LevelRecord, recordCompletion, isUnlocked, sanitizeProgress
@@ -379,7 +380,7 @@ Estado: **Existe** = id en `EnemyId` y en `ENEMIES`; **Nuevo** = id propuesto. L
 | Enemigo | Id propuesto | Estado | Comportamiento | ¿Pisable? |
 |---|---|---|---|---|
 | Piratas cangrejo | `pirateCrab` | Nuevo | Cangrejos con pañuelo pirata; saltan y lanzan monedas falsas | Sí |
-| Rueda de henequén | `wheel` | Nuevo | Rueda que baja por pendientes y rebota | No |
+| Rueda de henequén | `wheel` | **Existe** | Avanza dando botes, baja escalones y rebota en las paredes | No (saltarla o fuego) |
 | Vagón de truck | `truck` | Nuevo | Vagoneta sobre rieles que avanza en línea; se puede usar como plataforma | No (se monta encima) |
 
 ### 4.6 Objetos y power-ups
@@ -421,7 +422,7 @@ Hoy `ThemeId = 'jungle' | 'beach' | 'lair' | 'cave'`, registrados en `THEMES` (`
 | `ruins` | Nuevo | 2, 4, 7 | Cielo claro, pirámides al fondo | Piedra caliza tallada | Estucos rojos y glifos de fondo |
 | `fortress` | Nuevo | 2, 6 | Golfo al fondo | Sillar de muralla / madera de barco | Baluartes, cañones |
 | `mangrove` | Nuevo | 2 | Cielo húmedo | Raíces de mangle | Agua salobre |
-| `hacienda` | Nuevo | 3 | Atardecer cálido | Mampostería / tierra roja | Pencas de henequén, chimeneas |
+| `hacienda` | **Existe** | 2, 3 | Atardecer cálido | Mampostería / tierra roja | Pencas de henequén, chimeneas |
 | `yellowCity` | Nuevo | 3 | Azul intenso | Muros amarillos y blancos | Arcos del convento |
 | `xibalba` | Nuevo | 4 | Negro y rojo | Roca volcánica / hueso | `dark` (5.3), niebla |
 | `reef` | Nuevo | 5 | Bajo el agua (azul profundo) | Coral / arena | Todo el nivel es agua (5.1) |
@@ -491,6 +492,8 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
 | Cámara | En niveles de tren en marcha (6-2) la cámara puede seguir al tren; recordar que hoy la cámara solo avanza (`camX` nunca retrocede). |
 | Pruebas | El jugador sobre un vagón se desplaza con él; no atraviesa el vagón desde arriba. Ajustar `levels.test.ts` para considerar las plataformas móviles al validar hoyos anchos. |
 
+**Estado: implementado** (`entities/platforms.ts`, `render/platforms.ts`, pruebas en `entities/platforms.test.ts`). Plataformas de un solo sentido: se atraviesan desde abajo y por los lados (no hay que meter un vagón donde el jugador camina, mejor empezarlo sobre el hoyo). Vagón = `CAR_TILES` (5) bloques × 2 de alto; el tren para `TRAIN_STOP_TIME` (1,2 s) en cada extremo; el tiempo de cada plataforma corre desde que se acerca a la cámara. Como la cámara no retrocede, conviene que los recorridos hacia la izquierda sean ≤ 8 bloques. `levels.test.ts` acepta un hoyo ancho sin bloques si el recorrido (`platformReach`) de las plataformas deja tramos sin cubrir ≤ `MAX_PLAIN_PIT`.
+
 ### 5.5 Zonas de sargazo que frenan
 
 | Aspecto | Detalle |
@@ -554,6 +557,8 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
    | `spawn` | `['spawn', enemigo, x, y?]` | `y` por defecto: sobre el suelo. |
    | `water` | `['water', x0, x1, superficie]` | Agua en columnas `x0..x1` desde la fila `superficie` hasta el fondo. No toca la cuadrícula: va a `BuiltLevel.water` (`level/zones.ts`). |
    | `current` | `['current', x0, x1, y0, y1, vx, vy]` | Corriente en el rectángulo de bloques (inclusive); `vx, vy` en bloques/s. Va a `BuiltLevel.currents`. |
+   | `train` | `['train', x, y, vagones, velocidad, recorrido]` | Tren con el techo en la fila `y`; va y vuelve `recorrido` bloques (negativo = izquierda) a `velocidad` bloques/s. Va a `BuiltLevel.platforms`. |
+   | `mover` | `['mover', x, y, largo, dx, dy, periodo]` | Plataforma de `largo` bloques que oscila hasta (x+dx, y+dy) y vuelve en `periodo` s. Va a `BuiltLevel.platforms`. |
 
    Atajos en `src/data/levels/helpers.ts`: `...coati(22, 32)`, `...urchin(26, 58)`, `...bats([20, 7], [48, 6])`. Añade un atajo por cada enemigo nuevo.
 4. Registra el nivel en el mundo correspondiente de `WORLDS` (`src/data/worlds.ts`). El orden del array define el desbloqueo lineal (`isUnlocked`) y `nextLevelId`.
