@@ -1,4 +1,5 @@
 import { GROUND, ROWS } from '../constants';
+import type { PlatformSpec } from '../entities/platforms';
 import type { EnemyId } from '../types';
 import { CRUMBLE_TILE, type CrumbleSpan } from '../entities/crumble';
 import type { LevelDef } from './types';
@@ -26,6 +27,8 @@ export interface BuiltLevel {
   bubbles: readonly BubbleVent[];
   /** Tramos de escombro que se derrumban (op `crumble`). */
   crumbles: readonly CrumbleSpan[];
+  /** Plataformas móviles: vagones de tren y plataformas genéricas (ops `train` y `mover`). */
+  platforms: readonly PlatformSpec[];
 }
 
 /** Convierte la definición declarativa de un nivel en una cuadrícula de bloques. */
@@ -47,6 +50,7 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   const currents: CurrentZone[] = [];
   const bubbles: BubbleVent[] = [];
   const crumbles: CrumbleSpan[] = [];
+  const platforms: PlatformSpec[] = [];
   let flagX = W - 10;
   let templeX = W - 5;
 
@@ -115,6 +119,16 @@ export function buildLevel(def: LevelDef): BuiltLevel {
         set(x + 1, y, dir > 0 ? '>' : 'K');
         break;
       }
+      case 'train': {
+        const [, x, y, cars, speed, range] = op;
+        platforms.push({ kind: 'train', x, y, cars, speed, range });
+        break;
+      }
+      case 'mover': {
+        const [, x, y, length, dx, dy, period] = op;
+        platforms.push({ kind: 'mover', x, y, length, dx, dy, period });
+        break;
+      }
       case 'pit':
         break;
     }
@@ -123,5 +137,5 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   let totalCoins = 0;
   for (const row of grid) for (const c of row) if (c === 'o' || c === '?') totalCoins++;
 
-  return { grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles, crumbles };
+  return { grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles, crumbles, platforms };
 }

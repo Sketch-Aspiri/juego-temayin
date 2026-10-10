@@ -21,6 +21,7 @@ export const ants = spawnMany('ants');
 export const blueCrab = spawnMany('blueCrab');
 export const alux = spawnMany('alux');
 export const pirateCrab = spawnMany('pirateCrab');
+export const wheel = spawnMany('wheel');
 
 /** Murciélagos: pares [x, fila]. */
 export const bats = spawnAt('bat');

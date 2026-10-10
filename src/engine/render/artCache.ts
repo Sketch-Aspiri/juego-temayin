@@ -48,6 +48,7 @@ export const PAINTED_ART: readonly string[] = [
   'backgrounds/mangrove.webp',
   'complementos/banderas.webp',
   'complementos/piramide.webp',
+  'complementos/tren.webp',
   'personajes/toh.webp',
   'personajes/jugador-mecanicas.webp',
   'enemies/ants.webp',

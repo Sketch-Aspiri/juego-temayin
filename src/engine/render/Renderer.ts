@@ -6,6 +6,7 @@ import { crumbleShakeAt, drawFallingCrumbles } from './crumble';
 import type { Ctx } from './drawUtils';
 import { drawEnemySprite } from './enemies';
 import { drawCheckpoint, drawGoal } from './goal';
+import { drawPlatforms } from './platforms';
 import { drawCacao } from './props';
 import {
   drawFireballs,
@@ -76,6 +77,7 @@ export class Renderer {
     drawCheckpoint(c, world, now);
     this.drawTiles(world, theme, now);
     drawFallingCrumbles(c, world.crumbles, world.camX, this.textures.rubble);
+    drawPlatforms(c, world.platforms, world.camX);
     for (const it of world.items) if (!drawSnorkelItem(c, it, world.camX, now)) drawItemSprite(c, it, world.camX, now);
     for (const e of world.enemies) if (e.alive && e.active) drawEnemySprite(c, this.assets, e, world.camX);
     world.boss?.draw(c, this.assets, world.camX);

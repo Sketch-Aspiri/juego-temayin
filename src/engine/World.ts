@@ -16,6 +16,7 @@ import { createCrumbles, updateCrumbles, type Crumble } from './entities/crumble
 import { createEnemy, ENEMIES, updateEnemies } from './entities/enemies';
 import { createItem, updateItems } from './entities/items';
 import { makeParticle, stepParticles, stepPopups } from './entities/particles';
+import { carryRider, createPlatform, landOnPlatforms, updatePlatforms, type MovingPlatform } from './entities/platforms';
 import { animatePlayer, createPlayer, updatePlayer } from './entities/player';
 import { updateFireballs, updateQuills } from './entities/projectiles';
 import { confineSwimmers, swimmerPositions } from './entities/swim';
@@ -65,6 +66,8 @@ export class World {
   quills: Quill[] = [];
   /** Tramos de escombro que se derrumban (op `crumble`). */
   crumbles: Crumble[];
+  /** Plataformas móviles (vagones y plataformas genéricas, AGENTS.md §5.4). */
+  platforms: MovingPlatform[];
   boss: Boss | null;
   bumps = new Map<string, number>();
   camX = 0;
@@ -99,6 +102,7 @@ export class World {
       .filter((e) => e.tx * T > this.player.x + 300)
       .map(createEnemy);
     this.boss = init.def.boss ? createBoss(init.def.boss) : null;
+    this.platforms = this.level.platforms.map(createPlatform);
   }
 
   get checkpointTile(): number {
@@ -239,6 +243,7 @@ export class World {
     }
     this.particles = stepParticles(this.particles, dt);
     this.popups = stepPopups(this.popups, dt);
+    updatePlatforms(this.platforms, this.camX, dt);
 
     if (this.phase === 'dying') return this.updateDying(dt);
     if (this.phase === 'flag') return this.updateFlag(dt);
@@ -254,7 +259,9 @@ export class World {
     }
 
     const p = this.player;
+    const prevFeet = carryRider(this);
     updatePlayer(this, dt);
+    landOnPlatforms(this, prevFeet);
     updateCrumbles(this, dt);
     this.collectLooseCoins();
 

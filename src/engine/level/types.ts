@@ -35,6 +35,19 @@ import type { BossId, EnemyId, ThemeId } from '../types';
  *                                           fila y (columnas x y x+1): culata `K` y boca
  *                                           `>` (dir 1, apunta a la derecha) o `<` (dir -1).
  *                                           Es una plataforma: se pisa como cualquier bloque.
+ *
+ * Plataformas móviles (AGENTS.md §5.4). Tampoco tocan la cuadrícula: van a
+ * `BuiltLevel.platforms` (ver `entities/platforms.ts`). Son de un solo sentido: se
+ * atraviesan desde abajo y el jugador que cae encima se apoya y es arrastrado.
+ *  ['train', x, y, vagones, velocidad, recorrido]
+ *                                           tren de `vagones` vagones (5 bloques cada
+ *                                           uno, 2 de alto) con el techo en la fila y;
+ *                                           va y vuelve `recorrido` bloques (negativo =
+ *                                           hacia la izquierda) a `velocidad` bloques/s,
+ *                                           parando un instante en cada extremo
+ *  ['mover', x, y, largo, dx, dy, periodo]  plataforma de `largo` bloques que oscila
+ *                                           suavemente hasta (x+dx, y+dy) y vuelve en
+ *                                           `periodo` segundos
  */
 export type Op =
   | readonly ['pit', number, number]
@@ -52,7 +65,9 @@ export type Op =
   | readonly ['current', number, number, number, number, number, number]
   | readonly ['bubbles', number, number]
   | readonly ['crumble', number, number, number]
-  | readonly ['cannon', number, number, 1 | -1];
+  | readonly ['cannon', number, number, 1 | -1]
+  | readonly ['train', number, number, number, number, number]
+  | readonly ['mover', number, number, number, number, number, number];
 
 export interface BossConfig {
   id: BossId;

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { GOAL_VIEW_WIDTH, GROUND, ROWS, T } from '../engine/constants';
 import { isAirborne } from '../engine/entities/enemies';
+import { platformReach } from '../engine/entities/platforms';
 import { buildLevel } from '../engine/level/build';
 import { waterColumn } from '../engine/level/zones';
 import { isSolidTile } from '../engine/tiles';
@@ -53,6 +54,38 @@ describe.each(ALL_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, def) 
     return z !== null && z.surface < ROWS;
   };
 
+  /**
+   * Los hoyos anchos deben ofrecer plataformas para cruzarlos. Si no hay bloques
+   * encima, deben cruzarse con plataformas móviles (§5.4): se marca cada columna que
+   * alguna plataforma alcanza en su recorrido y ningún tramo sin cubrir puede ser
+   * más ancho que un hoyo normal.
+   */
+  const expectMovingBridge = (x0: number, x1: number): void => {
+    let gap = 0;
+    let longest = 0;
+    for (let px = x0; px <= x1; px++) {
+      const covered = lvl.platforms.some((s) => {
+        const r = platformReach(s);
+        return px >= r.x0 && px <= r.x1;
+      });
+      gap = covered ? 0 : gap + 1;
+      longest = Math.max(longest, gap);
+    }
+    expect(longest, `hoyo ancho en ${x0}-${x1}`).toBeLessThanOrEqual(MAX_PLAIN_PIT);
+  };
+
+  it('las plataformas móviles están dentro del nivel y a una altura útil', () => {
+    for (const s of lvl.platforms) {
+      const r = platformReach(s);
+      expect(r.x0).toBeGreaterThanOrEqual(0);
+      expect(r.x1).toBeLessThan(def.width);
+      const yMin = s.kind === 'mover' ? s.y + Math.min(0, s.dy) : s.y;
+      const yMax = s.kind === 'mover' ? s.y + Math.max(0, s.dy) : s.y;
+      expect(yMin, `plataforma en ${s.x}`).toBeGreaterThanOrEqual(1);
+      expect(yMax, `plataforma en ${s.x}`).toBeLessThan(GROUND);
+    }
+  });
+
   it('ningún hoyo es imposible de cruzar', () => {
     let start = -1;
     for (let x = 0; x <= def.width; x++) {
@@ -61,10 +94,9 @@ describe.each(ALL_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, def) 
       if (!isPit && start >= 0) {
         const width = x - start;
         if (width > MAX_PLAIN_PIT) {
-          // Los hoyos anchos deben ofrecer plataformas para cruzarlos.
           let platforms = 0;
           for (let px = start; px < x; px++) for (let y = 0; y < GROUND; y++) if (solid(px, y)) platforms++;
-          expect(platforms, `hoyo ancho en ${start}-${x - 1}`).toBeGreaterThan(0);
+          if (platforms === 0) expectMovingBridge(start, x - 1);
         }
         start = -1;
       }

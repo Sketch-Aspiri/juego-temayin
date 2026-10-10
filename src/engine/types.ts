@@ -26,7 +26,8 @@ export type EnemyId =
   | 'shade'
   | 'alux'
   | 'pirateCrab'
-  | 'moray';
+  | 'moray'
+  | 'wheel';
 export type BossId = 'puas' | 'kaiman';
 export type ThemeId =
   | 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque'
@@ -34,7 +35,8 @@ export type ThemeId =
   | 'ruins'
   | 'ruinsDusk'
   | 'fortress'
-  | 'mangrove';
+  | 'mangrove'
+  | 'hacienda';
 
 /** Estado de una partida que se arrastra de un nivel al siguiente. */
 export interface Session {

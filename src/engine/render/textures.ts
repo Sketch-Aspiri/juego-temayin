@@ -2,13 +2,15 @@ import { T, TAU } from '../constants';
 import { makeTile, roundRect, type Ctx } from './drawUtils';
 import { createRuinsTextures, type RuinsTexId } from './ruinsTextures';
 import { createGulfTextures, type GulfTexId } from './gulfTextures';
+import { createHaciendaTextures } from './haciendaTextures';
 
 export type TexId =
   | 'dirt' | 'grass' | 'brick' | 'question' | 'used' | 'stone' | 'sand' | 'sandTop' | 'wood'
   | 'rock' | 'rockTop' | 'crystal'
   | 'pipeTL' | 'pipeTR' | 'pipeBL' | 'pipeBR'
   | RuinsTexId
-  | GulfTexId;
+  | GulfTexId
+  | 'redEarth' | 'redEarthTop' | 'masonry';
 
 export type Textures = Readonly<Record<TexId, HTMLCanvasElement>>;
 
@@ -241,5 +243,6 @@ export function createTextures(): Textures {
     pipeBR: pipeTile(false, false),
     ...createRuinsTextures(),
     ...createGulfTextures(),
+    ...createHaciendaTextures(),
   };
 }
