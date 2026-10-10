@@ -76,6 +76,7 @@ describe('sombra de Xibalbá (shade)', () => {
   it('no se puede pisar: pisarla hace daño', () => {
     const world = makeWorld();
     const e = spawn(world, 'shade', 30, 8);
+    e.t = 0; // fase de flotación fija: que no se aparte del jugador en este paso
     world.player.shield = true;
     dropOn(world, e);
     expect(e.dead).toBe(0);
