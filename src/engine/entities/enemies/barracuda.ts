@@ -24,14 +24,14 @@ const BOB_AMPLITUDE = 3;
 const BOB_FREQUENCY = 2.5;
 
 /** Franja horizontal [min, max] (x de la caja) en la que patrulla. */
-interface Band {
+export interface Band {
   readonly min: number;
   readonly max: number;
 }
 const bands = new WeakMap<Enemy, Band>();
 
 /** La franja es la zona de agua donde aparece; sin agua, solo la limitan las paredes. */
-function bandOf(e: Enemy, world: World): Band {
+export function bandOf(e: Enemy, world: World): Band {
   const known = bands.get(e);
   if (known) return known;
   const zone = waterAt(world.level.water, e.x + e.w / 2, e.y + e.h / 2);
@@ -46,7 +46,7 @@ function sees(e: Enemy, world: World): boolean {
 }
 
 /** Avanza en horizontal sin salir de la franja; devuelve true si tocó un borde o pared. */
-function swim(e: Enemy, world: World, dx: number, band: Band): boolean {
+export function swim(e: Enemy, world: World, dx: number, band: Band): boolean {
   const hitWall = moveX(e, dx, world.solidAt);
   // Solo cuenta como borde si nadaba hacia fuera (puede nacer algo pasada del borde).
   const outward = (dx > 0 && e.x > band.max) || (dx < 0 && e.x < band.min);

@@ -34,6 +34,11 @@ export interface EnemyDef {
    */
   onStomp?: (e: Enemy, world: World) => void;
   /**
+   * Tangible según su estado (p. ej. el ajolote fantasma casi invisible). Si devuelve
+   * false, ni toca al jugador ni le afectan pisotones ni bolas de fuego. Por defecto, sí.
+   */
+  tangible?: (e: Enemy) => boolean;
+  /**
    * Reacción propia al contacto sin pisotón (p. ej. el alux roba cacao en vez de
    * hacer daño). Por defecto el contacto llama a `world.hurt()`.
    */

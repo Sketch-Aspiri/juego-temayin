@@ -29,7 +29,9 @@ export type EnemyId =
   | 'moray'
   | 'wheel'
   | 'stalactite'
-  | 'scorpion';
+  | 'scorpion'
+  // Mundo 4 · Cenotes y Xibalbá (AGENTS.md §4.5)
+  | 'axolotl';
 export type BossId = 'puas' | 'kaiman' | 'huayChivo';
 export type ThemeId =
   | 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque'
@@ -39,7 +41,9 @@ export type ThemeId =
   | 'fortress'
   | 'mangrove'
   | 'hacienda'
-  | 'yellowCity';
+  | 'yellowCity'
+  // Mundo 4 · Cenotes y Xibalbá (AGENTS.md §4.7)
+  | 'xibalba';
 
 /** Estado de una partida que se arrastra de un nivel al siguiente. */
 export interface Session {
