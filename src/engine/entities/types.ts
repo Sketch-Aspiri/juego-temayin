@@ -27,6 +27,8 @@ export interface Player extends Body {
   snorkel: number;
   /** Segundos restantes del efecto visual de la última brazada. */
   strokeT: number;
+  /** Lleva la pelota de pok ta pok (la tecla de disparo la lanza, ver `entities/ball.ts`). */
+  ball: boolean;
 }
 
 export interface Enemy extends Body {

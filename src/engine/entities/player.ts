@@ -1,6 +1,7 @@
 import { GROUND, OXYGEN_MAX, PLAYER_H, PLAYER_W, T } from '../constants';
 import { moveX, moveY } from '../physics';
 import type { World } from '../World';
+import { throwBall } from './ball';
 import { clampSeabed, currentDrift, isSwimming, swimStep, trySurfaceLeap, updateOxygen } from './swim';
 import type { Player } from './types';
 
@@ -35,6 +36,7 @@ export function createPlayer(tx: number): Player {
     oxygen: OXYGEN_MAX,
     snorkel: 0,
     strokeT: 0,
+    ball: false,
   };
 }
 
@@ -58,7 +60,8 @@ export function updatePlayer(world: World, dt: number): void {
 
 function shoot(world: World, dt: number): void {
   const p = world.player;
-  if (world.input.consumeFire() && p.fire && world.fireballs.length < MAX_FIREBALLS) {
+  // La pelota tiene prioridad; si ya está en el aire, dispara el chile (ver `entities/ball.ts`).
+  if (world.input.consumeFire() && !throwBall(world) && p.fire && world.fireballs.length < MAX_FIREBALLS) {
     world.fireballs.push({ x: p.x + p.w / 2 + p.face * 22, y: p.y + 26, vx: p.face * 520, vy: 120, t: 0, gone: false });
     p.throwT = 0.15;
     world.audio.play('fire');

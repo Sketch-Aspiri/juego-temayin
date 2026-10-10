@@ -17,8 +17,8 @@ export function createItem(kind: ItemKind, tx: number, ty: number): Item {
     vy: 0,
     onGround: false,
     rise: T,
-    // El chile y el snorkel se quedan quietos; escudo y vida se mueven al salir.
-    still: kind === 'fire' || kind === 'snorkel',
+    // El chile, el snorkel y la pelota se quedan quietos; escudo y vida se mueven al salir.
+    still: kind === 'fire' || kind === 'snorkel' || kind === 'ball',
     gone: false,
   };
 }
@@ -62,6 +62,12 @@ function collectItem(world: World, it: Item): void {
     case 'snorkel':
       // Congela el consumo de oxígeno durante SNORKEL_TIME segundos sumergido.
       world.player.snorkel = SNORKEL_TIME;
+      world.addScore(1000, it.x, it.y);
+      world.audio.play('power');
+      break;
+    case 'ball':
+      // Pelota de pok ta pok: la tecla de disparo la lanza (ver `entities/ball.ts`).
+      world.player.ball = true;
       world.addScore(1000, it.x, it.y);
       world.audio.play('power');
       break;

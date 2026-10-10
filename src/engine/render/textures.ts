@@ -21,6 +21,7 @@ export const FIXED_TEXTURE: Readonly<Record<string, TexId>> = {
   M: 'question',
   L: 'question',
   F: 'question',
+  P: 'question',
   U: 'used',
   p: 'pipeTL',
   q: 'pipeTR',

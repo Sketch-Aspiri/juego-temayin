@@ -2,6 +2,7 @@ import { GROUND, ROWS } from '../constants';
 import type { PlatformSpec } from '../entities/platforms';
 import type { EnemyId } from '../types';
 import { CRUMBLE_TILE, type CrumbleSpan } from '../entities/crumble';
+import { HOOP_COINS, type HoopSpec } from '../entities/hoops';
 import type { LevelDef } from './types';
 import type { BubbleVent, CurrentZone, WaterZone } from './zones';
 
@@ -29,6 +30,8 @@ export interface BuiltLevel {
   crumbles: readonly CrumbleSpan[];
   /** Plataformas móviles: vagones de tren y plataformas genéricas (ops `train` y `mover`). */
   platforms: readonly PlatformSpec[];
+  /** Aros del juego de pelota (op `hoop`). */
+  hoops: readonly HoopSpec[];
 }
 
 /** Convierte la definición declarativa de un nivel en una cuadrícula de bloques. */
@@ -51,6 +54,7 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   const bubbles: BubbleVent[] = [];
   const crumbles: CrumbleSpan[] = [];
   const platforms: PlatformSpec[] = [];
+  const hoops: HoopSpec[] = [];
   let flagX = W - 10;
   let templeX = W - 5;
 
@@ -129,6 +133,9 @@ export function buildLevel(def: LevelDef): BuiltLevel {
         platforms.push({ kind: 'mover', x, y, length, dx, dy, period });
         break;
       }
+      case 'hoop':
+        hoops.push({ x: op[1], y: op[2] });
+        break;
       case 'pit':
         break;
     }
@@ -136,6 +143,7 @@ export function buildLevel(def: LevelDef): BuiltLevel {
 
   let totalCoins = 0;
   for (const row of grid) for (const c of row) if (c === 'o' || c === '?') totalCoins++;
+  totalCoins += hoops.length * HOOP_COINS; // cacao que suelta cada aro al encestar
 
-  return { grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles, crumbles, platforms };
+  return { grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles, crumbles, platforms, hoops };
 }

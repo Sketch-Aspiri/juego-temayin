@@ -48,6 +48,14 @@ import type { BossId, EnemyId, ThemeId } from '../types';
  *  ['mover', x, y, largo, dx, dy, periodo]  plataforma de `largo` bloques que oscila
  *                                           suavemente hasta (x+dx, y+dy) y vuelve en
  *                                           `periodo` segundos
+ *
+ * Juego de pelota (AGENTS.md §4.3 · 4-1 Chichén Itzá, ver `entities/hoops.ts`). No
+ * toca la cuadrícula: va a `BuiltLevel.hoops`.
+ *  ['hoop', x, y]                           aro de piedra empotrado en el muro de la
+ *                                           cancha, en el bloque (x, y) (no sólido). Al
+ *                                           pasar la pelota de pok ta pok (bloque `P`) por
+ *                                           su centro se enciende una vez: +2000 puntos y
+ *                                           5 granos de cacao (incluidos en `totalCoins`)
  */
 export type Op =
   | readonly ['pit', number, number]
@@ -67,7 +75,8 @@ export type Op =
   | readonly ['crumble', number, number, number]
   | readonly ['cannon', number, number, 1 | -1]
   | readonly ['train', number, number, number, number, number]
-  | readonly ['mover', number, number, number, number, number, number];
+  | readonly ['mover', number, number, number, number, number, number]
+  | readonly ['hoop', number, number];
 
 export interface BossConfig {
   id: BossId;

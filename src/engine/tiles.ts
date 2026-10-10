@@ -5,13 +5,15 @@
  * o moneda suelta, p/q tubo arriba, l/r cuerpo del tubo,
  * D escombro que se derrumba (op `crumble`, ver `entities/crumble.ts`).
  * K culata de cañón de baluarte, > / < boca del cañón hacia la derecha / izquierda.
+ * P bloque pelota de pok ta pok (ver `entities/ball.ts`).
  */
 export const SOLID_TILES: ReadonlySet<string> = new Set(['G', 'B', '?', 'M', 'L', 'F', 'S', 'U', 'X', 'p', 'q', 'l', 'r',
-  'D', 'K', '>', '<']);
+  'D', 'K', '>', '<',
+  'P']);
 
 export const isSolidTile = (c: string): boolean => SOLID_TILES.has(c);
 
-export type ItemKind = 'shield' | 'life' | 'fire' | 'snorkel';
+export type ItemKind = 'shield' | 'life' | 'fire' | 'snorkel' | 'ball';
 
 /** Bloques que sueltan un objeto al golpearlos desde abajo. */
-export const ITEM_BLOCKS: Readonly<Record<string, ItemKind>> = { M: 'shield', L: 'life', F: 'fire', S: 'snorkel' };
+export const ITEM_BLOCKS: Readonly<Record<string, ItemKind>> = { M: 'shield', L: 'life', F: 'fire', S: 'snorkel', P: 'ball' };
