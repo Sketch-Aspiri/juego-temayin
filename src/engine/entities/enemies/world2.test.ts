@@ -5,6 +5,7 @@ import { Input } from '../../input';
 import type { EnemyId } from '../../types';
 import { World } from '../../World';
 import type { Enemy } from '../types';
+import { ALUX_FLEE_SPEED, ALUX_FLEE_TIME, ALUX_RETURN_FACTOR, ALUX_STATE, ALUX_STEAL, aluxLoot } from './alux';
 import { SHADE_NOTICE_RANGE, SHADE_STATE } from './shade';
 import { createEnemy, ENEMIES, isAirborne, updateEnemies } from '.';
 
@@ -88,5 +89,68 @@ describe('sombra de Xibalbá (shade)', () => {
     world.fireballs.push({ x: e.x + e.w / 2, y: e.y + e.h / 2, vx: 0, vy: 0, t: 0, gone: false });
     world.update(STEP);
     expect(e.dead).toBeGreaterThan(0);
+  });
+});
+
+/** Hace que el jugador (en el suelo) toque al alux de lado. */
+function touchSide(world: World, e: Enemy): void {
+  const p = world.player;
+  p.x = e.x - p.w + 4;
+  p.y = GROUND * T - p.h;
+  p.vy = 0;
+  updateEnemies(world, STEP);
+}
+
+describe('alux', () => {
+  it('al tocarlo roba cacao sin quitar vida ni escudo y huye', () => {
+    const world = makeWorld(12);
+    const e = spawn(world, 'alux', 30);
+    world.player.shield = true;
+    touchSide(world, e);
+    expect(world.session.coins).toBe(12 - ALUX_STEAL);
+    expect(aluxLoot(e)).toBe(ALUX_STEAL);
+    expect(world.player.shield).toBe(true);
+    expect(world.phase).toBe('play');
+    expect(e.state).toBe(ALUX_STATE.flee);
+    expect(e.vx).toBeGreaterThan(0); // huye alejándose del jugador (que está a su izquierda)
+  });
+
+  it('no roba más de lo que tienes ni dos veces seguidas', () => {
+    const world = makeWorld(2);
+    const e = spawn(world, 'alux', 30);
+    touchSide(world, e);
+    touchSide(world, e);
+    expect(world.session.coins).toBe(0);
+    expect(aluxLoot(e)).toBe(2);
+  });
+
+  it('huye más rápido de lo que camina y luego sigue con el botín', () => {
+    const world = makeWorld(10);
+    const e = spawn(world, 'alux', 30);
+    touchSide(world, e);
+    const x0 = e.x;
+    step(world, e, 0.5);
+    expect(e.x - x0).toBeGreaterThan(ALUX_FLEE_SPEED * 0.4);
+    step(world, e, ALUX_FLEE_TIME);
+    expect(e.state).toBe(ALUX_STATE.carry);
+  });
+
+  it('pisarlo devuelve el doble de lo robado sin inflar el cacao del nivel', () => {
+    const world = makeWorld(10);
+    const e = spawn(world, 'alux', 30);
+    touchSide(world, e);
+    const collected = world.coinsCollected;
+    dropOn(world, e);
+    expect(e.dead).toBeGreaterThan(0);
+    expect(world.session.coins).toBe(10 - ALUX_STEAL + ALUX_STEAL * ALUX_RETURN_FACTOR);
+    expect(world.coinsCollected).toBe(collected);
+  });
+
+  it('no se cae de las cornisas', () => {
+    const world = makeWorld();
+    const e = spawn(world, 'alux', 22, 7);
+    e.vx = 60;
+    step(world, e, 4);
+    expect(e.y).toBeLessThan(8 * T);
   });
 });

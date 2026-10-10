@@ -33,4 +33,9 @@ export interface EnemyDef {
    * Por defecto el pisotón llama a `world.killEnemy(e, false)`.
    */
   onStomp?: (e: Enemy, world: World) => void;
+  /**
+   * Reacción propia al contacto sin pisotón (p. ej. el alux roba cacao en vez de
+   * hacer daño). Por defecto el contacto llama a `world.hurt()`.
+   */
+  onTouch?: (e: Enemy, world: World) => void;
 }
