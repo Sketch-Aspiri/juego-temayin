@@ -101,6 +101,12 @@ export function buildLevel(def: LevelDef): BuiltLevel {
       case 'bubbles':
         bubbles.push({ x: op[1], y: op[2] });
         break;
+      case 'cannon': {
+        const [, x, y, dir] = op;
+        set(x, y, dir > 0 ? 'K' : '<');
+        set(x + 1, y, dir > 0 ? '>' : 'K');
+        break;
+      }
       case 'pit':
         break;
     }

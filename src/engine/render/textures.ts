@@ -22,6 +22,9 @@ export const FIXED_TEXTURE: Readonly<Record<string, TexId>> = {
   q: 'pipeTR',
   l: 'pipeBL',
   r: 'pipeBR',
+  K: 'cannonBreech',
+  '>': 'cannonMuzzleR',
+  '<': 'cannonMuzzleL',
 };
 
 const dots = (c: Ctx, color: string, pts: ReadonlyArray<readonly [number, number]>, r = 3): void => {
