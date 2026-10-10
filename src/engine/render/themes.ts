@@ -4,6 +4,7 @@ import { paintedScenery } from './scenery/painted';
 import { palenqueScenery } from './scenery/palenque';
 import { riverScenery } from './scenery/river';
 import { swampScenery } from './scenery/swamp';
+import { haciendaScenery } from './scenery/hacienda';
 import type { TexId } from './textures';
 
 export interface WaterStyle {
@@ -108,5 +109,15 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
     groundTop: 'grass',
     groundBody: 'dirt',
     platform: 'stone',
+  },
+  // Mundo 2: haciendas henequeneras al atardecer (AGENTS.md §4.7).
+  hacienda: {
+    id: 'hacienda',
+    sky: ['#e8794a', '#ffd9a0'],
+    sun: false,
+    scenery: haciendaScenery,
+    groundTop: 'redEarthTop',
+    groundBody: 'redEarth',
+    platform: 'masonry',
   },
 };

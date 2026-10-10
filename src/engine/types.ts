@@ -25,7 +25,8 @@ export type EnemyId =
   // Mundo 2 · Golfo de Campeche
   | 'wheel';
 export type BossId = 'puas';
-export type ThemeId = 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque';
+export type ThemeId = 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque'
+  | 'hacienda';
 
 /** Estado de una partida que se arrastra de un nivel al siguiente. */
 export interface Session {
