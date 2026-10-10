@@ -24,6 +24,11 @@ import type { BossId, EnemyId, ThemeId } from '../types';
  *  ['bubbles', x, y]                        respiradero de burbujas en el bloque (x, y):
  *                                           una columna de burbujas sube hasta la
  *                                           superficie y recarga el oxígeno al tocarla
+ *
+ * Escombro que se derrumba (Mundo 2, ver `entities/crumble.ts`). Escribe bloques
+ * sólidos `D` en la cuadrícula y un tramo en `BuiltLevel.crumbles`.
+ *  ['crumble', x, y, largo]                 `largo` bloques de escombro desde (x, y): al
+ *                                           pisarlos tiemblan, caen y reaparecen después
  */
 export type Op =
   | readonly ['pit', number, number]
@@ -39,7 +44,8 @@ export type Op =
   | readonly ['spawn', EnemyId, number, number?]
   | readonly ['water', number, number, number]
   | readonly ['current', number, number, number, number, number, number]
-  | readonly ['bubbles', number, number];
+  | readonly ['bubbles', number, number]
+  | readonly ['crumble', number, number, number];
 
 export interface BossConfig {
   id: BossId;

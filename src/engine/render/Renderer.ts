@@ -1,6 +1,8 @@
 import type { Assets } from '../assets';
 import { GROUND, ROWS, T, TAU, VH, VW } from '../constants';
 import type { World } from '../World';
+import { CRUMBLE_TILE } from '../entities/crumble';
+import { crumbleShakeAt, drawFallingCrumbles } from './crumble';
 import type { Ctx } from './drawUtils';
 import { drawEnemySprite } from './enemies';
 import { drawCheckpoint, drawGoal } from './goal';
@@ -73,6 +75,7 @@ export class Renderer {
     drawGoal(c, world, now);
     drawCheckpoint(c, world, now);
     this.drawTiles(world, theme, now);
+    drawFallingCrumbles(c, world.crumbles, world.camX, this.textures.rubble);
     for (const it of world.items) if (!drawSnorkelItem(c, it, world.camX, now)) drawItemSprite(c, it, world.camX, now);
     for (const e of world.enemies) if (e.alive && e.active) drawEnemySprite(c, this.assets, e, world.camX);
     world.boss?.draw(c, this.assets, world.camX);
@@ -114,6 +117,10 @@ export class Renderer {
         let sy = ty * T;
         const bump = world.bumps.get(`${tx},${ty}`);
         if (bump) sy -= Math.sin((bump / BUMP_TIME) * Math.PI) * BUMP_HEIGHT;
+        if (t === CRUMBLE_TILE) {
+          c.drawImage(this.textures.rubble, sx + crumbleShakeAt(world.crumbles, tx, ty, now), sy);
+          continue;
+        }
         if (t === 'o') {
           drawCacao(c, sx + T / 2, sy + T / 2, now / 150 + tx);
           continue;

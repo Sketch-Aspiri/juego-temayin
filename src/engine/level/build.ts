@@ -1,5 +1,6 @@
 import { GROUND, ROWS } from '../constants';
 import type { EnemyId } from '../types';
+import { CRUMBLE_TILE, type CrumbleSpan } from '../entities/crumble';
 import type { LevelDef } from './types';
 import type { BubbleVent, CurrentZone, WaterZone } from './zones';
 
@@ -23,6 +24,8 @@ export interface BuiltLevel {
   currents: readonly CurrentZone[];
   /** Respiraderos de burbujas que recargan oxígeno (op `bubbles`). */
   bubbles: readonly BubbleVent[];
+  /** Tramos de escombro que se derrumban (op `crumble`). */
+  crumbles: readonly CrumbleSpan[];
 }
 
 /** Convierte la definición declarativa de un nivel en una cuadrícula de bloques. */
@@ -43,6 +46,7 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   const water: WaterZone[] = [];
   const currents: CurrentZone[] = [];
   const bubbles: BubbleVent[] = [];
+  const crumbles: CrumbleSpan[] = [];
   let flagX = W - 10;
   let templeX = W - 5;
 
@@ -101,6 +105,10 @@ export function buildLevel(def: LevelDef): BuiltLevel {
       case 'bubbles':
         bubbles.push({ x: op[1], y: op[2] });
         break;
+      case 'crumble':
+        for (let i = 0; i < op[3]; i++) set(op[1] + i, op[2], CRUMBLE_TILE);
+        crumbles.push({ x: op[1], y: op[2], len: op[3] });
+        break;
       case 'pit':
         break;
     }
@@ -109,5 +117,5 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   let totalCoins = 0;
   for (const row of grid) for (const c of row) if (c === 'o' || c === '?') totalCoins++;
 
-  return { grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles };
+  return { grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles, crumbles };
 }
