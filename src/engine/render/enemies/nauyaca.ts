@@ -2,6 +2,7 @@ import { TAU } from '../../constants';
 import { NAUYACA_STATE, REAR_TIME } from '../../entities/enemies/nauyaca';
 import type { Enemy } from '../../entities/types';
 import type { Ctx } from '../drawUtils';
+import { type AtlasFrame, drawLazyFrame, footFrame } from './atlas';
 import type { EnemyDrawFn } from './types';
 
 /** Paleta de la nauyaca (Bothrops asper): pardo oliva con rombos oscuros y mentón amarillo. */
@@ -18,6 +19,25 @@ const COIL_TURNS = 1.6;
 const COIL_STEPS = 24;
 const TONGUE_SPEED = 14;
 const DEAD_SQUASH = 0.5;
+
+/** Cuadros de `enemies/nauyaca.webp` (`nauyaca.atlas.json`), mirando a la derecha. */
+const NAUYACA_FILE = 'enemies/nauyaca.webp';
+const ART = {
+  coiled: footFrame(99, 272, 477, 289),
+  rearing: footFrame(715, 133, 458, 432),
+  // Al lanzarse el anclaje queda en el anillo de atrás: la cabeza avanza hacia delante.
+  lunge: { x: 45, y: 730, w: 670, h: 363, ax: 300, ay: 1093 },
+  back: footFrame(733, 739, 471, 393),
+} as const satisfies Readonly<Record<string, AtlasFrame>>;
+/** ~470 px de ancho en la hoja → ~42 px en pantalla (caja de 40 × 20). */
+const SCALE = 0.09;
+
+function artFrame(state: number): AtlasFrame {
+  if (state === NAUYACA_STATE.rear) return ART.rearing;
+  if (state === NAUYACA_STATE.lunge) return ART.lunge;
+  if (state === NAUYACA_STATE.back) return ART.back;
+  return ART.coiled;
+}
 
 type Pt = readonly [number, number];
 
@@ -152,8 +172,13 @@ function drawLunging(c: Ctx, e: Enemy): void {
 /** Nauyaca procedural: enroscada (oculta en la hierba), erguida, lanzándose o replegándose. */
 export const drawNauyaca: EnemyDrawFn = (c, _assets, e) => {
   if (e.vx < 0) c.scale(-1, 1);
+  if (e.dead) c.scale(1, DEAD_SQUASH);
+  if (drawLazyFrame(c, NAUYACA_FILE, artFrame(e.dead ? NAUYACA_STATE.coil : e.state), SCALE)) {
+    // Oculta en la hierba: las matas pintadas por encima delatan apenas su silueta.
+    if (!e.dead && e.state === NAUYACA_STATE.hidden) drawGrass(c, e.t);
+    return;
+  }
   if (e.dead) {
-    c.scale(1, DEAD_SQUASH);
     drawCoiled(c, e, false);
     return;
   }

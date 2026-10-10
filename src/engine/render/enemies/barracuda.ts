@@ -1,6 +1,7 @@
 import { TAU } from '../../constants';
 import { BARRACUDA_STATE } from '../../entities/enemies/barracuda';
 import type { Ctx } from '../drawUtils';
+import { type AtlasFrame, centerFrame, drawLazyFrame } from './atlas';
 import type { EnemyDrawFn } from './types';
 
 /** Paleta de la barracuda: lomo gris azulado con barras oscuras, vientre plateado. */
@@ -12,6 +13,22 @@ const FIN = '#6f8c99';
 const TAIL_SPEED = 10;
 const DART_TAIL_SPEED = 28;
 const DEAD_SQUASH = 0.6;
+
+/** Cuadros de `enemies/barracuda.webp` (`barracuda.atlas.json`): nado, cola, preparación, embestida. */
+const BARRACUDA_FILE = 'enemies/barracuda.webp';
+const SWIM_FRAMES: readonly AtlasFrame[] = [centerFrame(16, 221, 608, 252), centerFrame(642, 173, 597, 338)];
+const REST_FRAME = centerFrame(24, 752, 550, 274);
+const DART_FRAME = centerFrame(604, 802, 643, 221);
+/** ~600 px de largo en la hoja → ~54 px en pantalla (caja de 48 × 22). */
+const SCALE = 0.09;
+/** Coletazos por segundo de la animación pintada al patrullar. */
+const ART_TAIL_RATE = 4;
+
+function barracudaFrame(state: number, t: number): AtlasFrame {
+  if (state === BARRACUDA_STATE.dart) return DART_FRAME;
+  if (state === BARRACUDA_STATE.rest) return REST_FRAME;
+  return SWIM_FRAMES[Math.floor(t * ART_TAIL_RATE) % SWIM_FRAMES.length];
+}
 
 /** Cuerpo de torpedo mirando a la derecha, centrado en (0, cy). */
 function bodyPath(c: Ctx, cy: number): void {
@@ -108,6 +125,7 @@ export const drawBarracuda: EnemyDrawFn = (c, _assets, e) => {
   if (e.dead) c.scale(1, DEAD_SQUASH);
   const cy = -e.h / 2;
   const dart = !e.dead && e.state === BARRACUDA_STATE.dart;
+  if (drawLazyFrame(c, BARRACUDA_FILE, barracudaFrame(e.dead ? BARRACUDA_STATE.patrol : e.state, e.t), SCALE, 0, cy)) return;
   const flick = Math.sin(e.t * (dart ? DART_TAIL_SPEED : TAIL_SPEED)) * 3;
   if (dart) drawSpeedLines(c, cy, e.t);
   drawTail(c, cy, flick);

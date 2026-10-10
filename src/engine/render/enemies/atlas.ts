@@ -1,4 +1,5 @@
 import { isReady } from '../../assets';
+import { bakedFrame } from '../artCache';
 import type { Ctx } from '../drawUtils';
 
 /**
@@ -14,6 +15,24 @@ export interface AtlasFrame {
   readonly h: number;
   readonly ax: number;
   readonly ay: number;
+}
+
+/** Cuadro con anclaje en el centro de su borde inferior (enemigos que pisan suelo). */
+export const footFrame = (x: number, y: number, w: number, h: number): AtlasFrame => ({ x, y, w, h, ax: x + w / 2, ay: y + h });
+
+/** Cuadro con anclaje en su centro (nadadores y voladores). */
+export const centerFrame = (x: number, y: number, w: number, h: number): AtlasFrame => ({ x, y, w, h, ax: x + w / 2, ay: y + h / 2 });
+
+/**
+ * Como `drawAtlasFrame`, pero con una hoja de `public/assets` cargada bajo demanda
+ * (`artCache`) y el cuadro horneado a su escala una sola vez. Así los enemigos nuevos
+ * no pasan por `MANIFEST` ni retrasan el arranque. Devuelve false mientras carga.
+ */
+export function drawLazyFrame(c: Ctx, file: string, f: AtlasFrame, scale: number, dx = 0, dy = 0): boolean {
+  const img = bakedFrame(file, [f.x, f.y, f.w, f.h], scale);
+  if (!img) return false;
+  c.drawImage(img, Math.round(dx + (f.x - f.ax) * scale), Math.round(dy + (f.y - f.ay) * scale));
+  return true;
 }
 
 /**

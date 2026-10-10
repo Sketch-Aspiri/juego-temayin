@@ -1,6 +1,7 @@
 import { TAU } from '../../constants';
 import { CRAB_STATE } from '../../entities/enemies/blueCrab';
 import type { Ctx } from '../drawUtils';
+import { type AtlasFrame, drawLazyFrame, footFrame } from './atlas';
 import type { EnemyDrawFn } from './types';
 
 /** Paleta del cangrejo azul (Cardisoma guanhumi): caparazón azul, pinzas lila-blancas. */
@@ -13,6 +14,23 @@ const CLAW_TIP = '#f4eefc';
 const LEG = '#2f5aa8';
 const STEP_SPEED = 18;
 const DEAD_SQUASH = 0.45;
+
+/** Cuadros de `enemies/blueCrab.webp` (`blueCrab.atlas.json`): dos pasos, pinzas en alto, pinzazo. */
+const CRAB_FILE = 'enemies/blueCrab.webp';
+const WALK_FRAMES: readonly AtlasFrame[] = [footFrame(71, 254, 538, 304), footFrame(662, 253, 552, 309)];
+const CLAWS_UP_FRAMES: readonly AtlasFrame[] = [footFrame(57, 687, 562, 476), footFrame(675, 862, 539, 300)];
+/** ~540 px de ancho en la hoja → ~46 px en pantalla (caja de 40 × 26). */
+const SCALE = 0.085;
+/** Pasos por segundo de la animación pintada. */
+const ART_STEP_RATE = 7;
+/** Con las pinzas en alto alterna amenaza y pinzazo, más despacio. */
+const CLAW_SNAP_RATE = 3;
+
+/** Cuadro pintado según el estado: caminar o pinzas en alto (aviso de no pisable). */
+function crabFrame(up: boolean, t: number): AtlasFrame {
+  if (up) return CLAWS_UP_FRAMES[Math.floor(t * CLAW_SNAP_RATE) % 2 === 0 ? 0 : 1];
+  return WALK_FRAMES[Math.floor(t * ART_STEP_RATE) % WALK_FRAMES.length];
+}
 
 /** Patas articuladas, tres por lado, que alternan al caminar. */
 function drawLegs(c: Ctx, t: number): void {
@@ -124,6 +142,9 @@ function drawShell(c: Ctx, up: boolean): void {
 export const drawBlueCrab: EnemyDrawFn = (c, _assets, e) => {
   if (e.dead) c.scale(1, DEAD_SQUASH);
   const up = !e.dead && e.state === CRAB_STATE.clawsUp;
+  if (e.vx < 0) c.scale(-1, 1);
+  if (drawLazyFrame(c, CRAB_FILE, crabFrame(up, e.dead ? 0 : e.t), SCALE)) return;
+  if (e.vx < 0) c.scale(-1, 1);
   drawLegs(c, e.dead ? 0 : e.t);
   drawShell(c, up);
   drawClaw(c, -1, up, e.t);

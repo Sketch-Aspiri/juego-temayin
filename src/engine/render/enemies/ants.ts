@@ -1,6 +1,7 @@
 import { TAU } from '../../constants';
 import { ANT_SPACING, antsLeft } from '../../entities/enemies/ants';
 import type { Ctx } from '../drawUtils';
+import { type AtlasFrame, drawLazyFrame, footFrame } from './atlas';
 import type { EnemyDrawFn } from './types';
 
 /** Paleta de las arrieras (Atta): rojizas, cargando trozos de hoja. */
@@ -12,6 +13,19 @@ const LEAF_DARK = '#3d7f25';
 const STEP_SPEED = 16;
 const BOB_SPEED = 8;
 const DEAD_SQUASH = 0.4;
+
+/** Cuadros de `enemies/ants.webp` (`ants.atlas.json`): cuatro pasos, mirando a la derecha. */
+const ANTS_FILE = 'enemies/ants.webp';
+const FRAMES: readonly AtlasFrame[] = [
+  footFrame(63, 184, 537, 365),
+  footFrame(692, 187, 536, 362),
+  footFrame(60, 764, 547, 375),
+  footFrame(689, 771, 554, 382),
+];
+/** ~540 px de ancho en la hoja → ~24 px por hormiga (un poco más que su hueco de 20). */
+const SCALE = 0.045;
+/** Pasos por segundo de la animación pintada. */
+const ART_STEP_RATE = 10;
 
 function drawLeaf(c: Ctx, sway: number): void {
   c.save();
@@ -91,7 +105,8 @@ export const drawAnts: EnemyDrawFn = (c, _assets, e) => {
     const t = e.t + i * 0.37;
     c.save();
     c.translate(-e.w / 2 + ANT_SPACING / 2 + i * ANT_SPACING, -Math.abs(Math.sin(t * BOB_SPEED)) * 1.2);
-    drawAnt(c, t);
+    const frame = FRAMES[Math.floor(t * ART_STEP_RATE) % FRAMES.length];
+    if (!drawLazyFrame(c, ANTS_FILE, frame, SCALE)) drawAnt(c, t);
     c.restore();
   }
 };
