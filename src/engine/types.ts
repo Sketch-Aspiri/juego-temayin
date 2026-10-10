@@ -23,7 +23,10 @@ export type EnemyId =
   | 'blueCrab'
   | 'barracuda';
 export type BossId = 'puas';
-export type ThemeId = 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque';
+export type ThemeId = 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque'
+  // Mundo 2 · Golfo de Campeche (AGENTS.md §4.7)
+  | 'ruins'
+  | 'ruinsDusk';
 
 /** Estado de una partida que se arrastra de un nivel al siguiente. */
 export interface Session {
