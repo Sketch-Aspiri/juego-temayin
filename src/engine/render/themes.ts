@@ -123,7 +123,7 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
   ruinsDusk: {
     id: 'ruinsDusk',
     sky: ['#6a3f7a', '#f2a65a'],
-    tint: 'rgba(230,120,50,.16)',
+    tint: 'rgba(225,95,45,.28)',
     sun: true,
     scenery: ruinsScenery,
     groundTop: 'limestoneTop',
