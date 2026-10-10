@@ -128,6 +128,16 @@ describe.each(ALL_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, def) 
     for (const c of lvl.crumbles) expect(c.y, `escombro en ${c.x}`).toBeLessThan(GROUND);
   });
 
+  // Los aros del juego de pelota (op `hoop`) no son sólidos: la pelota debe poder atravesarlos.
+  it('los aros están dentro del nivel, sobre el suelo y en bloques libres', () => {
+    for (const h of lvl.hoops) {
+      expect(h.x, `aro en ${h.x}`).toBeGreaterThanOrEqual(0);
+      expect(h.x, `aro en ${h.x}`).toBeLessThan(def.width);
+      expect(h.y, `aro en ${h.x}`).toBeLessThan(GROUND);
+      expect(solid(h.x, h.y), `aro en ${h.x},${h.y}`).toBe(false);
+    }
+  });
+
   it('cuenta monedas para calcular las estrellas', () => {
     expect(lvl.totalCoins).toBeGreaterThan(0);
   });

@@ -12,6 +12,7 @@ import { LEVEL_2_4 } from './levels/world2/2-4-petenes';
 import { LEVEL_2_5 } from './levels/world2/2-5-tenabo';
 import { LEVEL_2_6 } from './levels/world2/2-6-hecelchakan';
 import { LEVEL_2_7 } from './levels/world2/2-7-calkini';
+import { LEVEL_4_1 } from './levels/world4/4-1-chichen-itza';
 import { LEVEL_4_2 } from './levels/world4/4-2-xibalba';
 import { LEVEL_3_1 } from './levels/world3/3-1-maxcanu';
 import { LEVEL_3_2 } from './levels/world3/3-2-merida';
@@ -44,7 +45,7 @@ export const WORLDS: readonly WorldDef[] = [
     id: 'yucatan-haciendas', number: 3, name: 'Yucatán de las haciendas',
     levels: [LEVEL_3_1, LEVEL_3_2, LEVEL_3_3, LEVEL_3_4, LEVEL_3_5],
   },
-  { id: 'cenotes-xibalba', number: 4, name: 'Cenotes y Xibalbá', levels: [LEVEL_4_2, LEVEL_4_3] },
+  { id: 'cenotes-xibalba', number: 4, name: 'Cenotes y Xibalbá', levels: [LEVEL_4_1, LEVEL_4_2, LEVEL_4_3] },
   { id: 'riviera-maya', number: 5, name: 'Riviera Maya', levels: [LEVEL_5_3] },
 ];
 

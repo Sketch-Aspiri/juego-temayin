@@ -1,6 +1,7 @@
 import type { Assets } from '../assets';
 import { Lighting } from './lighting';
 import { drawHaciendaProps, drawTohHint } from './haciendaProps';
+import { drawBalls, drawHoops } from './ball';
 import { GROUND, ROWS, T, TAU, VH, VW } from '../constants';
 import type { World } from '../World';
 import { CRUMBLE_TILE } from '../entities/crumble';
@@ -22,7 +23,7 @@ import { THEMES, type ThemeDef } from './themes';
 import { drawSnorkelItem, drawWaterLayer } from './water';
 import type { ThemeId } from '../types';
 
-const BLOCK_QUESTION = new Set(['?', 'M', 'L', 'F', 'S']);
+const BLOCK_QUESTION = new Set(['?', 'M', 'L', 'F', 'S', 'P']);
 const BUMP_HEIGHT = 10;
 const BUMP_TIME = 0.15;
 
@@ -78,6 +79,7 @@ export class Renderer {
     }
     drawGoal(c, world, now);
     drawCheckpoint(c, world, now);
+    drawHoops(c, world.hoops, world.camX, now);
     this.drawTiles(world, theme, now);
     drawFallingCrumbles(c, world.crumbles, world.camX, this.textures.rubble);
     drawPlatforms(c, world.platforms, world.camX);
@@ -88,6 +90,7 @@ export class Renderer {
     drawQuills(c, world.quills, world.camX);
     drawPlayerSprite(c, this.assets, world.player, world.camX, world.phase === 'dying', world.phaseT, now);
     drawFireballs(c, world.fireballs, world.camX);
+    drawBalls(c, world.balls, world.camX);
     drawWaterLayer(c, world, theme.water, now);
     drawParticles(c, world.particles, world.popups, world.camX);
     c.restore();

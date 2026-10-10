@@ -1,5 +1,6 @@
 import type { ItemKind } from '../tiles';
 import { bakedFrame, type Frame } from './artCache';
+import { TAU } from '../constants';
 import { drawChili, drawCoin, drawLife, drawShield, type Ctx } from './drawUtils';
 
 /**
@@ -38,6 +39,7 @@ const ITEM_ART: Readonly<Partial<Record<ItemKind, ObjectId>>> = {
   fire: 'chile',
   shield: 'shield',
   snorkel: 'snorkel',
+  ball: 'ball',
 };
 
 /** Lienzo horneado de un objeto a la altura indicada (o `null` si el atlas no ha cargado). */
@@ -69,5 +71,18 @@ export function drawItemArt(c: Ctx, kind: ItemKind, x: number, y: number, now: n
   if (art && drawObject(c, art, x, y, ITEM_HEIGHT)) return;
   if (kind === 'life') drawLife(c, x, y);
   else if (kind === 'fire') drawChili(c, x, y, 1, now);
+  else if (kind === 'ball') drawRubberBall(c, x, y, ITEM_HEIGHT / 2);
   else drawShield(c, x, y);
+}
+
+/** Pelota de hule procedural (respaldo mientras carga el atlas de objetos). */
+export function drawRubberBall(c: Ctx, x: number, y: number, r: number): void {
+  c.fillStyle = '#2b2622';
+  c.beginPath();
+  c.arc(x, y, r, 0, TAU);
+  c.fill();
+  c.fillStyle = 'rgba(255,255,255,.25)';
+  c.beginPath();
+  c.arc(x - r * 0.35, y - r * 0.35, r * 0.35, 0, TAU);
+  c.fill();
 }

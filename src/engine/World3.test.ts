@@ -31,7 +31,7 @@ describe('Mundo 3: campaña y progreso', () => {
   it('incluye cinco estaciones entre Calkiní y Xibalbá', () => {
     expect(WORLDS.find(w => w.number === 3)?.levels.map(l => l.id)).toEqual(['3-1', '3-2', '3-3', '3-4', '3-5']);
     expect(nextLevelId('2-7')).toBe('3-1');
-    expect(nextLevelId('3-5')).toBe('4-2');
+    expect(nextLevelId('3-5')).toBe('4-1');
   });
   it('mantiene jugables los récords anteriores al insertar el mundo', () => {
     const saved = sanitizeProgress({ levels: { '4-2': { bestScore: 900, stars: 2, completions: 1 }, '2-7': { bestScore: 600, stars: 1, completions: 1 } } });

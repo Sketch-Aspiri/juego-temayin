@@ -22,6 +22,7 @@ export function Hud({ hud }: HudProps) {
           {hud.shield && <span title="Escudo" aria-label="Escudo activo">🛡️</span>}
           {hud.fire && <span title="Chile de fuego" aria-label="Fuego activo">🌶️</span>}
           {hud.snorkel && <span title="Snorkel" aria-label="Snorkel activo">🤿</span>}
+          {hud.ball && <span title="Pelota de pok ta pok" aria-label="Pelota de pok ta pok">⚫</span>}
         </div>
         <span
           className="life-icon"
