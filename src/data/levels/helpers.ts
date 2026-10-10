@@ -19,6 +19,7 @@ export const tarantula = spawnMany('tarantula');
 export const nauyaca = spawnMany('nauyaca');
 export const ants = spawnMany('ants');
 export const blueCrab = spawnMany('blueCrab');
+export const wheel = spawnMany('wheel');
 
 /** Murciélagos: pares [x, fila]. */
 export const bats = spawnAt('bat');

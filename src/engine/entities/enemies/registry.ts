@@ -8,6 +8,7 @@ import { HOWLER } from './howler';
 import { NAUYACA } from './nauyaca';
 import { TARANTULA } from './tarantula';
 import { URCHIN } from './urchin';
+import { WHEEL } from './wheel';
 import type { EnemyDef } from './types';
 
 /**
@@ -25,6 +26,7 @@ export const ENEMIES: Readonly<Record<EnemyId, EnemyDef>> = {
   ants: ANTS,
   blueCrab: BLUE_CRAB,
   barracuda: BARRACUDA,
+  wheel: WHEEL,
 };
 
 /** El enemigo no necesita suelo debajo (vuela o nada). */
