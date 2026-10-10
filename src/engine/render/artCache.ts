@@ -52,6 +52,7 @@ export const PAINTED_ART: readonly string[] = [
   'enemies/blueCrab.webp',
   'enemies/nauyaca.webp',
   'enemies/barracuda.webp',
+  'bosses/kaiman.webp',
   'objetos/objetos.webp',
   'mecanicas/mecanicas.webp',
   'mecanicas/efectos.webp',

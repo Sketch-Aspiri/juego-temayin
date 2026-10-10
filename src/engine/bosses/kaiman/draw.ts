@@ -1,29 +1,32 @@
 import { GROUND, T, TAU, VW } from '../../constants';
-import { lazyImage } from '../../render/artCache';
+import { type AtlasFrame, drawLazyFrame, footFrame } from '../../render/enemies/atlas';
 import { outlined, star, type Ctx } from '../../render/drawUtils';
 import type { Kaiman, KaimanState } from './index';
 import { drawCrocodile, drawEyesAtSurface } from './drawBody';
 import { DEAD_TIME, DIVE_TIME, KAIMAN_H, RISE_TIME, WAVE_H, WAVE_W } from './tuning';
 
 /**
- * Dibujo del Kaimán Moreleti. Procedural por defecto; preparado para la hoja de
- * sprites de `imagenes/nuevos/jefes/kaiman.prompt.txt` (3 columnas × 2 filas:
- * alerta, carrera con fauces abiertas, coletazo / preparándose para sumergirse,
- * lomo expuesto, derrotado). Para activarla, exporta la hoja a
- * `public/assets/jefes/kaiman.webp` y pon aquí su ruta: si no carga, se usa el
- * dibujo procedural.
+ * Dibujo del Kaimán Moreleti con la hoja pintada `bosses/kaiman.webp`
+ * (`imagenes/nuevos/jefes/kaiman.atlas.json`, rectángulos reales, mirando a la
+ * derecha). Mientras carga se usa el dibujo procedural.
  */
-export const KAIMAN_SHEET: string | null = null;
-const SHEET_COLS = 3;
-const SHEET_ROWS = 2;
-/** Ancho en pantalla de un fotograma de la hoja (px). */
-const SPRITE_W = 260;
-const SHEET_FRAME: Readonly<Partial<Record<KaimanState, number>>> = {
-  intro: 0, walk: 0, hurt: 0, rising: 1,
-  gape: 1, bite: 1, pant: 1,
-  tailPrep: 2, tail: 2,
-  dive: 3, emerge: 4, exposed: 4,
-  dead: 5,
+const KAIMAN_SHEET = 'bosses/kaiman.webp';
+const ART = {
+  rest: footFrame(15, 182, 517, 297),
+  charge: footFrame(522, 207, 520, 253),
+  tail: footFrame(1056, 111, 470, 381),
+  dive: footFrame(13, 616, 495, 308),
+  exposed: footFrame(524, 648, 490, 278),
+  dead: footFrame(1038, 656, 491, 270),
+} as const satisfies Readonly<Record<string, AtlasFrame>>;
+/** ~517 px de largo en la hoja → ~200 px en pantalla (caja de 170 × 62; cola y hocico sobresalen). */
+const SHEET_SCALE = 0.38;
+const SHEET_FRAME: Readonly<Partial<Record<KaimanState, AtlasFrame>>> = {
+  intro: ART.rest, walk: ART.rest, hurt: ART.rest, rising: ART.charge,
+  gape: ART.charge, bite: ART.charge, pant: ART.charge,
+  tailPrep: ART.tail, tail: ART.tail,
+  dive: ART.dive, emerge: ART.exposed, exposed: ART.exposed,
+  dead: ART.dead,
 };
 
 const TELEGRAPH: ReadonlySet<KaimanState> = new Set(['gape', 'tailPrep', 'rising']);
@@ -36,18 +39,8 @@ const WARN_BUBBLES = 7;
 
 /** Sprite de la hoja si está activada y cargada; si no, `false` para usar el respaldo. */
 function drawSheet(c: Ctx, b: Kaiman): boolean {
-  if (!KAIMAN_SHEET) return false;
-  const img = lazyImage(KAIMAN_SHEET);
   const fr = SHEET_FRAME[b.st];
-  if (!img || fr === undefined) return false;
-  const cw = img.naturalWidth / SHEET_COLS;
-  const ch = img.naturalHeight / SHEET_ROWS;
-  const scale = SPRITE_W / cw;
-  const sx = (fr % SHEET_COLS) * cw;
-  const sy = Math.floor(fr / SHEET_COLS) * ch;
-  // Celdas con ~12 % de margen: el suelo del personaje queda al 88 % de la celda.
-  c.drawImage(img, sx, sy, cw, ch, (-cw * scale) / 2, -ch * scale * 0.88, cw * scale, ch * scale);
-  return true;
+  return fr !== undefined && drawLazyFrame(c, KAIMAN_SHEET, fr, SHEET_SCALE);
 }
 
 /** Ondas concéntricas en la superficie y burbujas que delatan al cocodrilo sumergido. */
