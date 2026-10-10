@@ -36,6 +36,16 @@ describe('progreso', () => {
     expect(isUnlocked(EMPTY_PROGRESS, 'no-existe')).toBe(false);
   });
 
+  it('insertar 4-1 delante de 4-2 no bloquea a quien ya tenía récord en 4-2', () => {
+    const ids = ALL_LEVELS.map((l) => l.id);
+    expect(ids.indexOf('4-1')).toBe(ids.indexOf('4-2') - 1);
+    const saved = recordCompletion(EMPTY_PROGRESS, result({ levelId: '4-2' }));
+    expect(isUnlocked(saved, '4-2')).toBe(true);
+    expect(isUnlocked(saved, '4-3')).toBe(true);
+    // 4-1 sigue la cadena normal: se abre al completar el nivel anterior.
+    expect(isUnlocked(saved, '4-1')).toBe(false);
+  });
+
   it('completar un nivel desbloquea el siguiente sin mutar el original', () => {
     const next = recordCompletion(EMPTY_PROGRESS, result());
     expect(isUnlocked(next, ALL_LEVELS[1].id)).toBe(true);
