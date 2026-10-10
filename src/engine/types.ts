@@ -28,7 +28,9 @@ export type EnemyId =
   | 'pirateCrab'
   | 'moray'
   | 'wheel';
-export type BossId = 'puas' | 'kaiman';
+export type BossId = 'puas' | 'kaiman'
+  // Mundo 4 · Cenotes y Xibalbá
+  | 'huayPek';
 export type ThemeId =
   | 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque'
   // Mundo 2 · Golfo de Campeche (AGENTS.md §4.7)
