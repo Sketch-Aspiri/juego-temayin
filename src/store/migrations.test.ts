@@ -71,7 +71,7 @@ describe('loadSaved con migración', () => {
   });
 
   it('migra la clave v2, guarda en v3 y conserva la v2', () => {
-    const settings = { volume: 0.3, muted: true, touchControls: 'on' };
+    const settings = { volume: 0.3, muted: true, touchControls: 'on', introSeen: true };
     store.set(LEGACY_KEY, JSON.stringify({ progress: V2_FULL, settings }));
     const state = loadSaved();
     expect(state.progress.levels['1-6']).toEqual(rec(300));

@@ -5,9 +5,11 @@ export interface Settings {
   /** 0..1 */
   volume: number;
   touchControls: TouchMode;
+  /** Ya se vio la cinemática de introducción (no se repite al empezar 1-1). */
+  introSeen: boolean;
 }
 
-export const DEFAULT_SETTINGS: Settings = { muted: false, volume: 0.8, touchControls: 'auto' };
+export const DEFAULT_SETTINGS: Settings = { muted: false, volume: 0.8, touchControls: 'auto', introSeen: false };
 
 const TOUCH_MODES: readonly TouchMode[] = ['auto', 'on', 'off'];
 
@@ -19,5 +21,6 @@ export function sanitizeSettings(raw: unknown): Settings {
     muted: typeof r.muted === 'boolean' ? r.muted : DEFAULT_SETTINGS.muted,
     volume,
     touchControls: TOUCH_MODES.includes(r.touchControls as TouchMode) ? (r.touchControls as TouchMode) : DEFAULT_SETTINGS.touchControls,
+    introSeen: typeof r.introSeen === 'boolean' ? r.introSeen : DEFAULT_SETTINGS.introSeen,
   };
 }

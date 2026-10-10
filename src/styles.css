@@ -694,6 +694,315 @@ kbd {
   background: rgba(220, 80, 20, 0.55);
 }
 
+/* ---------- Cinemática de introducción ---------- */
+.intro {
+  position: relative;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background: #000;
+  cursor: pointer;
+  user-select: none;
+}
+.intro-stage {
+  position: relative;
+  width: min(100vw, calc(100vh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+.intro-scene {
+  position: absolute;
+  inset: 0;
+  animation: intro-fade 0.9s ease-out both;
+}
+.intro-bg {
+  position: absolute;
+  inset: -4%;
+  background-size: cover;
+  background-position: center;
+  animation: intro-kenburns 14s ease-out both;
+}
+.intro-tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.intro-scene--dawn .intro-tint {
+  background: linear-gradient(rgba(255, 140, 60, 0.28), rgba(40, 20, 60, 0.25));
+}
+.intro-scene--day .intro-tint {
+  background: rgba(255, 240, 200, 0.06);
+}
+.intro-scene--dusk .intro-tint {
+  background: linear-gradient(rgba(120, 40, 90, 0.35), rgba(255, 120, 40, 0.18));
+}
+.intro-scene--night .intro-bg {
+  filter: brightness(0.45) saturate(0.7) hue-rotate(200deg);
+}
+.intro-scene--night .intro-tint {
+  background: radial-gradient(circle at 50% 30%, rgba(60, 20, 90, 0.15), rgba(10, 0, 30, 0.6));
+}
+.intro-scene--eclipse .intro-bg {
+  animation: intro-kenburns 14s ease-out both, intro-darken 4s ease-in forwards;
+}
+.intro-scene--eclipse .intro-tint {
+  background: radial-gradient(circle at 70% 22%, rgba(120, 255, 180, 0.12), rgba(5, 0, 20, 0.65));
+}
+
+.intro-actor {
+  position: absolute;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.45));
+}
+.intro-sprite {
+  height: 100%;
+}
+.intro-sprite--flip {
+  transform: scaleX(-1);
+}
+.intro-actor--enter-left {
+  animation: intro-enter-left 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both, intro-breathe 3s 1.2s ease-in-out infinite;
+}
+.intro-actor--enter-right {
+  animation: intro-enter-right 1.2s 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both, intro-breathe 3s 1.5s ease-in-out infinite;
+}
+.intro-actor--still {
+  animation: intro-breathe 3.4s ease-in-out infinite;
+}
+.intro-actor--float {
+  animation: intro-bob 3.3s ease-in-out infinite;
+}
+.intro-actor--carried {
+  animation: intro-carried 5s ease-in forwards;
+}
+.intro-actor--fly-in {
+  animation: intro-fly-in 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) both, intro-bob 2.6s 1.6s ease-in-out infinite;
+}
+
+.intro-glow {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  width: 70%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(140, 255, 170, 0.75), rgba(60, 220, 140, 0.25) 40%, transparent 70%);
+  animation: intro-pulse 2s ease-in-out infinite;
+}
+
+.intro-sun {
+  position: absolute;
+  left: 72%;
+  top: 70%;
+  width: 14%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffbe0, #ffd23f 45%, #ff9a2a 70%);
+  box-shadow: 0 0 60px 30px rgba(255, 200, 80, 0.55);
+  animation: intro-sunrise 5s ease-out forwards;
+}
+.intro-sun--eclipse {
+  top: 8%;
+  overflow: hidden;
+  animation: none;
+  background: radial-gradient(circle, #e9fff0, #7fe0a8 50%, #1f9a6a 75%);
+  box-shadow: 0 0 60px 26px rgba(120, 255, 180, 0.5);
+}
+.intro-moon {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #0b0716;
+  animation: intro-moon 4.5s ease-in-out forwards;
+}
+
+.intro-camazotz {
+  position: absolute;
+  left: 50%;
+  top: 2%;
+  width: 52%;
+  transform: translateX(-50%);
+  fill: #1b0f2e;
+  filter: drop-shadow(0 0 18px rgba(150, 60, 220, 0.6));
+  animation: intro-descend 2.4s ease-out both;
+}
+.intro-camazotz__wings {
+  transform-origin: 50% 35%;
+  animation: intro-flap 0.9s ease-in-out infinite;
+}
+.intro-camazotz__eye {
+  fill: #ff4040;
+  filter: drop-shadow(0 0 6px #ff2020);
+  animation: intro-pulse 1.6s ease-in-out infinite;
+}
+
+.intro-bats {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.intro-bat {
+  position: absolute;
+  left: 105%;
+  animation: intro-bat 4.2s linear infinite both;
+}
+
+.intro-train {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6%;
+  height: 30%;
+}
+.intro-rails {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 8%;
+  background:
+    repeating-linear-gradient(90deg, #5a3a1c 0 18px, transparent 18px 46px),
+    linear-gradient(transparent 30%, #8a8f99 30% 45%, transparent 45% 70%, #8a8f99 70% 85%, transparent 85%);
+}
+.intro-train__cars {
+  position: absolute;
+  bottom: 4%;
+  height: 92%;
+  left: 100%;
+  animation: intro-train 9s linear forwards;
+}
+
+.intro-caption {
+  position: absolute;
+  left: 50%;
+  bottom: 3%;
+  width: min(86%, 820px);
+  transform: translateX(-50%);
+  padding: 0.9rem 1.2rem 0.7rem;
+  border-radius: var(--radius);
+  background: rgba(8, 20, 14, 0.82);
+  border: 2px solid rgba(255, 225, 122, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+.intro-caption__speaker {
+  position: absolute;
+  top: -0.9rem;
+  left: 1rem;
+  padding: 0.1rem 0.7rem;
+  border-radius: 999px;
+  background: linear-gradient(#58d466, var(--leaf-deep));
+  font-weight: 800;
+}
+.intro-caption__text {
+  margin: 0;
+  font-size: clamp(0.95rem, 2.2vw, 1.3rem);
+  line-height: 1.45;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.6);
+}
+.intro-caption__ghost {
+  visibility: hidden;
+}
+.intro-caption__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 2.4rem;
+  margin-top: 0.4rem;
+}
+.intro-dots {
+  display: flex;
+  gap: 6px;
+}
+.intro-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+}
+.intro-dot--on {
+  background: var(--gold);
+}
+.intro-hint {
+  font-size: 0.85rem;
+  color: var(--ink-dim);
+}
+.intro-skip {
+  position: absolute;
+  top: 3%;
+  right: 2%;
+}
+
+@keyframes intro-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes intro-kenburns {
+  from { transform: scale(1.08) translateX(1.5%); }
+  to { transform: scale(1) translateX(0); }
+}
+@keyframes intro-darken {
+  to { filter: brightness(0.35) saturate(0.6); }
+}
+@keyframes intro-enter-left {
+  from { transform: translateX(-160%); opacity: 0; }
+  to { transform: translateX(-50%); opacity: 1; }
+}
+@keyframes intro-enter-right {
+  from { transform: translateX(80%); opacity: 0; }
+  to { transform: translateX(-50%); opacity: 1; }
+}
+@keyframes intro-breathe {
+  0%, 100% { transform: translateX(-50%) scaleY(1); }
+  50% { transform: translateX(-50%) scaleY(1.015); }
+}
+@keyframes intro-bob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-4%); }
+}
+@keyframes intro-carried {
+  0% { transform: translateX(-50%) translateY(0) rotate(0); }
+  25% { transform: translateX(-50%) translateY(4%) rotate(-3deg); }
+  100% { transform: translateX(-50%) translateY(-160%) rotate(4deg); opacity: 0.6; }
+}
+@keyframes intro-fly-in {
+  from { transform: translate(120%, -120%) rotate(-12deg); opacity: 0; }
+  to { transform: translateX(-50%); opacity: 1; }
+}
+@keyframes intro-pulse {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 1; }
+}
+@keyframes intro-sunrise {
+  from { top: 70%; opacity: 0.3; }
+  to { top: 10%; opacity: 1; }
+}
+@keyframes intro-moon {
+  from { transform: translateX(110%); }
+  to { transform: translateX(6%); }
+}
+@keyframes intro-descend {
+  from { transform: translate(-50%, -80%) scale(0.6); opacity: 0; }
+  to { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+@keyframes intro-flap {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.72); }
+}
+@keyframes intro-bat {
+  from { left: 105%; transform: translateY(0); }
+  50% { transform: translateY(-30%); }
+  to { left: -15%; transform: translateY(0); }
+}
+@keyframes intro-train {
+  from { left: 100%; }
+  to { left: -110%; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

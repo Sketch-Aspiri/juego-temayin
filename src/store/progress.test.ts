@@ -66,7 +66,7 @@ describe('sanitize', () => {
   });
 
   it('acota el volumen y valida los ajustes', () => {
-    expect(sanitizeSettings({ volume: 7, muted: true, touchControls: 'on' })).toEqual({ volume: 1, muted: true, touchControls: 'on' });
+    expect(sanitizeSettings({ volume: 7, muted: true, touchControls: 'on' })).toEqual({ volume: 1, muted: true, touchControls: 'on', introSeen: false });
     expect(sanitizeSettings({ volume: 'x', touchControls: 'otro' })).toEqual(DEFAULT_SETTINGS);
     expect(sanitizeSettings(undefined)).toEqual(DEFAULT_SETTINGS);
   });

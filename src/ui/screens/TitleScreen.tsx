@@ -29,6 +29,7 @@ function Backdrop() {
 
 export function TitleScreen() {
   const go = useAppStore((s) => s.go);
+  const playIntro = useAppStore((s) => s.playIntro);
   const best = useAppStore((s) => hiScore(s.progress));
   return (
     <main className="title">
@@ -39,6 +40,7 @@ export function TitleScreen() {
           <p className="logo__sub">La Aventura del Jaguar</p>
           <nav className="title__menu" aria-label="Menú principal">
             <button type="button" className="btn btn--primary btn--big" onClick={() => go('levels')} autoFocus>Jugar</button>
+            <button type="button" className="btn" onClick={() => playIntro(null)}>Historia</button>
             <button type="button" className="btn" onClick={() => go('settings')}>Ajustes</button>
           </nav>
           <ul className="controls-help">

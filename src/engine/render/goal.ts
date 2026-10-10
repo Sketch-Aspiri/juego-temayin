@@ -40,7 +40,7 @@ interface TohPose {
   footX: number;
   footY: number;
 }
-const TOH_POSES = {
+export const TOH_POSES = {
   perch: { frame: [24, 20, 444, 452], footX: 330, footY: 332 },
   perchLook: { frame: [524, 20, 396, 452], footX: 815, footY: 332 },
   perchTail: { frame: [1092, 16, 420, 380], footX: 1215, footY: 335 },
