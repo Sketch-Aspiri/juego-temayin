@@ -4,6 +4,7 @@ import type { World } from '../World';
 import type { Ctx } from './drawUtils';
 import { drawEnemySprite } from './enemies';
 import { drawCheckpoint, drawGoal } from './goal';
+import { drawPlatforms } from './platforms';
 import { drawCacao } from './props';
 import {
   drawFireballs,
@@ -73,6 +74,7 @@ export class Renderer {
     drawGoal(c, world, now);
     drawCheckpoint(c, world, now);
     this.drawTiles(world, theme, now);
+    drawPlatforms(c, world.platforms, world.camX);
     for (const it of world.items) if (!drawSnorkelItem(c, it, world.camX, now)) drawItemSprite(c, it, world.camX, now);
     for (const e of world.enemies) if (e.alive && e.active) drawEnemySprite(c, this.assets, e, world.camX);
     world.boss?.draw(c, this.assets, world.camX);
