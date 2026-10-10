@@ -22,7 +22,7 @@ export type EnemyId =
   | 'ants'
   | 'blueCrab'
   | 'barracuda';
-export type BossId = 'puas';
+export type BossId = 'puas' | 'kaiman';
 export type ThemeId = 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque';
 
 /** Estado de una partida que se arrastra de un nivel al siguiente. */

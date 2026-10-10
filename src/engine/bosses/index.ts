@@ -1,11 +1,13 @@
 import type { BossConfig } from '../level/types';
 import type { BossId } from '../types';
+import { Kaiman } from './kaiman';
 import { Puas } from './puas';
 import type { Boss, BossFactory } from './types';
 
 /** Registro de jefes. Para añadir uno: implementar `Boss`, añadir su id a `BossId` y registrarlo aquí. */
 const FACTORIES: Readonly<Record<BossId, BossFactory>> = {
   puas: (cfg) => new Puas(cfg),
+  kaiman: (cfg) => new Kaiman(cfg),
 };
 
 export function createBoss(config: BossConfig): Boss {
