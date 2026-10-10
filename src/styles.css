@@ -778,6 +778,10 @@ kbd {
 .intro-actor--carried {
   animation: intro-carried 5s ease-in forwards;
 }
+.intro-actor--descend {
+  filter: drop-shadow(0 0 18px rgba(150, 60, 220, 0.6));
+  animation: intro-descend 2.4s ease-out both, intro-bob 3s 2.4s ease-in-out infinite;
+}
 .intro-actor--fly-in {
   animation: intro-fly-in 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) both, intro-bob 2.6s 1.6s ease-in-out infinite;
 }
@@ -818,26 +822,6 @@ kbd {
   border-radius: 50%;
   background: #0b0716;
   animation: intro-moon 4.5s ease-in-out forwards;
-}
-
-.intro-camazotz {
-  position: absolute;
-  left: 50%;
-  top: 2%;
-  width: 52%;
-  transform: translateX(-50%);
-  fill: #1b0f2e;
-  filter: drop-shadow(0 0 18px rgba(150, 60, 220, 0.6));
-  animation: intro-descend 2.4s ease-out both;
-}
-.intro-camazotz__wings {
-  transform-origin: 50% 35%;
-  animation: intro-flap 0.9s ease-in-out infinite;
-}
-.intro-camazotz__eye {
-  fill: #ff4040;
-  filter: drop-shadow(0 0 6px #ff2020);
-  animation: intro-pulse 1.6s ease-in-out infinite;
 }
 
 .intro-bats {
@@ -988,10 +972,6 @@ kbd {
 @keyframes intro-descend {
   from { transform: translate(-50%, -80%) scale(0.6); opacity: 0; }
   to { transform: translateX(-50%) scale(1); opacity: 1; }
-}
-@keyframes intro-flap {
-  0%, 100% { transform: scaleY(1); }
-  50% { transform: scaleY(0.72); }
 }
 @keyframes intro-bat {
   from { left: 105%; transform: translateY(0); }

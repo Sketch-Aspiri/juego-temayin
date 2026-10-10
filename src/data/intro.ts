@@ -14,7 +14,7 @@ export interface SpriteRef {
 }
 
 /** Movimiento de entrada o en bucle de un personaje (clases `intro-actor--<anim>`). */
-export type ActorAnim = 'enter-left' | 'enter-right' | 'float' | 'carried' | 'fly-in' | 'still';
+export type ActorAnim = 'enter-left' | 'enter-right' | 'float' | 'carried' | 'fly-in' | 'descend' | 'still';
 
 export interface IntroActor {
   sprite: SpriteRef;
@@ -31,7 +31,7 @@ export interface IntroActor {
 }
 
 /** Efectos de escena dibujados con CSS/SVG. */
-export type IntroEffect = 'sunrise' | 'bats' | 'camazotz' | 'eclipse' | 'train';
+export type IntroEffect = 'sunrise' | 'bats' | 'eclipse' | 'train';
 
 /** Luz de la escena (filtro de color sobre el fondo). */
 export type IntroTone = 'dawn' | 'day' | 'night' | 'eclipse' | 'dusk';
@@ -49,6 +49,9 @@ export interface IntroScene {
 
 const TEMAYINA_SHEET = { file: 'personajes/temayina.webp', sheetW: 1536, sheetH: 1024 } as const;
 const TOH_SHEET = { file: 'personajes/toh.webp', sheetW: 1536, sheetH: 1024 } as const;
+/** `imagenes/nuevos/jefes/camazotz.atlas.json` y `complementos/historia.atlas.json`. */
+const CAMAZOTZ_SHEET = { file: 'bosses/camazotz.webp', sheetW: 1254, sheetH: 1254 } as const;
+const STORY_SHEET = { file: 'complementos/historia.webp', sheetW: 1536, sheetH: 1024 } as const;
 
 export const SPRITES = {
   temayin: { file: 'jaguar_titulo.webp', sheetW: 1157, sheetH: 1359, frame: [0, 0, 1157, 1359] },
@@ -57,6 +60,10 @@ export const SPRITES = {
   temayinaCaptive: { ...TEMAYINA_SHEET, frame: [589, 550, 315, 429] },
   tohPerch: { ...TOH_SHEET, frame: TOH_POSES.perch.frame },
   tohFly: { ...TOH_SHEET, frame: TOH_POSES.flyDown.frame },
+  camazotzNight: { ...CAMAZOTZ_SHEET, frame: [398, 1, 451, 429] },
+  camazotzEclipse: { ...CAMAZOTZ_SHEET, frame: [6, 808, 451, 382] },
+  sunDormant: { ...STORY_SHEET, frame: [65, 12, 444, 433] },
+  shadowCage: { ...STORY_SHEET, frame: [33, 451, 506, 555] },
   bat: { file: 'enemies/bat.webp', sheetW: 1254, sheetH: 1254, frame: [593, 216, 648, 313] },
   train: { file: 'complementos/tren.webp', sheetW: 1774, sheetH: 887, frame: [20, 100, 1745, 345] },
 } as const satisfies Readonly<Record<string, SpriteRef>>;
@@ -89,8 +96,11 @@ export const INTRO_SCENES: readonly IntroScene[] = [
     background: 'backgrounds/ruins.webp',
     tone: 'night',
     text: 'Pero una noche, Camazotz, el señor murciélago de Xibalbá, descendió sobre Palenque envuelto en sombras.',
-    actors: [{ sprite: SPRITES.temayinaStand, x: 66, bottom: 4, height: 62, flip: true, anim: 'still' }],
-    effects: ['bats', 'camazotz'],
+    actors: [
+      { sprite: SPRITES.temayinaStand, x: 66, bottom: 4, height: 62, flip: true, anim: 'still' },
+      { sprite: SPRITES.camazotzNight, x: 34, bottom: 38, height: 58, anim: 'descend' },
+    ],
+    effects: ['bats'],
   },
   {
     id: 'secuestro',
@@ -99,9 +109,12 @@ export const INTRO_SCENES: readonly IntroScene[] = [
     text: 'Se llevó a Temayina y al Sol de Jade. Si llega a su trono, la península quedará para siempre bajo un eclipse.',
     actors: [
       { sprite: SPRITES.temayin, x: 22, bottom: 4, height: 58, anim: 'still' },
-      { sprite: SPRITES.temayinaCaptive, x: 64, bottom: 30, height: 40, anim: 'carried' },
+      { sprite: SPRITES.camazotzEclipse, x: 62, bottom: 50, height: 46, flip: true, anim: 'float' },
+      { sprite: SPRITES.sunDormant, x: 80, bottom: 58, height: 14, anim: 'float' },
+      { sprite: SPRITES.temayinaCaptive, x: 64, bottom: 14, height: 36, anim: 'carried' },
+      { sprite: SPRITES.shadowCage, x: 64, bottom: 12, height: 42, anim: 'carried' },
     ],
-    effects: ['eclipse', 'camazotz', 'bats'],
+    effects: ['eclipse', 'bats'],
   },
   {
     id: 'tren',

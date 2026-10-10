@@ -39,22 +39,6 @@ function Actor({ actor }: { actor: IntroActor }) {
   );
 }
 
-/** Camazotz: silueta de murciélago gigante con ojos encendidos (aún sin hoja de arte propia). */
-function Camazotz() {
-  return (
-    <svg className="intro-camazotz" viewBox="0 0 400 200" aria-hidden="true">
-      <g className="intro-camazotz__wings">
-        <path d="M200 70 C150 20 80 10 10 60 C40 70 50 90 45 110 C70 95 90 105 95 125 C115 110 140 115 150 135 C165 115 185 110 200 120 Z" />
-        <path d="M200 70 C250 20 320 10 390 60 C360 70 350 90 355 110 C330 95 310 105 305 125 C285 110 260 115 250 135 C235 115 215 110 200 120 Z" />
-      </g>
-      <path d="M178 62 L170 20 L192 50 Z M222 62 L230 20 L208 50 Z" />
-      <ellipse cx="200" cy="95" rx="30" ry="45" />
-      <circle className="intro-camazotz__eye" cx="189" cy="78" r="5" />
-      <circle className="intro-camazotz__eye" cx="211" cy="78" r="5" />
-    </svg>
-  );
-}
-
 function Effect({ effect }: { effect: IntroEffect }) {
   switch (effect) {
     case 'sunrise':
@@ -65,8 +49,6 @@ function Effect({ effect }: { effect: IntroEffect }) {
           <div className="intro-moon" />
         </div>
       );
-    case 'camazotz':
-      return <Camazotz />;
     case 'bats':
       return (
         <div className="intro-bats" aria-hidden="true">
