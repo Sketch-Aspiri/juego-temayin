@@ -103,6 +103,8 @@ temayin_juego/
         types.ts               Interfaz Boss + BossFactory
         index.ts               Registro FACTORIES: Record<BossId, BossFactory> y createBoss
         puas.ts, puasDraw.ts   Púas el puercoespín (máquina de estados + dibujo)
+        kaiman/                Kaimán Moreleti: index (estados), attacks (olas), flood (crecida del agua), draw/drawBody, tuning
+        arena.ts               Cerrar arena, abrir muro de salida, premio
       level/
         types.ts               DSL: Op, BossConfig, LevelDef, WorldDef
         build.ts               buildLevel(def) -> BuiltLevel (grid, enemies, flagX, templeX, totalCoins, water, currents)
@@ -123,6 +125,7 @@ temayin_juego/
         helpers.ts             Atajos coati(...), urchin(...), howler(...), bats([x, fila]...), barracudas([x, fila]...)
         world1/                1-1-palenque.ts … 1-6-escarcega.ts (un archivo por nivel)
         world4/                4-2-xibalba.ts, 4-3-valladolid.ts
+        world2/                2-7-calkini.ts (jefe Kaimán)
         world5/                5-3-playa-del-carmen.ts
     store/                     Zustand + persistencia
       appStore.ts              useAppStore: screen, progress, settings, run, startLevel, finishLevel…
@@ -198,7 +201,7 @@ data/worlds.ts (WORLDS) ──> store/appStore.ts (startLevel) ──> ui/screen
 | Aliado | **Toh, el pájaro reloj** | Motmot de cola en forma de péndulo. Da pistas, marca checkpoints, narra el mapa. | Por crear (dibujo procedural en `render/sprites.ts` o sprite nuevo). |
 | Villano | **Camazotz** | Señor murciélago de Xibalbá (Popol Vuh). Jefe final de 3 fases. | Por crear (`BossId` `'camazotz'`). |
 | Jefe M1 | **Púas el puercoespín** | Embiste, rueda y dispara púas. | **Existe** (`bosses/puas.ts`, `BossId` `'puas'`). |
-| Jefe M2 | **Kaimán Moreleti** | Cocodrilo de pantano (*Crocodylus moreletii*). | Por crear (`'kaiman'`). |
+| Jefe M2 | **Kaimán Moreleti** | Cocodrilo de pantano (*Crocodylus moreletii*). | **Existe** (`bosses/kaiman/`, `BossId` `'kaiman'`; nivel 2-7). |
 | Jefe M3 | **Huay Chivo** | Brujo-cabra del folclor yucateco. | Por crear (`'huayChivo'`). |
 | Jefe M4 | **Huay Pek** | Perro espectral de la leyenda. | Por crear (`'huayPek'`). |
 | Jefe M5 | **Capitán Sargazo** | Monstruo de sargazo; mensaje ecológico. | Por crear (`'sargazo'`). |
