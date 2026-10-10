@@ -3,6 +3,7 @@ import { TAU } from '../constants';
 import type { Fireball, Item, Particle, Player, Popup, Quill } from '../entities/types';
 import { POPUP_LIFETIME, SPARK_LIFETIME } from '../entities/particles';
 import { outlined, type Ctx } from './drawUtils';
+import { drawSwimPose } from './playerSwim';
 import { drawCacao, drawItemArt } from './props';
 
 // Hoja de sprites del jugador.
@@ -41,6 +42,10 @@ export function drawPlayerSprite(c: Ctx, assets: Assets, p: Player, camX: number
   if (p.fire) {
     c.shadowColor = '#ff7a1a';
     c.shadowBlur = 12 + Math.sin(now / 80) * 4;
+  }
+  if (p.swimming && !dying && drawSwimPose(c, p)) {
+    c.restore();
+    return;
   }
   c.drawImage(
     assets.player,

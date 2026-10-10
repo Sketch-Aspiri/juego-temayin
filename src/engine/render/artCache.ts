@@ -47,6 +47,7 @@ export const PAINTED_ART: readonly string[] = [
   'complementos/banderas.webp',
   'complementos/piramide.webp',
   'personajes/toh.webp',
+  'personajes/jugador-mecanicas.webp',
   'objetos/objetos.webp',
   'mecanicas/mecanicas.webp',
   'mecanicas/efectos.webp',
