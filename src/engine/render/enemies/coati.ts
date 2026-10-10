@@ -5,7 +5,7 @@ const SCALE = 0.78;
 const CELL_W = 140;
 const CELL_H = 80;
 
-/** Coatí guardián (hoja `coati.png`: fila 0 camina, fila 1 muere). */
+/** Coatí guardián (hoja `coati.webp`: fila 0 camina, fila 1 muere). */
 export const drawCoati: EnemyDrawFn = (c, assets, e) => {
   if (e.vx < 0) c.scale(-1, 1);
   const row = e.dead ? 1 : 0;

@@ -3,10 +3,10 @@ import { bakedFrame, type Frame } from './artCache';
 import { drawChili, drawCoin, drawLife, drawShield, type Ctx } from './drawUtils';
 
 /**
- * Objetos pintados del atlas `objetos/objetos.png` (1254×1254, 3×3).
+ * Objetos pintados del atlas `objetos/objetos.webp` (1254×1254, 3×3).
  * Los rectángulos se midieron por cajas de alfa de cada pieza (alfa > 64).
  */
-export const OBJECTS_FILE = 'objetos/objetos.png';
+export const OBJECTS_FILE = 'objetos/objetos.webp';
 
 export const OBJECT_FRAMES = {
   cacao: [56, 84, 316, 300],

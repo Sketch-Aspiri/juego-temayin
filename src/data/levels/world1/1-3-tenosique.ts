@@ -16,7 +16,7 @@ import { ants, coati, tarantula } from '../helpers';
 export const LEVEL_1_3: LevelDef = {
   id: '1-3',
   name: 'Tenosique',
-  width: 215,
+  width: 218,
   theme: 'jungle',
   checkpoint: 102,
   ops: [

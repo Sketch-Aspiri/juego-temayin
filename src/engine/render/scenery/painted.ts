@@ -3,7 +3,7 @@ import { lazyImage, makeCanvas } from '../artCache';
 import type { Scenery } from '../backgrounds';
 
 /**
- * Fondos pintados (public/assets/backgrounds/*.png, 1672×941) con parallax.
+ * Fondos pintados (public/assets/backgrounds/*.webp, 1672×941) con parallax.
  *
  * La imagen se escala en modo «cover» al lienzo lógico (960×560) y se hornea UNA vez
  * en dos tiras: la lejana (imagen completa) y la cercana (solo la franja inferior,

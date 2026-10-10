@@ -6,7 +6,7 @@ import type { Ctx } from '../drawUtils';
 import { type AtlasFrame, drawAtlasFrame } from './atlas';
 import type { EnemyDrawFn } from './types';
 
-/** Cuadros reales de `enemies/tarantula.png` (`tarantula.atlas.json`); anclaje bajo las patas. */
+/** Cuadros reales de `enemies/tarantula.webp` (`tarantula.atlas.json`); anclaje bajo las patas. */
 const OPEN: AtlasFrame = { x: 41, y: 142, w: 620, h: 386, ax: 350, ay: 520 };
 const TUCKED: AtlasFrame = { x: 780, y: 191, w: 406, h: 323, ax: 985, ay: 505 };
 const HANGING: AtlasFrame = { x: 143, y: 568, w: 418, h: 576, ax: 350, ay: 1135 };

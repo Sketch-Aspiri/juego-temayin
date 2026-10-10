@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { audio } from './engine/audio';
 import { loadAssets, type Assets } from './engine/assets';
+import { warmArt } from './engine/render/artCache';
 import { useAppStore } from './store/appStore';
 import { AssetsContext } from './ui/assetsContext';
 import { GameScreen } from './ui/screens/GameScreen';
@@ -18,6 +19,7 @@ export function App() {
     void loadAssets().then((a) => {
       if (cancelled) return;
       setAssets(a);
+      warmArt();
       useAppStore.getState().go('title');
     });
     return () => {

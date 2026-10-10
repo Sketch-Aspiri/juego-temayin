@@ -3,6 +3,8 @@ import { createBoss, type Boss } from './bosses';
 import {
   COINS_PER_LIFE,
   DEFAULT_LEVEL_TIME,
+  GOAL_PAN_RATE,
+  GOAL_VIEW_WIDTH,
   GROUND,
   OXYGEN_MAX,
   PLAYER_START_TILE,
@@ -310,6 +312,7 @@ export class World {
   }
 
   private updateFlag(dt: number): void {
+    this.panToGoal(dt);
     const p = this.player;
     const ground = GROUND * T;
     const flagBottom = ground - 2 * T;
@@ -339,6 +342,12 @@ export class World {
       this.phase = 'done';
       this.phaseT = 0;
     }
+  }
+
+  /** Durante la meta, desliza la cámara (solo hacia delante) hasta encuadrar la pirámide completa. */
+  private panToGoal(dt: number): void {
+    const target = Math.min(this.level.templeX * T + GOAL_VIEW_WIDTH - VW, this.width * T - VW);
+    if (target > this.camX) this.camX += (target - this.camX) * Math.min(1, dt * GOAL_PAN_RATE);
   }
 
   firework(): void {

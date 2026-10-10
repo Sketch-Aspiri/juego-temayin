@@ -5,7 +5,7 @@ const SCALE = 0.72;
 const CELL_W = 90;
 const CELL_H = 80;
 
-/** Erizo del Caribe (hoja `erizo.png`: fila 0 camina, fila 2 muere). */
+/** Erizo del Caribe (hoja `erizo.webp`: fila 0 camina, fila 2 muere). */
 export const drawUrchin: EnemyDrawFn = (c, assets, e) => {
   if (e.vx < 0) c.scale(-1, 1);
   const row = e.dead ? 2 : 0;

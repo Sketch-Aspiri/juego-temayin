@@ -50,7 +50,7 @@ export function TitleScreen() {
           </ul>
           {best > 0 && <p className="title__record">RÉCORD: {best}</p>}
         </div>
-        <img className="title__jaguar" src={assetUrl('jaguar_titulo.png')} alt="Temayin, el jaguar aventurero" />
+        <img className="title__jaguar" src={assetUrl('jaguar_titulo.webp')} alt="Temayin, el jaguar aventurero" />
       </div>
     </main>
   );

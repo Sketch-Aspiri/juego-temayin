@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GROUND, ROWS } from '../engine/constants';
+import { GOAL_VIEW_WIDTH, GROUND, ROWS, T } from '../engine/constants';
 import { isAirborne } from '../engine/entities/enemies';
 import { buildLevel } from '../engine/level/build';
 import { waterColumn } from '../engine/level/zones';
@@ -34,6 +34,8 @@ describe.each(ALL_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, def) 
   it('la meta y el templo están dentro del nivel y con suelo bajo la bandera', () => {
     expect(lvl.flagX).toBeLessThan(def.width);
     expect(lvl.templeX).toBeLessThan(def.width);
+    // La pirámide completa cabe en el nivel, para que la cámara pueda encuadrarla.
+    expect(lvl.templeX * T + GOAL_VIEW_WIDTH).toBeLessThanOrEqual(def.width * T);
     expect(solid(lvl.flagX, GROUND)).toBe(true);
   });
 

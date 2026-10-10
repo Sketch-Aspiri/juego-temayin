@@ -27,10 +27,10 @@ export interface ThemeDef {
 }
 
 // Fondos pintados (public/assets/backgrounds); el escenario procedural sirve de respaldo mientras cargan.
-const jungleArt = paintedScenery('jungle.png', jungleScenery);
-const beachArt = paintedScenery('beach.png', beachScenery, { nearTop: 0.7 });
-const lairArt = paintedScenery('lair.png', jungleScenery);
-const caveArt = paintedScenery('cave.png', caveScenery, { nearTop: 0.7 });
+const jungleArt = paintedScenery('jungle.webp', jungleScenery);
+const beachArt = paintedScenery('beach.webp', beachScenery, { nearTop: 0.7 });
+const lairArt = paintedScenery('lair.webp', jungleScenery);
+const caveArt = paintedScenery('cave.webp', caveScenery, { nearTop: 0.7 });
 
 /**
  * Registro de temas visuales. Para añadir uno: declarar su id en `ThemeId`,
@@ -99,7 +99,7 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
     platform: 'wood',
     water: { fill: '#4d6b3c', foam: '#9fb88a' },
   },
-  // 1-1: templos de Palenque entre la selva (fondo `ruins.png`).
+  // 1-1: templos de Palenque entre la selva (fondo `ruins.webp`).
   palenque: {
     id: 'palenque',
     sky: ['#3f8fe0', '#bfe6ff'],

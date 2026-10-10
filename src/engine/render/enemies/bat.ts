@@ -3,7 +3,7 @@ import type { Ctx } from '../drawUtils';
 import { type AtlasFrame, drawAtlasFrame } from './atlas';
 import type { EnemyDrawFn } from './types';
 
-/** Cuadros reales de `enemies/bat.png` (`bat.atlas.json`); anclaje en el centro del cuerpo. */
+/** Cuadros reales de `enemies/bat.webp` (`bat.atlas.json`); anclaje en el centro del cuerpo. */
 const FRAMES: readonly AtlasFrame[] = [
   { x: 108, y: 107, w: 460, h: 424, ax: 450, ay: 420 }, // alas arriba
   { x: 593, y: 216, w: 648, h: 313, ax: 975, ay: 420 }, // alas extendidas
@@ -51,7 +51,7 @@ function drawBatFallback(c: Ctx, t: number): void {
   c.fillRect(1.5, -5, 1.5, 3);
 }
 
-/** Murciélago (hoja `enemies/bat.png`, mira a la derecha); al morir, alas recogidas. */
+/** Murciélago (hoja `enemies/bat.webp`, mira a la derecha); al morir, alas recogidas. */
 export const drawBat: EnemyDrawFn = (c, assets, e) => {
   if (e.vx < 0) c.scale(-1, 1);
   const frame = e.dead ? FRAMES[3] : FRAMES[FLAP_CYCLE[Math.floor(e.t * FLAP_FPS) % FLAP_CYCLE.length]];

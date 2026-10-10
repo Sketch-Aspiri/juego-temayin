@@ -9,11 +9,11 @@ import type { Ctx } from './drawUtils';
  * Los rectángulos se midieron por cajas de alfa (alfa > 64) de cada pieza.
  */
 
-const FLAGS_FILE = 'complementos/banderas.png';
-const PYRAMID_FILE = 'complementos/piramide.png';
-const TOH_FILE = 'personajes/toh.png';
+const FLAGS_FILE = 'complementos/banderas.webp';
+const PYRAMID_FILE = 'complementos/piramide.webp';
+const TOH_FILE = 'personajes/toh.webp';
 
-/** banderas.png (1774×887): 4 fotogramas de ondeo con el anclaje a la derecha. */
+/** banderas.webp (1774×887): 4 fotogramas de ondeo con el anclaje a la derecha. */
 const FLAG_FRAMES: readonly Frame[] = [
   [16, 16, 412, 316],
   [460, 20, 412, 312],
@@ -28,11 +28,11 @@ const POLE_BASE: Frame = [112, 712, 216, 148];
 const CHECKPOINT_POST: Frame = [960, 412, 296, 444];
 const POST_TIP_X = 1105 - 960;
 const POST_TIP_Y = 418 - 412;
-/** piramide.png (1536×1024): la pirámide completa. */
+/** piramide.webp (1536×1024): la pirámide completa. */
 const PYRAMID_FRAME: Frame = [10, 71, 1516, 865];
 
 /**
- * toh.png (1536×1024, 3×2): rectángulo y punto de apoyo de las patas de cada pose.
+ * toh.webp (1536×1024, 3×2): rectángulo y punto de apoyo de las patas de cada pose.
  * Las poses de vuelo quedan medidas para escenas futuras (carteles, mapa).
  */
 interface TohPose {

@@ -49,3 +49,8 @@ export const OXYGEN_MAX = 10;
 export const OXYGEN_REFILL_RATE = 6;
 /** Segundos sumergidos en los que el snorkel congela el consumo de oxígeno. */
 export const SNORKEL_TIME = 15;
+
+/** Ancho (px) que ocupa la pirámide de meta a partir de `templeX` (340 px + margen); la cámara la encuadra completa al llegar a la bandera. */
+export const GOAL_VIEW_WIDTH = 9 * T;
+/** Rapidez (1/s) con la que la cámara se desliza hacia la pirámide durante la secuencia de meta. */
+export const GOAL_PAN_RATE = 2.5;

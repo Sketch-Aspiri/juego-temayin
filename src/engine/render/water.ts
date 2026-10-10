@@ -23,11 +23,11 @@ const WAVE_SPEED = 2.4;
 const WAVE_STEP = 8;
 
 // Atlas de mecánicas (3×3): racimo de burbujas respirables, medido por caja de alfa.
-const MECHANICS_FILE = 'mecanicas/mecanicas.png';
+const MECHANICS_FILE = 'mecanicas/mecanicas.webp';
 const BUBBLES_FRAME: Frame = [1138, 426, 266, 238];
 const VENT_ART_H = 34;
 // Atlas de efectos (4×3, celdas de 362 px): fila 2 = brazada bajo el agua.
-const EFFECTS_FILE = 'mecanicas/efectos.png';
+const EFFECTS_FILE = 'mecanicas/efectos.webp';
 const FX_CELL = 362;
 const STROKE_FRAMES: readonly Frame[] = [0, 1, 2, 3].map((i) => [i * FX_CELL, FX_CELL, FX_CELL, FX_CELL] as const);
 const STROKE_FX_H = 76;

@@ -11,15 +11,15 @@ export interface Assets {
 }
 
 const MANIFEST: Readonly<Record<keyof Assets, string>> = {
-  player: 'guepardo.png',
-  boss: 'jefe.png',
-  bossBig: 'jefe_grande.png',
-  urchin: 'erizo.png',
-  coati: 'coati.png',
-  bat: 'enemies/bat.png',
-  howler: 'enemies/howler.png',
-  tarantula: 'enemies/tarantula.png',
-  title: 'jaguar_titulo.png',
+  player: 'guepardo.webp',
+  boss: 'jefe.webp',
+  bossBig: 'jefe_grande.webp',
+  urchin: 'erizo.webp',
+  coati: 'coati.webp',
+  bat: 'enemies/bat.webp',
+  howler: 'enemies/howler.webp',
+  tarantula: 'enemies/tarantula.webp',
+  title: 'jaguar_titulo.webp',
 };
 
 /** URL pública de una imagen del juego (respeta la ruta base de Vite). */

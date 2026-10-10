@@ -32,6 +32,31 @@ export function lazyImage(file: string): HTMLImageElement | null {
   return isReady(img) ? img : null;
 }
 
+/**
+ * Arte pintado que usan los niveles. `warmArt` lo descarga en segundo plano al
+ * arrancar, para que fondos, meta y objetos ya estén listos al entrar al nivel.
+ */
+export const PAINTED_ART: readonly string[] = [
+  'backgrounds/jungle.webp',
+  'backgrounds/ruins.webp',
+  'backgrounds/river.webp',
+  'backgrounds/swamp.webp',
+  'backgrounds/lair.webp',
+  'backgrounds/cave.webp',
+  'backgrounds/beach.webp',
+  'complementos/banderas.webp',
+  'complementos/piramide.webp',
+  'personajes/toh.webp',
+  'objetos/objetos.webp',
+  'mecanicas/mecanicas.webp',
+  'mecanicas/efectos.webp',
+];
+
+/** Inicia la descarga de todo el arte pintado (sin bloquear). */
+export function warmArt(files: readonly string[] = PAINTED_ART): void {
+  for (const file of files) lazyImage(file);
+}
+
 export function makeCanvas(w: number, h: number): HTMLCanvasElement {
   const canvas = document.createElement('canvas');
   canvas.width = Math.max(1, Math.ceil(w));

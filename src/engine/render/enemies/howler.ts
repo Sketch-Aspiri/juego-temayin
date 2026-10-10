@@ -5,7 +5,7 @@ import { type AtlasFrame, drawAtlasFrame } from './atlas';
 import type { EnemyDrawFn } from './types';
 
 /**
- * Cuadros reales de `enemies/howler.png` (`howler.atlas.json`), en el orden de
+ * Cuadros reales de `enemies/howler.webp` (`howler.atlas.json`), en el orden de
  * `HOWLER_STATE`: reposo, grito, brazo atrás con fruto, lanzar. Anclaje entre las patas.
  */
 const FRAMES: readonly AtlasFrame[] = [

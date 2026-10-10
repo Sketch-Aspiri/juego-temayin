@@ -25,7 +25,7 @@ export function Hud({ hud }: HudProps) {
         </div>
         <span
           className="life-icon"
-          style={{ backgroundImage: `url(${assetUrl('guepardo.png')})` }}
+          style={{ backgroundImage: `url(${assetUrl('guepardo.webp')})` }}
           role="img"
           aria-label="Vidas"
         />

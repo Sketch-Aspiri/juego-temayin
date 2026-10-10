@@ -10,7 +10,7 @@ export function BossBanner({ boss }: BossBannerProps) {
   if (boss.intro) {
     return (
       <div className="boss-intro" role="alert">
-        <img src={assetUrl('jefe_grande.png')} alt="" className="boss-intro__img" />
+        <img src={assetUrl('jefe_grande.webp')} alt="" className="boss-intro__img" />
         <div className="boss-intro__text">
           <p className="boss-intro__warn">¡CUIDADO!</p>
           <h2 className="boss-intro__name">{boss.name}</h2>
