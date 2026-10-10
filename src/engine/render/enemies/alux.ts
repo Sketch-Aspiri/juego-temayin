@@ -2,6 +2,7 @@ import { TAU } from '../../constants';
 import { ALUX_STATE, aluxLoot } from '../../entities/enemies/alux';
 import type { Enemy } from '../../entities/types';
 import type { Ctx } from '../drawUtils';
+import { type AtlasFrame, drawLazyFrame, footFrame } from './atlas';
 import type { EnemyDrawFn } from './types';
 
 /**
@@ -20,6 +21,24 @@ const STEP_SPEED_ROAM = 10;
 const STEP_SPEED_FLEE = 26;
 const STEP_SWING = 3;
 const DEAD_SQUASH = 0.45;
+
+/** Cuadros de `enemies/alux.webp` (`alux.atlas.json`), mirando a la derecha. */
+const ALUX_FILE = 'enemies/alux.webp';
+const ART = {
+  curious: footFrame(90, 63, 463, 514),
+  carry: footFrame(715, 70, 463, 506),
+  run: footFrame(120, 655, 446, 514),
+  giveBack: footFrame(666, 687, 541, 485),
+} as const satisfies Readonly<Record<string, AtlasFrame>>;
+/** ~510 px de alto en la hoja → ~33 px en pantalla (caja de 26 × 32). */
+const ART_SCALE = 0.065;
+
+/** Pasea curioso, huye corriendo, carga el cacao robado y, al pisarlo, lo devuelve. */
+function aluxFrame(e: Enemy): AtlasFrame {
+  if (e.dead) return ART.giveBack;
+  if (aluxLoot(e) > 0) return ART.carry;
+  return e.state === ALUX_STATE.flee ? ART.run : ART.curious;
+}
 
 function legs(c: Ctx, e: Enemy): void {
   const speed = e.state === ALUX_STATE.flee ? STEP_SPEED_FLEE : STEP_SPEED_ROAM;
@@ -97,6 +116,7 @@ function sack(c: Ctx): void {
 
 export const drawAlux: EnemyDrawFn = (c, _assets, e) => {
   if (e.vx < 0) c.scale(-1, 1);
+  if (drawLazyFrame(c, ALUX_FILE, aluxFrame(e), ART_SCALE)) return;
   if (e.dead) c.scale(1, DEAD_SQUASH);
   legs(c, e);
   if (aluxLoot(e) > 0) sack(c);

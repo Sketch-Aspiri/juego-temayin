@@ -1,6 +1,7 @@
 import { TAU } from '../../constants';
 import { SHADE_STATE } from '../../entities/enemies/shade';
 import type { Ctx } from '../drawUtils';
+import { type AtlasFrame, drawLazyFrame, footFrame } from './atlas';
 import type { EnemyDrawFn } from './types';
 
 /** Sombra de Xibalbá: velo oscuro translúcido con ojos de brasa y cola ondulante. */
@@ -12,6 +13,21 @@ const TAIL_WAVE_SPEED = 6;
 const TAIL_WAVE = 4;
 const PULSE_SPEED = 4;
 const DEAD_FADE = 0.4;
+
+/** Cuadros de `enemies/shade.webp` (`shade.atlas.json`): reposo, desplazamiento, disolución. */
+const SHADE_FILE = 'enemies/shade.webp';
+const ART = {
+  idle: footFrame(134, 74, 391, 498),
+  drift: footFrame(654, 160, 549, 356),
+  fade: footFrame(709, 679, 511, 516),
+} as const satisfies Readonly<Record<string, AtlasFrame>>;
+/** ~500 px de alto en la hoja → ~37 px en pantalla (caja de 30 × 36). */
+const ART_SCALE = 0.074;
+
+function shadeFrame(dead: boolean, state: number): AtlasFrame {
+  if (dead) return ART.fade;
+  return state === SHADE_STATE.drift ? ART.drift : ART.idle;
+}
 
 /** Cuerpo con forma de gota invertida y borde inferior en jirones. */
 function veil(c: Ctx, t: number): void {
@@ -51,7 +67,9 @@ function eyes(c: Ctx, t: number, drifting: boolean): void {
 export const drawShade: EnemyDrawFn = (c, _assets, e) => {
   if (e.vx < 0) c.scale(-1, 1);
   if (e.dead) c.globalAlpha = Math.max(0, 1 - e.dead / DEAD_FADE);
-  veil(c, e.t);
-  eyes(c, e.t, e.state === SHADE_STATE.drift);
+  if (!drawLazyFrame(c, SHADE_FILE, shadeFrame(Boolean(e.dead), e.state), ART_SCALE)) {
+    veil(c, e.t);
+    eyes(c, e.t, e.state === SHADE_STATE.drift);
+  }
   c.globalAlpha = 1;
 };

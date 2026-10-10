@@ -1,4 +1,5 @@
 import { TAU } from '../../constants';
+import { centerFrame, drawLazyFrame } from './atlas';
 import type { EnemyDrawFn } from './types';
 
 /** Radio (px) de la rueda; la caja del enemigo mide 36×36. */
@@ -12,11 +13,22 @@ const FIBER = '#d9c27a';
 const FIBER_DARK = '#a8904a';
 const HUB = '#4a4a4a';
 
+/** Rueda pintada de `enemies/wheel.webp` (`wheel.atlas.json`); el giro lo da el lienzo. */
+const WHEEL_FILE = 'enemies/wheel.webp';
+const WHEEL_FRAME = centerFrame(47, 39, 538, 524);
+/** ~530 px de diámetro en la hoja → 36 px en pantalla. */
+const WHEEL_SCALE = (RADIUS * 2) / 530;
+
 /** Rueda de henequén: aro de madera envuelto en fibra, con rayos que giran al rodar. */
 export const drawWheel: EnemyDrawFn = (c, _assets, e) => {
   const dir = e.vx < 0 ? -1 : 1;
   const angle = e.t * SPIN_RATE * TAU * dir;
   c.translate(0, -RADIUS);
+  c.save();
+  c.rotate(angle);
+  const painted = drawLazyFrame(c, WHEEL_FILE, WHEEL_FRAME, WHEEL_SCALE);
+  c.restore();
+  if (painted) return;
   c.fillStyle = RIM_DARK;
   c.beginPath();
   c.arc(0, 0, RADIUS, 0, TAU);

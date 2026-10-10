@@ -1,6 +1,7 @@
 import { TAU } from '../../constants';
 import { PIRATE_CRAB_STATE } from '../../entities/enemies/pirateCrab';
 import type { Ctx } from '../drawUtils';
+import { type AtlasFrame, drawLazyFrame, footFrame } from './atlas';
 import type { EnemyDrawFn } from './types';
 
 /** Paleta del cangrejo pirata: caparazón naranja, pañuelo rojo con lunares blancos. */
@@ -13,6 +14,19 @@ const BANDANA_DOT = '#fff4e8';
 const CLAW = '#f39a5e';
 const STEP_SPEED = 16;
 const CROUCH_SQUASH = 0.8;
+
+/** Cuadros de `enemies/pirateCrab.webp` (`pirateCrab.atlas.json`), mirando a la derecha. */
+const PIRATE_CRAB_FILE = 'enemies/pirateCrab.webp';
+const ART: readonly AtlasFrame[] = [
+  footFrame(48, 256, 602, 345), // walk: reposo
+  footFrame(22, 820, 599, 317), // crouch: preparación
+  footFrame(650, 96, 561, 469), // jump: salto
+];
+/** ~600 px de ancho en la hoja → ~41 px en pantalla (caja de 38 × 28). */
+const ART_SCALE = 0.068;
+/** Balanceo al caminar con el cuadro pintado (rad y ciclos por segundo). */
+const WADDLE = 0.06;
+const WADDLE_SPEED = 12;
 const DEAD_SQUASH = 0.45;
 
 function drawLegs(c: Ctx, t: number, airborne: boolean): void {
@@ -126,6 +140,13 @@ export const drawPirateCrab: EnemyDrawFn = (c, _assets, e) => {
   if (e.dead) c.scale(1, DEAD_SQUASH);
   else if (e.state === PIRATE_CRAB_STATE.crouch) c.scale(1.08, CROUCH_SQUASH);
   const dir = e.vx >= 0 ? 1 : -1;
+  const state = e.dead ? PIRATE_CRAB_STATE.walk : e.state;
+  c.save();
+  c.scale(dir, 1);
+  if (state === PIRATE_CRAB_STATE.walk && !e.dead) c.rotate(Math.sin(e.t * WADDLE_SPEED) * WADDLE);
+  const painted = drawLazyFrame(c, PIRATE_CRAB_FILE, ART[state] ?? ART[0], ART_SCALE);
+  c.restore();
+  if (painted) return;
   drawLegs(c, e.dead ? 0 : e.t, e.state === PIRATE_CRAB_STATE.jump);
   drawShell(c);
   drawClaws(c, e.dead ? 0 : e.t);
