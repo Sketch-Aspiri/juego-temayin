@@ -56,6 +56,7 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 ## Contenido actual
 
 - Mundo 1 · Selva de Palenque: 1-1 Palenque, 1-2 Boca del Cerro, 1-3 Tenosique, 1-4 El Triunfo, 1-5 Candelaria, 1-6 Escárcega (jefe Púas).
+- Mundo 2 · Golfo de Campeche: 2-7 Calkiní (jefe Kaimán Moreleti: mordida, olas con la cola, emerge bajo el jugador; en la fase 2 sube el agua).
 - Mundo 4 · Cenotes y Xibalbá: 4-2 Xibalbá, 4-3 Valladolid.
 - Mundo 5 · Riviera Maya: 5-3 Playa del Carmen.
 - Cinemática de introducción con la historia (`src/data/intro.ts`): se muestra al empezar 1-1 por primera vez y desde el botón «Historia» del título.
