@@ -4,6 +4,7 @@ import {
   COINS_PER_LIFE,
   DEFAULT_LEVEL_TIME,
   GROUND,
+  OXYGEN_MAX,
   PLAYER_START_TILE,
   ROWS,
   T,
@@ -14,11 +15,13 @@ import { createItem, updateItems } from './entities/items';
 import { makeParticle, stepParticles, stepPopups } from './entities/particles';
 import { animatePlayer, createPlayer, updatePlayer } from './entities/player';
 import { updateFireballs, updateQuills } from './entities/projectiles';
+import { confineSwimmers, swimmerPositions } from './entities/swim';
 import type { Enemy, Fireball, Item, Particle, Player, Popup, Quill } from './entities/types';
 import type { HudState } from './hud';
 import type { Input } from './input';
 import { buildLevel, type BuiltLevel } from './level/build';
 import type { LevelDef } from './level/types';
+import { waterAt } from './level/zones';
 import type { SolidFn } from './physics';
 import { ITEM_BLOCKS, isSolidTile } from './tiles';
 import type { Session } from './types';
@@ -252,7 +255,9 @@ export class World {
     if (p.x > this.checkpointTile * T) this.checkpointReached = true;
     if (p.x + p.w >= this.level.flagX * T + T / 2 - 3) return this.reachFlag();
 
+    const swimmers = swimmerPositions(this.enemies);
     updateEnemies(this, dt);
+    confineSwimmers(this, swimmers);
     updateItems(this, dt);
     this.boss?.update(this, dt);
     updateQuills(this, dt);
@@ -350,6 +355,14 @@ export class World {
 
   // ---------- Estado para la interfaz ----------
 
+  /** Oxígeno 0..1 para el HUD; `null` con los pies fuera del agua y el oxígeno lleno. */
+  private oxygenRatio(): number | null {
+    const p = this.player;
+    const feetWet = waterAt(this.level.water, p.x + p.w / 2, p.y + p.h - 1) !== null;
+    if (!feetWet && p.oxygen >= OXYGEN_MAX) return null;
+    return Math.max(0, Math.min(1, p.oxygen / OXYGEN_MAX));
+  }
+
   hudState(spawnId: number): HudState {
     const b = this.boss;
     return {
@@ -361,6 +374,8 @@ export class World {
       levelName: this.def.name,
       shield: this.player.shield,
       fire: this.player.fire,
+      oxygen: this.oxygenRatio(),
+      snorkel: this.player.snorkel > 0,
       boss: b && b.hudVisible ? { name: b.name, hp: Math.max(0, b.hp), maxHp: b.maxHp, intro: b.intro } : null,
       spawnId,
     };

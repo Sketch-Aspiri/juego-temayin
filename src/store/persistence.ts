@@ -1,23 +1,39 @@
+import { migrateV2Progress } from './migrations';
 import { EMPTY_PROGRESS, sanitizeProgress, type Progress } from './progress';
 import { DEFAULT_SETTINGS, sanitizeSettings, type Settings } from './settings';
 
-const STORAGE_KEY = 'temayin:v2';
+/** Clave actual del guardado (campaña del Tren Maya). */
+export const STORAGE_KEY = 'temayin:v3';
+/** Clave de la campaña anterior: se lee y migra una sola vez; nunca se borra (permite volver atrás). */
+export const LEGACY_KEY = 'temayin:v2';
 
 export interface SavedState {
   progress: Progress;
   settings: Settings;
 }
 
+const emptyState = (): SavedState => ({ progress: EMPTY_PROGRESS, settings: DEFAULT_SETTINGS });
+
+/** Interpreta el JSON guardado; `migrate` transforma el progreso crudo antes de sanearlo. */
+function parseSaved(text: string, migrate: (raw: unknown) => unknown): SavedState {
+  const data: unknown = JSON.parse(text);
+  const obj = typeof data === 'object' && data !== null ? (data as Record<string, unknown>) : {};
+  return { progress: sanitizeProgress(migrate(obj.progress)), settings: sanitizeSettings(obj.settings) };
+}
+
 export function loadSaved(): SavedState {
   try {
-    const text = globalThis.localStorage?.getItem(STORAGE_KEY);
-    if (!text) return { progress: EMPTY_PROGRESS, settings: DEFAULT_SETTINGS };
-    const data: unknown = JSON.parse(text);
-    const obj = typeof data === 'object' && data !== null ? (data as Record<string, unknown>) : {};
-    return { progress: sanitizeProgress(obj.progress), settings: sanitizeSettings(obj.settings) };
+    const storage = globalThis.localStorage;
+    const text = storage?.getItem(STORAGE_KEY);
+    if (text) return parseSaved(text, (raw) => raw);
+    const legacy = storage?.getItem(LEGACY_KEY);
+    if (!legacy) return emptyState();
+    const migrated = parseSaved(legacy, migrateV2Progress);
+    save(migrated);
+    return migrated;
   } catch {
     // Almacenamiento bloqueado o datos corruptos: se empieza de cero.
-    return { progress: EMPTY_PROGRESS, settings: DEFAULT_SETTINGS };
+    return emptyState();
   }
 }
 

@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { GROUND, ROWS } from '../engine/constants';
+import { isAirborne } from '../engine/entities/enemies';
 import { buildLevel } from '../engine/level/build';
+import { waterColumn } from '../engine/level/zones';
 import { isSolidTile } from '../engine/tiles';
 import { ALL_LEVELS, nextLevelId, WORLDS } from './worlds';
 
@@ -43,10 +45,16 @@ describe.each(ALL_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, def) 
     expect(x).toBeLessThan(lvl.flagX);
   });
 
+  // Un hoyo cubierto de agua navegable (op `water`) se cruza a nado: no cuenta como hoyo.
+  const swimmable = (x: number): boolean => {
+    const z = waterColumn(lvl.water, x);
+    return z !== null && z.surface < ROWS;
+  };
+
   it('ningún hoyo es imposible de cruzar', () => {
     let start = -1;
     for (let x = 0; x <= def.width; x++) {
-      const isPit = x < def.width && !solid(x, GROUND);
+      const isPit = x < def.width && !solid(x, GROUND) && !swimmable(x);
       if (isPit && start < 0) start = x;
       if (!isPit && start >= 0) {
         const width = x - start;
@@ -66,7 +74,7 @@ describe.each(ALL_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, def) 
   });
 
   it('los enemigos terrestres tienen suelo debajo', () => {
-    for (const e of lvl.enemies.filter((s) => s.id !== 'bat')) {
+    for (const e of lvl.enemies.filter((s) => !isAirborne(s.id))) {
       expect(solid(e.tx, e.ty + 1), `${e.id} en ${e.tx}`).toBe(true);
     }
   });

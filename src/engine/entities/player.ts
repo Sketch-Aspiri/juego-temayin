@@ -1,9 +1,14 @@
-import { GROUND, PLAYER_H, PLAYER_W, T } from '../constants';
+import { GROUND, OXYGEN_MAX, PLAYER_H, PLAYER_W, T } from '../constants';
 import { moveX, moveY } from '../physics';
 import type { World } from '../World';
+import { clampSeabed, currentDrift, isSwimming, swimStep, trySurfaceLeap, updateOxygen } from './swim';
 import type { Player } from './types';
 
 export const MAX_FIREBALLS = 2;
+
+const COYOTE_TIME = 0.09;
+const JUMP_BUFFER_TIME = 0.12;
+const LAND_TIME = 0.12;
 
 export function createPlayer(tx: number): Player {
   return {
@@ -26,11 +31,43 @@ export function createPlayer(tx: number): Player {
     inv: 0,
     land: 0,
     throwT: 0,
+    swimming: false,
+    oxygen: OXYGEN_MAX,
+    snorkel: 0,
+    strokeT: 0,
   };
 }
 
 /** Movimiento, salto, disparo y colisiones del jugador durante un paso de simulación. */
 export function updatePlayer(world: World, dt: number): void {
+  const p = world.player;
+  p.jumpBuf = world.input.consumeJump() ? JUMP_BUFFER_TIME : p.jumpBuf - dt;
+  shoot(world, dt);
+  p.swimming = isSwimming(world.level.water, p);
+  if (p.swimming) swimStep(world, dt);
+  else {
+    runStep(world, dt);
+    jumpStep(world, dt);
+  }
+  moveAndCollide(world, dt);
+  updateOxygen(world, dt);
+  if (p.land > 0) p.land -= dt;
+  if (p.inv > 0) p.inv -= dt;
+  if (p.strokeT > 0) p.strokeT -= dt;
+}
+
+function shoot(world: World, dt: number): void {
+  const p = world.player;
+  if (world.input.consumeFire() && p.fire && world.fireballs.length < MAX_FIREBALLS) {
+    world.fireballs.push({ x: p.x + p.w / 2 + p.face * 22, y: p.y + 26, vx: p.face * 520, vy: 120, t: 0, gone: false });
+    p.throwT = 0.15;
+    world.audio.play('fire');
+  }
+  if (p.throwT > 0) p.throwT -= dt;
+}
+
+/** Carrera en tierra: aceleración, derrape y fricción. */
+function runStep(world: World, dt: number): void {
   const p = world.player;
   const held = world.input.held;
   const maxV = held.run ? 400 : 260;
@@ -48,44 +85,49 @@ export function updatePlayer(world: World, dt: number): void {
     p.vx = Math.abs(p.vx) <= f ? 0 : p.vx - Math.sign(p.vx) * f;
   }
   if (Math.abs(p.vx) > maxV && p.onGround) p.vx -= Math.sign(p.vx) * 900 * dt;
+}
 
-  p.coyote = p.onGround ? 0.09 : p.coyote - dt;
-  p.jumpBuf = world.input.consumeJump() ? 0.12 : p.jumpBuf - dt;
-
-  if (world.input.consumeFire() && p.fire && world.fireballs.length < MAX_FIREBALLS) {
-    world.fireballs.push({ x: p.x + p.w / 2 + p.face * 22, y: p.y + 26, vx: p.face * 520, vy: 120, t: 0, gone: false });
-    p.throwT = 0.15;
-    world.audio.play('fire');
-  }
-  if (p.throwT > 0) p.throwT -= dt;
-
+/** Salto con coyote y búfer, salto variable y gravedad normal. */
+function jumpStep(world: World, dt: number): void {
+  const p = world.player;
+  p.coyote = p.onGround ? COYOTE_TIME : p.coyote - dt;
   if (p.jumpBuf > 0 && p.coyote > 0) {
     p.vy = -(830 + Math.abs(p.vx) * 0.25);
     p.coyote = 0;
     p.jumpBuf = 0;
     p.onGround = false;
     world.audio.play('jump');
-  }
-  if (!held.jump && p.vy < -300) p.vy = -300; // salto variable
+  } else trySurfaceLeap(world); // con el centro ya fuera del agua aún puede saltar a la orilla
+  // Salto variable; el salto para salir del agua (strokeT > 0) no se recorta, así un
+  // toque basta para subir a la orilla.
+  if (!world.input.held.jump && p.vy < -300 && p.strokeT <= 0) p.vy = -300;
   p.vy = Math.min(p.vy + 2200 * dt, 1000);
+}
 
+/** Aplica velocidad + corriente contra la cuadrícula, el borde de la cámara y el fondo del agua. */
+function moveAndCollide(world: World, dt: number): void {
+  const p = world.player;
+  const [driftX, driftY] = currentDrift(world, p, dt);
   const wasGround = p.onGround;
-  if (moveX(p, p.vx * dt, world.solidAt)) p.vx = 0;
+  if (moveX(p, p.vx * dt + driftX, world.solidAt)) p.vx = 0;
   if (p.x < world.camX) {
     p.x = world.camX;
     p.vx = Math.max(0, p.vx);
   }
-  const head = moveY(p, p.vy * dt, world.solidAt);
+  const head = moveY(p, p.vy * dt + driftY, world.solidAt);
   if (head) world.hitBlock(head[0], head[1]);
-  if (!wasGround && p.onGround) p.land = 0.12;
-  if (p.land > 0) p.land -= dt;
-  if (p.inv > 0) p.inv -= dt;
+  if (p.swimming) clampSeabed(p);
+  if (!wasGround && p.onGround && !p.swimming) p.land = LAND_TIME;
 }
 
 /** Elige la animación y el fotograma según el estado del jugador. */
 export function animatePlayer(p: Player, dt: number): void {
   p.animT += dt;
-  if (!p.onGround) {
+  if (p.swimming) {
+    // Brazada: pose de impulso; si no, flota con el ciclo lento de caída.
+    p.anim = p.strokeT > 0 ? 'jump' : 'fall';
+    p.frame = p.strokeT > 0 ? 3 : Math.floor(p.animT * 4) % PLAYER_FRAMES.fall;
+  } else if (!p.onGround) {
     if (p.vy < -350) {
       p.anim = 'jump';
       p.frame = p.vy < -650 ? 2 : 3;

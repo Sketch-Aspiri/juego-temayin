@@ -1,4 +1,4 @@
-import { ROWS, T } from '../constants';
+import { ROWS, SNORKEL_TIME, T } from '../constants';
 import { moveX, moveY, overlap } from '../physics';
 import type { ItemKind } from '../tiles';
 import type { World } from '../World';
@@ -17,8 +17,8 @@ export function createItem(kind: ItemKind, tx: number, ty: number): Item {
     vy: 0,
     onGround: false,
     rise: T,
-    // El chile se queda quieto; escudo y vida se mueven al salir.
-    still: kind === 'fire',
+    // El chile y el snorkel se quedan quietos; escudo y vida se mueven al salir.
+    still: kind === 'fire' || kind === 'snorkel',
     gone: false,
   };
 }
@@ -56,6 +56,12 @@ function collectItem(world: World, it: Item): void {
       break;
     case 'fire':
       world.player.fire = true;
+      world.addScore(1000, it.x, it.y);
+      world.audio.play('power');
+      break;
+    case 'snorkel':
+      // Congela el consumo de oxígeno durante SNORKEL_TIME segundos sumergido.
+      world.player.snorkel = SNORKEL_TIME;
       world.addScore(1000, it.x, it.y);
       world.audio.play('power');
       break;

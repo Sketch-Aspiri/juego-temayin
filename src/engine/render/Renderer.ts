@@ -1,9 +1,11 @@
 import type { Assets } from '../assets';
 import { GROUND, ROWS, T, TAU, VH, VW } from '../constants';
 import type { World } from '../World';
-import { drawCoin, type Ctx } from './drawUtils';
+import type { Ctx } from './drawUtils';
+import { drawEnemySprite } from './enemies';
+import { drawCheckpoint, drawGoal } from './goal';
+import { drawCacao } from './props';
 import {
-  drawEnemySprite,
   drawFireballs,
   drawItemSprite,
   drawParticles,
@@ -12,9 +14,10 @@ import {
 } from './sprites';
 import { createTextures, FIXED_TEXTURE, type Textures } from './textures';
 import { THEMES, type ThemeDef } from './themes';
+import { drawSnorkelItem, drawWaterLayer } from './water';
 import type { ThemeId } from '../types';
 
-const BLOCK_QUESTION = new Set(['?', 'M', 'L', 'F']);
+const BLOCK_QUESTION = new Set(['?', 'M', 'L', 'F', 'S']);
 const BUMP_HEIGHT = 10;
 const BUMP_TIME = 0.15;
 
@@ -67,14 +70,16 @@ export class Renderer {
       const k = Math.min(1, world.shake * 3);
       c.translate((Math.random() - 0.5) * 12 * k, (Math.random() - 0.5) * 8 * k);
     }
-    this.drawFlagAndTemple(world);
+    drawGoal(c, world, now);
+    drawCheckpoint(c, world, now);
     this.drawTiles(world, theme, now);
-    for (const it of world.items) drawItemSprite(c, it, world.camX, now);
+    for (const it of world.items) if (!drawSnorkelItem(c, it, world.camX, now)) drawItemSprite(c, it, world.camX, now);
     for (const e of world.enemies) if (e.alive && e.active) drawEnemySprite(c, this.assets, e, world.camX);
     world.boss?.draw(c, this.assets, world.camX);
     drawQuills(c, world.quills, world.camX);
     drawPlayerSprite(c, this.assets, world.player, world.camX, world.phase === 'dying', world.phaseT, now);
     drawFireballs(c, world.fireballs, world.camX);
+    drawWaterLayer(c, world, theme.water, now);
     drawParticles(c, world.particles, world.popups, world.camX);
     c.restore();
   }
@@ -110,7 +115,7 @@ export class Renderer {
         const bump = world.bumps.get(`${tx},${ty}`);
         if (bump) sy -= Math.sin((bump / BUMP_TIME) * Math.PI) * BUMP_HEIGHT;
         if (t === 'o') {
-          drawCoin(c, sx + T / 2, sy + T / 2, now / 150 + tx);
+          drawCacao(c, sx + T / 2, sy + T / 2, now / 150 + tx);
           continue;
         }
         c.drawImage(this.textures[this.textureFor(world, theme, t, tx, ty)], sx, sy);
@@ -125,57 +130,7 @@ export class Renderer {
   private textureFor(world: World, theme: ThemeDef, tile: string, tx: number, ty: number) {
     if (tile === 'G') return world.solid(tx, ty - 1) ? theme.groundBody : theme.groundTop;
     if (tile === 'X') return theme.platform;
+    if (tile === 'S') return 'question'; // bloque snorkel
     return FIXED_TEXTURE[tile] ?? 'stone';
-  }
-
-  private drawFlagAndTemple(world: World): void {
-    const c = this.ctx;
-    const fx = world.level.flagX * T + T / 2 - world.camX;
-    if (fx > -100 && fx < VW + 100) {
-      c.fillStyle = '#ddd';
-      c.fillRect(fx - 3, 2 * T, 6, GROUND * T - 2 * T);
-      c.fillStyle = '#ffd23f';
-      c.beginPath();
-      c.arc(fx, 2 * T - 6, 10, 0, TAU);
-      c.fill();
-      const fy = world.flagY;
-      c.fillStyle = '#1f7a3a';
-      c.beginPath();
-      c.moveTo(fx - 3, fy);
-      c.lineTo(fx - 70, fy + 25);
-      c.lineTo(fx - 3, fy + 50);
-      c.fill();
-      c.fillStyle = '#ffd23f';
-      c.beginPath();
-      c.arc(fx - 28, fy + 25, 7, 0, TAU);
-      c.fill();
-      for (let i = 0; i < 3; i++) {
-        c.beginPath();
-        c.arc(fx - 36 + i * 8, fy + 15, 3.2, 0, TAU);
-        c.fill();
-      }
-      c.fillStyle = '#8a8478';
-      c.fillRect(fx - 18, GROUND * T - 10, 36, 10);
-    }
-
-    // Pirámide maya.
-    const tx = world.level.templeX * T - world.camX;
-    if (tx > -400 && tx < VW + 50) {
-      const base = GROUND * T;
-      for (let i = 0; i < 6; i++) {
-        const w = 300 - i * 44;
-        const h = 34;
-        c.fillStyle = i % 2 ? '#a8865a' : '#b99668';
-        c.fillRect(tx + (300 - w) / 2, base - (i + 1) * h, w, h);
-        c.fillStyle = 'rgba(0,0,0,.15)';
-        c.fillRect(tx + (300 - w) / 2, base - (i + 1) * h + h - 4, w, 4);
-      }
-      c.fillStyle = '#8a6a42';
-      c.fillRect(tx + 120, base - 6 * 34 - 46, 60, 46);
-      c.fillStyle = '#2a1a0a';
-      c.fillRect(tx + 138, base - 6 * 34 - 34, 24, 34);
-      c.fillStyle = '#7a5a36';
-      for (let i = 0; i < 12; i++) c.fillRect(tx + 130, base - 12 - i * 17, 40, 5);
-    }
   }
 }

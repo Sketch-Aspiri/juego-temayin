@@ -4,6 +4,9 @@ export interface Assets {
   bossBig: HTMLImageElement;
   urchin: HTMLImageElement;
   coati: HTMLImageElement;
+  bat: HTMLImageElement;
+  howler: HTMLImageElement;
+  tarantula: HTMLImageElement;
   title: HTMLImageElement;
 }
 
@@ -13,6 +16,9 @@ const MANIFEST: Readonly<Record<keyof Assets, string>> = {
   bossBig: 'jefe_grande.png',
   urchin: 'erizo.png',
   coati: 'coati.png',
+  bat: 'enemies/bat.png',
+  howler: 'enemies/howler.png',
+  tarantula: 'enemies/tarantula.png',
   title: 'jaguar_titulo.png',
 };
 

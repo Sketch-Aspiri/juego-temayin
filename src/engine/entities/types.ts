@@ -19,6 +19,14 @@ export interface Player extends Body {
   land: number;
   /** Segundos restantes de la pose de lanzar fuego. */
   throwT: number;
+  /** El centro del cuerpo está dentro de una zona de agua (física de nado). */
+  swimming: boolean;
+  /** Segundos de oxígeno restantes (0..OXYGEN_MAX). */
+  oxygen: number;
+  /** Segundos sumergidos que aún congela el snorkel (0 = sin snorkel). */
+  snorkel: number;
+  /** Segundos restantes del efecto visual de la última brazada. */
+  strokeT: number;
 }
 
 export interface Enemy extends Body {
@@ -31,6 +39,10 @@ export interface Enemy extends Body {
   alive: boolean;
   active: boolean;
   t: number;
+  /** Estado libre para comportamientos propios (p. ej. 0 = acecha, 1 = ataca). */
+  state: number;
+  /** Temporizador libre para comportamientos propios (segundos). */
+  timer: number;
 }
 
 export interface Item extends Body {
@@ -72,6 +84,8 @@ export interface Fireball {
 }
 
 export interface Quill {
+  /** Aspecto del proyectil: púa (jefe Púas) o fruto (saraguato). Por defecto, púa. */
+  kind?: 'quill' | 'fruit';
   x: number;
   y: number;
   vx: number;

@@ -1,6 +1,7 @@
 import { GROUND, ROWS } from '../constants';
 import type { EnemyId } from '../types';
 import type { LevelDef } from './types';
+import type { BubbleVent, CurrentZone, WaterZone } from './zones';
 
 export interface EnemySpawn {
   id: EnemyId;
@@ -16,6 +17,12 @@ export interface BuiltLevel {
   templeX: number;
   /** Monedas sueltas + bloques de moneda: base para calcular las estrellas. */
   totalCoins: number;
+  /** Zonas de agua navegable (op `water`). */
+  water: readonly WaterZone[];
+  /** Corrientes (op `current`). */
+  currents: readonly CurrentZone[];
+  /** Respiraderos de burbujas que recargan oxígeno (op `bubbles`). */
+  bubbles: readonly BubbleVent[];
 }
 
 /** Convierte la definición declarativa de un nivel en una cuadrícula de bloques. */
@@ -33,6 +40,9 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   }
 
   const enemies: EnemySpawn[] = [];
+  const water: WaterZone[] = [];
+  const currents: CurrentZone[] = [];
+  const bubbles: BubbleVent[] = [];
   let flagX = W - 10;
   let templeX = W - 5;
 
@@ -80,6 +90,17 @@ export function buildLevel(def: LevelDef): BuiltLevel {
       case 'spawn':
         enemies.push({ id: op[1], tx: op[2], ty: op[3] ?? GROUND - 1 });
         break;
+      case 'water':
+        water.push({ x0: op[1], x1: op[2], surface: op[3] });
+        break;
+      case 'current': {
+        const [, x0, x1, y0, y1, vx, vy] = op;
+        currents.push({ x0, x1, y0, y1, vx, vy });
+        break;
+      }
+      case 'bubbles':
+        bubbles.push({ x: op[1], y: op[2] });
+        break;
       case 'pit':
         break;
     }
@@ -88,5 +109,5 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   let totalCoins = 0;
   for (const row of grid) for (const c of row) if (c === 'o' || c === '?') totalCoins++;
 
-  return { grid, width: W, enemies, flagX, templeX, totalCoins };
+  return { grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles };
 }

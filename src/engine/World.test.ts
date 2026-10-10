@@ -89,7 +89,7 @@ describe('World', () => {
   });
 
   it('la sala del jefe despierta a Púas al entrar en la arena', () => {
-    const { world } = make('1-3');
+    const { world } = make('1-6');
     expect(world.boss?.hudVisible).toBe(false);
     world.player.x = 55 * T;
     world.update(STEP);

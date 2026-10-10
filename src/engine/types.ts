@@ -11,9 +11,19 @@ export interface Body extends Rect {
   onGround: boolean;
 }
 
-export type EnemyId = 'coati' | 'urchin' | 'bat';
+export type EnemyId =
+  | 'coati'
+  | 'urchin'
+  | 'bat'
+  // Mundo 1 · Selva de Palenque (AGENTS.md §4.5)
+  | 'howler'
+  | 'tarantula'
+  | 'nauyaca'
+  | 'ants'
+  | 'blueCrab'
+  | 'barracuda';
 export type BossId = 'puas';
-export type ThemeId = 'jungle' | 'beach' | 'lair' | 'cave';
+export type ThemeId = 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque';
 
 /** Estado de una partida que se arrastra de un nivel al siguiente. */
 export interface Session {

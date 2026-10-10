@@ -1,0 +1,73 @@
+import type { ItemKind } from '../tiles';
+import { bakedFrame, type Frame } from './artCache';
+import { drawChili, drawCoin, drawLife, drawShield, type Ctx } from './drawUtils';
+
+/**
+ * Objetos pintados del atlas `objetos/objetos.png` (1254×1254, 3×3).
+ * Los rectángulos se midieron por cajas de alfa de cada pieza (alfa > 64).
+ */
+export const OBJECTS_FILE = 'objetos/objetos.png';
+
+export const OBJECT_FRAMES = {
+  cacao: [56, 84, 316, 300],
+  chile: [492, 40, 276, 368],
+  jadeHeart: [884, 88, 340, 300],
+  shield: [28, 444, 372, 376],
+  snorkel: [432, 448, 404, 372],
+  ball: [900, 480, 320, 324],
+  rope: [28, 868, 392, 340],
+  glyph: [492, 864, 272, 336],
+  ticket: [836, 920, 392, 264],
+} as const satisfies Readonly<Record<string, Frame>>;
+
+export type ObjectId = keyof typeof OBJECT_FRAMES;
+
+/** Altura en pantalla de los objetos que salen de los bloques. */
+const ITEM_HEIGHT = 34;
+/** Altura en pantalla del grano de cacao (moneda). */
+const CACAO_HEIGHT = 30;
+/** Ancho mínimo relativo al girar el cacao (para que no desaparezca de canto). */
+const CACAO_MIN_SPIN = 0.22;
+
+/**
+ * Objeto del atlas que representa cada `ItemKind`. Es parcial a propósito: si se
+ * añade un `ItemKind` nuevo (p. ej. el snorkel) basta con mapearlo aquí.
+ */
+const ITEM_ART: Readonly<Partial<Record<ItemKind, ObjectId>>> = {
+  life: 'jadeHeart',
+  fire: 'chile',
+  shield: 'shield',
+  snorkel: 'snorkel',
+};
+
+/** Lienzo horneado de un objeto a la altura indicada (o `null` si el atlas no ha cargado). */
+export function objectSprite(id: ObjectId, height: number): HTMLCanvasElement | null {
+  const frame = OBJECT_FRAMES[id];
+  return bakedFrame(OBJECTS_FILE, frame, height / frame[3]);
+}
+
+/** Dibuja un objeto del atlas centrado en (x, y); devuelve `false` si aún no hay arte. */
+export function drawObject(c: Ctx, id: ObjectId, x: number, y: number, height: number): boolean {
+  const img = objectSprite(id, height);
+  if (!img) return false;
+  c.drawImage(img, Math.round(x - img.width / 2), Math.round(y - img.height / 2));
+  return true;
+}
+
+/** Grano de cacao (la moneda del juego) girando sobre su eje vertical. */
+export function drawCacao(c: Ctx, x: number, y: number, phase: number): void {
+  const img = objectSprite('cacao', CACAO_HEIGHT);
+  if (!img) return drawCoin(c, x, y, phase);
+  const spin = Math.max(CACAO_MIN_SPIN, Math.abs(Math.cos(phase)));
+  const w = img.width * spin;
+  c.drawImage(img, x - w / 2, y - img.height / 2, w, img.height);
+}
+
+/** Objeto que sale de un bloque (corazón de jade, chile habanero, escudo, snorkel de caracol). */
+export function drawItemArt(c: Ctx, kind: ItemKind, x: number, y: number, now: number): void {
+  const art = ITEM_ART[kind];
+  if (art && drawObject(c, art, x, y, ITEM_HEIGHT)) return;
+  if (kind === 'life') drawLife(c, x, y);
+  else if (kind === 'fire') drawChili(c, x, y, 1, now);
+  else drawShield(c, x, y);
+}

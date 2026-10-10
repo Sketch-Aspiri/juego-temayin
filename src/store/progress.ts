@@ -24,11 +24,15 @@ export function recordCompletion(progress: Progress, result: LevelResult): Progr
   return { levels: { ...progress.levels, [result.levelId]: record } };
 }
 
-/** Un nivel está disponible si es el primero o el anterior ya se completó. */
+/**
+ * Un nivel está disponible si es el primero, si el anterior ya se completó o si
+ * tiene récord propio (p. ej. niveles migrados desde la v2 que quedaron detrás
+ * de niveles nuevos sin completar).
+ */
 export function isUnlocked(progress: Progress, levelId: string): boolean {
   const i = ALL_LEVELS.findIndex((l) => l.id === levelId);
   if (i < 0) return false;
-  if (i === 0) return true;
+  if (i === 0 || !!progress.levels[levelId]) return true;
   return !!progress.levels[ALL_LEVELS[i - 1].id];
 }
 

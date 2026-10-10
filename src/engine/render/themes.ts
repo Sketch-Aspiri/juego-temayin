@@ -1,5 +1,9 @@
 import type { ThemeId } from '../types';
 import { beachScenery, caveScenery, jungleScenery, type Scenery } from './backgrounds';
+import { paintedScenery } from './scenery/painted';
+import { palenqueScenery } from './scenery/palenque';
+import { riverScenery } from './scenery/river';
+import { swampScenery } from './scenery/swamp';
 import type { TexId } from './textures';
 
 export interface WaterStyle {
@@ -22,16 +26,23 @@ export interface ThemeDef {
   water?: WaterStyle;
 }
 
+// Fondos pintados (public/assets/backgrounds); el escenario procedural sirve de respaldo mientras cargan.
+const jungleArt = paintedScenery('jungle.png', jungleScenery);
+const beachArt = paintedScenery('beach.png', beachScenery, { nearTop: 0.7 });
+const lairArt = paintedScenery('lair.png', jungleScenery);
+const caveArt = paintedScenery('cave.png', caveScenery, { nearTop: 0.7 });
+
 /**
  * Registro de temas visuales. Para añadir uno: declarar su id en `ThemeId`,
- * escribir su `scenery` en `backgrounds.ts` y registrarlo aquí.
+ * escribir su `scenery` (procedural en `backgrounds.ts` o pintado con `paintedScenery`)
+ * y registrarlo aquí.
  */
 export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
   jungle: {
     id: 'jungle',
     sky: ['#5ec8f5', '#bdeeff'],
     sun: true,
-    scenery: jungleScenery,
+    scenery: jungleArt,
     groundTop: 'grass',
     groundBody: 'dirt',
     platform: 'stone',
@@ -40,7 +51,7 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
     id: 'beach',
     sky: ['#3fb7f0', '#d9f6ff'],
     sun: true,
-    scenery: beachScenery,
+    scenery: beachArt,
     groundTop: 'sandTop',
     groundBody: 'sand',
     platform: 'wood',
@@ -49,9 +60,9 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
   lair: {
     id: 'lair',
     sky: ['#3a1f4a', '#d0663a'],
-    tint: 'rgba(60,10,40,.22)',
+    tint: 'rgba(60,10,40,.12)',
     sun: true,
-    scenery: jungleScenery,
+    scenery: lairArt,
     groundTop: 'grass',
     groundBody: 'dirt',
     platform: 'stone',
@@ -60,10 +71,42 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
     id: 'cave',
     sky: ['#071822', '#1d5c66'],
     sun: false,
-    scenery: caveScenery,
+    scenery: caveArt,
     groundTop: 'rockTop',
     groundBody: 'rock',
     platform: 'crystal',
     water: { fill: '#118fa6', foam: '#6fe3d6' },
+  },
+  // Mundo 1: cañón del Usumacinta y pantanos de Tabasco (AGENTS.md §4.7).
+  river: {
+    id: 'river',
+    sky: ['#4fb3e0', '#c8ecf5'],
+    sun: true,
+    scenery: riverScenery,
+    groundTop: 'grass',
+    groundBody: 'dirt',
+    platform: 'stone',
+    water: { fill: '#3f8f8a', foam: '#a8e0d0' },
+  },
+  swamp: {
+    id: 'swamp',
+    sky: ['#7fa38a', '#d3e2c8'],
+    tint: 'rgba(60,80,50,.15)',
+    sun: false,
+    scenery: swampScenery,
+    groundTop: 'grass',
+    groundBody: 'dirt',
+    platform: 'wood',
+    water: { fill: '#4d6b3c', foam: '#9fb88a' },
+  },
+  // 1-1: templos de Palenque entre la selva (fondo `ruins.png`).
+  palenque: {
+    id: 'palenque',
+    sky: ['#3f8fe0', '#bfe6ff'],
+    sun: false,
+    scenery: palenqueScenery,
+    groundTop: 'grass',
+    groundBody: 'dirt',
+    platform: 'stone',
   },
 };

@@ -1,8 +1,9 @@
 import { isReady, type Assets } from '../assets';
-import { TAU, VW } from '../constants';
-import type { Enemy, Fireball, Item, Particle, Player, Popup, Quill } from '../entities/types';
+import { TAU } from '../constants';
+import type { Fireball, Item, Particle, Player, Popup, Quill } from '../entities/types';
 import { POPUP_LIFETIME, SPARK_LIFETIME } from '../entities/particles';
-import { drawChili, drawCoin, drawLife, drawShield, outlined, type Ctx } from './drawUtils';
+import { outlined, type Ctx } from './drawUtils';
+import { drawCacao, drawItemArt } from './props';
 
 // Hoja de sprites del jugador.
 const PLAYER_CELL_W = 170;
@@ -55,79 +56,10 @@ export function drawLifeIcon(c: Ctx, assets: Assets, x: number, y: number, scale
   c.drawImage(assets.player, 0, ANIM_ROW.idle * PLAYER_CELL_H, PLAYER_CELL_W, PLAYER_CELL_H, x, y, PLAYER_CELL_W * scale, PLAYER_CELL_H * scale);
 }
 
-function drawBat(c: Ctx, e: Enemy): void {
-  const flap = Math.sin(e.t * 18);
-  c.fillStyle = '#3b2a52';
-  for (const side of [-1, 1]) {
-    c.beginPath();
-    c.moveTo(side * 4, -14);
-    c.quadraticCurveTo(side * 22, -14 - flap * 14, side * 30, -8 + flap * 6);
-    c.quadraticCurveTo(side * 22, -6, side * 16, -2);
-    c.quadraticCurveTo(side * 10, -8, side * 4, -4);
-    c.fill();
-  }
-  c.fillStyle = '#54397a';
-  c.beginPath();
-  c.ellipse(0, -10, 9, 11, 0, 0, TAU);
-  c.fill();
-  // orejas
-  c.fillStyle = '#3b2a52';
-  for (const side of [-1, 1]) {
-    c.beginPath();
-    c.moveTo(side * 3, -19);
-    c.lineTo(side * 8, -29);
-    c.lineTo(side * 9, -17);
-    c.fill();
-  }
-  // ojos y colmillos
-  c.fillStyle = '#ff4d4d';
-  c.beginPath();
-  c.arc(-3.5, -12, 2, 0, TAU);
-  c.arc(3.5, -12, 2, 0, TAU);
-  c.fill();
-  c.fillStyle = '#fff';
-  c.fillRect(-3, -5, 1.5, 3);
-  c.fillRect(1.5, -5, 1.5, 3);
-}
-
-export function drawEnemySprite(c: Ctx, assets: Assets, e: Enemy, camX: number): void {
-  const x = e.x - camX;
-  if (x < -60 || x > VW + 60) return;
-  c.save();
-  c.translate(x + e.w / 2, e.y + e.h);
-  if (e.flip) {
-    c.translate(0, -e.h / 2);
-    c.scale(1, -1);
-    c.translate(0, e.h / 2);
-  }
-  if (e.id === 'bat') {
-    c.translate(0, 0);
-    if (e.vx > 0) c.scale(-1, 1);
-    drawBat(c, e);
-  } else if (e.id === 'coati') {
-    // Coatí guardián (se puede pisar).
-    if (e.vx < 0) c.scale(-1, 1);
-    const s = 0.78;
-    const row = e.dead ? 1 : 0;
-    const fr = e.dead ? Math.min(6, Math.floor(e.dead * 14)) : Math.floor(e.t * 12) % 8;
-    if (isReady(assets.coati)) c.drawImage(assets.coati, fr * 140, row * 80, 140, 80, -70 * s, -79 * s, 140 * s, 80 * s);
-  } else {
-    // Erizo del Caribe (no se puede pisar).
-    if (e.vx < 0) c.scale(-1, 1);
-    const s = 0.72;
-    const row = e.dead ? 2 : 0;
-    const fr = e.dead ? Math.min(2, Math.floor(e.dead * 8)) : Math.floor(e.t * 10) % 9;
-    if (isReady(assets.urchin)) c.drawImage(assets.urchin, fr * 90, row * 80, 90, 80, -45 * s, -79 * s, 90 * s, 80 * s);
-  }
-  c.restore();
-}
-
 export function drawItemSprite(c: Ctx, it: Item, camX: number, now: number): void {
   const x = it.x + it.w / 2 - camX;
   const y = it.y + it.h / 2 + Math.sin(now / 150) * 1.5;
-  if (it.kind === 'life') drawLife(c, x, y);
-  else if (it.kind === 'fire') drawChili(c, x, y, 1, now);
-  else drawShield(c, x, y);
+  drawItemArt(c, it.kind, x, y, now);
 }
 
 export function drawFireballs(c: Ctx, list: readonly Fireball[], camX: number): void {
@@ -151,8 +83,29 @@ export function drawFireballs(c: Ctx, list: readonly Fireball[], camX: number): 
   }
 }
 
+/** Fruto (zapote) que lanza el saraguato. */
+function drawFruit(c: Ctx, x: number, y: number): void {
+  c.fillStyle = '#8a4b1f';
+  c.strokeStyle = '#2b1608';
+  c.lineWidth = 2;
+  c.beginPath();
+  c.ellipse(x, y, 8, 7, 0, 0, Math.PI * 2);
+  c.fill();
+  c.stroke();
+  c.fillStyle = 'rgba(255,220,170,.55)';
+  c.beginPath();
+  c.ellipse(x - 3, y - 3, 3, 2, -0.5, 0, Math.PI * 2);
+  c.fill();
+  c.fillStyle = '#3f7a2a';
+  c.fillRect(x - 1, y - 11, 2, 5);
+}
+
 export function drawQuills(c: Ctx, list: readonly Quill[], camX: number): void {
   for (const q of list) {
+    if (q.kind === 'fruit') {
+      drawFruit(c, q.x - camX, q.y);
+      continue;
+    }
     c.save();
     c.translate(q.x - camX, q.y);
     c.rotate(Math.atan2(q.vy, q.vx));
@@ -177,7 +130,7 @@ export function drawParticles(c: Ctx, list: readonly Particle[], popups: readonl
     const x = q.x - camX;
     switch (q.kind) {
       case 'coin':
-        drawCoin(c, x, q.y, q.t * 25);
+        drawCacao(c, x, q.y, q.t * 25);
         break;
       case 'brick':
         c.save();

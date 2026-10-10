@@ -21,3 +21,31 @@ export const COINS_PER_LIFE = 100;
 export const DEATH_DELAY = 3;
 
 export const TAU = Math.PI * 2;
+
+// ---------- Nado y oxígeno (AGENTS.md §5.1) ----------
+/** Gravedad dentro del agua (px/s²); la normal es 2200. */
+export const SWIM_GRAVITY = 600;
+/** Velocidad máxima de hundimiento (px/s): 3 bloques/s. */
+export const MAX_SINK_SPEED = 120;
+/** Frenado al entrar al agua cayendo más rápido que MAX_SINK_SPEED (px/s²). */
+export const SWIM_ENTRY_BRAKE = 3000;
+/** Velocidad vertical de una brazada (px/s): sube ~2 bloques por brazada. */
+export const SWIM_STROKE = 320;
+/** Salto para salir del agua desde la superficie (px/s): supera ~3 bloques sobre la superficie. */
+export const SWIM_EXIT_JUMP = 760;
+/** Velocidad horizontal máxima nadando (px/s): 4,5 bloques/s. */
+export const SWIM_MAX_SPEED = 180;
+/** Aceleración horizontal nadando (px/s²). */
+export const SWIM_ACCEL = 900;
+/** Frenado horizontal del agua sin pulsar dirección (px/s²). */
+export const SWIM_DRAG = 500;
+/** Profundidad (px desde la parte de arriba del cuerpo) que cuenta como "cabeza". */
+export const SWIM_HEAD_DEPTH = 12;
+/** Duración del efecto visual de brazada (s). */
+export const STROKE_FX_TIME = 0.32;
+/** Segundos de oxígeno con la cabeza bajo el agua. */
+export const OXYGEN_MAX = 10;
+/** Oxígeno recuperado por segundo en la superficie o en burbujas. */
+export const OXYGEN_REFILL_RATE = 6;
+/** Segundos sumergidos en los que el snorkel congela el consumo de oxígeno. */
+export const SNORKEL_TIME = 15;

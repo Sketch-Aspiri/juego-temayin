@@ -1,14 +1,29 @@
 import type { LevelDef, WorldDef } from '../engine/level/types';
-import { LEVEL_1_1, LEVEL_1_2, LEVEL_1_3 } from './levels/world1';
-import { LEVEL_2_1, LEVEL_2_2 } from './levels/world2';
+import { LEVEL_1_1 } from './levels/world1/1-1-palenque';
+import { LEVEL_1_2 } from './levels/world1/1-2-boca-del-cerro';
+import { LEVEL_1_3 } from './levels/world1/1-3-tenosique';
+import { LEVEL_1_4 } from './levels/world1/1-4-el-triunfo';
+import { LEVEL_1_5 } from './levels/world1/1-5-candelaria';
+import { LEVEL_1_6 } from './levels/world1/1-6-escarcega';
+import { LEVEL_4_2 } from './levels/world4/4-2-xibalba';
+import { LEVEL_4_3 } from './levels/world4/4-3-valladolid';
+import { LEVEL_5_3 } from './levels/world5/5-3-playa-del-carmen';
 
 /**
- * Campaña completa. Para añadir niveles: crear su `LevelDef` en `data/levels/`
- * y añadirlo (o un mundo nuevo) aquí. La progresión y el selector se actualizan solos.
+ * Campaña del Tren Maya (AGENTS.md §4.3). Un archivo por nivel en
+ * `data/levels/world<N>/<id>-<estación>.ts`. Solo se registran mundos con niveles
+ * (la prueba exige `levels.length > 0`); los mundos 2, 3, 6 y 7 llegarán después.
+ * El orden del array define el desbloqueo lineal y `nextLevelId`.
  */
 export const WORLDS: readonly WorldDef[] = [
-  { id: 'selva', number: 1, name: 'Selva y Costa', levels: [LEVEL_1_1, LEVEL_1_2, LEVEL_1_3] },
-  { id: 'cenote', number: 2, name: 'Cenotes', levels: [LEVEL_2_1, LEVEL_2_2] },
+  {
+    id: 'selva-palenque',
+    number: 1,
+    name: 'Selva de Palenque',
+    levels: [LEVEL_1_1, LEVEL_1_2, LEVEL_1_3, LEVEL_1_4, LEVEL_1_5, LEVEL_1_6],
+  },
+  { id: 'cenotes-xibalba', number: 4, name: 'Cenotes y Xibalbá', levels: [LEVEL_4_2, LEVEL_4_3] },
+  { id: 'riviera-maya', number: 5, name: 'Riviera Maya', levels: [LEVEL_5_3] },
 ];
 
 export const ALL_LEVELS: readonly LevelDef[] = WORLDS.flatMap((w) => w.levels);

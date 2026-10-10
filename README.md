@@ -55,8 +55,12 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 
 ## Contenido actual
 
-- Mundo 1 · Selva y Costa: 1-1 La Selva, 1-2 La Playa, 1-3 La Guarida de Púas (jefe).
-- Mundo 2 · Cenotes: 2-1 El Cenote Escondido, 2-2 Ríos Subterráneos (tema de cueva y murciélagos nuevos).
+- Mundo 1 · Selva de Palenque: 1-1 Palenque, 1-2 Boca del Cerro, 1-3 Tenosique, 1-4 El Triunfo, 1-5 Candelaria, 1-6 Escárcega (jefe Púas).
+- Mundo 4 · Cenotes y Xibalbá: 4-2 Xibalbá, 4-3 Valladolid.
+- Mundo 5 · Riviera Maya: 5-3 Playa del Carmen.
+- Nado, oxígeno, corrientes, burbujas y snorkel (niveles acuáticos).
+- Enemigos del Mundo 1: saraguato, tarántula, nauyaca, hormigas arrieras, cangrejo azul y barracuda.
+- El guardado antiguo (`temayin:v2`) se migra automáticamente a `temayin:v3`.
 - Estrellas por nivel (completar, no morir + monedas), nivel desbloqueable, mejor puntuación guardada.
 
 El arte fuente está en `imagenes/`; los sprites usados por el juego en `public/assets/`. La versión original en un único `index.html` queda en el historial de git.
