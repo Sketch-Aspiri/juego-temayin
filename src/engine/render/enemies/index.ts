@@ -13,6 +13,7 @@ import { drawNauyaca } from './nauyaca';
 import { drawTarantula } from './tarantula';
 import type { EnemyDrawFn } from './types';
 import { drawUrchin } from './urchin';
+import { drawXtabay } from './xtabay';
 
 export type { EnemyDrawFn } from './types';
 
@@ -21,6 +22,7 @@ export const ENEMY_SPRITES: Readonly<Record<EnemyId, EnemyDrawFn>> = {
   coati: drawCoati,
   urchin: drawUrchin,
   bat: drawBat,
+  xtabay: drawXtabay,
   howler: drawHowler,
   tarantula: drawTarantula,
   nauyaca: drawNauyaca,

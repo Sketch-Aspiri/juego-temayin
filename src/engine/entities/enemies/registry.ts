@@ -9,6 +9,7 @@ import { NAUYACA } from './nauyaca';
 import { TARANTULA } from './tarantula';
 import { URCHIN } from './urchin';
 import type { EnemyDef } from './types';
+import { XTABAY } from './xtabay';
 
 /**
  * Registro de enemigos. Para añadir uno nuevo: crear `enemies/<id>.ts` con su
@@ -19,6 +20,7 @@ export const ENEMIES: Readonly<Record<EnemyId, EnemyDef>> = {
   coati: COATI,
   urchin: URCHIN,
   bat: BAT,
+  xtabay: XTABAY,
   howler: HOWLER,
   tarantula: TARANTULA,
   nauyaca: NAUYACA,

@@ -33,4 +33,9 @@ export interface EnemyDef {
    * Por defecto el pisotón llama a `world.killEnemy(e, false)`.
    */
   onStomp?: (e: Enemy, world: World) => void;
+  /**
+   * Reacción propia a una bola de fuego (p. ej. la xtabay cierra sus flores en vez de
+   * morir). Por defecto la bola llama a `world.killEnemy(e, true)`.
+   */
+  onFireball?: (e: Enemy, world: World) => void;
 }

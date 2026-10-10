@@ -1,6 +1,7 @@
 import { ROWS, T, VW } from '../constants';
 import { overlap } from '../physics';
 import type { World } from '../World';
+import { ENEMIES } from './enemies/registry';
 import { makeParticle } from './particles';
 import type { Fireball } from './types';
 
@@ -41,7 +42,9 @@ export function updateFireballs(world: World, dt: number): void {
     const box = { x: f.x - 8, y: f.y - 8, w: 16, h: 16 };
     for (const e of world.enemies) {
       if (e.alive && !e.dead && e.active && overlap(box, e)) {
-        world.killEnemy(e, true);
+        const onFireball = ENEMIES[e.id].onFireball;
+        if (onFireball) onFireball(e, world);
+        else world.killEnemy(e, true);
         explode(world, f);
         break;
       }
