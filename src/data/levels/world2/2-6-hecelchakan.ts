@@ -1,0 +1,69 @@
+import type { LevelDef } from '../../../engine/level/types';
+import { alux, tarantula } from '../helpers';
+
+/**
+ * Hecelchakán: pueblo del Camino Real entre Campeche y Mérida (AGENTS.md §4.3).
+ * Su Museo Arqueológico del Camino Real guarda figurillas de la isla de Jaina.
+ * Al atardecer (tema `ruinsDusk`). Los bloques que se derrumban son escombro y
+ * estuco de relleno, nunca estelas ni glifos (§9).
+ *
+ * Línea de Toh para el cartel (LevelDef aún no tiene campo de texto por nivel):
+ *   «Por el Camino Real pasaban carretas entre Campeche y Mérida. Cuida tu cacao:
+ *    los aluxes son traviesos, pero si los pisas te lo devuelven doble.»
+ *
+ * Recorrido (columnas):
+ *  -   0–41   Camino Real: bloques `?`, cacao para empezar y los primeros aluxes.
+ *  -  42–79   Derrumbes: escalera opcional de escombro hasta una fila alta de cacao;
+ *             canal de 8 con dos tramos de escombro; aluxes en la plaza.
+ *  -  80–105  Patio del museo: chile de fuego, tarántulas bajo las cornisas.
+ *  - 106–160  Punto de control (Toh) y el gran derrumbe: tres tramos seguidos sobre
+ *             un hoyo de 13; después, una fila de cacao custodiada por tres aluxes.
+ *  - 161–215  Subida final: escombro sobre un canal de 7, escalinata, bandera y templo.
+ */
+export const LEVEL_2_6: LevelDef = {
+  id: '2-6',
+  name: 'Hecelchakán',
+  width: 215,
+  theme: 'ruinsDusk',
+  checkpoint: 106,
+  ops: [
+    // Camino Real
+    ['row', 10, 8, '?B?B?'], ['row', 12, 4, 'M'],
+    ['coins', 18, 11, 6],
+    ['plat', 26, 9, 4], ['coins', 26, 8, 4],
+    ['row', 34, 8, 'B??B'],
+
+    // Derrumbes
+    ['crumble', 44, 10, 2], ['crumble', 47, 8, 2], ['crumble', 50, 6, 2],
+    ['plat', 53, 6, 3], ['coins', 50, 4, 6],
+    ['pit', 58, 65],
+    ['crumble', 59, 9, 2], ['crumble', 62, 9, 2], ['coins', 59, 7, 5],
+    ['row', 70, 8, 'B?B'],
+
+    // Patio del museo
+    ['row', 84, 8, 'B?F?B'],
+    ['plat', 90, 8, 4], ['coins', 90, 7, 4],
+    ['pit', 96, 100], ['coins', 96, 8, 5],
+
+    // Gran derrumbe
+    ['row', 108, 8, '??'],
+    ['pit', 112, 124],
+    ['crumble', 113, 10, 3], ['crumble', 117, 9, 3], ['crumble', 121, 10, 3],
+    ['coins', 113, 8, 3], ['coins', 117, 7, 3], ['coins', 121, 8, 3],
+    ['coins', 127, 11, 11],
+    ['row', 140, 8, 'B?B?B'],
+    ['plat', 148, 9, 4], ['coins', 148, 8, 4],
+    ['pit', 154, 158], ['coins', 154, 9, 5],
+
+    // Subida final
+    ['stairs', 165, 4, 1],
+    ['pit', 169, 175],
+    ['crumble', 170, 8, 2], ['crumble', 173, 9, 2], ['coins', 170, 6, 5],
+    ['row', 180, 8, '?M?'],
+    ['stairs', 188, 5, 1], ['col', 193, 5],
+    ['flag', 201], ['temple', 206],
+
+    ...alux(22, 38, 70, 74, 128, 132, 136, 184),
+    ...tarantula(11, 36, 86, 92, 142, 150, 181),
+  ],
+};
