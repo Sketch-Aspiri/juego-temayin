@@ -36,7 +36,9 @@ export type ThemeId =
   | 'ruinsDusk'
   | 'fortress'
   | 'mangrove'
-  | 'hacienda';
+  | 'hacienda'
+  // Mundo 4 · Cenotes y Xibalbá (AGENTS.md §4.7)
+  | 'xibalba';
 
 /** Estado de una partida que se arrastra de un nivel al siguiente. */
 export interface Session {

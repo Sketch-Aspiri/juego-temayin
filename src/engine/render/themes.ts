@@ -8,6 +8,7 @@ import { swampScenery } from './scenery/swamp';
 import { fortressScenery } from './scenery/fortress';
 import { mangroveScenery } from './scenery/mangrove';
 import { haciendaScenery } from './scenery/hacienda';
+import { xibalbaScenery } from './scenery/xibalba';
 import type { TexId } from './textures';
 
 export interface WaterStyle {
@@ -165,5 +166,18 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
     groundTop: 'redEarthTop',
     groundBody: 'redEarth',
     platform: 'masonry',
+  },
+  // Mundo 4: Xibalbá, el inframundo del Popol Vuh (negro y rojo, roca volcánica y niebla).
+  xibalba: {
+    id: 'xibalba',
+    sky: ['#0d0507', '#4a1410'],
+    tint: 'rgba(40,0,10,.12)',
+    sun: false,
+    scenery: xibalbaScenery,
+    groundTop: 'xibRockTop',
+    groundBody: 'xibRock',
+    platform: 'xibBone',
+    // Agua oscura de cueva inundada con reflejos de brasa en la superficie.
+    water: { fill: '#1a2238', foam: '#e0644a' },
   },
 };
