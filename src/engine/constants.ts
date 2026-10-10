@@ -54,3 +54,11 @@ export const SNORKEL_TIME = 15;
 export const GOAL_VIEW_WIDTH = 9 * T;
 /** Rapidez (1/s) con la que la cámara se desliza hacia la pirámide durante la secuencia de meta. */
 export const GOAL_PAN_RATE = 2.5;
+
+// ---------- Zonas que frenan: resina de chicle y sargazo (AGENTS.md §5.5) ----------
+/** Multiplicador de la velocidad horizontal máxima con los pies en resina o sargazo. */
+export const SLOW_ZONE_SPEED_FACTOR = 0.5;
+/** Multiplicador del impulso de salto desde la zona: ~2 bloques de altura en vez de ~4. */
+export const SLOW_ZONE_JUMP_FACTOR = 0.72;
+/** Columnas de sargazo que quema una bola de fuego a cada lado de la columna donde cae. */
+export const SARGASSUM_BURN_RADIUS = 1;

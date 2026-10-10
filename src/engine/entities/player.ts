@@ -1,4 +1,5 @@
 import { GROUND, OXYGEN_MAX, PLAYER_H, PLAYER_W, T } from '../constants';
+import { slowFactorsFor } from '../level/slowZones';
 import { moveX, moveY } from '../physics';
 import type { World } from '../World';
 import { clampSeabed, currentDrift, isSwimming, swimStep, trySurfaceLeap, updateOxygen } from './swim';
@@ -70,7 +71,8 @@ function shoot(world: World, dt: number): void {
 function runStep(world: World, dt: number): void {
   const p = world.player;
   const held = world.input.held;
-  const maxV = held.run ? 400 : 260;
+  // Resina o sargazo bajo los pies: la velocidad máxima baja (AGENTS.md §5.5).
+  const maxV = (held.run ? 400 : 260) * slowFactorsFor(world.slowZones, p).speed;
   const acc = p.onGround ? 1700 : 1100;
   const dir = (held.right ? 1 : 0) - (held.left ? 1 : 0);
 
@@ -92,7 +94,7 @@ function jumpStep(world: World, dt: number): void {
   const p = world.player;
   p.coyote = p.onGround ? COYOTE_TIME : p.coyote - dt;
   if (p.jumpBuf > 0 && p.coyote > 0) {
-    p.vy = -(830 + Math.abs(p.vx) * 0.25);
+    p.vy = -(830 + Math.abs(p.vx) * 0.25) * slowFactorsFor(world.slowZones, p).jump;
     p.coyote = 0;
     p.jumpBuf = 0;
     p.onGround = false;

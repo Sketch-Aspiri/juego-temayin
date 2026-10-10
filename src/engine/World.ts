@@ -17,11 +17,13 @@ import { createItem, updateItems } from './entities/items';
 import { makeParticle, stepParticles, stepPopups } from './entities/particles';
 import { animatePlayer, createPlayer, updatePlayer } from './entities/player';
 import { updateFireballs, updateQuills } from './entities/projectiles';
+import { burnSargassum } from './entities/sargassum';
 import { confineSwimmers, swimmerPositions } from './entities/swim';
 import type { Enemy, Fireball, Item, Particle, Player, Popup, Quill } from './entities/types';
 import type { HudState } from './hud';
 import type { Input } from './input';
 import { buildLevel, type BuiltLevel } from './level/build';
+import type { SlowZone } from './level/slowZones';
 import type { LevelDef } from './level/types';
 import { waterAt } from './level/zones';
 import type { SolidFn } from './physics';
@@ -62,6 +64,8 @@ export class World {
   popups: Popup[] = [];
   fireballs: Fireball[] = [];
   quills: Quill[] = [];
+  /** Resina y sargazo vigentes: el sargazo quemado desaparece (lista nueva, no se muta). */
+  slowZones: readonly SlowZone[];
   boss: Boss | null;
   bumps = new Map<string, number>();
   camX = 0;
@@ -83,6 +87,7 @@ export class World {
     this.level = buildLevel(init.def);
     this.grid = this.level.grid;
     this.width = this.level.width;
+    this.slowZones = this.level.slowZones;
     this.timeLeft = init.def.time ?? DEFAULT_LEVEL_TIME;
     this.checkpointReached = !!init.fromCheckpoint;
     this.input.reset();
@@ -264,6 +269,7 @@ export class World {
     this.boss?.update(this, dt);
     updateQuills(this, dt);
     updateFireballs(this, dt);
+    burnSargassum(this);
     if (this.shake > 0) this.shake -= dt;
     animatePlayer(p, dt);
 
