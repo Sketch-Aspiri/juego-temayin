@@ -4,6 +4,8 @@ import { paintedScenery } from './scenery/painted';
 import { palenqueScenery } from './scenery/palenque';
 import { riverScenery } from './scenery/river';
 import { swampScenery } from './scenery/swamp';
+import { fortressScenery } from './scenery/fortress';
+import { mangroveScenery } from './scenery/mangrove';
 import type { TexId } from './textures';
 
 export interface WaterStyle {
@@ -108,5 +110,28 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
     groundTop: 'grass',
     groundBody: 'dirt',
     platform: 'stone',
+  },
+  // Mundo 2: murallas de San Francisco de Campeche y manglares de Los Petenes.
+  fortress: {
+    id: 'fortress',
+    sky: ['#4aa8e8', '#d4efff'],
+    sun: true,
+    scenery: fortressScenery,
+    groundTop: 'sillarTop',
+    groundBody: 'sillar',
+    platform: 'sillar',
+    water: { fill: '#2a8fb0', foam: '#9ee0ea' },
+  },
+  mangrove: {
+    id: 'mangrove',
+    sky: ['#6fb8c8', '#e0f0e4'],
+    tint: 'rgba(40,70,50,.08)',
+    sun: true,
+    scenery: mangroveScenery,
+    groundTop: 'mudTop',
+    groundBody: 'mud',
+    platform: 'mangroveRoot',
+    // Agua salobre: verde turbio con espuma clara.
+    water: { fill: '#3f7f73', foam: '#b5ddc8' },
   },
 };

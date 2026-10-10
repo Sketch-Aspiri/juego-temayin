@@ -1,10 +1,12 @@
 import { T, TAU } from '../constants';
 import { makeTile, roundRect, type Ctx } from './drawUtils';
+import { createGulfTextures, type GulfTexId } from './gulfTextures';
 
 export type TexId =
   | 'dirt' | 'grass' | 'brick' | 'question' | 'used' | 'stone' | 'sand' | 'sandTop' | 'wood'
   | 'rock' | 'rockTop' | 'crystal'
-  | 'pipeTL' | 'pipeTR' | 'pipeBL' | 'pipeBR';
+  | 'pipeTL' | 'pipeTR' | 'pipeBL' | 'pipeBR'
+  | GulfTexId;
 
 export type Textures = Readonly<Record<TexId, HTMLCanvasElement>>;
 
@@ -231,5 +233,6 @@ export function createTextures(): Textures {
     pipeTR: pipeTile(true, false),
     pipeBL: pipeTile(false, true),
     pipeBR: pipeTile(false, false),
+    ...createGulfTextures(),
   };
 }
