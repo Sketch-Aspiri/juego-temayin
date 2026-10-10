@@ -124,10 +124,9 @@ temayin_juego/
       levels/
         helpers.ts             Atajos coati(...), urchin(...), howler(...), bats([x, fila]...), barracudas([x, fila]...)
         world1/                1-1-palenque.ts … 1-6-escarcega.ts (un archivo por nivel)
+        world2/                2-1-carrillo-puerto.ts … 2-7-calkini.ts (jefe Kaimán)
         world4/                4-2-xibalba.ts, 4-3-valladolid.ts
-        world2/                2-7-calkini.ts (jefe Kaimán)
         world5/                5-3-playa-del-carmen.ts
-        world2/                2-1-carrillo-puerto.ts, 2-5-tenabo.ts
     store/                     Zustand + persistencia
       appStore.ts              useAppStore: screen, progress, settings, run, startLevel, finishLevel…
       progress.ts (+ .test)    Progress, LevelRecord, recordCompletion, isUnlocked, sanitizeProgress
@@ -359,7 +358,7 @@ Estado: **Existe** = id en `EnemyId` y en `ENEMIES`; **Nuevo** = id propuesto. L
 | Pez león (invasor) | `lionfish` | Nuevo | Nada despacio; espinas venenosas. Derrotarlo da puntos extra y un mensaje de Toh sobre especie invasora | No (fuego/pelota) |
 | Medusa | `jellyfish` | Nuevo | Sube y baja en vertical bajo el agua | No |
 | Barracuda | `barracuda` | Nuevo | Patrulla y embiste en línea recta al ver al jugador | Sí (por arriba) |
-| Morena | `moray` | Nuevo | Sale de una grieta y vuelve a esconderse | No |
+| Morena | `moray` | **Existe** | Sale de una grieta (se asoma como aviso, muerde y se esconde); solo el fuego la vence cuando está fuera | No |
 
 #### Subterráneo
 
@@ -374,15 +373,15 @@ Estado: **Existe** = id en `EnemyId` y en `ENEMIES`; **Nuevo** = id propuesto. L
 
 | Enemigo | Id propuesto | Estado | Comportamiento | ¿Pisable? |
 |---|---|---|---|---|
-| Aluxes | `alux` | Nuevo | Traviesos: roban monedas al tocarte (no quitan vida) y huyen; si los alcanzas devuelven el doble | Sí |
-| Sombras de Xibalbá | `shade` | Nuevo | Flotan hacia el jugador en la oscuridad; la luz las disuelve | No (solo luz/fuego) |
+| Aluxes | `alux` | **Existe** | Traviesos: roban hasta 5 de cacao al tocarte (no quitan vida, gancho `EnemyDef.onTouch`) y huyen; pisados devuelven el doble | Sí |
+| Sombras de Xibalbá | `shade` | **Existe** (sin luz aún: `TODO(oscuridad)`) | Flotan hacia el jugador en la oscuridad; la luz las disuelve | No (solo luz/fuego) |
 | Xtabay | `xtabay` | Nuevo | **Trampa**, no enemigo móvil: ceiba con flores que atrae al jugador hacia una espina si se queda quieto cerca | No |
 
 #### Ciudad y hacienda
 
 | Enemigo | Id propuesto | Estado | Comportamiento | ¿Pisable? |
 |---|---|---|---|---|
-| Piratas cangrejo | `pirateCrab` | Nuevo | Cangrejos con pañuelo pirata; saltan y lanzan monedas falsas | Sí |
+| Piratas cangrejo | `pirateCrab` | **Existe** | Cangrejos con pañuelo pirata; se agachan como aviso y saltan (las monedas falsas aún no) | Sí |
 | Rueda de henequén | `wheel` | **Existe** | Avanza dando botes, baja escalones y rebota en las paredes | No (saltarla o fuego) |
 | Vagón de truck | `truck` | Nuevo | Vagoneta sobre rieles que avanza en línea; se puede usar como plataforma | No (se monta encima) |
 
@@ -422,9 +421,9 @@ Hoy `ThemeId = 'jungle' | 'beach' | 'lair' | 'cave'`, registrados en `THEMES` (`
 | `cave` | **Existe** | 3, 4, 5 | Oscuro verdoso, sin sol | `rockTop` / `rock` / `crystal`, agua | — |
 | `river` | Nuevo | 1 | Cañón con paredes de roca | Roca + arena de río | Agua navegable (5.1), corrientes |
 | `swamp` | Nuevo | 1, 2 | Verde grisáceo, bruma | Lodo / madera | Agua poco profunda |
-| `ruins` | Nuevo | 2, 4, 7 | Cielo claro, pirámides al fondo | Piedra caliza tallada | Estucos rojos y glifos de fondo |
-| `fortress` | Nuevo | 2, 6 | Golfo al fondo | Sillar de muralla / madera de barco | Baluartes, cañones |
-| `mangrove` | Nuevo | 2 | Cielo húmedo | Raíces de mangle | Agua salobre |
+| `ruins` / `ruinsDusk` | **Existe** | 2, 4, 7 | Cielo claro, pirámides al fondo | Piedra caliza tallada | Estucos rojos y glifos de fondo |
+| `fortress` | **Existe** (fosos secos, sin `water`) | 2, 6 | Golfo al fondo | Sillar de muralla / madera de barco | Baluartes, cañones |
+| `mangrove` | **Existe** | 2 | Cielo húmedo | Raíces de mangle | Agua salobre |
 | `hacienda` | **Existe** | 2, 3 | Atardecer cálido | Mampostería / tierra roja | Pencas de henequén, chimeneas |
 | `yellowCity` | Nuevo | 3 | Azul intenso | Muros amarillos y blancos | Arcos del convento |
 | `xibalba` | Nuevo | 4 | Negro y rojo | Roca volcánica / hueso | `dark` (5.3), niebla |
@@ -562,6 +561,8 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
    | `current` | `['current', x0, x1, y0, y1, vx, vy]` | Corriente en el rectángulo de bloques (inclusive); `vx, vy` en bloques/s. Va a `BuiltLevel.currents`. |
    | `train` | `['train', x, y, vagones, velocidad, recorrido]` | Tren con el techo en la fila `y`; va y vuelve `recorrido` bloques (negativo = izquierda) a `velocidad` bloques/s. Va a `BuiltLevel.platforms`. |
    | `mover` | `['mover', x, y, largo, dx, dy, periodo]` | Plataforma de `largo` bloques que oscila hasta (x+dx, y+dy) y vuelve en `periodo` s. Va a `BuiltLevel.platforms`. |
+   | `crumble` | `['crumble', x, y, largo]` | Escombro sólido (`D`) que tiembla al pisarlo, cae y reaparece a los 4 s si el hueco está libre (`entities/crumble.ts`). Nunca en la fila del suelo. |
+   | `cannon` | `['cannon', x, y, dir]` | Cañón de baluarte de 2 bloques sólidos: culata `K` y boca `>` (dir 1) o `<` (dir -1). Se pisa como plataforma. |
 
    Atajos en `src/data/levels/helpers.ts`: `...coati(22, 32)`, `...urchin(26, 58)`, `...bats([20, 7], [48, 6])`. Añade un atajo por cada enemigo nuevo.
 4. Registra el nivel en el mundo correspondiente de `WORLDS` (`src/data/worlds.ts`). El orden del array define el desbloqueo lineal (`isUnlocked`) y `nextLevelId`.
