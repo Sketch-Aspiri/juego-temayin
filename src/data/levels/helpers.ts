@@ -24,3 +24,5 @@ export const blueCrab = spawnMany('blueCrab');
 export const bats = spawnAt('bat');
 /** Barracudas (nadan, no necesitan suelo): pares [x, fila] dentro de una zona de agua. */
 export const barracudas = spawnAt('barracuda');
+/** Sombras de Xibalbá (flotan, no necesitan suelo): pares [x, fila]. */
+export const shades = spawnAt('shade');
