@@ -95,13 +95,11 @@ function mangroveRoot(c: Ctx): void {
     c.lineWidth = 4;
     c.stroke();
   }
-  c.fillStyle = '#4c7a2a';
-  roundRect(c, 0, 0, T, 7, 3);
-  c.fill();
-  c.fillStyle = '#78a844';
-  for (const x of [4, 15, 27, 35]) {
+  // Unas hojas sueltas (sin franja): los bloques apilados se ven como una sola maraña.
+  c.fillStyle = '#5f9a34';
+  for (const [x, y] of [[8, 9], [31, 24]]) {
     c.beginPath();
-    c.ellipse(x, 3, 4, 2, 0.3, 0, TAU);
+    c.ellipse(x, y, 4, 2, 0.5, 0, TAU);
     c.fill();
   }
 }

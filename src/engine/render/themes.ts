@@ -120,7 +120,7 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
     groundTop: 'sillarTop',
     groundBody: 'sillar',
     platform: 'sillar',
-    water: { fill: '#2a8fb0', foam: '#9ee0ea' },
+    // Sin `water`: los fosos de la muralla son secos (hoyos sin fondo, no se nada).
   },
   mangrove: {
     id: 'mangrove',

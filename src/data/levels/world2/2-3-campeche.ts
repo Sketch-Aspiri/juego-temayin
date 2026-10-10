@@ -82,7 +82,7 @@ export const LEVEL_2_3: LevelDef = {
     ['stairs', 192, 4, 1],
     ['flag', 200], ['temple', 206],
 
-    ...pirateCrab(14, 45, 114, 168),
+    ...pirateCrab(21, 45, 114, 168),
     ...blueCrab(33, 70, 106, 180, 196),
     ['spawn', 'pirateCrab', 55, 7],
     ['spawn', 'pirateCrab', 128, RAMPART_TOP - 1], ['spawn', 'pirateCrab', 135, RAMPART_TOP - 1],
