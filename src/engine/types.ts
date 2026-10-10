@@ -38,7 +38,9 @@ export type ThemeId =
   | 'ruinsDusk'
   | 'fortress'
   | 'mangrove'
-  | 'hacienda';
+  | 'hacienda'
+  // Mundo 4 · selva de noche (4-5 Nuevo Xcán)
+  | 'jungleNight';
 
 /** Estado de una partida que se arrastra de un nivel al siguiente. */
 export interface Session {

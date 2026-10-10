@@ -166,4 +166,15 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
     groundBody: 'redEarth',
     platform: 'masonry',
   },
+  // Mundo 4: la selva de noche, con velo azul oscuro (4-5 Nuevo Xcán).
+  jungleNight: {
+    id: 'jungleNight',
+    sky: ['#0b1430', '#2a3f6e'],
+    tint: 'rgba(10,20,60,.45)',
+    sun: false,
+    scenery: jungleArt,
+    groundTop: 'grass',
+    groundBody: 'dirt',
+    platform: 'stone',
+  },
 };
