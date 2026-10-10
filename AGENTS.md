@@ -97,6 +97,7 @@ temayin_juego/
                                types.ts (EnemyDef, EnemyMove), behaviors.ts (walk, fly), <id>.ts por enemigo
         items.ts               createItem, updateItems, collectItem (escudo, vida, chile)
         projectiles.ts         Bolas de fuego del jugador y púas del jefe
+        ball.ts, hoops.ts      Pelota de pok ta pok (rebotes, golpes) y aros del juego de pelota (op `hoop`)
         particles.ts           Partículas y popups
         types.ts               Player, Enemy, Item, Particle, Popup, Fireball, Quill
       bosses/
@@ -125,7 +126,7 @@ temayin_juego/
         helpers.ts             Atajos coati(...), urchin(...), howler(...), bats([x, fila]...), barracudas([x, fila]...)
         world1/                1-1-palenque.ts … 1-6-escarcega.ts (un archivo por nivel)
         world2/                2-1-carrillo-puerto.ts … 2-7-calkini.ts (jefe Kaimán)
-        world4/                4-2-xibalba.ts, 4-3-valladolid.ts
+        world4/                4-1-chichen-itza.ts, 4-2-xibalba.ts, 4-3-valladolid.ts
         world5/                5-3-playa-del-carmen.ts
     store/                     Zustand + persistencia
       appStore.ts              useAppStore: screen, progress, settings, run, startLevel, finishLevel…
@@ -394,7 +395,7 @@ Estado: **Existe** = id en `EnemyId` y en `ENEMIES`; **Nuevo** = id propuesto. L
 | **Corazón de jade** | Vida extra | **Existe** como bloque `L` → `ItemKind` `'life'` (popup `1UP`) | Cambiar sprite en `drawItemSprite`. |
 | Escudo | Absorbe un golpe | **Existe** (bloque `M`, `'shield'`) | Mantener; puede representarse como un escudo de jade o chimalli. |
 | **Snorkel de caracol** | Oxígeno infinito temporal bajo el agua | **Existe** | `ItemKind` `'snorkel'`, bloque `S`, `SNORKEL_TIME` = 15 s (solo descuenta bajo el agua). |
-| **Pelota de pok ta pok** | Proyectil que rebota en paredes y suelo; activa aros | Nuevo | `ItemKind` `'ball'`, nuevo array en `World` y módulo en `entities/projectiles.ts` (o `entities/ball.ts`). |
+| **Pelota de pok ta pok** | Proyectil que rebota en paredes y suelo; activa aros | **Existe** | Bloque `P`, `ItemKind` `'ball'`, `player.ball` (se pierde al morir), `world.balls`, `entities/ball.ts`, dibujo en `render/ball.ts` (cuadro `ball` del atlas de objetos). La tecla de disparo lanza la pelota con **prioridad sobre el chile**: máx. `BALL_MAX_ACTIVE` = 1 en el aire; con ella volando, la tecla lanza fuego. Rebota `BALL_MAX_BOUNCES` = 5 veces (bote desde el suelo ≈ 3,4 bloques: alcanza aros en la fila 8; la fila 7 pide lanzar saltando). Derriba enemigos salvo `shade` (solo luz/fuego) y daña al jefe vulnerable. |
 | **Cuerda de henequén** | Gancho / columpio | Nuevo | Depende de 5.6. Puede ser habilidad permanente tras el jefe del M3 en lugar de objeto. |
 | **Glifos mayas** (coleccionable) | 3 ocultos por nivel | Nuevo | Ver abajo. |
 | **Boleto del Tren Maya** (coleccionable) | 1 oculto por mundo; desbloquea un nivel extra | Nuevo | Ver abajo. |
@@ -548,7 +549,7 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
    | Op | Forma | Notas |
    |---|---|---|
    | `pit` | `['pit', x0, x1]` | Hoyo sin suelo entre columnas `x0..x1` (inclusive). Más de 6 bloques (`MAX_PLAIN_PIT`) exige plataformas encima. |
-   | `row` | `['row', x, y, 'B?BMB']` | Un carácter por bloque; `' '` = vacío. Leyenda en `tiles.ts`: `B` ladrillo, `?` moneda, `M` escudo, `L` vida, `F` chile, `X` piedra, `o` moneda suelta. |
+   | `row` | `['row', x, y, 'B?BMB']` | Un carácter por bloque; `' '` = vacío. Leyenda en `tiles.ts`: `B` ladrillo, `?` moneda, `M` escudo, `L` vida, `F` chile, `P` pelota de pok ta pok, `X` piedra, `o` moneda suelta. |
    | `plat` | `['plat', x, y, largo]` | Plataforma de piedra (`X`). |
    | `coins` | `['coins', x, y, cantidad]` | Fila de monedas sueltas (`o`). |
    | `pipe` | `['pipe', x, alto]` | Tubo de 2 columnas. |
@@ -563,6 +564,7 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
    | `mover` | `['mover', x, y, largo, dx, dy, periodo]` | Plataforma de `largo` bloques que oscila hasta (x+dx, y+dy) y vuelve en `periodo` s. Va a `BuiltLevel.platforms`. |
    | `crumble` | `['crumble', x, y, largo]` | Escombro sólido (`D`) que tiembla al pisarlo, cae y reaparece a los 4 s si el hueco está libre (`entities/crumble.ts`). Nunca en la fila del suelo. |
    | `cannon` | `['cannon', x, y, dir]` | Cañón de baluarte de 2 bloques sólidos: culata `K` y boca `>` (dir 1) o `<` (dir -1). Se pisa como plataforma. |
+   | `hoop` | `['hoop', x, y]` | Aro de piedra del juego de pelota en el bloque (x, y), no sólido (`entities/hoops.ts`). Al pasar la pelota (bloque `P`) por su centro se enciende una vez: +2000 puntos y 5 granos de cacao (incluidos en `totalCoins`). Va a `BuiltLevel.hoops`. |
 
    Atajos en `src/data/levels/helpers.ts`: `...coati(22, 32)`, `...urchin(26, 58)`, `...bats([20, 7], [48, 6])`. Añade un atajo por cada enemigo nuevo.
 4. Registra el nivel en el mundo correspondiente de `WORLDS` (`src/data/worlds.ts`). El orden del array define el desbloqueo lineal (`isUnlocked`) y `nextLevelId`.
