@@ -1,4 +1,6 @@
 import type { Assets } from '../../assets';
+import { drawStalactite } from './stalactite';
+import { drawScorpion } from './scorpion';
 import { VW } from '../../constants';
 import type { Enemy } from '../../entities/types';
 import type { EnemyId } from '../../types';
@@ -23,6 +25,8 @@ export type { EnemyDrawFn } from './types';
 
 /** Registro de dibujos por enemigo: uno por archivo en `render/enemies/<id>.ts`. */
 export const ENEMY_SPRITES: Readonly<Record<EnemyId, EnemyDrawFn>> = {
+  stalactite: drawStalactite,
+  scorpion: drawScorpion,
   coati: drawCoati,
   urchin: drawUrchin,
   bat: drawBat,

@@ -1,6 +1,8 @@
 import { GROUND, OXYGEN_MAX, PLAYER_H, PLAYER_W, T } from '../constants';
 import { moveX, moveY } from '../physics';
 import type { World } from '../World';
+import { bounceHammocks } from './hammocks';
+import { updateRopes } from './ropes';
 import { clampSeabed, currentDrift, isSwimming, swimStep, trySurfaceLeap, updateOxygen } from './swim';
 import type { Player } from './types';
 
@@ -13,6 +15,8 @@ const LAND_TIME = 0.12;
 export function createPlayer(tx: number): Player {
   return {
     x: tx * T + 4,
+    swinging: null,
+    ropeCooldown: 0,
     y: GROUND * T - PLAYER_H,
     w: PLAYER_W,
     h: PLAYER_H,
@@ -41,8 +45,10 @@ export function createPlayer(tx: number): Player {
 /** Movimiento, salto, disparo y colisiones del jugador durante un paso de simulación. */
 export function updatePlayer(world: World, dt: number): void {
   const p = world.player;
-  p.jumpBuf = world.input.consumeJump() ? JUMP_BUFFER_TIME : p.jumpBuf - dt;
   shoot(world, dt);
+  if (updateRopes(world, dt)) return;
+  const previousFeet = p.y + p.h;
+  p.jumpBuf = world.input.consumeJump() ? JUMP_BUFFER_TIME : p.jumpBuf - dt;
   p.swimming = isSwimming(world.level.water, p);
   if (p.swimming) swimStep(world, dt);
   else {
@@ -50,6 +56,7 @@ export function updatePlayer(world: World, dt: number): void {
     jumpStep(world, dt);
   }
   moveAndCollide(world, dt);
+  bounceHammocks(world, previousFeet);
   updateOxygen(world, dt);
   if (p.land > 0) p.land -= dt;
   if (p.inv > 0) p.inv -= dt;

@@ -1,0 +1,60 @@
+{
+  "levels": [
+    {
+      "id": "3-1",
+      "mode": "recorrido asistido contra daño de contacto",
+      "phase": "done",
+      "x": 153.55,
+      "lives": 3,
+      "bossHp": null,
+      "time": 0,
+      "farthest": 153.55,
+      "checkpoint": true
+    },
+    {
+      "id": "3-2",
+      "mode": "recorrido asistido contra daño de contacto",
+      "phase": "done",
+      "x": 161.55,
+      "lives": 3,
+      "bossHp": null,
+      "time": 0,
+      "farthest": 161.55,
+      "checkpoint": true
+    },
+    {
+      "id": "3-3",
+      "mode": "recorrido asistido contra daño de contacto",
+      "phase": "done",
+      "x": 149.55,
+      "lives": 3,
+      "bossHp": null,
+      "time": 0,
+      "farthest": 149.55,
+      "checkpoint": true
+    },
+    {
+      "id": "3-4",
+      "mode": "recorrido asistido contra daño de contacto",
+      "phase": "done",
+      "x": 157.55,
+      "lives": 3,
+      "bossHp": null,
+      "time": 0,
+      "farthest": 157.55,
+      "checkpoint": true
+    },
+    {
+      "id": "3-5",
+      "mode": "recorrido asistido contra daño de contacto",
+      "phase": "done",
+      "x": 99.55,
+      "lives": 3,
+      "bossHp": 0,
+      "time": 0,
+      "farthest": 99.55,
+      "checkpoint": true
+    }
+  ],
+  "errors": []
+}

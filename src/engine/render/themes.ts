@@ -42,6 +42,11 @@ const caveArt = paintedScenery('cave.webp', caveScenery, { nearTop: 0.7 });
  * y registrarlo aquí.
  */
 export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
+  yellowCity: {
+    id: 'yellowCity', sky: ['#318bc9', '#fff0c0'], sun: false,
+    scenery: paintedScenery('yellowCity.webp', haciendaScenery),
+    groundTop: 'limestoneTop', groundBody: 'limestone', platform: 'masonry',
+  },
   jungle: {
     id: 'jungle',
     sky: ['#5ec8f5', '#bdeeff'],

@@ -1,6 +1,7 @@
 import type { BossConfig } from '../level/types';
 import type { BossId } from '../types';
 import { Kaiman } from './kaiman';
+import { HuayChivo } from './huayChivo';
 import { Puas } from './puas';
 import type { Boss, BossFactory } from './types';
 
@@ -8,6 +9,7 @@ import type { Boss, BossFactory } from './types';
 const FACTORIES: Readonly<Record<BossId, BossFactory>> = {
   puas: (cfg) => new Puas(cfg),
   kaiman: (cfg) => new Kaiman(cfg),
+  huayChivo: (cfg) => new HuayChivo(cfg),
 };
 
 export function createBoss(config: BossConfig): Boss {

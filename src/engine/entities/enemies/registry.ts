@@ -1,4 +1,6 @@
 import type { EnemyId } from '../../types';
+import { STALACTITE } from './stalactite';
+import { SCORPION } from './scorpion';
 import { ANTS } from './ants';
 import { BARRACUDA } from './barracuda';
 import { BAT } from './bat';
@@ -21,6 +23,8 @@ import type { EnemyDef } from './types';
  * `render/enemies/` (registro `ENEMY_SPRITES`).
  */
 export const ENEMIES: Readonly<Record<EnemyId, EnemyDef>> = {
+  stalactite: STALACTITE,
+  scorpion: SCORPION,
   coati: COATI,
   urchin: URCHIN,
   bat: BAT,

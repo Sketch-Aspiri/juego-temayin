@@ -202,7 +202,7 @@ data/worlds.ts (WORLDS) ──> store/appStore.ts (startLevel) ──> ui/screen
 | Villano | **Camazotz** | Señor murciélago de Xibalbá (Popol Vuh). Jefe final de 3 fases. | Por crear (`BossId` `'camazotz'`). |
 | Jefe M1 | **Púas el puercoespín** | Embiste, rueda y dispara púas. | **Existe** (`bosses/puas.ts`, `BossId` `'puas'`). |
 | Jefe M2 | **Kaimán Moreleti** | Cocodrilo de pantano (*Crocodylus moreletii*). | **Existe** (`bosses/kaiman/`, `BossId` `'kaiman'`; nivel 2-7). |
-| Jefe M3 | **Huay Chivo** | Brujo-cabra del folclor yucateco. | Por crear (`'huayChivo'`). |
+| Jefe M3 | **Huay Chivo** | Brujo-cabra del folclor yucateco. | **Existe** (`bosses/huayChivo/`, `'huayChivo'`; nivel 3-5). |
 | Jefe M4 | **Huay Pek** | Perro espectral de la leyenda. | Por crear (`'huayPek'`). |
 | Jefe M5 | **Capitán Sargazo** | Monstruo de sargazo; mensaje ecológico. | Por crear (`'sargazo'`). |
 | Jefe M6 | **Lorencillo** | Pirata barracuda inspirado en el pirata histórico que atacó Campeche (1685). | Por crear (`'lorencillo'`). |
@@ -365,8 +365,8 @@ Estado: **Existe** = id en `EnemyId` y en `ENEMIES`; **Nuevo** = id propuesto. L
 | Enemigo | Id propuesto | Estado | Comportamiento | ¿Pisable? |
 |---|---|---|---|---|
 | Murciélago | `bat` | **Existe** | Vuela ondulando (`flying: true`) | Sí |
-| Estalactita | `stalactite` | Nuevo | Cae cuando el jugador pasa debajo; se rompe al tocar el suelo | No |
-| Escorpión ciego | `scorpion` | Nuevo | Camina; reacciona a sonidos (salto cercano) acelerando | Sí |
+| Estalactita | `stalactite` | **Existe** | Cae cuando el jugador pasa debajo; se rompe al tocar el suelo | No |
+| Escorpión ciego | `scorpion` | **Existe** | Camina; reacciona a sonidos (salto cercano) acelerando | Sí |
 | Ajolote fantasma | `axolotl` | Nuevo | Translúcido; aparece y desaparece en el agua de cenote | Sí (cuando es visible) |
 
 #### Folclor (tratados como seres de leyenda)
@@ -425,7 +425,7 @@ Hoy `ThemeId = 'jungle' | 'beach' | 'lair' | 'cave'`, registrados en `THEMES` (`
 | `fortress` | **Existe** (fosos secos, sin `water`) | 2, 6 | Golfo al fondo | Sillar de muralla / madera de barco | Baluartes, cañones |
 | `mangrove` | **Existe** | 2 | Cielo húmedo | Raíces de mangle | Agua salobre |
 | `hacienda` | **Existe** | 2, 3 | Atardecer cálido | Mampostería / tierra roja | Pencas de henequén, chimeneas |
-| `yellowCity` | Nuevo | 3 | Azul intenso | Muros amarillos y blancos | Arcos del convento |
+| `yellowCity` | **Existe** | 3 | Azul intenso | Muros amarillos y blancos | Arcos del convento |
 | `xibalba` | Nuevo | 4 | Negro y rojo | Roca volcánica / hueso | `dark` (5.3), niebla |
 | `reef` | Nuevo | 5 | Bajo el agua (azul profundo) | Coral / arena | Todo el nivel es agua (5.1) |
 | `cliff` | Nuevo | 6 | Caribe turquesa | Roca de acantilado | Viento |
@@ -698,6 +698,17 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 ---
 
 ## 10. Definición de terminado
+
+### Estado implementado del Mundo 3
+
+- Los cinco niveles `3-1` a `3-5` están en `src/data/levels/world3/` y registrados en `WORLDS`, entre Calkiní y Xibalbá. Mundo estable: `yucatan-haciendas`.
+- `hacienda` se comparte con Mundo 2; `yellowCity` utiliza el panorama de Izamal. Maxcanú y Teya usan `LevelDef.darkness` y consejos de Toh mediante `LevelDef.hint`.
+- Ops nuevas: `['hammock', x, y, largo]`, `['rope', x, y, largo]`, `['torch', x, y]`, `['truck', x, y, largo, dx, periodo]`. Coordenadas y largos en bloques; período en segundos. `buildLevel` devuelve `hammocks`, `ropes` y `lights`; las vagonetas reutilizan `PlatformSpec` de Mundo 2 con `appearance: 'truck'`.
+- `entities/hammocks.ts` resuelve el rebote de una sola cara. `entities/ropes.ts` resuelve el péndulo, agarre, bombeo y liberación con salto; `Player.swinging` y `ropeCooldown` son estado temporal, sin cambios al guardado.
+- `render/lighting.ts` reutiliza una máscara y halos por radio. `World.lightSources()` expone jugador, fuego, antorchas y cristales sin DOM.
+- Enemigos nuevos: `stalactite` (avisa, cae, se fragmenta) y `scorpion` (acelera con saltos cercanos). Se reutilizan los aluxes y ruedas del Mundo 2.
+- Jefe `huayChivo`: carpeta `bosses/huayChivo/`, seis PV, vulnerable tras chocar contra los bordes del atrio; segunda fase con oscuridad y más velocidad. Los arcos son escénicos. Abre el muro y el siguiente tramo al vencerlo.
+- Los registros antiguos y los ids publicados se conservan. Cobertura específica: `src/engine/World3.test.ts`.
 
 Una tarea está terminada solo si se cumple **todo** lo siguiente:
 

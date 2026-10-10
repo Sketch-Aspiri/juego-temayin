@@ -31,6 +31,8 @@ export interface TrainSpec {
 
 /** Plataforma genérica (op `mover`): oscila suavemente entre su origen y (x+dx, y+dy). */
 export interface MoverSpec {
+  /** Aspecto de vagoneta henequenera; la física sigue siendo la de una plataforma móvil. */
+  readonly appearance?: 'truck';
   readonly kind: 'mover';
   readonly x: number;
   readonly y: number;

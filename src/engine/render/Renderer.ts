@@ -1,4 +1,6 @@
 import type { Assets } from '../assets';
+import { Lighting } from './lighting';
+import { drawHaciendaProps, drawTohHint } from './haciendaProps';
 import { GROUND, ROWS, T, TAU, VH, VW } from '../constants';
 import type { World } from '../World';
 import { CRUMBLE_TILE } from '../entities/crumble';
@@ -26,6 +28,7 @@ const BUMP_TIME = 0.15;
 
 /** Dibuja un `World` en un lienzo 2D. No modifica el estado del juego. */
 export class Renderer {
+  private readonly lighting = new Lighting();
   private readonly ctx: Ctx;
   private readonly textures: Textures;
 
@@ -78,6 +81,7 @@ export class Renderer {
     this.drawTiles(world, theme, now);
     drawFallingCrumbles(c, world.crumbles, world.camX, this.textures.rubble);
     drawPlatforms(c, world.platforms, world.camX);
+    drawHaciendaProps(c, world, now);
     for (const it of world.items) if (!drawSnorkelItem(c, it, world.camX, now)) drawItemSprite(c, it, world.camX, now);
     for (const e of world.enemies) if (e.alive && e.active) drawEnemySprite(c, this.assets, e, world.camX);
     world.boss?.draw(c, this.assets, world.camX);
@@ -87,6 +91,8 @@ export class Renderer {
     drawWaterLayer(c, world, theme.water, now);
     drawParticles(c, world.particles, world.popups, world.camX);
     c.restore();
+    this.lighting.draw(c, world);
+    drawTohHint(c, world);
   }
 
   private drawWater(theme: ThemeDef, camX: number, now: number): void {

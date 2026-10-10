@@ -4,6 +4,9 @@ import type { ItemKind } from '../tiles';
 export type AnimName = 'run' | 'jump' | 'fall' | 'idle' | 'win';
 
 export interface Player extends Body {
+  /** Índice del columpio activo; null cuando está suelto. */
+  swinging: number | null;
+  ropeCooldown: number;
   face: 1 | -1;
   anim: AnimName;
   frame: number;

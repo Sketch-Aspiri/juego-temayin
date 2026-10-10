@@ -1,0 +1,89 @@
+{
+  "id": "huayChivo",
+  "image": "huayChivo.png",
+  "width": 1536,
+  "height": 1024,
+  "alpha": true,
+  "layout": "3x2 irregular",
+  "coordinates": "Recortes medidos por componentes alfa>=8, incluyendo efectos separados de su pose. Rectangulos independientes, no cortar por celdas nominales. Mantener proporcion y escala uniforme por personaje.",
+  "states": [
+    "reposo",
+    "carrera",
+    "cornada",
+    "teletransporte",
+    "aturdido",
+    "derrotado"
+  ],
+  "frames": [
+    {
+      "state": "reposo",
+      "x": 42,
+      "y": 64,
+      "width": 427,
+      "height": 466,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "carrera",
+      "x": 517,
+      "y": 139,
+      "width": 488,
+      "height": 390,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "cornada",
+      "x": 1035,
+      "y": 142,
+      "width": 494,
+      "height": 389,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "teletransporte",
+      "x": 36,
+      "y": 539,
+      "width": 474,
+      "height": 420,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "aturdido",
+      "x": 556,
+      "y": 571,
+      "width": 441,
+      "height": 385,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    },
+    {
+      "state": "derrotado",
+      "x": 1006,
+      "y": 718,
+      "width": 527,
+      "height": 238,
+      "anchor": "centro inferior",
+      "alphaThreshold": 8
+    }
+  ],
+  "qa": "RGBA aut?ntico; el RGB del fondo permanece coloreado donde alfa=0. No usar RGB sin alfa. Poses completas, efectos incluidos en el recorte.",
+  "alphaQa": {
+    "mode": "RGBA",
+    "range": [
+      0,
+      254
+    ],
+    "transparentRatio": 0.553871,
+    "corners": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "overlappingBounds": []
+}

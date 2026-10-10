@@ -22,6 +22,9 @@ export const blueCrab = spawnMany('blueCrab');
 export const alux = spawnMany('alux');
 export const pirateCrab = spawnMany('pirateCrab');
 export const wheel = spawnMany('wheel');
+export const scorpion = spawnMany('scorpion');
+/** Estalactitas suspendidas: pares [x, fila]. */
+export const stalactites = spawnAt('stalactite');
 
 /** Murciélagos: pares [x, fila]. */
 export const bats = spawnAt('bat');

@@ -1,7 +1,16 @@
 import type { BossId, EnemyId, ThemeId } from '../types';
+import type { Darkness } from '../render/lighting';
 
 /**
  * Operaciones del DSL de niveles. Todas las coordenadas x están en bloques.
+ *
+ * Mundo 3: `hammock` rebota solo al caer; `rope` engancha en el aire y se suelta
+ * con salto; `torch` ilumina. Todas las coordenadas y largos están en bloques.
+ *  ['hammock', x, y, largo]                 hamaca trampolín horizontal
+ *  ['rope', x, y, largo]                    ancla del columpio y longitud de cuerda
+ *  ['torch', x, y]                          luz fija de antorcha
+ *  ['truck', x, y, largo, dx, periodo]       vagoneta de henequén, plataforma móvil
+ *                                           horizontal con período en segundos
  *
  *  ['pit', x0, x1]            hoyo (sin suelo) entre las columnas x0..x1
  *  ['row', x, y, 'B?BMB']     fila de bloques (un carácter por bloque, ' ' = vacío)
@@ -50,6 +59,12 @@ import type { BossId, EnemyId, ThemeId } from '../types';
  *                                           `periodo` segundos
  */
 export type Op =
+  // Vagoneta: ['truck', x, y, largo, recorridoHorizontal, periodoEnSegundos].
+  | readonly ['truck', number, number, number, number, number]
+  // Hamacas y cuerdas: coordenadas en bloques; largo en bloques. Antorchas son luces fijas.
+  | readonly ['hammock', number, number, number]
+  | readonly ['rope', number, number, number]
+  | readonly ['torch', number, number]
   | readonly ['pit', number, number]
   | readonly ['row', number, number, string]
   | readonly ['plat', number, number, number]
@@ -89,6 +104,10 @@ export interface LevelDef {
   /** Columna del punto de control (mitad del nivel por defecto). */
   checkpoint?: number;
   boss?: BossConfig;
+  /** Oscuridad visual del nivel: radio en píxeles y opacidad entre 0 y 1. */
+  darkness?: Darkness;
+  /** Consejo de Toh mostrado al entrar, en español. */
+  hint?: string;
   ops: readonly Op[];
 }
 

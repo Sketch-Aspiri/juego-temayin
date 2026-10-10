@@ -1,4 +1,6 @@
 import type { AudioEngine } from './audio';
+import { createRope, type Rope } from './entities/ropes';
+import { lightSources, type Darkness, type LightSource } from './render/lighting';
 import { createBoss, type Boss } from './bosses';
 import {
   COINS_PER_LIFE,
@@ -48,6 +50,8 @@ const FIREWORK_COLORS = ['#ffd23f', '#ff5e5b', '#3fb34a', '#4fc3f7', '#fff'];
 /** Estado completo y reglas de un nivel en curso. No depende del DOM. */
 export class World {
   readonly def: LevelDef;
+  readonly ropes: Rope[];
+  darkness: Darkness | null;
   readonly level: BuiltLevel;
   readonly grid: string[][];
   readonly width: number;
@@ -87,6 +91,8 @@ export class World {
     this.input = init.input;
     this.audio = init.audio;
     this.level = buildLevel(init.def);
+    this.ropes = this.level.ropes.map(createRope);
+    this.darkness = init.def.darkness ?? null;
     this.grid = this.level.grid;
     this.width = this.level.width;
     this.timeLeft = init.def.time ?? DEFAULT_LEVEL_TIME;
@@ -108,6 +114,8 @@ export class World {
   get checkpointTile(): number {
     return this.def.checkpoint ?? Math.floor(this.width / 2);
   }
+
+  lightSources(): readonly LightSource[] { return lightSources(this); }
 
   // ---------- Consultas del mapa ----------
 

@@ -57,6 +57,7 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 
 - Mundo 1 · Selva de Palenque: 1-1 Palenque, 1-2 Boca del Cerro, 1-3 Tenosique, 1-4 El Triunfo, 1-5 Candelaria, 1-6 Escárcega (jefe Púas).
 - Mundo 2 · Golfo de Campeche: 2-1 Carrillo Puerto (vagones de tren móviles), 2-2 Edzná (escombro que se derrumba), 2-3 San Francisco de Campeche (baluartes y cañones), 2-4 Petenes (manglar acuático), 2-5 Tenabo (hacienda, carretas móviles, ruedas de henequén), 2-6 Hecelchakán (ruinas al atardecer, aluxes) y 2-7 Calkiní (jefe Kaimán Moreleti: mordida, olas con la cola, emerge bajo el jugador; en la fase 2 sube el agua).
+- Mundo 3 · Yucatán de las haciendas: 3-1 Maxcanú (grutas iluminadas y estalactitas), 3-2 Mérida (vagonetas Decauville), 3-3 Tixkokob (hamacas trampolín), 3-4 Teya (columpios de henequén y oscuridad) y 3-5 Izamal (jefe Huay Chivo: teletransporte, embestidas y fuegos fatuos; segunda fase nocturna).
 - Mundo 4 · Cenotes y Xibalbá: 4-2 Xibalbá, 4-3 Valladolid.
 - Mundo 5 · Riviera Maya: 5-3 Playa del Carmen.
 - Cinemática de introducción con la historia (`src/data/intro.ts`): se muestra al empezar 1-1 por primera vez y desde el botón «Historia» del título.
@@ -66,3 +67,5 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 - Estrellas por nivel (completar, no morir + monedas), nivel desbloqueable, mejor puntuación guardada.
 
 El arte fuente está en `imagenes/`; los sprites usados por el juego en `public/assets/`. La versión original en un único `index.html` queda en el historial de git.
+
+La biblioteca de arte incluye 62 imágenes de enemigos, jefes, personajes, paisajes, objetos y complementos. Consulta [la galería](imagenes/galeria.html), [el catálogo](imagenes/catalogo.json) y [las instrucciones de arte](imagenes/PLAN_ARTE.md) para revisar los PNG, los prompts y los recortes antes de integrarlos.

@@ -1,4 +1,7 @@
-import { GROUND, ROWS } from '../constants';
+import { GROUND, ROWS, T } from '../constants';
+import { createHammock, type Hammock } from '../entities/hammocks';
+import type { RopeDef } from '../entities/ropes';
+import { createTorch, type LightSource } from '../render/lighting';
 import type { PlatformSpec } from '../entities/platforms';
 import type { EnemyId } from '../types';
 import { CRUMBLE_TILE, type CrumbleSpan } from '../entities/crumble';
@@ -12,6 +15,10 @@ export interface EnemySpawn {
 }
 
 export interface BuiltLevel {
+  /** Hamacas, columpios y luces independientes de la cuadrícula. */
+  hammocks: readonly Hammock[];
+  ropes: readonly RopeDef[];
+  lights: readonly LightSource[];
   grid: string[][];
   width: number;
   enemies: EnemySpawn[];
@@ -46,6 +53,9 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   }
 
   const enemies: EnemySpawn[] = [];
+  const hammocks: Hammock[] = [];
+  const ropes: RopeDef[] = [];
+  const lights: LightSource[] = [];
   const water: WaterZone[] = [];
   const currents: CurrentZone[] = [];
   const bubbles: BubbleVent[] = [];
@@ -56,6 +66,10 @@ export function buildLevel(def: LevelDef): BuiltLevel {
 
   for (const op of def.ops) {
     switch (op[0]) {
+      case 'truck': platforms.push({ kind: 'mover', appearance: 'truck', x: op[1], y: op[2], length: op[3], dx: op[4], dy: 0, period: op[5] }); break;
+      case 'hammock': hammocks.push(createHammock(op[1], op[2], op[3])); break;
+      case 'rope': ropes.push({ x: (op[1] + 0.5) * T, y: op[2] * T, length: op[3] * T }); break;
+      case 'torch': lights.push(createTorch(op[1], op[2])); break;
       case 'row':
         [...op[3]].forEach((c, i) => c !== ' ' && set(op[1] + i, op[2], c));
         break;
@@ -137,5 +151,5 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   let totalCoins = 0;
   for (const row of grid) for (const c of row) if (c === 'o' || c === '?') totalCoins++;
 
-  return { grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles, crumbles, platforms };
+  return { grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles, crumbles, platforms, hammocks, ropes, lights };
 }

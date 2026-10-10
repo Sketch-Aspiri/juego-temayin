@@ -1,0 +1,45 @@
+{
+  "id": "stalactite",
+  "image": "stalactite.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "intacta",
+    "agrietada",
+    "caída",
+    "fragmentada"
+  ],
+  "frames": [
+    {
+      "state": "intacta",
+      "x": 143,
+      "y": 72,
+      "width": 380,
+      "height": 484
+    },
+    {
+      "state": "agrietada",
+      "x": 733,
+      "y": 73,
+      "width": 379,
+      "height": 483
+    },
+    {
+      "state": "caída",
+      "x": 143,
+      "y": 683,
+      "width": 380,
+      "height": 483
+    },
+    {
+      "state": "fragmentada",
+      "x": 767,
+      "y": 686,
+      "width": 349,
+      "height": 487
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar."
+}

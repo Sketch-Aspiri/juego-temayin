@@ -27,8 +27,10 @@ export type EnemyId =
   | 'alux'
   | 'pirateCrab'
   | 'moray'
-  | 'wheel';
-export type BossId = 'puas' | 'kaiman';
+  | 'wheel'
+  | 'stalactite'
+  | 'scorpion';
+export type BossId = 'puas' | 'kaiman' | 'huayChivo';
 export type ThemeId =
   | 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque'
   // Mundo 2 · Golfo de Campeche (AGENTS.md §4.7)
@@ -36,7 +38,8 @@ export type ThemeId =
   | 'ruinsDusk'
   | 'fortress'
   | 'mangrove'
-  | 'hacienda';
+  | 'hacienda'
+  | 'yellowCity';
 
 /** Estado de una partida que se arrastra de un nivel al siguiente. */
 export interface Session {
