@@ -170,7 +170,7 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
   jungleNight: {
     id: 'jungleNight',
     sky: ['#0b1430', '#2a3f6e'],
-    tint: 'rgba(10,20,60,.45)',
+    tint: 'rgba(6,12,44,.62)',
     sun: false,
     scenery: jungleArt,
     groundTop: 'grass',
