@@ -12,6 +12,7 @@ import {
   T,
   VW,
 } from './constants';
+import { createCrumbles, updateCrumbles, type Crumble } from './entities/crumble';
 import { createEnemy, ENEMIES, updateEnemies } from './entities/enemies';
 import { createItem, updateItems } from './entities/items';
 import { makeParticle, stepParticles, stepPopups } from './entities/particles';
@@ -62,6 +63,8 @@ export class World {
   popups: Popup[] = [];
   fireballs: Fireball[] = [];
   quills: Quill[] = [];
+  /** Tramos de escombro que se derrumban (op `crumble`). */
+  crumbles: Crumble[];
   boss: Boss | null;
   bumps = new Map<string, number>();
   camX = 0;
@@ -85,6 +88,7 @@ export class World {
     this.width = this.level.width;
     this.timeLeft = init.def.time ?? DEFAULT_LEVEL_TIME;
     this.checkpointReached = !!init.fromCheckpoint;
+    this.crumbles = createCrumbles(this.level.crumbles);
     this.input.reset();
 
     const startTile = init.fromCheckpoint ? this.checkpointTile : PLAYER_START_TILE;
@@ -251,6 +255,7 @@ export class World {
 
     const p = this.player;
     updatePlayer(this, dt);
+    updateCrumbles(this, dt);
     this.collectLooseCoins();
 
     if (p.y > ROWS * T + 40) return this.die();

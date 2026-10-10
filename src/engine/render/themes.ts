@@ -3,6 +3,7 @@ import { beachScenery, caveScenery, jungleScenery, type Scenery } from './backgr
 import { paintedScenery } from './scenery/painted';
 import { palenqueScenery } from './scenery/palenque';
 import { riverScenery } from './scenery/river';
+import { ruinsScenery } from './scenery/ruins';
 import { swampScenery } from './scenery/swamp';
 import type { TexId } from './textures';
 
@@ -108,5 +109,25 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
     groundTop: 'grass',
     groundBody: 'dirt',
     platform: 'stone',
+  },
+  // Mundo 2: zonas arqueológicas de caliza (Edzná) y su variante al atardecer (Hecelchakán).
+  ruins: {
+    id: 'ruins',
+    sky: ['#4a9be0', '#d6ecff'],
+    sun: true,
+    scenery: ruinsScenery,
+    groundTop: 'limestoneTop',
+    groundBody: 'limestone',
+    platform: 'carved',
+  },
+  ruinsDusk: {
+    id: 'ruinsDusk',
+    sky: ['#6a3f7a', '#f2a65a'],
+    tint: 'rgba(225,95,45,.28)',
+    sun: true,
+    scenery: ruinsScenery,
+    groundTop: 'limestoneTop',
+    groundBody: 'limestone',
+    platform: 'carved',
   },
 };

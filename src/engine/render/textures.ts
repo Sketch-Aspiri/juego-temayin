@@ -1,10 +1,12 @@
 import { T, TAU } from '../constants';
 import { makeTile, roundRect, type Ctx } from './drawUtils';
+import { createRuinsTextures, type RuinsTexId } from './ruinsTextures';
 
 export type TexId =
   | 'dirt' | 'grass' | 'brick' | 'question' | 'used' | 'stone' | 'sand' | 'sandTop' | 'wood'
   | 'rock' | 'rockTop' | 'crystal'
-  | 'pipeTL' | 'pipeTR' | 'pipeBL' | 'pipeBR';
+  | 'pipeTL' | 'pipeTR' | 'pipeBL' | 'pipeBR'
+  | RuinsTexId;
 
 export type Textures = Readonly<Record<TexId, HTMLCanvasElement>>;
 
@@ -20,6 +22,7 @@ export const FIXED_TEXTURE: Readonly<Record<string, TexId>> = {
   q: 'pipeTR',
   l: 'pipeBL',
   r: 'pipeBR',
+  D: 'rubble',
 };
 
 const dots = (c: Ctx, color: string, pts: ReadonlyArray<readonly [number, number]>, r = 3): void => {
@@ -231,5 +234,6 @@ export function createTextures(): Textures {
     pipeTR: pipeTile(true, false),
     pipeBL: pipeTile(false, true),
     pipeBR: pipeTile(false, false),
+    ...createRuinsTextures(),
   };
 }

@@ -90,6 +90,12 @@ describe.each(ALL_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, def) 
     expect(def.boss.x).toBeLessThanOrEqual(a1);
   });
 
+  // El escombro (op `crumble`) cuenta como plataforma al validar hoyos, pero es
+  // temporal: nunca puede sustituir al suelo (meta, inicio y checkpoint lo exigen fijo).
+  it('el escombro que se derrumba queda por encima del suelo', () => {
+    for (const c of lvl.crumbles) expect(c.y, `escombro en ${c.x}`).toBeLessThan(GROUND);
+  });
+
   it('cuenta monedas para calcular las estrellas', () => {
     expect(lvl.totalCoins).toBeGreaterThan(0);
   });

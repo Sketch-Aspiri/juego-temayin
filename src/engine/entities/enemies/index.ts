@@ -63,7 +63,8 @@ function touchPlayer(world: World, e: Enemy): void {
     if (def.onStomp) def.onStomp(e, world);
     else world.killEnemy(e, false);
     p.vy = world.input.held.jump ? STOMP_BOUNCE_HELD : STOMP_BOUNCE;
-  } else world.hurt();
+  } else if (def.onTouch) def.onTouch(e, world);
+  else world.hurt();
 }
 
 export function updateEnemies(world: World, dt: number): void {
