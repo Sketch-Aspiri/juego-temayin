@@ -6,6 +6,7 @@ import type { PlatformSpec } from '../entities/platforms';
 import type { EnemyId } from '../types';
 import { CRUMBLE_TILE, type CrumbleSpan } from '../entities/crumble';
 import { HOOP_COINS, type HoopSpec } from '../entities/hoops';
+import type { SlowZone } from './slowZones';
 import type { LevelDef } from './types';
 import type { BubbleVent, CurrentZone, WaterZone } from './zones';
 
@@ -27,6 +28,8 @@ export interface BuiltLevel {
   templeX: number;
   /** Monedas sueltas + bloques de moneda: base para calcular las estrellas. */
   totalCoins: number;
+  /** Franjas de resina y sargazo que frenan (ops `resin`, `sargassum`). */
+  slowZones: readonly SlowZone[];
   /** Zonas de agua navegable (op `water`). */
   water: readonly WaterZone[];
   /** Corrientes (op `current`). */
@@ -59,6 +62,7 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   const hammocks: Hammock[] = [];
   const ropes: RopeDef[] = [];
   const lights: LightSource[] = [];
+  const slowZones: SlowZone[] = [];
   const water: WaterZone[] = [];
   const currents: CurrentZone[] = [];
   const bubbles: BubbleVent[] = [];
@@ -116,6 +120,10 @@ export function buildLevel(def: LevelDef): BuiltLevel {
       case 'spawn':
         enemies.push({ id: op[1], tx: op[2], ty: op[3] ?? GROUND - 1 });
         break;
+      case 'resin':
+      case 'sargassum':
+        slowZones.push({ kind: op[0], x0: op[1], x1: op[2], y: op[3] });
+        break;
       case 'water':
         water.push({ x0: op[1], x1: op[2], surface: op[3] });
         break;
@@ -159,5 +167,5 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   for (const row of grid) for (const c of row) if (c === 'o' || c === '?') totalCoins++;
   totalCoins += hoops.length * HOOP_COINS; // cacao que suelta cada aro al encestar
 
-  return { grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles, crumbles, platforms, hammocks, ropes, lights, hoops };
+  return { grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles, crumbles, platforms, hammocks, ropes, lights, hoops, slowZones };
 }

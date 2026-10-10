@@ -23,6 +23,14 @@ import type { Darkness } from '../render/lighting';
  *  ['flag', x] ['temple', x]  meta del nivel
  *  ['spawn', enemigo, x, y?]  enemigo (y por defecto: sobre el suelo)
  *
+ * Zonas que frenan (AGENTS.md §5.5). No tocan la cuadrícula: van a `BuiltLevel.slowZones`
+ * (ver `slowZones.ts`). Con los pies dentro, la velocidad máxima y el salto se reducen
+ * (`SLOW_ZONE_SPEED_FACTOR`, `SLOW_ZONE_JUMP_FACTOR`).
+ *  ['resin', x0, x1, y]       resina de chicle en la fila `y` (el suelo, en y + 1),
+ *                             columnas x0..x1 (inclusive). No arde.
+ *  ['sargassum', x0, x1, y]   sargazo varado, igual que la resina; las bolas de fuego
+ *                             lo queman y lo eliminan de la zona (SARGASSUM_BURN_RADIUS)
+ *
  * Agua y corrientes (AGENTS.md §5.1 y §5.2). No tocan la cuadrícula: `buildLevel`
  * las traduce a zonas (`BuiltLevel.water`, `BuiltLevel.currents`, ver `zones.ts`).
  *  ['water', x0, x1, superficie]            agua en las columnas x0..x1 (inclusive)
@@ -84,6 +92,8 @@ export type Op =
   | readonly ['flag', number]
   | readonly ['temple', number]
   | readonly ['spawn', EnemyId, number, number?]
+  | readonly ['resin', number, number, number]
+  | readonly ['sargassum', number, number, number]
   | readonly ['water', number, number, number]
   | readonly ['current', number, number, number, number, number, number]
   | readonly ['bubbles', number, number]

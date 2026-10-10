@@ -138,6 +138,15 @@ describe.each(ALL_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, def) 
     }
   });
 
+  it('la resina y el sargazo descansan sobre suelo firme y en hueco libre', () => {
+    for (const z of lvl.slowZones) {
+      for (let x = z.x0; x <= z.x1; x++) {
+        expect(solid(x, z.y + 1), `${z.kind} sin suelo en ${x}`).toBe(true);
+        expect(solid(x, z.y), `${z.kind} dentro de un bloque en ${x}`).toBe(false);
+      }
+    }
+  });
+
   it('cuenta monedas para calcular las estrellas', () => {
     expect(lvl.totalCoins).toBeGreaterThan(0);
   });

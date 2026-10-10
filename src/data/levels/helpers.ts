@@ -25,6 +25,8 @@ export const wheel = spawnMany('wheel');
 export const scorpion = spawnMany('scorpion');
 /** Estalactitas suspendidas: pares [x, fila]. */
 export const stalactites = spawnAt('stalactite');
+/** Xtabay: ceiba-trampa fija sobre el suelo. */
+export const xtabay = spawnMany('xtabay');
 
 /** Murciélagos: pares [x, fila]. */
 export const bats = spawnAt('bat');

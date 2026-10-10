@@ -18,6 +18,7 @@ import { WHEEL } from './wheel';
 import { AXOLOTL } from './axolotl';
 import type { Enemy } from '../types';
 import type { EnemyDef } from './types';
+import { XTABAY } from './xtabay';
 
 /**
  * Registro de enemigos. Para añadir uno nuevo: crear `enemies/<id>.ts` con su
@@ -30,6 +31,7 @@ export const ENEMIES: Readonly<Record<EnemyId, EnemyDef>> = {
   coati: COATI,
   urchin: URCHIN,
   bat: BAT,
+  xtabay: XTABAY,
   howler: HOWLER,
   tarantula: TARANTULA,
   nauyaca: NAUYACA,

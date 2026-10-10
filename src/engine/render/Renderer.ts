@@ -11,6 +11,7 @@ import { drawEnemySprite } from './enemies';
 import { drawCheckpoint, drawGoal } from './goal';
 import { drawPlatforms } from './platforms';
 import { drawCacao } from './props';
+import { drawSlowZones } from './slowZones';
 import {
   drawFireballs,
   drawItemSprite,
@@ -84,6 +85,7 @@ export class Renderer {
     drawFallingCrumbles(c, world.crumbles, world.camX, this.textures.rubble);
     drawPlatforms(c, world.platforms, world.camX);
     drawHaciendaProps(c, world, now);
+    drawSlowZones(c, world.slowZones, world.camX, now);
     for (const it of world.items) if (!drawSnorkelItem(c, it, world.camX, now)) drawItemSprite(c, it, world.camX, now);
     for (const e of world.enemies) if (e.alive && e.active) drawEnemySprite(c, this.assets, e, world.camX);
     world.boss?.draw(c, this.assets, world.camX);

@@ -15,6 +15,8 @@ export type EnemyId =
   | 'coati'
   | 'urchin'
   | 'bat'
+  // Mundo 4 · Leona Vicario: trampa de leyenda (AGENTS.md §4.5)
+  | 'xtabay'
   // Mundo 1 · Selva de Palenque (AGENTS.md §4.5)
   | 'howler'
   | 'tarantula'
