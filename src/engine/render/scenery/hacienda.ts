@@ -24,6 +24,11 @@ const AGAVE_NEAR = '#4f7d66';
 const AGAVE_EDGE = '#8fb8a0';
 const ALBARRADA = '#9c8d78';
 const ALBARRADA_DARK = '#776a58';
+/** Fondo de las barrancas bajo el camino: así los hoyos se leen como caída. */
+const RAVINE_TOP = '#5a2a18';
+const RAVINE_BOTTOM = '#1e0d08';
+const FIELD_TOP = 380;
+const ALBARRADA_Y = 470;
 
 /** Separación (px) entre cascos de hacienda en la capa lejana. */
 const CASCO_SPACING = 900;
@@ -94,7 +99,7 @@ function drawField(c: Ctx, cam: number, factor: number, y: number, s: number, co
 
 /** Albarrada: muro bajo de piedra seca típico del campo yucateco. */
 function drawAlbarrada(c: Ctx, cam: number): void {
-  const y = 470;
+  const y = ALBARRADA_Y;
   c.fillStyle = ALBARRADA_DARK;
   c.fillRect(0, y, VW, 20);
   const off = cam * 0.7;
@@ -116,9 +121,14 @@ export const haciendaProcedural: Scenery = (c, cam) => {
     drawCasco(c, n * CASCO_SPACING - off + wrap(hash(n) * 300, 300));
   }
   c.fillStyle = FIELD;
-  c.fillRect(0, 380, VW, VH - 380);
-  drawField(c, cam, 0.35, 400, 0.6, AGAVE_FAR);
-  drawField(c, cam, 0.45, 430, 0.8, AGAVE_NEAR);
+  c.fillRect(0, FIELD_TOP, VW, ALBARRADA_Y - FIELD_TOP);
+  const ravine = c.createLinearGradient(0, ALBARRADA_Y, 0, VH);
+  ravine.addColorStop(0, RAVINE_TOP);
+  ravine.addColorStop(1, RAVINE_BOTTOM);
+  c.fillStyle = ravine;
+  c.fillRect(0, ALBARRADA_Y, VW, VH - ALBARRADA_Y);
+  drawField(c, cam, 0.35, 410, 0.9, AGAVE_FAR);
+  drawField(c, cam, 0.45, 455, 1.3, AGAVE_NEAR);
   drawAlbarrada(c, cam);
 };
 
