@@ -20,6 +20,7 @@ export const nauyaca = spawnMany('nauyaca');
 export const ants = spawnMany('ants');
 export const blueCrab = spawnMany('blueCrab');
 export const alux = spawnMany('alux');
+export const pirateCrab = spawnMany('pirateCrab');
 
 /** Murciélagos: pares [x, fila]. */
 export const bats = spawnAt('bat');
@@ -27,3 +28,5 @@ export const bats = spawnAt('bat');
 export const barracudas = spawnAt('barracuda');
 /** Sombras de Xibalbá (flotan, no necesitan suelo): pares [x, fila]. */
 export const shades = spawnAt('shade');
+/** Morenas: pares [x, fila] en un bloque de agua junto a la pared o el fondo donde está su grieta. */
+export const morays = spawnAt('moray');

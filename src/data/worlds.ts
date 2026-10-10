@@ -6,6 +6,8 @@ import { LEVEL_1_4 } from './levels/world1/1-4-el-triunfo';
 import { LEVEL_1_5 } from './levels/world1/1-5-candelaria';
 import { LEVEL_1_6 } from './levels/world1/1-6-escarcega';
 import { LEVEL_2_2 } from './levels/world2/2-2-edzna';
+import { LEVEL_2_3 } from './levels/world2/2-3-campeche';
+import { LEVEL_2_4 } from './levels/world2/2-4-petenes';
 import { LEVEL_2_6 } from './levels/world2/2-6-hecelchakan';
 import { LEVEL_2_7 } from './levels/world2/2-7-calkini';
 import { LEVEL_4_2 } from './levels/world4/4-2-xibalba';
@@ -25,7 +27,7 @@ export const WORLDS: readonly WorldDef[] = [
     name: 'Selva de Palenque',
     levels: [LEVEL_1_1, LEVEL_1_2, LEVEL_1_3, LEVEL_1_4, LEVEL_1_5, LEVEL_1_6],
   },
-  { id: 'golfo-campeche', number: 2, name: 'Golfo de Campeche', levels: [LEVEL_2_2, LEVEL_2_6, LEVEL_2_7] },
+  { id: 'golfo-campeche', number: 2, name: 'Golfo de Campeche', levels: [LEVEL_2_2, LEVEL_2_3, LEVEL_2_4, LEVEL_2_6, LEVEL_2_7] },
   { id: 'cenotes-xibalba', number: 4, name: 'Cenotes y Xibalbá', levels: [LEVEL_4_2, LEVEL_4_3] },
   { id: 'riviera-maya', number: 5, name: 'Riviera Maya', levels: [LEVEL_5_3] },
 ];

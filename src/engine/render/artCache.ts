@@ -44,6 +44,8 @@ export const PAINTED_ART: readonly string[] = [
   'backgrounds/lair.webp',
   'backgrounds/cave.webp',
   'backgrounds/beach.webp',
+  'backgrounds/fortress.webp',
+  'backgrounds/mangrove.webp',
   'complementos/banderas.webp',
   'complementos/piramide.webp',
   'personajes/toh.webp',

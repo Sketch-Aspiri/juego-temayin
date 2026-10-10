@@ -4,9 +4,10 @@
  * F bloque chile de fuego, S bloque snorkel, U bloque usado, X piedra/plataforma,
  * o moneda suelta, p/q tubo arriba, l/r cuerpo del tubo,
  * D escombro que se derrumba (op `crumble`, ver `entities/crumble.ts`).
+ * K culata de cañón de baluarte, > / < boca del cañón hacia la derecha / izquierda.
  */
 export const SOLID_TILES: ReadonlySet<string> = new Set(['G', 'B', '?', 'M', 'L', 'F', 'S', 'U', 'X', 'p', 'q', 'l', 'r',
-  'D']);
+  'D', 'K', '>', '<']);
 
 export const isSolidTile = (c: string): boolean => SOLID_TILES.has(c);
 

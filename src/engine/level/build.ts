@@ -109,6 +109,12 @@ export function buildLevel(def: LevelDef): BuiltLevel {
         for (let i = 0; i < op[3]; i++) set(op[1] + i, op[2], CRUMBLE_TILE);
         crumbles.push({ x: op[1], y: op[2], len: op[3] });
         break;
+      case 'cannon': {
+        const [, x, y, dir] = op;
+        set(x, y, dir > 0 ? 'K' : '<');
+        set(x + 1, y, dir > 0 ? '>' : 'K');
+        break;
+      }
       case 'pit':
         break;
     }

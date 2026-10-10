@@ -15,6 +15,8 @@ import type { EnemyDrawFn } from './types';
 import { drawUrchin } from './urchin';
 import { drawShade } from './shade';
 import { drawAlux } from './alux';
+import { drawMoray } from './moray';
+import { drawPirateCrab } from './pirateCrab';
 
 export type { EnemyDrawFn } from './types';
 
@@ -31,6 +33,8 @@ export const ENEMY_SPRITES: Readonly<Record<EnemyId, EnemyDrawFn>> = {
   barracuda: drawBarracuda,
   shade: drawShade,
   alux: drawAlux,
+  pirateCrab: drawPirateCrab,
+  moray: drawMoray,
 };
 
 const OFFSCREEN_MARGIN = 60;

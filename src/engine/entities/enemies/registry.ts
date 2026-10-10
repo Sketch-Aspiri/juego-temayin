@@ -10,6 +10,8 @@ import { TARANTULA } from './tarantula';
 import { URCHIN } from './urchin';
 import { SHADE } from './shade';
 import { ALUX } from './alux';
+import { MORAY } from './moray';
+import { PIRATE_CRAB } from './pirateCrab';
 import type { EnemyDef } from './types';
 
 /**
@@ -29,6 +31,8 @@ export const ENEMIES: Readonly<Record<EnemyId, EnemyDef>> = {
   barracuda: BARRACUDA,
   shade: SHADE,
   alux: ALUX,
+  pirateCrab: PIRATE_CRAB,
+  moray: MORAY,
 };
 
 /** El enemigo no necesita suelo debajo (vuela o nada). */
