@@ -37,7 +37,7 @@ export function drawHaciendaProps(c: Ctx, world: World, now: number): void {
 /** Vagoneta Decauville sobre los rieles: comparte la colisión y el movimiento de un mover. */
 export function drawTruck(c: Ctx, m: MovingPlatform, camX: number): void {
   const x = m.x - camX;
-  const art = bakedFrame('enemies/truck.png', TRUCK, m.w / TRUCK[2]);
+  const art = bakedFrame('enemies/truck.webp', TRUCK, m.w / TRUCK[2]);
   c.strokeStyle = '#726c66'; c.lineWidth = 3;
   const spec = m.spec;
   if (spec.kind !== 'mover') return;

@@ -5,7 +5,7 @@ import { coati } from '../helpers';
  * Carrillo Puerto: paradero rural del Tren Maya en la selva baja campechana
  * (AGENTS.md §4.3). Primer nivel con vagones de tren móviles (op `train`, §5.4).
  *
- * Línea de Toh (cartel de entrada, cuando exista el campo en `LevelDef`):
+ * Referencia para el consejo de Toh:
  * «Carrillo Puerto es un paradero del Tren Maya en la selva baja de Campeche.
  *  ¡Súbete al techo de los vagones para cruzar los barrancos!»
  *
@@ -21,6 +21,7 @@ import { coati } from '../helpers';
 export const LEVEL_2_1: LevelDef = {
   id: '2-1',
   name: 'Carrillo Puerto',
+  hint: '¡Súbete al techo de los vagones para cruzar los barrancos!',
   width: 218,
   theme: 'jungle',
   checkpoint: 96,

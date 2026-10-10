@@ -1,0 +1,45 @@
+{
+  "id": "truck",
+  "image": "truck.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "ruedas en cruz 1",
+    "ruedas diagonales 1",
+    "ruedas en cruz 2",
+    "ruedas diagonales 2"
+  ],
+  "frames": [
+    {
+      "state": "ruedas en cruz 1",
+      "x": 36,
+      "y": 181,
+      "width": 580,
+      "height": 408
+    },
+    {
+      "state": "ruedas diagonales 1",
+      "x": 646,
+      "y": 181,
+      "width": 579,
+      "height": 408
+    },
+    {
+      "state": "ruedas en cruz 2",
+      "x": 36,
+      "y": 691,
+      "width": 580,
+      "height": 409
+    },
+    {
+      "state": "ruedas diagonales 2",
+      "x": 645,
+      "y": 691,
+      "width": 581,
+      "height": 409
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar. Las poses 1/3 y 2/4 son parecidas; el giro visible alterna cruz y diagonal."
+}

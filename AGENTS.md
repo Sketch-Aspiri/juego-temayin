@@ -244,7 +244,7 @@ Temas: `jungle`, `ruins` (nuevo), `fortress` (nuevo), `mangrove` (nuevo). Piedra
 | 2-4 | Petenes | Reserva de la Biosfera Los Petenes: manglares e islas de selva | `mangrove` | acuático | Nado entre raíces de mangle; corrientes de marea | morena, cangrejo azul, `urchin` |
 | 2-5 | Tenabo | Pueblo agrícola del Camino Real | `hacienda` | hacienda | Carretas y sacos como plataformas | ruedas de henequén, `coati` |
 | 2-6 | Hecelchakán | Pueblo del Camino Real, museo arqueológico | `ruins`, atardecer | ruinas / ciudad | Estelas que se derrumban; primeras cuerdas de henequén | aluxes, tarántula |
-| 2-7 | Calkiní | Pueblo de la región de Los Chenes, límite con Yucatán | `swamp` | jefe | Arena pantanosa con agua poco profunda | **Jefe: Kaimán Moreleti** (`'kaiman'`) |
+| 2-7 | Calkiní | Pueblo del Camino Real, límite con Yucatán | `swamp` | jefe | Arena pantanosa con agua poco profunda | **Jefe: Kaimán Moreleti** (`'kaiman'`) |
 
 #### Mundo 3 · Yucatán de las haciendas (Tramo Calkiní–Izamal)
 
@@ -698,6 +698,13 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 ---
 
 ## 10. Definición de terminado
+
+### Ajustes del Mundo 2
+
+- Los siete niveles muestran consejos de Toh mediante `LevelDef.hint`.
+- La morena utiliza `enemies/moray.webp`, anclada por la cabeza y recortada contra la grieta en las cuatro orientaciones. Conserva las reglas de contacto y el respaldo procedural.
+- Calkiní pertenece al Camino Real, como confirma la [Unidad de Comunicación Social de Campeche](https://ucs.campeche.gob.mx/bienestar-beneficiara-a-familias-del-camino-real/).
+- El arte de Huay Chivo y la vagoneta usa WebP; los originales PNG se conservan en `imagenes/`.
 
 ### Estado implementado del Mundo 3
 

@@ -7,7 +7,7 @@ import { alux, tarantula } from '../helpers';
  * Al atardecer (tema `ruinsDusk`). Los bloques que se derrumban son escombro y
  * estuco de relleno, nunca estelas ni glifos (§9).
  *
- * Línea de Toh para el cartel (LevelDef aún no tiene campo de texto por nivel):
+ * Referencia para el consejo de Toh:
  *   «Por el Camino Real pasaban carretas entre Campeche y Mérida. Cuida tu cacao:
  *    los aluxes son traviesos, pero si los pisas te lo devuelven doble.»
  *
@@ -23,6 +23,7 @@ import { alux, tarantula } from '../helpers';
 export const LEVEL_2_6: LevelDef = {
   id: '2-6',
   name: 'Hecelchakán',
+  hint: 'Los aluxes toman tu cacao; si los alcanzas, te lo devuelven doble.',
   width: 215,
   theme: 'ruinsDusk',
   checkpoint: 106,

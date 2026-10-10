@@ -49,6 +49,21 @@ describe('progreso', () => {
     expect(totalStars(b)).toBe(3);
     expect(hiScore(b)).toBe(2000);
   });
+
+  it('continúa por el Mundo 2 tras Escárcega sin saltar los tramos nuevos', () => {
+    const progress = recordCompletion(EMPTY_PROGRESS, result({ levelId: '1-6' }));
+    expect(isUnlocked(progress, '2-1')).toBe(true);
+    expect(isUnlocked(progress, '3-1')).toBe(false);
+    expect(isUnlocked(progress, '4-2')).toBe(false);
+  });
+
+  it('conserva el acceso y los récords antiguos tras insertar los mundos 2 y 3', () => {
+    const old = { bestScore: 8400, stars: 3, completions: 2 };
+    const progress = sanitizeProgress({ levels: { '4-2': old } });
+    expect(progress.levels['4-2']).toEqual(old);
+    expect(isUnlocked(progress, '4-2')).toBe(true);
+    expect(isUnlocked(progress, '4-3')).toBe(true);
+  });
 });
 
 describe('sanitize', () => {

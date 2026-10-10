@@ -5,11 +5,8 @@ import { blueCrab, nauyaca } from '../helpers';
  * Calkiní: pueblo del Camino Real de Campeche, en el norte del estado, en el límite
  * con Yucatán (AGENTS.md §4.3). Nivel de jefe del Mundo 2: Kaimán Moreleti.
  *
- * Línea de Toh (cuando `LevelDef` admita texto): «Calkiní está en el Camino Real
- * entre Campeche y Mérida. En su municipio, en Bécal, los sombreros de jipi se
- * tejen en cuevas húmedas, y en los petenes vive el cocodrilo de Morelet.»
- * TODO(cultura): AGENTS.md sitúa Calkiní en «la región de Los Chenes»; las fuentes
- * habituales la ubican en la región del Camino Real (Los Chenes es Hopelchén). Revisar.
+ * Región verificada con la Unidad de Comunicación Social de Campeche:
+ * https://ucs.campeche.gob.mx/bienestar-beneficiara-a-familias-del-camino-real/
  *
  * Recorrido:
  *   0-60     Orilla del pantano: vado de agua baja, poza honda con tronco,
@@ -24,6 +21,7 @@ import { blueCrab, nauyaca } from '../helpers';
 export const LEVEL_2_7: LevelDef = {
   id: '2-7',
   name: 'Calkiní',
+  hint: 'Calkiní forma parte del Camino Real. ¡Pisa el lomo expuesto de Kaimán!',
   width: 107,
   theme: 'swamp',
   checkpoint: 54,

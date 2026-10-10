@@ -63,6 +63,7 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 - Cinemática de introducción con la historia (`src/data/intro.ts`): se muestra al empezar 1-1 por primera vez y desde el botón «Historia» del título.
 - Nado, oxígeno, corrientes, burbujas y snorkel (niveles acuáticos).
 - Enemigos del Mundo 1: saraguato, tarántula, nauyaca, hormigas arrieras, cangrejo azul y barracuda.
+- Los siete niveles del Mundo 2 muestran consejos de Toh. La morena pintada sale de grietas en cuatro direcciones, recortada contra la roca; los sprites de morena, vagoneta y Huay Chivo se sirven en WebP.
 - El guardado antiguo (`temayin:v2`) se migra automáticamente a `temayin:v3`.
 - Estrellas por nivel (completar, no morir + monedas), nivel desbloqueable, mejor puntuación guardada.
 

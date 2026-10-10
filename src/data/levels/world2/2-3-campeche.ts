@@ -36,6 +36,7 @@ const RAMPART_TOP = 7;
 export const LEVEL_2_3: LevelDef = {
   id: '2-3',
   name: 'San Francisco de Campeche',
+  hint: '¡Salta de cañón en cañón para cruzar los fosos de la muralla!',
   width: 224,
   theme: 'fortress',
   checkpoint: 112,

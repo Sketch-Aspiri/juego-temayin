@@ -1,0 +1,45 @@
+{
+  "id": "moray",
+  "image": "moray.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "layout": "2x2 con rectángulos reales; no cortar por cuadrantes nominales",
+  "states": [
+    "enroscada",
+    "emergiendo",
+    "mordida",
+    "repliegue"
+  ],
+  "frames": [
+    {
+      "state": "enroscada",
+      "x": 117,
+      "y": 206,
+      "width": 434,
+      "height": 381
+    },
+    {
+      "state": "emergiendo",
+      "x": 644,
+      "y": 164,
+      "width": 584,
+      "height": 413
+    },
+    {
+      "state": "mordida",
+      "x": 44,
+      "y": 701,
+      "width": 603,
+      "height": 423
+    },
+    {
+      "state": "repliegue",
+      "x": 668,
+      "y": 744,
+      "width": 541,
+      "height": 389
+    }
+  ],
+  "qa": "Revisión visual realizada. Recortes por alfa > 8; alfa residual menor se considera ruido de fondo. Usar rectángulos reales y normalizar el ancla al integrar."
+}

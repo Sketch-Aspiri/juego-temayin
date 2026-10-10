@@ -25,7 +25,7 @@ export function drawHuayChivo(c: Ctx, b: HuayChivo, camX: number): void {
   if (b.st === 'teleport') c.globalAlpha = 0.35 + Math.sin(b.t * 25) * 0.2;
   if (b.st === 'hurt') c.globalAlpha = Math.floor(b.t * 16) % 2 ? 0.35 : 1;
   const index = b.st === 'dead' ? 5 : b.st === 'dazed' ? 4 : b.st === 'teleport' ? 3 : b.st === 'charge' ? 2 : b.st === 'warn' ? 1 : 0;
-  if (!drawLazyFrame(c, 'bosses/huayChivo.png', FRAMES[index], SCALE)) {
+  if (!drawLazyFrame(c, 'bosses/huayChivo.webp', FRAMES[index], SCALE)) {
     c.fillStyle = '#663b85'; c.fillRect(-b.w / 2, -b.h, b.w, b.h);
     c.fillStyle = '#ffda74'; c.fillRect(8, -65, 12, 8);
   }

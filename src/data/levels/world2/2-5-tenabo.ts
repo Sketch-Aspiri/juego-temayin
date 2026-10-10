@@ -6,7 +6,7 @@ import { coati, wheel } from '../helpers';
  * (AGENTS.md §4.3). Tema `hacienda`: henequenales, carretas y ruedas de desfibradora.
  * Las carretas son plataformas `mover` (§5.4) que cruzan los barrancos del camino.
  *
- * Línea de Toh (cartel de entrada, cuando exista el campo en `LevelDef`):
+ * Referencia para el consejo de Toh:
  * «Tenabo está en el Camino Real, la vieja ruta entre Campeche y Mérida. Aquí se
  *  cultivó henequén: ¡cuidado con las ruedas que bajan rodando!»
  *
@@ -21,6 +21,7 @@ import { coati, wheel } from '../helpers';
 export const LEVEL_2_5: LevelDef = {
   id: '2-5',
   name: 'Tenabo',
+  hint: '¡Cruza los barrancos en las carretas y esquiva las ruedas!',
   width: 224,
   theme: 'hacienda',
   checkpoint: 118,

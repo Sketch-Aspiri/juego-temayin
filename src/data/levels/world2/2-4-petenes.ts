@@ -67,6 +67,7 @@ const rootWall = (x: number): Op[] => Array.from({ length: SURFACE }, (_, y) => 
 export const LEVEL_2_4: LevelDef = {
   id: '2-4',
   name: 'Petenes',
+  hint: 'Bucea bajo las raíces y recupera aire en los islotes y las bolsas de aire.',
   width: 222,
   theme: 'mangrove',
   checkpoint: 124,

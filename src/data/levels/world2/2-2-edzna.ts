@@ -7,7 +7,7 @@ import { nauyaca, shades, tarantula } from '../helpers';
  * el Edificio de los Cinco Pisos, un basamento escalonado de cinco cuerpos, y la
  * ciudad contó con una extensa red de canales y depósitos para captar agua de lluvia.
  *
- * Línea de Toh para el cartel (LevelDef aún no tiene campo de texto por nivel):
+ * Referencia para el consejo de Toh:
  *   «Edzná guardaba el agua de lluvia en canales y aguadas. ¡Ojo con el escombro: se derrumba!»
  *
  * Recorrido (columnas):
@@ -23,6 +23,7 @@ import { nauyaca, shades, tarantula } from '../helpers';
 export const LEVEL_2_2: LevelDef = {
   id: '2-2',
   name: 'Edzná',
+  hint: '¡Ojo con el escombro: se derrumba cuando lo pisas!',
   width: 222,
   theme: 'ruins',
   checkpoint: 112,

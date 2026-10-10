@@ -3,11 +3,22 @@ import { MORAY_STATE, morayLair } from '../../entities/enemies/moray';
 import type { Enemy } from '../../entities/types';
 import type { Ctx } from '../drawUtils';
 import type { EnemyDrawFn } from './types';
+import { drawLazyFrame, type AtlasFrame } from './atlas';
+
+const MORAY_FILE = 'enemies/moray.webp';
+const ART_SCALE = 0.11;
+/** El ancla sigue la cabeza de contacto, no el centro del cuerpo enroscado. */
+const FRAMES: readonly AtlasFrame[] = [
+  { x: 117, y: 206, w: 434, h: 381, ax: 454, ay: 369 },
+  { x: 644, y: 164, w: 584, h: 413, ax: 1140, ay: 258 },
+  { x: 44, y: 701, w: 603, h: 423, ax: 558, ay: 834 },
+  { x: 668, y: 744, w: 541, h: 389, ax: 1140, ay: 936 },
+];
 
 /** Paleta de la morena verde (Gymnothorax funebris), común en el golfo y el Caribe. */
 const OUTLINE = '#142414';
-const SKIN = '#5f8a3a';
-const SKIN_DARK = '#3f6326';
+const SKIN = '#819f29';
+const SKIN_DARK = '#526b22';
 const BELLY = '#a9c46a';
 const CREVICE = 'rgba(10,14,12,.85)';
 /** Grosor del cuerpo (px). */
@@ -73,17 +84,19 @@ const mouthOpen = (e: Enemy): number =>
   e.state === MORAY_STATE.strike ? 1 : e.state === MORAY_STATE.peek ? 0.35 + Math.sin(e.t * 9) * 0.15 : 0.15;
 
 /**
- * Morena procedural. Dibuja la grieta (boca oscura en la pared) y el cuerpo que
- * sale de ella, recortado del lado del agua para que no se pinte sobre la roca.
+ * La hoja pintada gira con la salida de la grieta y se recorta en su plano.
+ * La cabeza permanece en su caja de contacto al cambiar de pose; el dibujo
+ * procedural sirve de respaldo mientras carga la hoja.
  */
 export const drawMoray: EnemyDrawFn = (c, _assets, e) => {
   c.translate(0, -e.h / 2);
   const lair = morayLair(e);
+  if (lair) orient(c, lair.dx, lair.dy);
+  const frame = FRAMES[e.dead ? MORAY_STATE.retract : e.state] ?? FRAMES[0];
   if (e.dead || !lair) {
-    drawHead(c, 0.6);
+    if (!drawLazyFrame(c, MORAY_FILE, frame, ART_SCALE)) drawHead(c, 0.6);
     return;
   }
-  orient(c, lair.dx, lair.dy);
   // La boca de la grieta está medio bloque detrás del centro del bloque de agua.
   const mouth = -(lair.ext + T / 2);
   c.fillStyle = CREVICE;
@@ -94,7 +107,8 @@ export const drawMoray: EnemyDrawFn = (c, _assets, e) => {
   c.beginPath();
   c.rect(mouth, -CLIP_SIZE / 2, CLIP_SIZE, CLIP_SIZE);
   c.clip();
+  // El cuerpo enlaza la cola pintada con la grieta incluso al extender la mordida.
   drawBody(c, mouth - TAIL_DEPTH, e.t);
-  drawHead(c, mouthOpen(e));
+  if (!drawLazyFrame(c, MORAY_FILE, frame, ART_SCALE)) drawHead(c, mouthOpen(e));
   c.restore();
 };
