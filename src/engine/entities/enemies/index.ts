@@ -3,9 +3,9 @@ import type { EnemySpawn } from '../../level/build';
 import { overlap } from '../../physics';
 import type { World } from '../../World';
 import type { Enemy } from '../types';
-import { ENEMIES } from './registry';
+import { ENEMIES, isTangible } from './registry';
 
-export { ENEMIES, isAirborne } from './registry';
+export { ENEMIES, isAirborne, isTangible } from './registry';
 export type { EnemyDef, EnemyMove } from './types';
 
 const DEAD_FALL_GRAVITY = 1800;
@@ -53,7 +53,7 @@ function updateDying(e: Enemy, dt: number): void {
 /** Contacto con el jugador: pisotón si cae desde arriba sobre un enemigo pisable; si no, daño. */
 function touchPlayer(world: World, e: Enemy): void {
   const p = world.player;
-  if (!overlap(p, e)) return;
+  if (!overlap(p, e) || !isTangible(e)) return;
   const def = ENEMIES[e.id];
   const feetOnTop = p.y + p.h - e.y < STOMP_TOLERANCE;
   // Acaba de rebotar sobre un enemigo que sobrevive al pisotón (fila de hormigas): sin daño.

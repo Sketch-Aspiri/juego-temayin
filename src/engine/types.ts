@@ -27,7 +27,9 @@ export type EnemyId =
   | 'alux'
   | 'pirateCrab'
   | 'moray'
-  | 'wheel';
+  | 'wheel'
+  // Mundo 4 · Cenotes y Xibalbá (AGENTS.md §4.5)
+  | 'axolotl';
 export type BossId = 'puas' | 'kaiman';
 export type ThemeId =
   | 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque'

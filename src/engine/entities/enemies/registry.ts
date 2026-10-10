@@ -13,6 +13,8 @@ import { ALUX } from './alux';
 import { MORAY } from './moray';
 import { PIRATE_CRAB } from './pirateCrab';
 import { WHEEL } from './wheel';
+import { AXOLOTL } from './axolotl';
+import type { Enemy } from '../types';
 import type { EnemyDef } from './types';
 
 /**
@@ -35,7 +37,11 @@ export const ENEMIES: Readonly<Record<EnemyId, EnemyDef>> = {
   pirateCrab: PIRATE_CRAB,
   moray: MORAY,
   wheel: WHEEL,
+  axolotl: AXOLOTL,
 };
 
 /** El enemigo no necesita suelo debajo (vuela o nada). */
 export const isAirborne = (id: EnemyId): boolean => ENEMIES[id].flying || !!ENEMIES[id].swimming;
+
+/** El enemigo puede tocar y ser tocado ahora mismo (ver `EnemyDef.tangible`). */
+export const isTangible = (e: Enemy): boolean => ENEMIES[e.id].tangible?.(e) ?? true;

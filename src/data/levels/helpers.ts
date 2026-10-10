@@ -31,3 +31,5 @@ export const barracudas = spawnAt('barracuda');
 export const shades = spawnAt('shade');
 /** Morenas: pares [x, fila] en un bloque de agua junto a la pared o el fondo donde está su grieta. */
 export const morays = spawnAt('moray');
+/** Ajolotes fantasma (nadan dentro de su zona de agua): pares [x, fila]. */
+export const axolotls = spawnAt('axolotl');
