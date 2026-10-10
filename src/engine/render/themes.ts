@@ -185,4 +185,15 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
     // Agua oscura de cueva inundada con reflejos de brasa en la superficie.
     water: { fill: '#1a2238', foam: '#e0644a' },
   },
+  // Mundo 4: la selva de noche, con velo azul oscuro (4-5 Nuevo Xcán).
+  jungleNight: {
+    id: 'jungleNight',
+    sky: ['#0b1430', '#2a3f6e'],
+    tint: 'rgba(6,12,44,.62)',
+    sun: false,
+    scenery: jungleArt,
+    groundTop: 'grass',
+    groundBody: 'dirt',
+    platform: 'stone',
+  },
 };
