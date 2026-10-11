@@ -19,6 +19,8 @@ import { AXOLOTL } from './axolotl';
 import type { Enemy } from '../types';
 import type { EnemyDef } from './types';
 import { XTABAY } from './xtabay';
+import { LIONFISH } from './lionfish';
+import { JELLYFISH } from './jellyfish';
 
 /**
  * Registro de enemigos. Para añadir uno nuevo: crear `enemies/<id>.ts` con su
@@ -44,6 +46,8 @@ export const ENEMIES: Readonly<Record<EnemyId, EnemyDef>> = {
   moray: MORAY,
   wheel: WHEEL,
   axolotl: AXOLOTL,
+  lionfish: LIONFISH,
+  jellyfish: JELLYFISH,
 };
 
 /** El enemigo no necesita suelo debajo (vuela o nada). */

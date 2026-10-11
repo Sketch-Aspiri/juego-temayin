@@ -128,7 +128,7 @@ temayin_juego/
         world2/                2-1-carrillo-puerto.ts … 2-7-calkini.ts (jefe Kaimán)
         world3/                3-1-maxcanu.ts … 3-5-izamal.ts (jefe Huay Chivo)
         world4/                4-1-chichen-itza.ts … 4-5-nuevo-xcan.ts (jefe Huay Pek)
-        world5/                5-3-playa-del-carmen.ts
+        world5/                5-1-cancun.ts, 5-2-puerto-morelos.ts, 5-3-playa-del-carmen.ts
     store/                     Zustand + persistencia
       appStore.ts              useAppStore: screen, progress, settings, run, startLevel, finishLevel…
       progress.ts (+ .test)    Progress, LevelRecord, recordCompletion, isUnlocked, sanitizeProgress
@@ -274,7 +274,7 @@ Temas: `ruins`, `cave`, `xibalba` (nuevo), `jungle`. Cenotes azules, inframundo 
 
 #### Mundo 5 · Riviera Maya (Tramo Cancún–Akumal)
 
-Temas: `beach` (existe), `reef` (nuevo), `cave`. Mar caribe turquesa, arrecife, ríos subterráneos.
+Temas: `beach` (existe), `reef` (existe), `cave`. Mar caribe turquesa, arrecife, ríos subterráneos.
 
 | Id | Estación | Lugar real | Tema / ambiente | Tipo | Mecánica clave | Enemigos |
 |---|---|---|---|---|---|---|
@@ -357,8 +357,8 @@ Estado: **Existe** = id en `EnemyId` y en `ENEMIES`; **Nuevo** = id propuesto. L
 |---|---|---|---|---|
 | Erizo de mar | `urchin` | **Existe** | Camina; púas: no se puede pisar | No |
 | Cangrejo azul | `blueCrab` | Nuevo | Camina de lado; levanta pinzas (no pisable mientras las alza) | A ratos |
-| Pez león (invasor) | `lionfish` | Nuevo | Nada despacio; espinas venenosas. Derrotarlo da puntos extra y un mensaje de Toh sobre especie invasora | No (fuego/pelota) |
-| Medusa | `jellyfish` | Nuevo | Sube y baja en vertical bajo el agua | No |
+| Pez león (invasor) | `lionfish` | **Existe** | Nada despacio; espinas venenosas. Derrotarlo da puntos extra; el consejo de entrada de Toh explica que es invasor | No (fuego/pelota) |
+| Medusa | `jellyfish` | **Existe** | Sube y baja en vertical bajo el agua | No |
 | Barracuda | `barracuda` | Nuevo | Patrulla y embiste en línea recta al ver al jugador | Sí (por arriba) |
 | Morena | `moray` | **Existe** | Sale de una grieta (se asoma como aviso, muerde y se esconde); solo el fuego la vence cuando está fuera | No |
 
@@ -430,7 +430,7 @@ Los temas implementados figuran en `ThemeId` (`src/engine/types.ts`) y en `THEME
 | `yellowCity` | **Existe** | 3 | Azul intenso | Muros amarillos y blancos | Arcos del convento |
 | `xibalba` | **Existe** | 4 | Negro y rojo | Roca volcánica / hueso | `LevelDef.darkness`, niebla |
 | `jungleNight` | **Existe** | 4 | Selva bajo velo azul | Hierba y piedra | Oscuridad parcial y arena de Huay Pek |
-| `reef` | Nuevo | 5 | Bajo el agua (azul profundo) | Coral / arena | Todo el nivel es agua (5.1) |
+| `reef` | **Existe** | 5 | Bajo el agua (azul profundo) | Coral / arena | Todo el nivel es agua (5.1) |
 | `cliff` | Nuevo | 6 | Caribe turquesa | Roca de acantilado | Viento |
 | `lagoon` | Nuevo | 6 | Degradado de los 7 azules de Bacalar | Arena blanca / estromatolitos | Agua clara |
 | `batCave` | Nuevo | 7 | Atardecer naranja → cueva | `rock` | `dark`, enjambres de fondo |
@@ -735,6 +735,14 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 - `4-5` incorpora Huay Pek, seis PV, ondas saltables y ojos encendidos como ventana de daño. La fase 2 reutiliza `render/lighting.ts` con radio 170; conserva niebla ambiental y restaura la oscuridad del nivel al abrir el muro. La representación es una adaptación familiar de relatos de transformación en perro ([Península, 2009](https://www.scielo.org.mx/scielo.php?pid=S1870-57662009000100002&script=sci_arttext)).
 - Las sombras se disuelven dentro del núcleo iluminado de los halos. El ajolote solo es tangible al hacerse visible, también frente a la pelota; Xtabay permanece como trampa fija resistente a ella. Todos los niveles tienen `hint` de Toh.
 - Cobertura de integración: `src/engine/World4.test.ts`; revisión de recorridos en Chromium: `imagenes/verify_world4.py`.
+
+### Estado implementado de los niveles 5-1 y 5-2
+
+- Mundo 5 registra Cancún (`5-1`), Puerto Morelos (`5-2`) y Playa del Carmen (`5-3`), en ese orden. La cadena continúa desde Nuevo Xcán; el id publicado `5-3`, su récord y su acceso se conservan.
+- Cancún reutiliza `beach`, trenes, plataformas móviles y agua navegable. `data/beachProps.ts` coloca toldos y palapas sobre plataformas; `render/beachProps.ts` dibuja sus decorados sin alterar las colisiones.
+- Puerto Morelos utiliza el tema `reef`, con el fondo existente `backgrounds/reef.webp` y respaldo procedural en `scenery/reef.ts`. Más del 70 % del recorrido está cubierto de agua; un islote seco aloja el checkpoint. Hay burbujas cada doce bloques como máximo y bloques `S` antes y después del checkpoint.
+- `lionfish` patrulla lentamente, no es pisable y vale 600 puntos; `jellyfish` oscila verticalmente entre los límites del agua y los bloques, y tampoco es pisable. Ambos se derrotan con fuego o pelota. Sus atlas WebP existentes se precargan en `PAINTED_ART`. El consejo de Toh presenta al pez león como especie invasora.
+- Cobertura: `src/engine/World5.test.ts` y las pruebas compartidas de coherencia; recorrido en Chromium: `imagenes/verify_world5.py` (protección de contacto, oxígeno y colisiones activos, sin poderes añadidos).
 
 ### Ajustes del Mundo 2
 

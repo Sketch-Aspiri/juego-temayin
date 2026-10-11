@@ -10,6 +10,7 @@ import { mangroveScenery } from './scenery/mangrove';
 import { haciendaScenery } from './scenery/hacienda';
 import { xibalbaScenery } from './scenery/xibalba';
 import type { TexId } from './textures';
+import { reefScenery } from './scenery/reef';
 
 export interface WaterStyle {
   fill: string;
@@ -43,6 +44,12 @@ const caveArt = paintedScenery('cave.webp', caveScenery, { nearTop: 0.7 });
  * y registrarlo aquí.
  */
 export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
+  reef: {
+    id: 'reef', sky: ['#075578', '#51c4c3'], sun: false,
+    scenery: paintedScenery('reef.webp', reefScenery, { nearTop: 0.75 }),
+    groundTop: 'sandTop', groundBody: 'sand', platform: 'stone',
+    water: { fill: '#128cad', foam: '#a0f1ef' },
+  },
   yellowCity: {
     id: 'yellowCity', sky: ['#318bc9', '#fff0c0'], sun: false,
     scenery: paintedScenery('yellowCity.webp', haciendaScenery),

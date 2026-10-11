@@ -38,3 +38,6 @@ export const shades = spawnAt('shade');
 export const morays = spawnAt('moray');
 /** Ajolotes fantasma (nadan dentro de su zona de agua): pares [x, fila]. */
 export const axolotls = spawnAt('axolotl');
+/** Fauna del arrecife: pares [x, fila] bajo el agua. */
+export const lionfish = spawnAt('lionfish');
+export const jellyfish = spawnAt('jellyfish');

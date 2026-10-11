@@ -22,6 +22,8 @@ import { LEVEL_4_2 } from './levels/world4/4-2-xibalba';
 import { LEVEL_4_3 } from './levels/world4/4-3-valladolid';
 import { LEVEL_4_4 } from './levels/world4/4-4-leona-vicario';
 import { LEVEL_4_5 } from './levels/world4/4-5-nuevo-xcan';
+import { LEVEL_5_1 } from './levels/world5/5-1-cancun';
+import { LEVEL_5_2 } from './levels/world5/5-2-puerto-morelos';
 import { LEVEL_5_3 } from './levels/world5/5-3-playa-del-carmen';
 
 /**
@@ -48,7 +50,7 @@ export const WORLDS: readonly WorldDef[] = [
     levels: [LEVEL_3_1, LEVEL_3_2, LEVEL_3_3, LEVEL_3_4, LEVEL_3_5],
   },
   { id: 'cenotes-xibalba', number: 4, name: 'Cenotes y Xibalbá', levels: [LEVEL_4_1, LEVEL_4_2, LEVEL_4_3, LEVEL_4_4, LEVEL_4_5] },
-  { id: 'riviera-maya', number: 5, name: 'Riviera Maya', levels: [LEVEL_5_3] },
+  { id: 'riviera-maya', number: 5, name: 'Riviera Maya', levels: [LEVEL_5_1, LEVEL_5_2, LEVEL_5_3] },
 ];
 
 export const ALL_LEVELS: readonly LevelDef[] = WORLDS.flatMap((w) => w.levels);

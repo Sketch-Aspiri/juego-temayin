@@ -33,7 +33,9 @@ export type EnemyId =
   | 'stalactite'
   | 'scorpion'
   // Mundo 4 · Cenotes y Xibalbá (AGENTS.md §4.5)
-  | 'axolotl';
+  | 'axolotl'
+  | 'lionfish'
+  | 'jellyfish';
 export type BossId = 'puas' | 'kaiman' | 'huayChivo' | 'huayPek';
 export type ThemeId =
   | 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque'
@@ -47,7 +49,8 @@ export type ThemeId =
   // Mundo 4 · Cenotes y Xibalbá (AGENTS.md §4.7)
   | 'xibalba'
   // Mundo 4 · selva de noche (4-5 Nuevo Xcán)
-  | 'jungleNight';
+  | 'jungleNight'
+  | 'reef';
 
 /** Estado de una partida que se arrastra de un nivel al siguiente. */
 export interface Session {

@@ -26,6 +26,7 @@ import { createTextures, FIXED_TEXTURE, type Textures } from './textures';
 import { THEMES, type ThemeDef } from './themes';
 import { drawSnorkelItem, drawWaterLayer } from './water';
 import type { ThemeId } from '../types';
+import { drawBeachProps } from './beachProps';
 
 const BLOCK_QUESTION = new Set(['?', 'M', 'L', 'F', 'S', 'P']);
 const BUMP_HEIGHT = 10;
@@ -87,6 +88,7 @@ export class Renderer {
     drawCheckpoint(c, world, now);
     drawHoops(c, world.hoops, world.camX, now);
     this.drawTiles(world, theme, now, arenaPlatforms);
+    drawBeachProps(c, world);
     drawArenaPlatforms(c, arenaPlatforms, world.camX);
     drawFallingCrumbles(c, world.crumbles, world.camX, this.textures.rubble);
     drawPlatforms(c, world.platforms, world.camX);

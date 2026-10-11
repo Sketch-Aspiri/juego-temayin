@@ -20,10 +20,10 @@ function make(id = '4-2'): World {
 }
 
 describe('Mundo 4 integrado', () => {
-  it('recorre cinco estaciones entre Izamal y Playa del Carmen', () => {
+  it('recorre cinco estaciones entre Izamal y Cancún', () => {
     expect(WORLDS.find(w => w.number === 4)?.levels.map(l => l.id)).toEqual(['4-1', '4-2', '4-3', '4-4', '4-5']);
     expect(nextLevelId('3-5')).toBe('4-1');
-    expect(nextLevelId('4-5')).toBe('5-3');
+    expect(nextLevelId('4-5')).toBe('5-1');
     for (const id of ['4-1', '4-2', '4-3', '4-4']) expect(nextLevelId(id)).toBe(`4-${Number(id[2]) + 1}`);
   });
 

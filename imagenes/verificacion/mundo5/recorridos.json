@@ -1,0 +1,31 @@
+{
+  "levels": [
+    {
+      "id": "5-1",
+      "mode": "recorrido asistido contra daño de contacto; sin poderes extra",
+      "phase": "done",
+      "x": 182.55,
+      "y": 414,
+      "lives": 3,
+      "farthest": 182.55,
+      "minOxygen": 10,
+      "t": 18.3249999999996,
+      "checkpoint": true,
+      "swam": true
+    },
+    {
+      "id": "5-2",
+      "mode": "recorrido asistido contra daño de contacto; sin poderes extra",
+      "phase": "done",
+      "x": 182.55,
+      "y": 414,
+      "lives": 3,
+      "farthest": 182.55,
+      "minOxygen": 7.283333333333411,
+      "t": 37.34999999999852,
+      "swam": true,
+      "checkpoint": true
+    }
+  ],
+  "errors": []
+}

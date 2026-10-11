@@ -22,6 +22,8 @@ import { drawPirateCrab } from './pirateCrab';
 import { drawWheel } from './wheel';
 import { drawAxolotl } from './axolotl';
 import { drawXtabay } from './xtabay';
+import { drawLionfish } from './lionfish';
+import { drawJellyfish } from './jellyfish';
 
 export type { EnemyDrawFn } from './types';
 
@@ -45,6 +47,8 @@ export const ENEMY_SPRITES: Readonly<Record<EnemyId, EnemyDrawFn>> = {
   moray: drawMoray,
   wheel: drawWheel,
   axolotl: drawAxolotl,
+  lionfish: drawLionfish,
+  jellyfish: drawJellyfish,
 };
 
 const OFFSCREEN_MARGIN = 60;
