@@ -32,7 +32,7 @@ export interface TrainSpec {
 /** Plataforma genérica (op `mover`): oscila suavemente entre su origen y (x+dx, y+dy). */
 export interface MoverSpec {
   /** Aspecto de vagoneta henequenera; la física sigue siendo la de una plataforma móvil. */
-  readonly appearance?: 'truck';
+  readonly appearance?: 'truck' | 'boat' | 'turtle';
   readonly kind: 'mover';
   readonly x: number;
   readonly y: number;
@@ -57,6 +57,8 @@ export interface MovingPlatform extends Rect {
   active: boolean;
   /** El jugador está apoyado encima. */
   rider: boolean;
+  /** Tortuga protegida que se sumerge durante un ataque; vuelve sin recibir daño. */
+  submerged?: boolean;
 }
 
 /** Bloques de ancho de cada vagón. */
@@ -139,7 +141,7 @@ export function updatePlatforms(platforms: readonly MovingPlatform[], camX: numb
 export function carryRider(world: World): number {
   const p = world.player;
   for (const m of world.platforms) {
-    if (!m.rider) continue;
+    if (!m.rider || m.submerged) { m.rider = false; continue; }
     m.rider = false;
     moveX(p, m.x - m.prevX, world.solidAt);
     p.y = m.y - p.h;
@@ -161,6 +163,7 @@ export function landOnPlatforms(world: World, prevFeet: number): void {
   if (p.vy < 0) return;
   const feet = p.y + p.h;
   for (const m of world.platforms) {
+    if (m.submerged) continue;
     // Si la plataforma sube, el techo puede haber alcanzado los pies durante este paso.
     const rise = Math.max(0, m.prevY - m.y);
     if (!standsOn(world, m) || prevFeet > m.y + LAND_EPS + rise || feet < m.y) continue;

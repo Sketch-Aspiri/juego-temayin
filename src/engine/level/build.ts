@@ -155,6 +155,12 @@ export function buildLevel(def: LevelDef): BuiltLevel {
         platforms.push({ kind: 'mover', x, y, length, dx, dy, period });
         break;
       }
+      case 'boat':
+      case 'turtle': {
+        const [appearance, x, y, length, dx, dy, period] = op;
+        platforms.push({ kind: 'mover', appearance, x, y, length, dx, dy, period });
+        break;
+      }
       case 'hoop':
         hoops.push({ x: op[1], y: op[2] });
         break;

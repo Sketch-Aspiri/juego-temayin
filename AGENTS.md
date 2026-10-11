@@ -128,7 +128,7 @@ temayin_juego/
         world2/                2-1-carrillo-puerto.ts … 2-7-calkini.ts (jefe Kaimán)
         world3/                3-1-maxcanu.ts … 3-5-izamal.ts (jefe Huay Chivo)
         world4/                4-1-chichen-itza.ts … 4-5-nuevo-xcan.ts (jefe Huay Pek)
-        world5/                5-1-cancun.ts, 5-2-puerto-morelos.ts, 5-3-playa-del-carmen.ts
+        world5/                5-1-cancun.ts … 5-6-akumal.ts (jefe Capitán Sargazo)
     store/                     Zustand + persistencia
       appStore.ts              useAppStore: screen, progress, settings, run, startLevel, finishLevel…
       progress.ts (+ .test)    Progress, LevelRecord, recordCompletion, isUnlocked, sanitizeProgress
@@ -206,7 +206,7 @@ data/worlds.ts (WORLDS) ──> store/appStore.ts (startLevel) ──> ui/screen
 | Jefe M2 | **Kaimán Moreleti** | Cocodrilo de pantano (*Crocodylus moreletii*). | **Existe** (`bosses/kaiman/`, `BossId` `'kaiman'`; nivel 2-7). |
 | Jefe M3 | **Huay Chivo** | Brujo-cabra del folclor yucateco. | **Existe** (`bosses/huayChivo/`, `'huayChivo'`; nivel 3-5). |
 | Jefe M4 | **Huay Pek** | Perro espectral de la leyenda. | **Existe** (`bosses/huayPek/`, `'huayPek'`; nivel 4-5). |
-| Jefe M5 | **Capitán Sargazo** | Monstruo de sargazo; mensaje ecológico. | Por crear (`'sargazo'`). |
+| Jefe M5 | **Capitán Sargazo** | Monstruo de sargazo; mensaje ecológico. | **Existe** (`bosses/sargazo/`, `'sargazo'`; nivel 5-6). |
 | Jefe M6 | **Lorencillo** | Pirata barracuda inspirado en el pirata histórico que atacó Campeche (1685). | Por crear (`'lorencillo'`). |
 
 ### 4.3 Mundos y niveles
@@ -736,13 +736,17 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 - Las sombras se disuelven dentro del núcleo iluminado de los halos. El ajolote solo es tangible al hacerse visible, también frente a la pelota; Xtabay permanece como trampa fija resistente a ella. Todos los niveles tienen `hint` de Toh.
 - Cobertura de integración: `src/engine/World4.test.ts`; revisión de recorridos en Chromium: `imagenes/verify_world4.py`.
 
-### Estado implementado de los niveles 5-1 y 5-2
+### Estado implementado del Mundo 5
 
-- Mundo 5 registra Cancún (`5-1`), Puerto Morelos (`5-2`) y Playa del Carmen (`5-3`), en ese orden. La cadena continúa desde Nuevo Xcán; el id publicado `5-3`, su récord y su acceso se conservan.
+- Mundo 5 registra Cancún (`5-1`), Puerto Morelos (`5-2`), Playa del Carmen (`5-3`), Xcaret (`5-4`), Puerto Aventuras (`5-5`) y Akumal (`5-6`), en ese orden. La cadena continúa desde Nuevo Xcán; el id publicado `5-3`, su récord y su acceso se conservan.
 - Cancún reutiliza `beach`, trenes, plataformas móviles y agua navegable. `data/beachProps.ts` coloca toldos y palapas sobre plataformas; `render/beachProps.ts` dibuja sus decorados sin alterar las colisiones.
 - Puerto Morelos utiliza el tema `reef`, con el fondo existente `backgrounds/reef.webp` y respaldo procedural en `scenery/reef.ts`. Más del 70 % del recorrido está cubierto de agua; un islote seco aloja el checkpoint. Hay burbujas cada doce bloques como máximo y bloques `S` antes y después del checkpoint.
 - `lionfish` patrulla lentamente, no es pisable y vale 600 puntos; `jellyfish` oscila verticalmente entre los límites del agua y los bloques, y tampoco es pisable. Ambos se derrotan con fuego o pelota. Sus atlas WebP existentes se precargan en `PAINTED_ART`. El consejo de Toh presenta al pez león como especie invasora.
-- Cobertura: `src/engine/World5.test.ts` y las pruebas compartidas de coherencia; recorrido en Chromium: `imagenes/verify_world5.py` (protección de contacto, oxígeno y colisiones activos, sin poderes añadidos).
+- Playa del Carmen conserva su id y sus obstáculos principales; incorpora agua navegable, sargazo quemable, pasarelas y checkpoint seco en la columna 94.
+- Xcaret combina oscuridad, antorchas, corrientes, túneles con bolsas de aire y burbujas separadas por un máximo de doce bloques. Los ajolotes fantasma siguen siendo criaturas de fantasía.
+- Puerto Aventuras incorpora `['boat', x, y, largo, dx, dy, periodo]`. Akumal incorpora `['turtle', x, y, largo, dx, dy, periodo]`. Ambas ops reutilizan la física de `mover`; las tortugas son plataformas protegidas, sin contacto dañino ni respuesta a proyectiles. El Capitán las sumerge temporalmente durante un ataque (salvo si llevan al jugador) y las devuelve al exponer el núcleo. Los dibujos procedurales viven en `render/coastalPlatforms.ts`.
+- Capitán Sargazo (`bosses/sargazo/`) tiene seis PV y pierde una capa cada dos golpes: tres etapas con una, dos y tres bolas de algas. Avisa antes de cada ataque, lanza algas que dejan franjas lentas, crea olas saltables y refugia a las tortugas. Solo recibe pisotones o fuego/pelota con el núcleo expuesto; dos impactos de proyectil equivalen a un PV. Al vencerlo limpia el sargazo de la arena, devuelve las tortugas, abre el muro y muestra un mensaje ecológico. Usa el atlas existente `bosses/sargazo.webp`, precargado en `PAINTED_ART`, y presentación propia. El boleto y los niveles extra siguen pendientes de la fase 8; no se modifica el esquema del guardado.
+- Cobertura: `src/engine/World5.test.ts`, `src/engine/World5Completion.test.ts` y las pruebas compartidas de coherencia; recorrido en Chromium: `imagenes/verify_world5.py` (contacto protegido, oxígeno y colisiones activos; daño al jefe asistido solo en ventanas válidas, sin evaluar dificultad ni puntería).
 
 ### Ajustes del Mundo 2
 

@@ -37,6 +37,7 @@ export function lazyImage(file: string): HTMLImageElement | null {
  * arrancar, para que fondos, meta y objetos ya estén listos al entrar al nivel.
  */
 export const PAINTED_ART: readonly string[] = [
+  'bosses/sargazo.webp',
   'escenarios/arcada-izamal.webp',
   'escenarios/guarida-puas.webp',
   'complementos/utileria.webp',

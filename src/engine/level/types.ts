@@ -3,6 +3,9 @@ import type { Darkness } from '../render/lighting';
 
 /**
  * Operaciones del DSL de niveles. Todas las coordenadas x están en bloques.
+ *  ['boat'|'turtle', x, y, largo, dx, dy, periodo] plataformas de una sola cara:
+ *    barcos y tortugas protegidas; misma oscilación y unidades que `mover`.
+ *    Las tortugas no son enemigos y no pueden recibir daño de ningún proyectil.
  *
  * Mundo 3: `hammock` rebota solo al caer; `rope` engancha en el aire y se suelta
  * con salto; `torch` ilumina. Todas las coordenadas y largos están en bloques.
@@ -80,6 +83,7 @@ import type { Darkness } from '../render/lighting';
  *                                           5 granos de cacao (incluidos en `totalCoins`)
  */
 export type Op =
+  | readonly ['boat' | 'turtle', number, number, number, number, number, number]
   // Vagoneta: ['truck', x, y, largo, recorridoHorizontal, periodoEnSegundos].
   | readonly ['truck', number, number, number, number, number]
   // Hamacas y cuerdas: coordenadas en bloques; largo en bloques. Antorchas son luces fijas.

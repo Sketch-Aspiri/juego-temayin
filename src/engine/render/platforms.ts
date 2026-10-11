@@ -1,5 +1,6 @@
 import { T, VW } from '../constants';
 import { drawTruck } from './haciendaProps';
+import { drawCoastalPlatform } from './coastalPlatforms';
 import { CAR_TILES, MOVER_H, platformReach, TRAIN_CAR_H, type MovingPlatform, type TrainSpec } from '../entities/platforms';
 import { bakedFrame, type Frame } from './artCache';
 import { roundRect, type Ctx } from './drawUtils';
@@ -109,6 +110,7 @@ function drawTrain(c: Ctx, m: MovingPlatform, spec: TrainSpec, camX: number): vo
 /** Plataforma genérica: tablón de madera atado con fibra de henequén. */
 function drawMover(c: Ctx, m: MovingPlatform, camX: number): void {
   if (m.spec.kind === 'mover' && m.spec.appearance === 'truck') return drawTruck(c, m, camX);
+  if (m.spec.kind === 'mover' && (m.spec.appearance === 'boat' || m.spec.appearance === 'turtle')) return drawCoastalPlatform(c, m, camX);
   const x = Math.round(m.x - camX);
   if (!visible(x, m.w)) return;
   const y = Math.round(m.y);

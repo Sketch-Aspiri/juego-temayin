@@ -19,7 +19,7 @@ function make(id = '5-2', fromCheckpoint = false): World {
 
 describe('Riviera Maya: Cancún y Puerto Morelos', () => {
   it('conecta Nuevo Xcán, Cancún, Puerto Morelos y Playa del Carmen', () => {
-    expect(WORLDS.find(w => w.number === 5)?.levels.map(l => l.id)).toEqual(['5-1', '5-2', '5-3']);
+    expect(WORLDS.find(w => w.number === 5)?.levels.map(l => l.id)).toEqual(['5-1', '5-2', '5-3', '5-4', '5-5', '5-6']);
     expect(nextLevelId('4-5')).toBe('5-1');
     expect(nextLevelId('5-1')).toBe('5-2'); expect(nextLevelId('5-2')).toBe('5-3');
   });
