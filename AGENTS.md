@@ -703,6 +703,13 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 
 ## 10. Definición de terminado
 
+### Presentaciones y escenarios de jefes
+
+- `BossHud.id` es un `BossId` y participa en `hudKey`, junto al nombre. `data/bossPresentation.ts` define retrato (recorte SVG del atlas existente), consejo, nombre de arena y paleta por jefe; `BossBanner` usa ese registro. El cartel de nivel se oculta mientras hay HUD de jefe para evitar superposiciones al reintentar.
+- `render/bossArena.ts` dibuja un decorado por `BossId` detrás de bloques y entidades, anclado a `LevelDef.boss.arena`. Los decorados son visuales: guarida rocosa, pantano con raíces y juncos, atrio amarillo y claro con luna y luciérnagas. La arcada de Huay Chivo se dibuja aquí, separada del cuerpo del jefe.
+- `swamp` usa suelo de lodo; `yellowCity` usa pavimento de mampostería; `jungleNight` usa el fondo pintado `deepJungle.webp` y plataformas de madera. Huay Pek tiene ramas asimétricas en las filas 8, 9 y 6; los ids y el guardado se conservan.
+- Pruebas de la publicación del HUD, retratos, consejos y barra de vida: `ui/components/BossBanner.test.tsx`.
+
 ### Estado implementado del Mundo 4
 
 - Los cinco niveles `4-1` a `4-5` están en `WORLDS`, entre Izamal y Playa del Carmen. Se conservan los ids publicados `4-2` y `4-3` y sus récords guardados.

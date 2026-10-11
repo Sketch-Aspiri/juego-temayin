@@ -50,7 +50,7 @@ export function drawTruck(c: Ctx, m: MovingPlatform, camX: number): void {
 }
 
 export function drawTohHint(c: Ctx, world: World): void {
-  if (!world.def.hint || world.phaseT > 7 || world.phase !== 'play') return;
+  if (!world.def.hint || world.phaseT > 7 || world.phase !== 'play' || world.boss?.hudVisible) return;
   c.save(); c.globalAlpha = Math.min(1, 7 - world.phaseT);
   c.fillStyle = 'rgba(11,30,24,.88)'; c.fillRect(24, 100, VW - 48, 45);
   c.fillStyle = '#fff3c8'; c.font = 'bold 16px sans-serif'; c.textAlign = 'center';

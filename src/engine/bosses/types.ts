@@ -1,11 +1,11 @@
 import type { Assets } from '../assets';
 import type { BossConfig } from '../level/types';
-import type { Rect } from '../types';
+import type { BossId, Rect } from '../types';
 import type { World } from '../World';
 
 /** Contrato que debe cumplir cada jefe. Se registra en `bosses/index.ts`. */
 export interface Boss extends Rect {
-  readonly id: string;
+  readonly id: BossId;
   readonly name: string;
   readonly hp: number;
   readonly maxHp: number;

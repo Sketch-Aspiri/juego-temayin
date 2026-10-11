@@ -420,7 +420,7 @@ export class World {
       oxygen: this.oxygenRatio(),
       snorkel: this.player.snorkel > 0,
       ball: this.player.ball,
-      boss: b && b.hudVisible ? { name: b.name, hp: Math.max(0, b.hp), maxHp: b.maxHp, intro: b.intro } : null,
+      boss: b && b.hudVisible ? { id: b.id, name: b.name, hp: Math.max(0, b.hp), maxHp: b.maxHp, intro: b.intro } : null,
       spawnId,
     };
   }

@@ -1,4 +1,4 @@
-import { GROUND, T, TAU } from '../../constants';
+import { TAU } from '../../constants';
 import { drawLazyFrame, footFrame } from '../../render/enemies/atlas';
 import type { Ctx } from '../../render/drawUtils';
 import type { HuayChivo } from './index';
@@ -6,19 +6,7 @@ import type { HuayChivo } from './index';
 const FRAMES = [footFrame(42, 64, 427, 466), footFrame(517, 139, 488, 390), footFrame(1035, 142, 494, 389), footFrame(36, 539, 474, 420), footFrame(556, 571, 441, 385), footFrame(1006, 718, 527, 238)] as const;
 const SCALE = 0.27;
 
-/** Arcos escénicos del atrio: no bloquean el recorrido ni se destruyen. */
-function drawArches(c: Ctx, b: HuayChivo, camX: number): void {
-  c.save(); c.strokeStyle = '#e9c347'; c.lineWidth = 15;
-  for (const x of [b.left + T * 2, b.right - T * 2, (b.left + b.right) / 2]) {
-    c.beginPath(); c.moveTo(x - camX - 45, GROUND * T);
-    c.lineTo(x - camX - 45, 350); c.arc(x - camX, 350, 45, Math.PI, 0);
-    c.lineTo(x - camX + 45, GROUND * T); c.stroke();
-  }
-  c.restore();
-}
-
 export function drawHuayChivo(c: Ctx, b: HuayChivo, camX: number): void {
-  drawArches(c, b, camX);
   if (b.st === 'gone') return;
   c.save(); c.translate(b.x + b.w / 2 - camX, b.y + b.h);
   if (b.face < 0) c.scale(-1, 1);

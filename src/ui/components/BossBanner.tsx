@@ -1,5 +1,6 @@
 import { assetUrl } from '../../engine/assets';
 import type { BossHud } from '../../engine/hud';
+import { BOSS_PRESENTATIONS } from '../../data/bossPresentation';
 
 interface BossBannerProps {
   boss: BossHud;
@@ -7,14 +8,20 @@ interface BossBannerProps {
 
 /** Cartel de presentación mientras el jefe despierta, y barra de vida durante la pelea. */
 export function BossBanner({ boss }: BossBannerProps) {
+  const presentation = BOSS_PRESENTATIONS[boss.id];
   if (boss.intro) {
     return (
-      <div className="boss-intro" role="alert">
-        <img src={assetUrl('jefe_grande.webp')} alt="" className="boss-intro__img" />
+      <div className={`boss-intro boss-intro--${boss.id}`} role="alert" style={{ borderColor: presentation.color }}>
+        {presentation.frame ? (
+          <svg className="boss-intro__img" viewBox={presentation.frame.join(' ')} aria-hidden="true">
+            <image href={assetUrl(presentation.image)} width="1536" height="1024" />
+          </svg>
+        ) : <img src={assetUrl(presentation.image)} alt="" className="boss-intro__img" />}
         <div className="boss-intro__text">
           <p className="boss-intro__warn">¡CUIDADO!</p>
+          <p className="boss-intro__arena" style={{ color: presentation.color }}>{presentation.arena}</p>
           <h2 className="boss-intro__name">{boss.name}</h2>
-          <p>Esquívalo y salta sobre él cuando esté mareado</p>
+          <p>{presentation.hint}</p>
         </div>
       </div>
     );

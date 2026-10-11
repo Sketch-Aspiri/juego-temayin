@@ -46,7 +46,7 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
   yellowCity: {
     id: 'yellowCity', sky: ['#318bc9', '#fff0c0'], sun: false,
     scenery: paintedScenery('yellowCity.webp', haciendaScenery),
-    groundTop: 'limestoneTop', groundBody: 'limestone', platform: 'masonry',
+    groundTop: 'masonry', groundBody: 'limestone', platform: 'masonry',
   },
   jungle: {
     id: 'jungle',
@@ -104,8 +104,8 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
     tint: 'rgba(60,80,50,.15)',
     sun: false,
     scenery: swampScenery,
-    groundTop: 'grass',
-    groundBody: 'dirt',
+    groundTop: 'mudTop',
+    groundBody: 'mud',
     platform: 'wood',
     water: { fill: '#4d6b3c', foam: '#9fb88a' },
   },
@@ -189,11 +189,11 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
   jungleNight: {
     id: 'jungleNight',
     sky: ['#0b1430', '#2a3f6e'],
-    tint: 'rgba(6,12,44,.62)',
+    tint: 'rgba(6,12,44,.18)',
     sun: false,
-    scenery: jungleArt,
+    scenery: paintedScenery('deepJungle.webp', jungleScenery),
     groundTop: 'grass',
     groundBody: 'dirt',
-    platform: 'stone',
+    platform: 'wood',
   },
 };

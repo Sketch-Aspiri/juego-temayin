@@ -541,7 +541,14 @@ kbd {
 .boss-intro__text {
   font-size: 1.9cqw;
   font-weight: 700;
+  max-width: 62%;
 }
+.boss-intro { border-block: 2px solid; gap: 2cqw; }
+.boss-intro--puas { background: linear-gradient(90deg, #321728ed, #713c27d9); }
+.boss-intro--kaiman { background: linear-gradient(90deg, #102e28ed, #345d32d9); }
+.boss-intro--huayChivo { background: linear-gradient(90deg, #4a3020ed, #896625d9); }
+.boss-intro--huayPek { background: linear-gradient(90deg, #0b1c31ed, #17454bd9); }
+.boss-intro__arena { font-size: 1.5cqw; letter-spacing: 0.08em; }
 .boss-intro__text p {
   margin: 0;
 }
@@ -559,6 +566,10 @@ kbd {
 }
 .boss-intro__img {
   height: 130%;
+  width: 30%;
+  flex-shrink: 0;
+  object-fit: contain;
+  overflow: hidden;
   margin-top: -3cqw;
   order: 2;
   animation: slide 0.4s ease-out;

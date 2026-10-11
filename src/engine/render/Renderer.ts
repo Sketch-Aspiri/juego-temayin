@@ -1,6 +1,7 @@
 import type { Assets } from '../assets';
 import { Lighting } from './lighting';
 import { drawWeather } from './weather';
+import { drawBossArena } from './bossArena';
 import { drawHaciendaProps, drawTohHint } from './haciendaProps';
 import { drawBalls, drawHoops } from './ball';
 import { GROUND, ROWS, T, TAU, VH, VW } from '../constants';
@@ -79,6 +80,7 @@ export class Renderer {
       const k = Math.min(1, world.shake * 3);
       c.translate((Math.random() - 0.5) * 12 * k, (Math.random() - 0.5) * 8 * k);
     }
+    drawBossArena(c, world, now);
     drawGoal(c, world, now);
     drawCheckpoint(c, world, now);
     drawHoops(c, world.hoops, world.camX, now);

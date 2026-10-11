@@ -1,4 +1,7 @@
+import type { BossId } from './types';
+
 export interface BossHud {
+  id: BossId;
   name: string;
   hp: number;
   maxHp: number;
@@ -34,5 +37,5 @@ export const hudKey = (h: HudState): string =>
   [
     h.score, h.coins, h.lives, h.time, h.levelId, h.shield ? 1 : 0, h.fire ? 1 : 0, h.spawnId,
     h.oxygen === null ? '-' : Math.round(h.oxygen * OXYGEN_HUD_STEPS), h.snorkel ? 1 : 0, h.ball ? 1 : 0,
-    h.boss ? `${h.boss.hp}/${h.boss.maxHp}/${h.boss.intro ? 1 : 0}` : '-',
+    h.boss ? `${h.boss.id}/${h.boss.name}/${h.boss.hp}/${h.boss.maxHp}/${h.boss.intro ? 1 : 0}` : '-',
   ].join('|');

@@ -99,7 +99,7 @@ export function GameScreen() {
           <>
             <Hud hud={hud} />
             {hud.boss && <BossBanner boss={hud.boss} />}
-            <div className="level-card" key={hud.spawnId} aria-hidden="true">
+            <div className="level-card" key={hud.spawnId} aria-hidden="true" style={hud.boss ? { visibility: 'hidden' } : undefined}>
               <span className="level-card__world">MUNDO {level.id}</span>
               <span className="level-card__name">{level.name}</span>
             </div>

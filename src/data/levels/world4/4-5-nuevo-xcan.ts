@@ -20,8 +20,8 @@ import { bats, shades, tarantula } from '../helpers';
  *            sombras de Xibalbá y murciélagos; escudo antes de la arena.
  *            Punto de control en 50.
  *   61       Columna que se cierra al entrar en la arena.
- *   62-83    Arena: claro de selva con niebla. Ramas (plat) en la fila 9 a ambos
- *            lados y una alta en el centro con chile para quemarlo con los ojos
+ *   62-83    Arena: claro de selva con niebla. Ramas (plat) asimétricas en las filas
+ *            8 y 9 y una alta en la fila 6, junto al chile para quemarlo con los ojos
  *            encendidos. En la fase 2 la niebla cubre la arena.
  *   84       Muro de salida (se rompe al vencer al jefe).
  *   85-106   Bandera y templo.
@@ -46,9 +46,9 @@ export const LEVEL_4_5: LevelDef = {
     ['coins', 54, 8, 4],
 
     // --- Arena del Huay Pek ---
-    ['plat', 64, 9, 3], ['plat', 78, 9, 3], ['plat', 70, 6, 3],
+    ['plat', 64, 8, 4], ['plat', 78, 9, 4], ['plat', 72, 6, 2],
     ['row', 65, 5, 'M'], ['row', 71, 2, 'F'],
-    ['coins', 64, 8, 3], ['coins', 78, 8, 3],
+    ['coins', 64, 7, 4], ['coins', 78, 8, 4],
     ['wall', 84],
 
     // --- Salida ---
