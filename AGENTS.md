@@ -703,6 +703,11 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 
 ## 10. Definición de terminado
 
+### Expresiones de Temayin en la historia
+
+- `data/temayinExpressions.ts` registra seis sprites transparentes (alegre, cariñoso, sorprendido, preocupado, decidido y atento), uno por escena de `data/intro.ts`. `INTRO_FILES` precarga todos los recursos. Los PNG originales, prompts y atlas están en `imagenes/nuevos/personajes/temayin-*`; los WebP sin pérdidas se sirven desde `public/assets/personajes/`.
+- `data/intro.test.ts` comprueba que cada escena usa una expresión distinta y la precarga. `imagenes/verify_story.py` revisa las seis escenas y el regreso al título en escritorio y móvil horizontal; las capturas están en `imagenes/verificacion/historia/`.
+
 ### Presentaciones y escenarios de jefes
 
 - Los decorados pintados se registran en `data/scenerySprites.ts` (ruta, recorte y ancla); `render/scenerySprites.ts` los dibuja con `bakedFrame`, sin React ni cambios a la simulación. `bossArena.ts` utiliza arcada de Izamal, guarida de Púas, mangles, ceibas y lianas, conservando el respaldo procedural. Los originales y prompts nuevos están en `imagenes/nuevos/escenarios/`, y los WebP sin pérdidas se sirven desde `public/assets/escenarios/`.

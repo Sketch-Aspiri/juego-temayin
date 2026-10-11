@@ -19,7 +19,9 @@ EXPECTED = {
     "enemigos": "bat howler tarantula nauyaca ants blueCrab lionfish jellyfish barracuda moray stalactite scorpion axolotl alux shade xtabay pirateCrab wheel truck".split(),
     "jefes": "kaiman huayChivo huayPek sargazo lorencillo camazotz".split(),
     "paisajes": "jungle beach lair cave river swamp ruins fortress mangrove hacienda yellowCity xibalba reef cliff lagoon batCave deepJungle throne".split(),
-    "personajes": ["toh", "temayina", "jugador-mecanicas"],
+    "personajes": ["toh", "temayina", "jugador-mecanicas"] + [
+        f"temayin-{expression}" for expression in ["alegre", "carinoso", "sorprendido", "preocupado", "decidido", "atento"]
+    ],
     "objetos": ["objetos"],
     "mecanicas": ["mecanicas", "efectos"],
     "complementos": "tren piramide banderas vegetacion utileria bloques historia".split(),

@@ -1,0 +1,16 @@
+{
+  "image": "temayin-atento.png",
+  "width": 1157,
+  "height": 1359,
+  "alpha": true,
+  "frames": [
+    {
+      "state": "atento",
+      "x": 74,
+      "y": 0,
+      "width": 946,
+      "height": 1345
+    }
+  ],
+  "qa": "Recorte sobre alfa >= 16; PNG original intacto, WebP sin pérdidas y transparencia conservada."
+}

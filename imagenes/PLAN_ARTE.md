@@ -11,13 +11,13 @@ Abre [galeria.html](galeria.html) para revisar las imágenes y sus recortes. [ca
 | Enemigos: cuatro poses por enemigo | 19 |
 | Jefes nuevos | 6 |
 | Paisajes de los biomas | 18 |
-| Toh, Temayina y poses de mecánicas de Temayin | 3 |
+| Toh, Temayina, poses de mecánicas y seis expresiones de Temayin | 9 |
 | Objetos y mejoras | 1 |
 | Mecánicas y efectos | 2 |
 | Tren, pirámide, banderas, vegetación, utilería, bloques e historia | 7 |
 | Arte existente actualizado | 6 |
 | Decorados de arenas (arcada de Izamal y guarida de Púas) | 2 |
-| **Total** | **64** |
+| **Total** | **70** |
 
 Los originales se conservan en `originales/`. Los prompts están junto a cada PNG o en `actualizados/prompts/`. Las variantes descartadas se conservan fuera del catálogo final.
 
@@ -39,11 +39,19 @@ Las antorchas se toman del atlas `utileria`, las ceibas, lianas y mangles de `ve
 
 `python imagenes/verify_bosses.py` revisa los cuatro anuncios y arenas y completa los combates con protección y fuego asistido en ventanas válidas; no mide dificultad ni puntería.
 
+## Expresiones de la historia
+
+Las seis variantes de Temayin se generaron con `image_gen` integrado tomando `jaguar_titulo.webp` como referencia de identidad. Conservan su ropa verde, medallón, manchas y estilo de ilustración. Cada PNG original tiene su prompt y atlas en `nuevos/personajes/temayin-*.{png,prompt.txt,atlas.json}`; las copias WebP sin pérdidas se sirven desde `public/assets/personajes/`.
+
+`src/data/temayinExpressions.ts` registra los recortes. `intro.ts` usa alegría en Palenque, cariño junto al Sol de Jade, sorpresa al aparecer Camazotz, preocupación durante el secuestro, decisión ante la huida en tren y atención al escuchar a Toh. Las seis imágenes se precargan con `INTRO_FILES`.
+
+`python imagenes/verify_story.py` recorre la historia desde el botón «Historia», verifica las imágenes y el regreso al título, y guarda las seis escenas en escritorio y móvil horizontal en `verificacion/historia/`.
+
 ## Verificación
 
 - `python imagenes/build_catalog.py`: reconstruye el catálogo y la galería sin modificar los PNG.
 - `python imagenes/validate_catalog.py`: comprueba cobertura, transparencia y recortes visibles dentro de cada imagen.
 - `python imagenes/verify_runtime.py`: comprueba la galería, el título y el primer nivel con Chromium. Usa `TEMAYIN_QA_URL` para indicar la dirección del servidor local.
 - Resultados y capturas: `verificacion/`.
-- `npm test`: 550 pruebas aprobadas en 30 archivos tras integrar los sprites de escenario.
+- `npm test`: 551 pruebas aprobadas en 30 archivos tras integrar las expresiones de la historia.
 - `npm run build`: compilación aprobada.

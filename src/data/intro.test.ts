@@ -3,6 +3,7 @@ import { useAppStore } from '../store/appStore';
 import { DEFAULT_SETTINGS, sanitizeSettings } from '../store/settings';
 import { INTRO_FILES, INTRO_LEVEL_ID, INTRO_SCENES, SPRITES } from './intro';
 import { ALL_LEVELS } from './worlds';
+import { TEMAYIN_EXPRESSIONS } from './temayinExpressions';
 
 /** Imágenes reales del juego (rutas relativas a este archivo). */
 const PUBLIC_FILES = new Set(Object.keys(import.meta.glob('../../public/assets/**/*.webp')));
@@ -31,6 +32,14 @@ describe('datos de la cinemática', () => {
       expect(x + w, name).toBeLessThanOrEqual(s.sheetW);
       expect(y + h, name).toBeLessThanOrEqual(s.sheetH);
     }
+  });
+
+  it('cada escena usa una expresión distinta de Temayin y la precarga', () => {
+    const expressions = new Set<string>(Object.values(TEMAYIN_EXPRESSIONS).map((sprite) => sprite.file));
+    const used = INTRO_SCENES.map((scene) => scene.actors.filter((actor) => expressions.has(actor.sprite.file)));
+    expect(used.every((actors) => actors.length === 1)).toBe(true);
+    expect(new Set(used.map((actors) => actors[0].sprite.file))).toEqual(expressions);
+    for (const file of expressions) expect(INTRO_FILES).toContain(file);
   });
 });
 

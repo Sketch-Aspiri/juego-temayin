@@ -63,7 +63,7 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 - Mundo 3 · Yucatán de las haciendas: 3-1 Maxcanú (grutas iluminadas y estalactitas), 3-2 Mérida (vagonetas Decauville), 3-3 Tixkokob (hamacas trampolín), 3-4 Teya (columpios de henequén y oscuridad) y 3-5 Izamal (jefe Huay Chivo: teletransporte, embestidas y fuegos fatuos; segunda fase nocturna).
 - Mundo 4 · Cenotes y Xibalbá: 4-1 Chichén Itzá (pelota de pok ta pok y aros), 4-2 Xibalbá (oscuridad, antorchas y cuevas inundadas), 4-3 Valladolid (cenote, bolsas de aire y ajolotes fantasma), 4-4 Leona Vicario (resina de chicle, Xtabay y lluvia) y 4-5 Nuevo Xcán (Huay Pek: ladridos, desapariciones y segunda fase con oscuridad).
 - Mundo 5 · Riviera Maya: 5-3 Playa del Carmen.
-- Cinemática de introducción con la historia (`src/data/intro.ts`): se muestra al empezar 1-1 por primera vez y desde el botón «Historia» del título.
+- Cinemática de introducción con la historia (`src/data/intro.ts`): se muestra al empezar 1-1 por primera vez y desde el botón «Historia» del título. Temayin tiene seis expresiones ilustradas: alegre, cariñosa, sorprendida, preocupada, decidida y atenta, una para cada escena.
 - Nado, oxígeno, corrientes, burbujas y snorkel (niveles acuáticos).
 - Enemigos del Mundo 1: saraguato, tarántula, nauyaca, hormigas arrieras, cangrejo azul y barracuda.
 - Los siete niveles del Mundo 2 muestran consejos de Toh. La morena pintada sale de grietas en cuatro direcciones, recortada contra la roca; los sprites de morena, vagoneta y Huay Chivo se sirven en WebP.
@@ -72,4 +72,4 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 
 El arte fuente está en `imagenes/`; los sprites usados por el juego en `public/assets/`. La versión original en un único `index.html` queda en el historial de git.
 
-La biblioteca de arte incluye 64 imágenes de enemigos, jefes, personajes, paisajes, objetos, complementos y decorados de arenas. Consulta [la galería](imagenes/galeria.html), [el catálogo](imagenes/catalogo.json) y [las instrucciones de arte](imagenes/PLAN_ARTE.md) para revisar los PNG, los prompts y los recortes antes de integrarlos.
+La biblioteca de arte incluye 70 imágenes de enemigos, jefes, personajes, paisajes, objetos, complementos y decorados de arenas. Consulta [la galería](imagenes/galeria.html), [el catálogo](imagenes/catalogo.json) y [las instrucciones de arte](imagenes/PLAN_ARTE.md) para revisar los PNG, los prompts y los recortes antes de integrarlos.

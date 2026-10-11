@@ -1,4 +1,5 @@
 import { TOH_POSES } from '../engine/render/goal';
+import { TEMAYIN_EXPRESSIONS } from './temayinExpressions';
 
 /**
  * Cinemática de introducción (AGENTS.md §4.1): cuenta la historia antes del
@@ -54,7 +55,7 @@ const CAMAZOTZ_SHEET = { file: 'bosses/camazotz.webp', sheetW: 1254, sheetH: 125
 const STORY_SHEET = { file: 'complementos/historia.webp', sheetW: 1536, sheetH: 1024 } as const;
 
 export const SPRITES = {
-  temayin: { file: 'jaguar_titulo.webp', sheetW: 1157, sheetH: 1359, frame: [0, 0, 1157, 1359] },
+  ...TEMAYIN_EXPRESSIONS,
   temayinaStand: { ...TEMAYINA_SHEET, frame: [67, 8, 362, 504] },
   temayinaSun: { ...TEMAYINA_SHEET, frame: [63, 512, 368, 493] },
   temayinaCaptive: { ...TEMAYINA_SHEET, frame: [589, 550, 315, 429] },
@@ -77,7 +78,7 @@ export const INTRO_SCENES: readonly IntroScene[] = [
     background: 'backgrounds/ruins.webp',
     tone: 'dawn',
     text: 'En lo profundo de la selva de Palenque vive Temayin, el jaguar guardián de las ruinas.',
-    actors: [{ sprite: SPRITES.temayin, x: 30, bottom: 4, height: 72, anim: 'enter-left' }],
+    actors: [{ sprite: SPRITES.alegre, x: 30, bottom: 12, height: 72, anim: 'enter-left' }],
     effects: [],
   },
   {
@@ -86,7 +87,7 @@ export const INTRO_SCENES: readonly IntroScene[] = [
     tone: 'day',
     text: 'Su compañera, Temayina, custodia el Sol de Jade: la joya que cada mañana hace salir el sol sobre la península de Yucatán.',
     actors: [
-      { sprite: SPRITES.temayin, x: 24, bottom: 4, height: 62, anim: 'still' },
+      { sprite: SPRITES.carinoso, x: 24, bottom: 12, height: 62, anim: 'still' },
       { sprite: SPRITES.temayinaSun, x: 70, bottom: 4, height: 64, flip: true, anim: 'enter-right', glow: true },
     ],
     effects: ['sunrise'],
@@ -97,6 +98,7 @@ export const INTRO_SCENES: readonly IntroScene[] = [
     tone: 'night',
     text: 'Pero una noche, Camazotz, el señor murciélago de Xibalbá, descendió sobre Palenque envuelto en sombras.',
     actors: [
+      { sprite: SPRITES.sorprendido, x: 16, bottom: 12, height: 56, anim: 'still' },
       { sprite: SPRITES.temayinaStand, x: 66, bottom: 4, height: 62, flip: true, anim: 'still' },
       { sprite: SPRITES.camazotzNight, x: 34, bottom: 38, height: 58, anim: 'descend' },
     ],
@@ -108,7 +110,7 @@ export const INTRO_SCENES: readonly IntroScene[] = [
     tone: 'eclipse',
     text: 'Se llevó a Temayina y al Sol de Jade. Si llega a su trono, la península quedará para siempre bajo un eclipse.',
     actors: [
-      { sprite: SPRITES.temayin, x: 22, bottom: 4, height: 58, anim: 'still' },
+      { sprite: SPRITES.preocupado, x: 22, bottom: 12, height: 58, anim: 'still' },
       { sprite: SPRITES.camazotzEclipse, x: 62, bottom: 50, height: 46, flip: true, anim: 'float' },
       { sprite: SPRITES.sunDormant, x: 80, bottom: 58, height: 14, anim: 'float' },
       { sprite: SPRITES.temayinaCaptive, x: 64, bottom: 14, height: 36, anim: 'carried' },
@@ -121,7 +123,7 @@ export const INTRO_SCENES: readonly IntroScene[] = [
     background: 'backgrounds/river.webp',
     tone: 'dusk',
     text: 'Camazotz huyó por las vías del Tren Maya hacia la gran pirámide de Calakmul, y dejó a un lugarteniente custodiando cada tramo.',
-    actors: [],
+    actors: [{ sprite: SPRITES.decidido, x: 22, bottom: 12, height: 62, anim: 'still' }],
     effects: ['train', 'bats'],
   },
   {
@@ -131,7 +133,7 @@ export const INTRO_SCENES: readonly IntroScene[] = [
     speaker: 'Toh',
     text: '¡Temayin! Soy Toh, el pájaro reloj. Sube al Tren Maya: te guiaré estación por estación hasta rescatarla.',
     actors: [
-      { sprite: SPRITES.temayin, x: 30, bottom: 4, height: 66, anim: 'still' },
+      { sprite: SPRITES.atento, x: 30, bottom: 12, height: 66, anim: 'still' },
       { sprite: SPRITES.tohPerch, x: 68, bottom: 30, height: 34, flip: true, anim: 'fly-in' },
     ],
     effects: [],

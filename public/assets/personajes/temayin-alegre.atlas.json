@@ -1,0 +1,16 @@
+{
+  "image": "temayin-alegre.png",
+  "width": 1157,
+  "height": 1359,
+  "alpha": true,
+  "frames": [
+    {
+      "state": "alegre",
+      "x": 32,
+      "y": 2,
+      "width": 1108,
+      "height": 1349
+    }
+  ],
+  "qa": "Recorte sobre alfa >= 16; PNG original intacto, WebP sin pérdidas y transparencia conservada."
+}

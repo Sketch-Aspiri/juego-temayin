@@ -1,0 +1,16 @@
+{
+  "image": "temayin-preocupado.png",
+  "width": 1157,
+  "height": 1359,
+  "alpha": true,
+  "frames": [
+    {
+      "state": "preocupado",
+      "x": 10,
+      "y": 7,
+      "width": 1142,
+      "height": 1344
+    }
+  ],
+  "qa": "Recorte sobre alfa >= 16; PNG original intacto, WebP sin pérdidas y transparencia conservada."
+}
