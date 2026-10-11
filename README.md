@@ -21,7 +21,7 @@ npm test           # pruebas (vitest)
 | Bola de fuego (con chile) | C / F / J |
 | Pausa / Silencio | P o Esc / M |
 
-En móviles aparecen controles táctiles (configurables en Ajustes). **Correr** se activa o desactiva con un toque; no hay que mantenerlo pulsado. Se pueden combinar dirección, salto y fuego con varios dedos y deslizar entre botones sin levantar el dedo. Al pausar o salir se liberan los controles.
+En móviles aparecen controles táctiles (configurables en Ajustes). **Correr** se activa o desactiva con un toque; no hay que mantenerlo pulsado. Se pueden combinar dirección, salto y fuego con varios dedos y deslizar entre botones sin levantar el dedo. El mando cancela los gestos de zoom para que los saltos rápidos no amplíen la pantalla. Al pausar o salir se liberan los controles.
 
 ## Arquitectura
 

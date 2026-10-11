@@ -662,6 +662,9 @@ kbd {
 }
 
 /* ---------- Controles táctiles ---------- */
+.game, .stage, .touch, .touch__movement, .touch__actions {
+  touch-action: none;
+}
 .touch {
   --pad-size: clamp(58px, 10vw, 80px);
   position: fixed;

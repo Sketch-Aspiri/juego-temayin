@@ -60,10 +60,24 @@ with sync_playwright() as p:
         assert held()['left'] and not held()['right'] and held()['fire']
         cdp.send('Input.dispatchTouchEvent', {'type': 'touchCancel', 'touchPoints': []})
         assert held() == {'left': False, 'right': False, 'jump': False, 'run': True, 'fire': False}
+        scale_before = page.evaluate('visualViewport.scale')
+        jump = point('jump', 7)
+        for _ in range(8):
+            page.touchscreen.tap(jump['x'], jump['y'])
+            page.wait_for_timeout(40)
+        scale_after = page.evaluate('visualViewport.scale')
+        assert scale_after == scale_before == 1, [scale_before, scale_after]
+        cancelled = page.locator('.pad--jump').evaluate("""element => {
+            return ['touchstart', 'touchmove', 'touchend', 'gesturestart', 'gesturechange', 'gestureend', 'dblclick'].every(type => {
+                const event = new Event(type, { bubbles: true, cancelable: true });
+                element.dispatchEvent(event); return event.defaultPrevented;
+            });
+        }""")
+        assert cancelled
         page.get_by_role('button', name='Pausa', exact=True).click()
         assert not any(held().values())
         assert page.locator('.touch').count() == 0
-        report.append({'viewport': [width, height], 'multitouch': True, 'slide': True, 'cancel': True, 'pauseReset': True, 'accessibleTargets': True, 'moveJumpFire': True, 'fireEnabledForCheck': True})
+        report.append({'viewport': [width, height], 'multitouch': True, 'slide': True, 'cancel': True, 'pauseReset': True, 'accessibleTargets': True, 'moveJumpFire': True, 'fireEnabledForCheck': True, 'rapidJumpScale': scale_after, 'zoomGesturesCancelled': cancelled})
         context.close()
     browser.close()
 (OUTPUT / 'revision.json').write_text(json.dumps({'checks': report, 'errors': errors}, indent=2), encoding='utf-8')

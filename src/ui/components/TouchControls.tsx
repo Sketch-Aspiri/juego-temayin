@@ -1,7 +1,8 @@
-import { useEffect, useState, type PointerEvent } from 'react';
+import { useEffect, useRef, useState, type PointerEvent } from 'react';
 import { input, type Action } from '../../engine/input';
 import type { TouchMode } from '../../store/settings';
 import { TouchInput } from './touchInput';
+import { preventTouchZoom } from './preventTouchZoom';
 
 const ACTIONS: readonly Action[] = ['left', 'right', 'run', 'fire', 'jump'];
 
@@ -57,6 +58,10 @@ function useTouchPad() {
 
 function TouchPad() {
   const { active, down, move, up, toggleRun } = useTouchPad();
+  const padRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (padRef.current) return preventTouchZoom(padRef.current);
+  }, []);
   const button = (action: Action, label: string, text: string) => (
     <button type="button" data-action={action} aria-label={label}
       aria-pressed={action === 'run' ? active.includes('run') : undefined}
@@ -66,7 +71,7 @@ function TouchPad() {
     </button>
   );
   return (
-    <div className="touch" aria-label="Controles táctiles" onPointerDown={down} onPointerMove={move}
+    <div ref={padRef} className="touch" aria-label="Controles táctiles" onPointerDown={down} onPointerMove={move}
       onPointerUp={up} onPointerCancel={up} onLostPointerCapture={up} onContextMenu={(event) => event.preventDefault()}>
       <div className="touch__movement">
         {button('run', 'Correr', active.includes('run') ? 'CORRER ✓' : 'CORRER')}

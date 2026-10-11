@@ -705,6 +705,7 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 
 ### Controles móviles
 
+- `ui/components/preventTouchZoom.ts` instala listeners nativos no pasivos en el mando para cancelar `touchstart/move/end`, gestos de Safari y doble clic. Las acciones siguen entrando por Pointer Events; los listeners se retiran al desmontar el mando. La protección se limita al mando y no cancela los clics de los menús. `imagenes/verify_touch_zoom.py` comprueba 12 saltos rápidos, escala constante y pausa táctil en Chromium y WebKit con emulación móvil; no sustituye una prueba en un teléfono físico.
 - `Input.press/release` admiten un identificador de fuente: cada tecla o dedo conserva su pulsación hasta soltarla, sin cancelar otras fuentes de la misma acción. `reset` limpia las fuentes y los flancos de salto/fuego.
 - `ui/components/touchInput.ts` gestiona dedos independientes y deslizamiento entre botones. Correr es un interruptor táctil; no requiere un tercer dedo sostenido. `TouchControls` refleja el estado activo, captura cada puntero y limpia sus entradas al desmontarse, perder foco o esconderse la página.
 - Los botones usan una distribución adaptable sin solapamientos, blancos táctiles de al menos 44 px y márgenes para las áreas seguras del dispositivo. `imagenes/verify_touch.py` prueba tres tamaños con eventos táctiles de Chromium: carrera, tres dedos, salto y disparo simultáneos, deslizamiento, cancelación y pausa. Para comprobar el disparo concede el chile en la prueba; las capturas y resultados están en `imagenes/verificacion/movil/`.

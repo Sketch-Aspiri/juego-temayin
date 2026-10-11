@@ -11,7 +11,9 @@
       "pauseReset": true,
       "accessibleTargets": true,
       "moveJumpFire": true,
-      "fireEnabledForCheck": true
+      "fireEnabledForCheck": true,
+      "rapidJumpScale": 1,
+      "zoomGesturesCancelled": true
     },
     {
       "viewport": [
@@ -24,7 +26,9 @@
       "pauseReset": true,
       "accessibleTargets": true,
       "moveJumpFire": true,
-      "fireEnabledForCheck": true
+      "fireEnabledForCheck": true,
+      "rapidJumpScale": 1,
+      "zoomGesturesCancelled": true
     },
     {
       "viewport": [
@@ -37,7 +41,9 @@
       "pauseReset": true,
       "accessibleTargets": true,
       "moveJumpFire": true,
-      "fireEnabledForCheck": true
+      "fireEnabledForCheck": true,
+      "rapidJumpScale": 1,
+      "zoomGesturesCancelled": true
     }
   ],
   "errors": []
