@@ -1,59 +1,57 @@
-﻿{
-    "reports":  [
-                    {
-                        "id":  "1-6",
-                        "boss":  "puas",
-                        "hp":  0,
-                        "phase":  "done",
-                        "exitOpen":  true,
-                        "farthest":  79.55,
-                        "minOxygen":  10,
-                        "t":  8.10000000000018,
-                        "checkpoint":  true,
-                        "portrait":  "/assets/jefe_grande.webp"
-                    },
-                    {
-                        "id":  "2-7",
-                        "boss":  "kaiman",
-                        "hp":  0,
-                        "phase":  "done",
-                        "exitOpen":  true,
-                        "farthest":  91.55,
-                        "minOxygen":  10,
-                        "t":  92.84166666668662,
-                        "checkpoint":  true,
-                        "phase2":  true,
-                        "portrait":  "/assets/bosses/kaiman.webp"
-                    },
-                    {
-                        "id":  "3-5",
-                        "boss":  "huayChivo",
-                        "hp":  0,
-                        "phase":  "done",
-                        "exitOpen":  true,
-                        "farthest":  99.55,
-                        "minOxygen":  10,
-                        "t":  26.166666666665822,
-                        "checkpoint":  true,
-                        "phase2":  true,
-                        "portrait":  "/assets/bosses/huayChivo.webp"
-                    },
-                    {
-                        "id":  "4-5",
-                        "boss":  "huayPek",
-                        "hp":  0,
-                        "phase":  "done",
-                        "exitOpen":  true,
-                        "farthest":  91.55,
-                        "minOxygen":  10,
-                        "t":  37.22499999999853,
-                        "checkpoint":  true,
-                        "phase2":  true,
-                        "portrait":  "/assets/bosses/huayPek.webp"
-                    }
-                ],
-    "errors":  [
-
-               ],
-    "mode":  "Entrada directa a las arenas, protección contra daño y fuego asistido en ventanas válidas; no evalúa dificultad ni puntería."
+{
+  "mode": "Entrada directa a las arenas, protección contra daño y fuego asistido en ventanas válidas; no evalúa dificultad ni puntería.",
+  "reports": [
+    {
+      "id": "1-6",
+      "boss": "puas",
+      "hp": 0,
+      "phase": "done",
+      "exitOpen": true,
+      "farthest": 79.55,
+      "minOxygen": 10,
+      "t": 8.10000000000018,
+      "checkpoint": true,
+      "portrait": "/assets/jefe_grande.webp"
+    },
+    {
+      "id": "2-7",
+      "boss": "kaiman",
+      "hp": 0,
+      "phase": "done",
+      "exitOpen": true,
+      "farthest": 91.55,
+      "minOxygen": 10,
+      "t": 92.42500000001962,
+      "checkpoint": true,
+      "phase2": true,
+      "portrait": "/assets/bosses/kaiman.webp"
+    },
+    {
+      "id": "3-5",
+      "boss": "huayChivo",
+      "hp": 0,
+      "phase": "done",
+      "exitOpen": true,
+      "farthest": 99.55,
+      "minOxygen": 10,
+      "t": 26.15833333333249,
+      "checkpoint": true,
+      "phase2": true,
+      "portrait": "/assets/bosses/huayChivo.webp"
+    },
+    {
+      "id": "4-5",
+      "boss": "huayPek",
+      "hp": 0,
+      "phase": "done",
+      "exitOpen": true,
+      "farthest": 91.55,
+      "minOxygen": 10,
+      "t": 37.474999999998516,
+      "checkpoint": true,
+      "phase2": true,
+      "portrait": "/assets/bosses/huayPek.webp"
+    }
+  ],
+  "errors": []
 }

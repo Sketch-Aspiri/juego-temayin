@@ -33,7 +33,7 @@ for asset in catalog["assets"]:
             assert alpha is None or bool(np.any(alpha[y:y+h, x:x+w] >= 8)), (path, frame)
             frame_count += 1
     assert asset.get("prompt") and (ROOT / asset["prompt"]).is_file(), path
-    if asset["category"] in ["enemigos", "jefes", "personajes", "objetos", "mecanicas", "complementos"]:
+    if asset["category"] in ["enemigos", "jefes", "personajes", "objetos", "mecanicas", "complementos", "escenarios"]:
         assert frames, path
         assert (ROOT.parent / asset["runtime"]).is_file(), asset["runtime"]
 

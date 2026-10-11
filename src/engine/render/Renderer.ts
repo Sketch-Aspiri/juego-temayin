@@ -2,6 +2,7 @@ import type { Assets } from '../assets';
 import { Lighting } from './lighting';
 import { drawWeather } from './weather';
 import { drawBossArena } from './bossArena';
+import { arenaPlatformArt, drawArenaPlatforms, type ArenaPlatformArt } from './scenerySprites';
 import { drawHaciendaProps, drawTohHint } from './haciendaProps';
 import { drawBalls, drawHoops } from './ball';
 import { GROUND, ROWS, T, TAU, VH, VW } from '../constants';
@@ -72,6 +73,7 @@ export class Renderer {
   render(world: World, now: number, paused: boolean): void {
     const c = this.ctx;
     const theme = THEMES[world.def.theme];
+    const arenaPlatforms = arenaPlatformArt(world);
     this.drawBackdrop(world.def.theme, world.camX, now);
     if (theme.water) this.drawWater(theme, world.camX, now);
 
@@ -84,7 +86,8 @@ export class Renderer {
     drawGoal(c, world, now);
     drawCheckpoint(c, world, now);
     drawHoops(c, world.hoops, world.camX, now);
-    this.drawTiles(world, theme, now);
+    this.drawTiles(world, theme, now, arenaPlatforms);
+    drawArenaPlatforms(c, arenaPlatforms, world.camX);
     drawFallingCrumbles(c, world.crumbles, world.camX, this.textures.rubble);
     drawPlatforms(c, world.platforms, world.camX);
     drawHaciendaProps(c, world, now);
@@ -121,7 +124,7 @@ export class Renderer {
     }
   }
 
-  private drawTiles(world: World, theme: ThemeDef, now: number): void {
+  private drawTiles(world: World, theme: ThemeDef, now: number, arenaPlatforms: readonly ArenaPlatformArt[]): void {
     const c = this.ctx;
     const x0 = Math.floor(world.camX / T);
     const x1 = Math.min(world.width - 1, x0 + Math.ceil(VW / T) + 1);
@@ -130,6 +133,7 @@ export class Renderer {
       for (let tx = x0; tx <= x1; tx++) {
         const t = world.grid[ty][tx];
         if (t === ' ') continue;
+        if (t === 'X' && arenaPlatforms.some(p => ty === p.ty && tx >= p.tx && tx < p.tx + p.length)) continue;
         const sx = Math.round(tx * T - world.camX);
         let sy = ty * T;
         const bump = world.bumps.get(`${tx},${ty}`);

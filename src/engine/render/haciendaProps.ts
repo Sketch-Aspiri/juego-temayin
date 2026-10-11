@@ -4,6 +4,7 @@ import type { MovingPlatform } from '../entities/platforms';
 import type { World } from '../World';
 import { bakedFrame, type Frame } from './artCache';
 import type { Ctx } from './drawUtils';
+import { drawTorches } from './scenerySprites';
 
 const HAMMOCK: Frame = [27, 88, 605, 223];
 const TRUCK: Frame = [36, 181, 580, 408];
@@ -27,11 +28,7 @@ export function drawHaciendaProps(c: Ctx, world: World, now: number): void {
     c.fillStyle = '#a77738'; c.fillRect(r.x - world.camX - 14, r.y - 5, 28, 10);
     c.beginPath(); c.arc(x - world.camX, y, 7, 0, TAU); c.stroke();
   }
-  for (const l of world.level.lights) {
-    c.fillStyle = '#835b35'; c.fillRect(l.x - world.camX - 4, l.y, 8, 24);
-    c.fillStyle = '#ffcd5c'; c.beginPath();
-    c.ellipse(l.x - world.camX, l.y - 6, 6, 12 + Math.sin(now / 90), 0, 0, TAU); c.fill();
-  }
+  drawTorches(c, world, now);
 }
 
 /** Vagoneta Decauville sobre los rieles: comparte la colisión y el movimiento de un mover. */

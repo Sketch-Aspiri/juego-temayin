@@ -1,0 +1,16 @@
+{
+  "image": "arcada-izamal.webp",
+  "width": 1536,
+  "height": 1024,
+  "alpha": true,
+  "frames": [
+    {
+      "state": "arcada-izamal",
+      "x": 24,
+      "y": 105,
+      "width": 1488,
+      "height": 775
+    }
+  ],
+  "qa": "Recorte calculado sobre alfa >= 40; PNG original intacto y WebP sin pérdidas."
+}

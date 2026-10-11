@@ -1,0 +1,16 @@
+{
+  "image": "guarida-puas.png",
+  "width": 1536,
+  "height": 1024,
+  "alpha": true,
+  "frames": [
+    {
+      "state": "guarida-puas",
+      "x": 19,
+      "y": 111,
+      "width": 1504,
+      "height": 775
+    }
+  ],
+  "qa": "Recorte calculado sobre alfa >= 40; PNG original intacto y WebP sin pérdidas."
+}

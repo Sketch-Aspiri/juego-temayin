@@ -3054,6 +3054,64 @@
       "prompt": "nuevos/complementos/historia.prompt.txt"
     },
     {
+      "id": "arcada-izamal",
+      "category": "escenarios",
+      "image": "nuevos/escenarios/arcada-izamal.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "alpha": true,
+      "transparentFraction": 0.3129,
+      "runtime": "public/assets/escenarios/arcada-izamal.webp",
+      "atlas": "nuevos/escenarios/arcada-izamal.atlas.json",
+      "metadata": {
+        "image": "arcada-izamal.png",
+        "width": 1536,
+        "height": 1024,
+        "alpha": true,
+        "frames": [
+          {
+            "state": "arcada-izamal",
+            "x": 24,
+            "y": 105,
+            "width": 1488,
+            "height": 775
+          }
+        ],
+        "qa": "Recorte calculado sobre alfa >= 40; PNG original intacto y WebP sin pérdidas."
+      },
+      "prompt": "nuevos/escenarios/arcada-izamal.prompt.txt"
+    },
+    {
+      "id": "guarida-puas",
+      "category": "escenarios",
+      "image": "nuevos/escenarios/guarida-puas.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "alpha": true,
+      "transparentFraction": 0.402,
+      "runtime": "public/assets/escenarios/guarida-puas.webp",
+      "atlas": "nuevos/escenarios/guarida-puas.atlas.json",
+      "metadata": {
+        "image": "guarida-puas.png",
+        "width": 1536,
+        "height": 1024,
+        "alpha": true,
+        "frames": [
+          {
+            "state": "guarida-puas",
+            "x": 19,
+            "y": 111,
+            "width": 1504,
+            "height": 775
+          }
+        ],
+        "qa": "Recorte calculado sobre alfa >= 40; PNG original intacto y WebP sin pérdidas."
+      },
+      "prompt": "nuevos/escenarios/guarida-puas.prompt.txt"
+    },
+    {
       "id": "jugador",
       "category": "actualizados",
       "image": "actualizados/jugador.png",

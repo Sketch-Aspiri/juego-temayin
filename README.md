@@ -56,6 +56,7 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 ## Contenido actual
 
 - Los cuatro jefes jugables tienen retrato, consejo y paleta propios en su anuncio. Sus arenas muestran la guarida rocosa de Púas, el pantano con raíces de Kaimán, el atrio con arcadas amarillas de Huay Chivo y el claro nocturno con ramas asimétricas de Huay Pek.
+- Los decorados de las arenas usan sprites pintados: arcada de Izamal, guarida de Púas, mangles, ceibas y lianas. Las antorchas de los mundos 3 y 4 usan su sprite con halo de luz; las plataformas de Kaimán y Huay Pek se muestran como troncos sobre sus colisiones existentes.
 
 - Mundo 1 · Selva de Palenque: 1-1 Palenque, 1-2 Boca del Cerro, 1-3 Tenosique, 1-4 El Triunfo, 1-5 Candelaria, 1-6 Escárcega (jefe Púas).
 - Mundo 2 · Golfo de Campeche: 2-1 Carrillo Puerto (vagones de tren móviles), 2-2 Edzná (escombro que se derrumba), 2-3 San Francisco de Campeche (baluartes y cañones), 2-4 Petenes (manglar acuático), 2-5 Tenabo (hacienda, carretas móviles, ruedas de henequén), 2-6 Hecelchakán (ruinas al atardecer, aluxes) y 2-7 Calkiní (jefe Kaimán Moreleti: mordida, olas con la cola, emerge bajo el jugador; en la fase 2 sube el agua).
@@ -71,4 +72,4 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 
 El arte fuente está en `imagenes/`; los sprites usados por el juego en `public/assets/`. La versión original en un único `index.html` queda en el historial de git.
 
-La biblioteca de arte incluye 62 imágenes de enemigos, jefes, personajes, paisajes, objetos y complementos. Consulta [la galería](imagenes/galeria.html), [el catálogo](imagenes/catalogo.json) y [las instrucciones de arte](imagenes/PLAN_ARTE.md) para revisar los PNG, los prompts y los recortes antes de integrarlos.
+La biblioteca de arte incluye 64 imágenes de enemigos, jefes, personajes, paisajes, objetos, complementos y decorados de arenas. Consulta [la galería](imagenes/galeria.html), [el catálogo](imagenes/catalogo.json) y [las instrucciones de arte](imagenes/PLAN_ARTE.md) para revisar los PNG, los prompts y los recortes antes de integrarlos.

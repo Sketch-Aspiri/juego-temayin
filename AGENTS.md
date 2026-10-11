@@ -705,6 +705,10 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 
 ### Presentaciones y escenarios de jefes
 
+- Los decorados pintados se registran en `data/scenerySprites.ts` (ruta, recorte y ancla); `render/scenerySprites.ts` los dibuja con `bakedFrame`, sin React ni cambios a la simulación. `bossArena.ts` utiliza arcada de Izamal, guarida de Púas, mangles, ceibas y lianas, conservando el respaldo procedural. Los originales y prompts nuevos están en `imagenes/nuevos/escenarios/`, y los WebP sin pérdidas se sirven desde `public/assets/escenarios/`.
+- Las antorchas de todos los niveles usan el recorte de `complementos/utileria.webp`, anclado por la llama a `level.lights`, con halo que parpadea. Las plataformas horizontales de las arenas de Kaimán y Huay Pek usan troncos de `mecanicas.webp`; sus bloques sólidos y sus cajas de colisión permanecen intactos. `PAINTED_ART` precarga los decorados y la vegetación.
+- `render/scenerySprites.test.ts` cubre anclaje de llama, ausencia de mutación, selección de plataformas y respaldo sin atlas. `imagenes/verify_bosses.py` revisa las cuatro arenas en Chromium con combate asistido.
+
 - `BossHud.id` es un `BossId` y participa en `hudKey`, junto al nombre. `data/bossPresentation.ts` define retrato (recorte SVG del atlas existente), consejo, nombre de arena y paleta por jefe; `BossBanner` usa ese registro. El cartel de nivel se oculta mientras hay HUD de jefe para evitar superposiciones al reintentar.
 - `render/bossArena.ts` dibuja un decorado por `BossId` detrás de bloques y entidades, anclado a `LevelDef.boss.arena`. Los decorados son visuales: guarida rocosa, pantano con raíces y juncos, atrio amarillo y claro con luna y luciérnagas. La arcada de Huay Chivo se dibuja aquí, separada del cuerpo del jefe.
 - `swamp` usa suelo de lodo; `yellowCity` usa pavimento de mampostería; `jungleNight` usa el fondo pintado `deepJungle.webp` y plataformas de madera. Huay Pek tiene ramas asimétricas en las filas 8, 9 y 6; los ids y el guardado se conservan.

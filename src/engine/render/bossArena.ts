@@ -2,15 +2,22 @@ import { GROUND, T, TAU, VW } from '../constants';
 import type { BossId } from '../types';
 import type { World } from '../World';
 import type { Ctx } from './drawUtils';
+import { drawScenerySprite } from './scenerySprites';
 
 const FLOOR = GROUND * T;
 const ARCH_RADIUS = 60;
 const TREE_HEIGHT = 350;
 const REED_SPACING = 34;
 const FIREFLIES = 18;
+const LAIR_WIDTH_RATIO = 0.9;
+const ARCADE_WIDTH_RATIO = 0.9;
+const MANGROVE_WIDTH = 240;
+const CEIBA_WIDTH = 400;
+const VINE_WIDTH = 64;
 type ArenaDraw = (c: Ctx, width: number, now: number) => void;
 
 function drawLair(c: Ctx, width: number): void {
+  if (drawScenerySprite(c, 'lair', width / 2, FLOOR, width * LAIR_WIDTH_RATIO)) return;
   const rock = c.createLinearGradient(0, FLOOR - 310, 0, FLOOR);
   rock.addColorStop(0, '#6c5260'); rock.addColorStop(1, '#302936');
   c.fillStyle = rock;
@@ -35,6 +42,7 @@ function drawSwamp(c: Ctx, width: number, now: number): void {
   c.beginPath(); c.ellipse(width / 2, FLOOR - 12, width / 2, 95, 0, 0, TAU); c.fill();
   c.strokeStyle = '#65543b'; c.lineWidth = 18;
   for (const x of [T * 2, width - T * 2]) {
+    if (drawScenerySprite(c, 'mangrove', x, FLOOR, MANGROVE_WIDTH)) continue;
     c.beginPath(); c.moveTo(x, FLOOR); c.bezierCurveTo(x - 90, FLOOR - 70, x + 60, 300, x, 180); c.stroke();
     c.lineWidth = 6;
     for (const offset of [-55, 55]) {
@@ -54,6 +62,10 @@ function drawSwamp(c: Ctx, width: number, now: number): void {
 }
 
 function drawAtrium(c: Ctx, width: number): void {
+  // El zócalo tapa el margen transparente bajo los vanos y asienta la arcada sobre el pavimento.
+  c.fillStyle = '#493c2e';
+  c.fillRect(width * (1 - ARCADE_WIDTH_RATIO) / 2, FLOOR - T, width * ARCADE_WIDTH_RATIO, T);
+  if (drawScenerySprite(c, 'arcade', width / 2, FLOOR, width * ARCADE_WIDTH_RATIO)) return;
   const top = FLOOR - 240;
   c.fillStyle = '#b78425'; c.fillRect(0, top - 45, width, 45);
   c.fillStyle = '#ffe6a0'; c.fillRect(0, top - 50, width, 8);
@@ -79,6 +91,11 @@ function drawAtrium(c: Ctx, width: number): void {
 function drawNightClearing(c: Ctx, width: number, now: number): void {
   c.strokeStyle = '#223c40'; c.lineWidth = 28;
   for (const x of [T * 1.5, width - T * 1.5]) {
+    c.save(); c.filter = 'brightness(0.55) saturate(0.6)';
+    const painted = drawScenerySprite(c, 'ceiba', x, FLOOR, CEIBA_WIDTH);
+    if (painted) drawScenerySprite(c, 'vines', x, FLOOR - TREE_HEIGHT, VINE_WIDTH);
+    c.restore();
+    if (painted) continue;
     c.beginPath(); c.moveTo(x, FLOOR); c.quadraticCurveTo(x - 30, 270, x + 25, FLOOR - TREE_HEIGHT); c.stroke();
     c.lineWidth = 12;
     c.beginPath(); c.moveTo(x, 275); c.lineTo(x + (x < width / 2 ? 110 : -110), 210); c.stroke();

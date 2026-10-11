@@ -16,7 +16,8 @@ Abre [galeria.html](galeria.html) para revisar las imágenes y sus recortes. [ca
 | Mecánicas y efectos | 2 |
 | Tren, pirámide, banderas, vegetación, utilería, bloques e historia | 7 |
 | Arte existente actualizado | 6 |
-| **Total** | **62** |
+| Decorados de arenas (arcada de Izamal y guarida de Púas) | 2 |
+| **Total** | **64** |
 
 Los originales se conservan en `originales/`. Los prompts están junto a cada PNG o en `actualizados/prompts/`. Las variantes descartadas se conservan fuera del catálogo final.
 
@@ -30,11 +31,19 @@ El jugador actualizado conserva un halo naranja tenue de baja opacidad. La prueb
 
 Este catálogo entrega los recursos visuales para integrar las mecánicas, enemigos y escenas en el juego.
 
+## Decorados integrados de las arenas
+
+La arcada de tres vanos de Izamal y la guarida rocosa de Púas se generaron con el motor integrado `image_gen`. Los PNG originales, prompts finales y recortes están en `nuevos/escenarios/`; las copias WebP sin pérdidas y atlas se sirven desde `public/assets/escenarios/`. Se conserva la transparencia original.
+
+Las antorchas se toman del atlas `utileria`, las ceibas, lianas y mangles de `vegetacion`, y los troncos de `mecanicas`. `src/data/scenerySprites.ts` define los recortes y anclas; `render/scenerySprites.ts` reutiliza la caché de escalado. La llama de la antorcha coincide con su fuente de luz y lleva un halo que parpadea. Los troncos cubren las cajas sólidas existentes sin alterar las colisiones. El motor mantiene sus respaldos procedurales si un sprite no carga.
+
+`python imagenes/verify_bosses.py` revisa los cuatro anuncios y arenas y completa los combates con protección y fuego asistido en ventanas válidas; no mide dificultad ni puntería.
+
 ## Verificación
 
 - `python imagenes/build_catalog.py`: reconstruye el catálogo y la galería sin modificar los PNG.
 - `python imagenes/validate_catalog.py`: comprueba cobertura, transparencia y recortes visibles dentro de cada imagen.
 - `python imagenes/verify_runtime.py`: comprueba la galería, el título y el primer nivel con Chromium. Usa `TEMAYIN_QA_URL` para indicar la dirección del servidor local.
 - Resultados y capturas: `verificacion/`.
-- `npm test`: 544 pruebas aprobadas en 29 archivos tras integrar el Mundo 4.
+- `npm test`: 550 pruebas aprobadas en 30 archivos tras integrar los sprites de escenario.
 - `npm run build`: compilación aprobada.
