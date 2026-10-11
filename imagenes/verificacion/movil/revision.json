@@ -1,0 +1,44 @@
+{
+  "checks": [
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "multitouch": true,
+      "slide": true,
+      "cancel": true,
+      "pauseReset": true,
+      "accessibleTargets": true,
+      "moveJumpFire": true,
+      "fireEnabledForCheck": true
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "multitouch": true,
+      "slide": true,
+      "cancel": true,
+      "pauseReset": true,
+      "accessibleTargets": true,
+      "moveJumpFire": true,
+      "fireEnabledForCheck": true
+    },
+    {
+      "viewport": [
+        320,
+        568
+      ],
+      "multitouch": true,
+      "slide": true,
+      "cancel": true,
+      "pauseReset": true,
+      "accessibleTargets": true,
+      "moveJumpFire": true,
+      "fireEnabledForCheck": true
+    }
+  ],
+  "errors": []
+}

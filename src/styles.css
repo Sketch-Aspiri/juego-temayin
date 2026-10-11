@@ -663,46 +663,53 @@ kbd {
 
 /* ---------- Controles táctiles ---------- */
 .touch {
+  --pad-size: clamp(58px, 10vw, 80px);
   position: fixed;
   inset: auto 0 0 0;
-  height: 150px;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 12px;
+  padding: 12px max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
   pointer-events: none;
   z-index: 4;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.touch__movement, .touch__actions {
+  display: grid;
+  grid-template-columns: repeat(2, var(--pad-size));
+  gap: 10px;
+  align-items: end;
 }
 .pad {
-  position: absolute;
-  bottom: 20px;
-  width: 84px;
-  height: 84px;
+  width: var(--pad-size);
+  height: var(--pad-size);
+  padding: 0;
   border-radius: 50%;
-  border: 3px solid rgba(255, 255, 255, 0.7);
-  background: rgba(0, 0, 0, 0.35);
-  font-size: 30px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  color: #fff;
+  background: rgba(8, 24, 18, 0.68);
+  box-shadow: 0 3px 0 #07171080;
+  font-size: 27px;
   font-weight: 800;
   pointer-events: auto;
   touch-action: none;
+  -webkit-touch-callout: none;
 }
-.pad--left {
-  left: 20px;
-}
-.pad--right {
-  left: 120px;
-}
-.pad--jump {
-  right: 20px;
-  width: 100px;
-  height: 100px;
-  background: rgba(30, 140, 70, 0.55);
-}
+.pad--jump { background: rgba(30, 140, 70, 0.78); }
 .pad--run {
-  right: 140px;
-  font-size: 16px;
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 44px;
+  border-radius: 22px;
+  font-size: 13px;
 }
-.pad--fire {
-  right: 140px;
-  bottom: 120px;
-  font-size: 16px;
-  background: rgba(220, 80, 20, 0.55);
+.pad--fire { font-size: 13px; background: rgba(190, 65, 15, 0.78); }
+.pad--active {
+  border-color: #ffe17a;
+  background: rgba(35, 155, 78, 0.95);
+  box-shadow: 0 0 0 3px #ffe17a45;
 }
 
 /* ---------- Cinemática de introducción ---------- */

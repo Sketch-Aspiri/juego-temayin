@@ -25,15 +25,21 @@ export class Input {
   private jumpEdge = false;
   private fireEdge = false;
   private target: Window | null = null;
+  private readonly sources = new Map<Action, Set<string>>();
 
-  press(action: Action): void {
+  press(action: Action, source = 'manual'): void {
     if (action === 'jump' && !this.held.jump) this.jumpEdge = true;
     if (action === 'fire' && !this.held.fire) this.fireEdge = true;
     this.held[action] = true;
+    const sources = this.sources.get(action) ?? new Set<string>();
+    sources.add(source);
+    this.sources.set(action, sources);
   }
 
-  release(action: Action): void {
-    this.held[action] = false;
+  release(action: Action, source = 'manual'): void {
+    const sources = this.sources.get(action);
+    sources?.delete(source);
+    this.held[action] = (sources?.size ?? 0) > 0;
   }
 
   /** Devuelve true una sola vez por cada pulsación nueva de salto. */
@@ -51,6 +57,7 @@ export class Input {
 
   reset(): void {
     this.held = emptyHeld();
+    this.sources.clear();
     this.jumpEdge = false;
     this.fireEdge = false;
   }
@@ -75,13 +82,13 @@ export class Input {
   private onKeyDown = (e: KeyboardEvent): void => {
     const action = KEYMAP[e.code];
     if (!action) return;
-    this.press(action);
+    this.press(action, e.code);
     e.preventDefault();
   };
 
   private onKeyUp = (e: KeyboardEvent): void => {
     const action = KEYMAP[e.code];
-    if (action) this.release(action);
+    if (action) this.release(action, e.code);
   };
 
   private onBlur = (): void => this.reset();

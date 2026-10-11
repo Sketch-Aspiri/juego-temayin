@@ -2,6 +2,13 @@ import { describe, expect, it } from 'vitest';
 import { Input } from './input';
 
 describe('Input', () => {
+  it('mantiene la acción hasta soltar todas sus fuentes y reset las limpia', () => {
+    const input = new Input();
+    input.press('run', 'ShiftLeft'); input.press('run', 'ShiftRight');
+    input.release('run', 'ShiftLeft'); expect(input.held.run).toBe(true);
+    input.reset(); input.press('run', 'touch'); input.release('run', 'touch');
+    expect(input.held.run).toBe(false);
+  });
   it('el salto solo se consume una vez por pulsación', () => {
     const i = new Input();
     i.press('jump');
