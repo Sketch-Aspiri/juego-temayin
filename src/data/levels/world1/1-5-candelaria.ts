@@ -7,6 +7,8 @@ const TUNNEL_X0 = 97;
 const TUNNEL_X1 = 140;
 /** Fila del techo del túnel (también es la superficie del agua). */
 const TUNNEL_CEIL = 7;
+/** El agua continúa tras el techo para subir la escalera sin quedar encerrado. */
+const TUNNEL_EXIT_X = 145;
 /** Columna izquierda de cada bolsa de aire (2 columnas de ancho). */
 const AIR_POCKETS = [107, 120, 132] as const;
 
@@ -76,7 +78,7 @@ export const LEVEL_1_5: LevelDef = {
     ['row', 86, 8, 'B?M'], ['row', 89, 5, '?'], ['row', 90, 3, 'B'], ['coins', 87, 4, 3],
 
     // --- Túnel submarino ---
-    ['water', 92, TUNNEL_X1, TUNNEL_CEIL],
+    ['water', 92, TUNNEL_EXIT_X - 1, TUNNEL_CEIL],
     ['current', 92, 95, TUNNEL_CEIL, 9, 0, 2], // remolino que ayuda a bucear
     ...rockWall(96, TUNNEL_CEIL - 1),
     tunnelCeiling(),
@@ -110,6 +112,6 @@ export const LEVEL_1_5: LevelDef = {
     ...waterBank(45, 11, 1), ...waterBank(53, 11, -1),
     ...waterBank(56, 11, 1), ...waterBank(65, 11, -1),
     ...waterBank(69, 11, 1), ...waterBank(80, 11, -1),
-    ...waterBank(91, 7, 1), ...waterBank(141, 7, -1), ...waterBank(152, 9, -1),
+    ...waterBank(91, 7, 1), ...waterBank(TUNNEL_EXIT_X, TUNNEL_CEIL, -1), ...waterBank(152, 9, -1),
   ],
 };

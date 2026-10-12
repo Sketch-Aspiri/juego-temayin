@@ -59,8 +59,9 @@ export const LEVEL_1_4: LevelDef = {
 
     // --- Pasarela elevada --------------------------------------------------
     ['stairs', 150, 4, 1],
-    ['pit', 155, 176], ['water', 155, 176, 12],
-    ['plat', 154, 8, 5], ['plat', 161, 8, 3], ['plat', 166, 8, 2], ['plat', 170, 8, 2], ['plat', 174, 8, 4],
+    // El agua queda a dos bloques de la pasarela para poder regresar con una brazada.
+    ['pit', 155, 176], ['water', 155, 176, 10],
+    ['plat', 154, 8, 5], ['plat', 161, 8, 3], ['plat', 166, 8, 2], ['plat', 170, 8, 2], ['plat', 174, 8, 2],
     ['coins', 159, 6, 2], ['coins', 164, 6, 2], ['coins', 168, 6, 2], ['coins', 172, 6, 2],
     ['row', 162, 4, '?'],
     ['stairs', 178, 4, -1],
@@ -75,8 +76,9 @@ export const LEVEL_1_4: LevelDef = {
     ...nauyaca(52, 125, 190),
     ['spawn', 'howler', 71, 7],
     ['spawn', 'howler', 117, 6],
-    ['spawn', 'howler', 176, 7],
+    ['spawn', 'howler', 175, 7],
     ...waterBank(27, 11, 1), ...waterBank(38, 11, -1),
     ...waterBank(105, 11, 1), ...waterBank(137, 11, -1),
+    ...waterBank(154, 10, 1), ...waterBank(177, 10, -1),
   ],
 };
