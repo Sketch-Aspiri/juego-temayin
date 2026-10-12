@@ -55,6 +55,8 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 
 ## Contenido actual
 
+- El agua se integra gradualmente con las orillas y la superficie: degradado lateral, color según profundidad, reflejos difusos y espuma fina. Las zonas contiguas se unen sin costuras y se elimina la franja opaca inferior. El cambio se aplica a todos los niveles con agua sin modificar nado, oxígeno ni colisiones. `python imagenes/verify_water_transitions.py` revisa los quince niveles correspondientes en Chromium.
+
 - Las mecánicas actuales tienen sprites pintados: barcos, tortugas, aros, cuerdas, troncos, losas frágiles, cañones, palapas, toldos, resina y sargazo. Temayin muestra poses de agarre, balanceo y lanzamiento; el fuego tiene cuatro cuadros animados. Se crearon siete recursos transparentes para los proyectiles y ondas de los enemigos y jefes, y para los toldos de Cancún. Se conservan las colisiones, el progreso y los respaldos procedurales.
 
 - Los cinco jefes jugables tienen retrato, consejo y paleta propios en su anuncio. Sus arenas muestran la guarida rocosa de Púas, el pantano con raíces de Kaimán, el atrio con arcadas amarillas de Huay Chivo, el claro nocturno de Huay Pek y la bahía de Akumal de Capitán Sargazo.

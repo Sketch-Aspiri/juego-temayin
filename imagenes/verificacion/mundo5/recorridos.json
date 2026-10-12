@@ -11,7 +11,7 @@
       "exitOpen": null,
       "farthest": 182.55,
       "minOxygen": 10,
-      "t": 18.274999999999604,
+      "t": 18.84166666666624,
       "swam": true,
       "checkpoint": true
     },
@@ -26,7 +26,7 @@
       "exitOpen": null,
       "farthest": 182.55,
       "minOxygen": 7.233333333333409,
-      "t": 37.34166666666519,
+      "t": 37.17499999999853,
       "swam": true,
       "checkpoint": true
     },
@@ -56,7 +56,7 @@
       "exitOpen": null,
       "farthest": 182.55,
       "minOxygen": 7.141666666666738,
-      "t": 38.224999999998474,
+      "t": 38.24166666666514,
       "swam": true,
       "checkpoint": true
     },
@@ -71,7 +71,7 @@
       "exitOpen": null,
       "farthest": 182.55,
       "minOxygen": 10,
-      "t": 18.924999999999567,
+      "t": 18.999999999999563,
       "swam": true,
       "checkpoint": true
     },
@@ -87,7 +87,7 @@
       "farthest": 112.55,
       "layer": 3,
       "minOxygen": 9.700000000000017,
-      "t": 40.716666666665,
+      "t": 40.69999999999833,
       "swam": true,
       "checkpoint": true
     }

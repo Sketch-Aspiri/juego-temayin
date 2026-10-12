@@ -32,6 +32,9 @@ import { drawCannonTile, drawFragileTile } from './levelSprites';
 const BLOCK_QUESTION = new Set(['?', 'M', 'L', 'F', 'S', 'P']);
 const BUMP_HEIGHT = 10;
 const BUMP_TIME = 0.15;
+const DECORATIVE_WATER_OFFSET = 14;
+const DECORATIVE_WATER_BLEND = 28;
+const DECORATIVE_FOAM_ALPHA = 0.35;
 
 /** Dibuja un `World` en un lienzo 2D. No modifica el estado del juego. */
 export class Renderer {
@@ -77,7 +80,7 @@ export class Renderer {
     const theme = THEMES[world.def.theme];
     const arenaPlatforms = arenaPlatformArt(world);
     this.drawBackdrop(world.def.theme, world.camX, now);
-    if (theme.water) this.drawWater(theme, world.camX, now);
+    if (theme.water && !world.level.water.length) this.drawWater(theme, world.camX, now);
 
     c.save();
     if (world.shake > 0 && !paused) {
@@ -115,9 +118,12 @@ export class Renderer {
     if (!water) return;
     const c = this.ctx;
     const t = now / 1000;
-    const top = GROUND * T + 14;
-    c.fillStyle = water.fill;
-    c.fillRect(0, top, VW, VH - top);
+    const top = GROUND * T + DECORATIVE_WATER_OFFSET;
+    const gradient = c.createLinearGradient(0, top - DECORATIVE_WATER_BLEND, 0, VH);
+    gradient.addColorStop(0, 'transparent'); gradient.addColorStop(1, water.fill);
+    c.fillStyle = gradient;
+    c.fillRect(0, top - DECORATIVE_WATER_BLEND, VW, VH - top + DECORATIVE_WATER_BLEND);
+    c.save(); c.globalAlpha = DECORATIVE_FOAM_ALPHA;
     c.fillStyle = water.foam;
     for (let x = -40; x < VW + 40; x += 40) {
       const wx = x - (camX % 40);
@@ -125,6 +131,7 @@ export class Renderer {
       c.ellipse(wx + Math.sin(t * 2 + x) * 3, top, 20, 5, 0, 0, Math.PI);
       c.fill();
     }
+    c.restore();
   }
 
   private drawTiles(world: World, theme: ThemeDef, now: number, arenaPlatforms: readonly ArenaPlatformArt[]): void {

@@ -1,12 +1,13 @@
-import { STROKE_FX_TIME, T, TAU, VH, VW } from '../constants';
+import { STROKE_FX_TIME, T, TAU, VW } from '../constants';
 import { headUnderwater } from '../entities/swim';
 import type { Item, Player } from '../entities/types';
-import { bubbleStream, type CurrentZone, type WaterZone } from '../level/zones';
+import { bubbleStream, type CurrentZone } from '../level/zones';
 import type { World } from '../World';
 import { bakedFrame, type Frame } from './artCache';
 import type { Ctx } from './drawUtils';
 import { objectSprite } from './props';
 import type { WaterStyle } from './themes';
+import { WaterSurfaceRenderer } from './waterSurface';
 
 /**
  * Dibujo de las zonas de agua (AGENTS.md §5.1/§5.2): cuerpo translúcido con
@@ -15,12 +16,7 @@ import type { WaterStyle } from './themes';
  */
 
 const DEFAULT_WATER: WaterStyle = { fill: '#1aa7c9', foam: '#7fe6f0' };
-const WATER_ALPHA = 0.42;
-const SURFACE_BAND = 6;
-const WAVE_AMP = 3;
-const WAVE_LEN = 46;
-const WAVE_SPEED = 2.4;
-const WAVE_STEP = 8;
+const waterSurface = new WaterSurfaceRenderer();
 
 // Atlas de mecánicas (3×3): racimo de burbujas respirables, medido por caja de alfa.
 const MECHANICS_FILE = 'mecanicas/mecanicas.webp';
@@ -39,35 +35,6 @@ const STREAK_LEN = 18;
 const BREATH_CYCLE = 1.2;
 const BREATH_RISE = 45;
 const SNORKEL_H = 34;
-
-const waveY = (top: number, worldX: number, t: number): number =>
-  top + Math.sin((worldX / WAVE_LEN) * TAU + t * WAVE_SPEED) * WAVE_AMP;
-
-function drawZone(c: Ctx, z: WaterZone, style: WaterStyle, camX: number, t: number): void {
-  const x0 = z.x0 * T - camX;
-  const x1 = (z.x1 + 1) * T - camX;
-  if (x1 < 0 || x0 > VW) return;
-  const top = z.surface * T;
-  c.beginPath();
-  c.moveTo(x0, VH);
-  for (let x = x0; x < x1; x += WAVE_STEP) c.lineTo(x, waveY(top, x + camX, t));
-  c.lineTo(x1, waveY(top, x1 + camX, t));
-  c.lineTo(x1, VH);
-  c.closePath();
-  c.globalAlpha = WATER_ALPHA;
-  c.fillStyle = style.fill;
-  c.fill();
-  c.globalAlpha = 0.25;
-  c.fillStyle = style.foam;
-  c.fillRect(x0, top + WAVE_AMP, x1 - x0, SURFACE_BAND);
-  c.globalAlpha = 0.9;
-  c.strokeStyle = style.foam;
-  c.lineWidth = 3;
-  c.beginPath();
-  for (let x = x0; x <= x1; x += WAVE_STEP) c.lineTo(x, waveY(top, x + camX, t));
-  c.stroke();
-  c.globalAlpha = 1;
-}
 
 /** Estelas que fluyen en la dirección de la corriente, recortadas a su rectángulo. */
 function drawCurrent(c: Ctx, z: CurrentZone, camX: number, t: number): void {
@@ -144,7 +111,7 @@ export function drawWaterLayer(c: Ctx, world: World, style: WaterStyle | undefin
   const t = now / 1000;
   const zones = world.level.water;
   if (!zones.length && !world.level.bubbles.length) return;
-  for (const z of zones) drawZone(c, z, style ?? DEFAULT_WATER, world.camX, t);
+  waterSurface.draw(c, zones, style ?? DEFAULT_WATER, world.camX, t);
   for (const z of world.level.currents) drawCurrent(c, z, world.camX, t);
   drawVents(c, world, t);
   drawSwimmer(c, world, world.player, t);

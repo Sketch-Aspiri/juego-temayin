@@ -21,7 +21,7 @@
       "exitOpen": true,
       "farthest": 91.55,
       "minOxygen": 10,
-      "t": 92.37500000001958,
+      "t": 92.80833333335326,
       "checkpoint": true,
       "phase2": true,
       "portrait": "/assets/bosses/kaiman.webp"
@@ -47,7 +47,7 @@
       "exitOpen": true,
       "farthest": 91.55,
       "minOxygen": 10,
-      "t": 37.29166666666519,
+      "t": 37.39166666666519,
       "checkpoint": true,
       "phase2": true,
       "portrait": "/assets/bosses/huayPek.webp"

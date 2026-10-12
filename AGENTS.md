@@ -709,6 +709,13 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 
 ## 10. Definición de terminado
 
+### Transiciones suaves del agua
+
+- `render/waterSurface.ts` dibuja el agua navegable en un lienzo reutilizado: mezcla lateral de 32 px dentro de cada orilla, entrada gradual de color en los primeros 48 px de profundidad, reflejo difuso y espuma fina. El enmascarado se aplica únicamente a ese lienzo; no borra terreno ni entidades ni extiende la zona nadable.
+- `waterRenderSpans` une zonas contiguas de la misma altura y resuelve solapes usando la superficie más alta. Conserva superficies fraccionarias, incluidas las de la crecida de Kaimán. Las zonas físicas de `BuiltLevel.water`, el nado y el oxígeno permanecen intactos.
+- `Renderer` omite la antigua franja decorativa a altura fija cuando hay agua navegable; los temas con agua solo decorativa conservan un fondo con degradado. Así desaparece el segundo corte horizontal opaco.
+- `render/waterSurface.test.ts` comprueba unión, solapes, pozas estrechas y cobertura de todos los niveles sin DOM. `python imagenes/verify_water_transitions.py` revisa los quince niveles con agua navegable o decorativa en Chromium y verifica continuidad de alfa, ausencia de costuras, conservación del terreno seco y de la simulación. Capturas y resultados: `imagenes/verificacion/agua-suave/`.
+
 ### Sprites de las mecánicas jugables
 
 - `data/gameplaySprites.ts` registra los recortes y anclas de barcos, tortugas, palapas, cañones, losas frágiles, aros, cuerdas, troncos, resina, sargazo y poses de agarre, balanceo y lanzamiento. `data/newGameplaySprites.ts` registra siete imágenes nuevas de `image_gen`: púa, zapote, fuego fatuo, bola de sargazo, ola de agua, onda espectral y toldo. Los PNG originales y prompts están en `imagenes/nuevos/proyectiles/` y `imagenes/nuevos/complementos/toldo.*`; los WebP sin pérdidas y atlas se sirven desde `public/assets/`.

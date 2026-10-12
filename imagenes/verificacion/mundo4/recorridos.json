@@ -11,7 +11,7 @@
       "hoopsLit": 1,
       "farthest": 205.55,
       "minOxygen": 10,
-      "t": 26.558333333332467,
+      "t": 26.62499999999913,
       "checkpoint": true
     },
     {
@@ -71,7 +71,7 @@
       "hoopsLit": 0,
       "farthest": 91.55,
       "minOxygen": 10,
-      "t": 61.92499999999713,
+      "t": 51.108333333331075,
       "checkpoint": true,
       "phase2": true
     }
