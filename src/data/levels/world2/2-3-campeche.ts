@@ -27,7 +27,7 @@ const RAMPART_TOP = 7;
  *   0-35    Extramuros y Puerta de Tierra: bloques `?`, escudo y el arco de la puerta.
  *   36-71   Calles del centro histórico: balcones y una zanja; chile en lo alto.
  *   72-103  Baluartes y foso: dos fosos sin fondo que se cruzan saltando de cañón
- *           en cañón; corazón de jade sobre el segundo foso.
+ *           en cañón; cacao con espacio libre para saltar sobre el segundo foso.
  *   104-117 Plaza con el punto de control (Toh).
  *   118-165 Paseo de ronda: muralla con cañones, almenas y una brecha;
  *           cangrejos pirata patrullando.
@@ -58,7 +58,7 @@ export const LEVEL_2_3: LevelDef = {
     ...bastion(76, BASTION_TOP),
     ['pit', 78, 85], ['cannon', 78, 8, 1], ['cannon', 84, 9, -1], ['coins', 80, 5, 4],
     ...bastion(86, BASTION_TOP),
-    ['pit', 88, 96], ['cannon', 88, 8, 1], ['cannon', 95, 8, -1], ['coins', 90, 6, 5], ['row', 92, 4, 'L'],
+    ['pit', 88, 96], ['cannon', 88, 8, 1], ['cannon', 95, 8, -1], ['coins', 90, 6, 5],
     ...bastion(97, BASTION_TOP),
     ['stairs', 99, 5, -1],
 
