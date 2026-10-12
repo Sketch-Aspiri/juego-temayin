@@ -1,5 +1,6 @@
 import type { LevelDef } from '../../../engine/level/types';
 import { blueCrab, nauyaca } from '../helpers';
+import { waterBank } from '../waterBanks';
 
 /**
  * Calkiní: pueblo del Camino Real de Campeche, en el norte del estado, en el límite
@@ -51,5 +52,8 @@ export const LEVEL_2_7: LevelDef = {
     ...nauyaca(24, 45),
     ...blueCrab(13, 52),
     ['spawn', 'howler', 42, 8],
+    ...waterBank(15, 11, 1), ...waterBank(23, 11, -1),
+    // La orilla también contiene la crecida; el zócalo de suelo sobrevive al abrir el muro.
+    ...waterBank(61, 10, 1), ...waterBank(84, 10, -1),
   ],
 };

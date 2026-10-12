@@ -51,7 +51,11 @@ with sync_playwright() as playwright:
       const dryPixel=Array.from(c.getImageData(400,280,1,1).data);
       c.clearRect(0,0,960,560);
       renderer.draw(c,[{x0:2,x1:2,surface:5}],style,0,1);
-      return {left,right,depth,joinedIdentical,dryPixel,narrowPoolAlpha:alpha(100,280)};
+      const narrowPoolAlpha=alpha(100,280);
+      c.clearRect(0,0,960,560);
+      const grid=Array.from({length:14},()=>Array(24).fill(' '));grid[7][5]='G';
+      renderer.draw(c,zones,style,0,1,grid);
+      return {left,right,depth,joinedIdentical,dryPixel,narrowPoolAlpha,solidAlpha:alpha(220,300),waterAlpha:alpha(260,300)};
     }""")
     reports = []
     for level in levels:
@@ -60,7 +64,9 @@ with sync_playwright() as playwright:
           const zone=w.level.water.find(z=>z.x1+1<def.width-3)||w.level.water[0];
           const edge=zone?zone.x1+1:Math.floor(def.width/2);
           w.camX=Math.max(0,Math.min((edge-11)*40,def.width*40-960));w.phaseT=10;
-          w.player.x=Math.min((edge+1)*40,def.width*40-120);w.player.y=480-w.player.h;
+          w.player.x=Math.min((edge+1)*40,def.width*40-120);
+          let floor=12;while(floor>0&&w.solid(Math.floor(w.player.x/40),floor-1))floor--;
+          w.player.y=floor*40-w.player.h;
           for(const e of w.enemies)e.active=true;
           const state=()=>JSON.stringify({water:w.level.water,player:w.player,grid:w.grid,platforms:w.platforms,session:w.session});
           const before=state();qa.renderer.render(w,1000,false);
@@ -79,5 +85,6 @@ assert pixels['right'][-1] == 0, pixels
 assert all(a <= b for a, b in zip(pixels['depth'], pixels['depth'][1:])), pixels
 assert pixels['joinedIdentical'] and pixels['dryPixel'] == [178, 124, 67, 255], pixels
 assert pixels['narrowPoolAlpha'] > 60, pixels
+assert pixels['solidAlpha'] == 0 and pixels['waterAlpha'] > 60, pixels
 (OUTPUT / 'resultado.json').write_text(json.dumps({'levels':reports,'pixels':pixels,'errors':errors},ensure_ascii=False,indent=2),encoding='utf-8')
 print(f'{len(reports)} niveles revisados; degradados continuos, zonas contiguas sin costuras y simulación intacta.')

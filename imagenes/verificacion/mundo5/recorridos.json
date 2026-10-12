@@ -11,7 +11,7 @@
       "exitOpen": null,
       "farthest": 182.55,
       "minOxygen": 10,
-      "t": 18.84166666666624,
+      "t": 18.341666666666267,
       "swam": true,
       "checkpoint": true
     },
@@ -19,14 +19,14 @@
       "id": "5-2",
       "mode": "contacto protegido; oxígeno y colisiones activos; jefe con daño asistido en ventanas válidas, sin evaluar puntería",
       "phase": "done",
-      "x": 182.55,
+      "x": 186.55,
       "y": 414,
       "lives": 3,
       "bossHp": null,
       "exitOpen": null,
-      "farthest": 182.55,
-      "minOxygen": 7.233333333333409,
-      "t": 37.17499999999853,
+      "farthest": 186.55,
+      "minOxygen": 7.083333333333401,
+      "t": 39.449999999998404,
       "swam": true,
       "checkpoint": true
     },
@@ -40,8 +40,8 @@
       "bossHp": null,
       "exitOpen": null,
       "farthest": 192.55,
-      "minOxygen": 9.47500000000003,
-      "t": 20.924999999999454,
+      "minOxygen": 10,
+      "t": 21.03333333333278,
       "swam": true,
       "checkpoint": true
     },
@@ -56,7 +56,7 @@
       "exitOpen": null,
       "farthest": 182.55,
       "minOxygen": 7.141666666666738,
-      "t": 38.24166666666514,
+      "t": 38.29166666666514,
       "swam": true,
       "checkpoint": true
     },
@@ -71,7 +71,7 @@
       "exitOpen": null,
       "farthest": 182.55,
       "minOxygen": 10,
-      "t": 18.999999999999563,
+      "t": 18.949999999999566,
       "swam": true,
       "checkpoint": true
     },
@@ -86,8 +86,8 @@
       "exitOpen": true,
       "farthest": 112.55,
       "layer": 3,
-      "minOxygen": 9.700000000000017,
-      "t": 40.69999999999833,
+      "minOxygen": 10,
+      "t": 41.51666666666495,
       "swam": true,
       "checkpoint": true
     }

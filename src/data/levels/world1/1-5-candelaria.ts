@@ -1,5 +1,6 @@
 import type { LevelDef, Op } from '../../../engine/level/types';
 import { barracudas, nauyaca, urchin } from '../helpers';
+import { waterBank } from '../waterBanks';
 
 /** Túnel submarino: techo de roca en la fila 7 entre estas columnas (inclusive). */
 const TUNNEL_X0 = 97;
@@ -71,7 +72,8 @@ export const LEVEL_1_5: LevelDef = {
     ['coins', 74, 3, 4],
 
     // --- Orilla del punto de control ---
-    ['row', 86, 8, 'B?M?B'], ['coins', 87, 4, 3],
+    // Deja espacio para saltar por la escalera que contiene la entrada del túnel.
+    ['row', 86, 8, 'B?M'], ['row', 89, 5, '?'], ['row', 90, 3, 'B'], ['coins', 87, 4, 3],
 
     // --- Túnel submarino ---
     ['water', 92, TUNNEL_X1, TUNNEL_CEIL],
@@ -101,8 +103,13 @@ export const LEVEL_1_5: LevelDef = {
     ['stairs', 172, 5, 1],
     ['flag', 182], ['temple', 188],
 
-    ...nauyaca(22, 35, 56, 68, 166),
+    ...nauyaca(22, 35, 68, 166), ['spawn', 'nauyaca', 56, 10],
     ...urchin(42, 104, 126, 129),
     ...barracudas([50, 12], [61, 12], [76, 12], [114, 9], [137, 10]),
+    ...waterBank(29, 11, 1), ...waterBank(33, 11, -1),
+    ...waterBank(45, 11, 1), ...waterBank(53, 11, -1),
+    ...waterBank(56, 11, 1), ...waterBank(65, 11, -1),
+    ...waterBank(69, 11, 1), ...waterBank(80, 11, -1),
+    ...waterBank(91, 7, 1), ...waterBank(141, 7, -1), ...waterBank(152, 9, -1),
   ],
 };

@@ -1,6 +1,7 @@
 import type { LevelDef, Op } from '../../../engine/level/types';
 import { cavernCeiling, floodedTunnel } from '../caves';
 import { axolotls, bats, morays } from '../helpers';
+import { waterBank } from '../waterBanks';
 
 /** Cierra el espacio sobre el túnel, dejando únicamente sus bolsas de aire. */
 function tunnelRoof(x0: number, x1: number, pockets: readonly number[]): Op[] {
@@ -36,5 +37,7 @@ export const LEVEL_5_4: LevelDef = {
     ...bats([16, 3], [95, 4], [181, 4]),
     ...axolotls([48, 9], [79, 10], [138, 9], [169, 10]),
     ...morays([33, 11], [62, 11], [131, 11], [155, 11]),
+    ...waterBank(17, 5, 1), ...waterBank(91, 5, -1),
+    ...waterBank(107, 5, 1), ...waterBank(178, 5, -1),
   ],
 };

@@ -140,7 +140,9 @@
       67,
       255
     ],
-    "narrowPoolAlpha": 80
+    "narrowPoolAlpha": 80,
+    "solidAlpha": 0,
+    "waterAlpha": 82
   },
   "errors": []
 }

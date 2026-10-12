@@ -44,9 +44,9 @@ with sync_playwright() as p:
         let jump=false;
         const pit=w.def.ops.find(o=>o[0]==='pit'&&o[1]*40>front&&!w.level.water.some(z=>o[1]>=z.x0&&o[1]<=z.x1));
         if(p.swimming){
-          const water=w.level.water.find(z=>tx>=z.x0&&tx<=z.x1);
+          const water=w.level.water.find(z=>cx/40>=z.x0&&cx/40<z.x1+1);
           if(water){
-            const roof=[tx,tx+1,tx+2].some(x=>w.solid(x,water.surface));
+            const roof=[tx,tx+1,tx+2].some(x=>x>=water.x0&&x<=water.x1&&w.solid(x,water.surface));
             const target=roof?(water.surface+1)*40+8:water.surface*40-35;
             jump=p.y>target+15&&p.vy>=0;
           }

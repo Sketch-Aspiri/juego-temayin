@@ -55,7 +55,7 @@ with sync_playwright() as p:
         if(p.swimming){
           const water=w.level.water.find(z=>Math.floor(cx/40)>=z.x0&&Math.floor(cx/40)<=z.x1);
           if(water){
-            const roof=[tx,tx+1,tx+2].some(x=>w.solid(x,water.surface));
+            const roof=[tx,tx+1,tx+2].some(x=>x>=water.x0&&x<=water.x1&&w.solid(x,water.surface));
             const target=w.def.id==='5-2'?8*40:roof?(water.surface+1)*40+8:water.surface*40-65;
             jump=p.y>target+15&&p.vy>=0;
           }
@@ -72,13 +72,13 @@ with sync_playwright() as p:
         if(jump&&!input.held.jump)input.press('jump');
         else if(p.vy>=0||(!jump&&p.onGround))input.release('jump');
         // Ante un techo inundado, se hunde antes de intentar entrar al túnel.
-        const dive=w.def.id==='5-4'&&[tx,tx+1,tx+2].some(x=>w.solid(x,5))&&p.y<6*40;
+        const dive=w.def.id==='5-4'&&p.swimming&&[tx,tx+1,tx+2].some(x=>w.solid(x,5)&&w.level.water.some(z=>x>=z.x0&&x<=z.x1))&&p.y<6*40;
         if(dive)input.release('jump');
         // En el arrecife se nada a media profundidad y se espera en los respiraderos.
         if(['5-2','5-4'].includes(w.def.id)&&p.swimming){
           const near=w.level.bubbles.find(v=>Math.abs((v.x+.5)*40-cx)<22);
           if(near&&p.oxygen<9.5){input.release('right');input.release('left');}
-          const water=w.level.water.find(z=>tx>=z.x0&&tx<=z.x1);
+          const water=w.level.water.find(z=>cx/40>=z.x0&&cx/40<z.x1+1);
           let stroke=p.y>8*40&&p.vy>=0;
           if(water&&water.x1*40-front<100)stroke=p.y>water.surface*40-35&&p.vy>=0;
           if(stroke&&!input.held.jump)input.press('jump');else if(p.vy>=0)input.release('jump');
@@ -118,7 +118,7 @@ with sync_playwright() as p:
         except Exception:
             pass
         page.evaluate('qa.drive=false')
-        report = page.evaluate("()=>({id:qa.world.def.id,mode:'contacto protegido; oxígeno y colisiones activos; jefe con daño asistido en ventanas válidas, sin evaluar puntería',phase:qa.world.phase,x:qa.world.player.x/40,y:qa.world.player.y,lives:qa.world.session.lives,bossHp:qa.world.boss?.hp,exitOpen:qa.world.def.boss?qa.world.grid.slice(0,12).every(r=>r[qa.world.def.boss.arena[1]+1]===' '):null,...qa.metrics})")
+        report = page.evaluate("()=>({id:qa.world.def.id,mode:'contacto protegido; oxígeno y colisiones activos; jefe con daño asistido en ventanas válidas, sin evaluar puntería',phase:qa.world.phase,x:qa.world.player.x/40,y:qa.world.player.y,lives:qa.world.session.lives,bossHp:qa.world.boss?.hp,exitOpen:qa.world.def.boss?!qa.world.grid.slice(0,12).some(r=>r[qa.world.def.boss.arena[1]+1]==='X'):null,...qa.metrics})")
         reports.append(report)
         page.screenshot(path=str(out / f'{level}-recorrido.png'))
         print(json.dumps(report), flush=True)

@@ -1,5 +1,6 @@
 import type { LevelDef, Op } from '../../../engine/level/types';
 import { barracudas, blueCrab, urchin } from '../helpers';
+import { waterBank } from '../waterBanks';
 
 /** Superficie del río en las pozas hondas (fila de bloques). */
 const RIVER_SURFACE = 7;
@@ -79,5 +80,6 @@ export const LEVEL_1_2: LevelDef = {
     ...urchin(25, 132, 150),
     ...blueCrab(32, 55, 175),
     ...barracudas([74, 9], [138, 9], [154, 8]),
+    ...waterBank(44, 10, -1),
   ],
 };

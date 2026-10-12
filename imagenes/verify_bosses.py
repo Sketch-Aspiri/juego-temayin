@@ -36,7 +36,15 @@ with sync_playwright() as p:
         }
       };
     }''')
-    page.evaluate('''()=>{qa.control=(w,dt)=>{w.player.inv=1;qa.metrics.t=(qa.metrics.t||0)+dt;const b=w.boss;if(b&&b.hp>0){w.input.release('right');w.input.release('left');w.input.release('jump');if(b.hittable)b.onFireball(w);}else{w.input.press('right');w.input.press('run');}}}''')
+    page.evaluate('''()=>{qa.control=(w,dt)=>{
+      const p=w.player,input=w.input;p.inv=1;qa.metrics.t=(qa.metrics.t||0)+dt;
+      const b=w.boss;
+      if(b&&b.hp>0){input.release('right');input.release('left');input.release('jump');if(b.hittable)b.onFireball(w);return;}
+      input.press('right');input.press('run');
+      const front=Math.floor((p.x+p.w+12)/40),feet=Math.floor((p.y+p.h-1)/40);
+      if((p.onGround||p.coyote>0)&&w.solid(front,feet)&&!input.held.jump)input.press('jump');
+      else if(p.vy>=0)input.release('jump');
+    }}''')
     for level in ['1-6','2-7','3-5','4-5']:
       page.evaluate('id=>{qa.hold=false;qa.drive=false;qa.metrics={};qa.air=null;qa.captured=false;qa.store.getState().startLevel(id)}',level)
       page.wait_for_function('id=>qa.world?.def.id===id',arg=level)
@@ -55,7 +63,7 @@ with sync_playwright() as p:
       page.wait_for_function("qa.world.boss.hp===0||qa.world.phase==='dying'",timeout=60000)
       page.wait_for_function("qa.world.phase==='done'||qa.world.phase==='dying'",timeout=25000)
       page.evaluate('qa.hold=true;qa.drive=false')
-      report=page.evaluate('''()=>({id:qa.world.def.id,boss:qa.world.boss.id,hp:qa.world.boss.hp,phase:qa.world.phase,exitOpen:qa.world.grid.slice(0,12).every(r=>r[qa.world.def.boss.arena[1]+1]===' '),...qa.metrics})''')
+      report=page.evaluate('''()=>({id:qa.world.def.id,boss:qa.world.boss.id,hp:qa.world.boss.hp,phase:qa.world.phase,exitOpen:!qa.world.grid.slice(0,12).some(r=>r[qa.world.def.boss.arena[1]+1]==='X'),...qa.metrics})''')
       report['portrait']=portrait
       reports.append(report)
       page.screenshot(path=str(out / f'{level}-final.png'))

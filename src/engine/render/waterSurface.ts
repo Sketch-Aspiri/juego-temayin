@@ -3,6 +3,7 @@ import type { WaterZone } from '../level/zones';
 import { makeCanvas } from './artCache';
 import type { Ctx } from './drawUtils';
 import type { WaterStyle } from './themes';
+import { isSolidTile } from '../tiles';
 
 const WATER_ALPHA = 0.32;
 const SHORE_BLEND = 32;
@@ -89,13 +90,25 @@ function drawSpan(c: Ctx, span: WaterSpan, style: WaterStyle, camX: number, t: n
 export class WaterSurfaceRenderer {
   private canvas: HTMLCanvasElement | null = null;
 
-  draw(c: Ctx, zones: readonly WaterZone[], style: WaterStyle, camX: number, t: number): void {
+  draw(c: Ctx, zones: readonly WaterZone[], style: WaterStyle, camX: number, t: number, grid: readonly (readonly string[])[] = []): void {
     if (!zones.length || typeof document === 'undefined') return;
     this.canvas ??= makeCanvas(VW, VH);
     const layer = this.canvas.getContext('2d');
     if (!layer) return;
     layer.clearRect(0, 0, VW, VH);
     for (const span of waterRenderSpans(zones)) drawSpan(layer, span, style, camX, t);
+    clearSolidTerrain(layer, grid, camX);
     c.drawImage(this.canvas, 0, 0);
+  }
+}
+
+/** El líquido ocupa huecos libres: no atraviesa roca, arena, muelles ni otros bloques sólidos. */
+function clearSolidTerrain(c: Ctx, grid: readonly (readonly string[])[], camX: number): void {
+  const start = Math.max(0, Math.floor(camX / T));
+  const end = Math.ceil((camX + VW) / T);
+  for (let y = 0; y < grid.length; y++) {
+    for (let x = start; x < Math.min(end, grid[y].length); x++) {
+      if (isSolidTile(grid[y][x])) c.clearRect(Math.round(x * T - camX), y * T, T, T);
+    }
   }
 }

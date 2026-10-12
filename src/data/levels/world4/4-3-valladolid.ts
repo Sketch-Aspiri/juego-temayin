@@ -1,6 +1,7 @@
 import type { LevelDef } from '../../../engine/level/types';
 import { cavernCeiling, floodedTunnel, mesa, rockBlock } from '../caves';
 import { axolotls, bats, urchin } from '../helpers';
+import { waterBank } from '../waterBanks';
 
 export const LEVEL_4_3: LevelDef = {
   id: '4-3',
@@ -40,6 +41,8 @@ export const LEVEL_4_3: LevelDef = {
     // Criaturas de fantasía: no se presentan como fauna real del cenote.
     ...axolotls([46, 9], [61, 10], [73, 9], [128, 10], [150, 9], [161, 10]),
     ...bats([16, 6], [96, 6], [109, 5], [179, 4], [190, 6]),
-    ...urchin(89, 184),
+    ['spawn', 'urchin', 89, 8], ...urchin(184),
+    ...waterBank(27, 5, 1), ...waterBank(87, 5, -1),
+    ...waterBank(113, 6, 1), ...waterBank(171, 6, -1),
   ],
 };

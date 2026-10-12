@@ -3,7 +3,7 @@ import { GOAL_VIEW_WIDTH, GROUND, ROWS, T } from '../engine/constants';
 import { isAirborne } from '../engine/entities/enemies';
 import { platformReach } from '../engine/entities/platforms';
 import { buildLevel } from '../engine/level/build';
-import { waterColumn } from '../engine/level/zones';
+import { waterAt, waterColumn } from '../engine/level/zones';
 import { isSolidTile } from '../engine/tiles';
 import { ALL_LEVELS, nextLevelId, WORLDS } from './worlds';
 
@@ -83,6 +83,19 @@ describe.each(ALL_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, def) 
       const yMax = s.kind === 'mover' ? s.y + Math.max(0, s.dy) : s.y;
       expect(yMin, `plataforma en ${s.x}`).toBeGreaterThanOrEqual(1);
       expect(yMax, `plataforma en ${s.x}`).toBeLessThan(GROUND);
+    }
+  });
+
+  it('el agua termina contra terreno sólido o continúa en otra zona de agua', () => {
+    for (const z of lvl.water) {
+      for (const x of [z.x0 - 1, z.x1 + 1]) {
+        if (x < 0 || x >= def.width) continue;
+        for (let y = Math.floor(z.surface); y < ROWS; y++) {
+          const depth = Math.max(y * T, z.surface * T) + 1;
+          const continues = waterAt(lvl.water, (x + 0.5) * T, depth) !== null;
+          expect(solid(x, y) || continues, `agua sin orilla en ${x},${y}`).toBe(true);
+        }
+      }
     }
   });
 

@@ -1,5 +1,6 @@
 import type { LevelDef } from '../../../engine/level/types';
 import { barracudas, blueCrab, jellyfish, pirateCrab } from '../helpers';
+import { waterBank } from '../waterBanks';
 
 export const LEVEL_5_5: LevelDef = {
   id: '5-5', name: 'Puerto Aventuras', width: 205, theme: 'beach', checkpoint: 98, time: 340,
@@ -23,5 +24,7 @@ export const LEVEL_5_5: LevelDef = {
     ['flag', 183], ['temple', 188],
     ...blueCrab(18, 66, 163), ...pirateCrab(26, 79, 107, 179),
     ...barracudas([43, 12], [126, 12]), ...jellyfish([54, 11], [146, 11]),
+    ...waterBank(29, 10, 1), ...waterBank(62, 10, -1),
+    ...waterBank(111, 10, 1), ...waterBank(158, 10, -1),
   ],
 };

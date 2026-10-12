@@ -1,6 +1,7 @@
 import { GROUND } from '../../../engine/constants';
 import type { LevelDef, Op } from '../../../engine/level/types';
 import { barracudas, blueCrab, morays, urchin } from '../helpers';
+import { waterBank } from '../waterBanks';
 
 /** Superficie del agua salobre en las lagunas del manglar (fila de bloques). */
 const SURFACE = 7;
@@ -127,5 +128,6 @@ export const LEVEL_2_4: LevelDef = {
     ...urchin(44, 104, 150),
     ...morays([51, 10], [95, 10], [HANGING_ROOT, SURFACE + 2]),
     ...barracudas([63, 9], [110, 9], [172, 9]),
+    ...waterBank(191, 11, 1), ...waterBank(197, 11, -1),
   ],
 };

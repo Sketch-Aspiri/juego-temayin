@@ -58,5 +58,5 @@ Las seis variantes de Temayin se generaron con `image_gen` integrado tomando `ja
 - `python imagenes/validate_catalog.py`: comprueba cobertura, transparencia y recortes visibles dentro de cada imagen.
 - `python imagenes/verify_runtime.py`: comprueba la galería, el título y el primer nivel con Chromium. Usa `TEMAYIN_QA_URL` para indicar la dirección del servidor local.
 - Resultados y capturas: `verificacion/`.
-- `npm test`: 723 pruebas en 38 archivos con cobertura de los sprites jugables y las transiciones suaves del agua.
+- `npm test`: 765 pruebas en 40 archivos con cobertura de los sprites, las transiciones y las orillas físicas del agua.
 - `npm run build`: compilación aprobada.

@@ -56,7 +56,7 @@ describe('Riviera Maya: Cancún y Puerto Morelos', () => {
       const stops = [z.x0, ...vents.map(b => b.x), z.x1];
       for (let i = 1; i < stops.length; i++) expect(stops[i] - stops[i - 1]).toBeLessThanOrEqual(12);
     }
-    expect(w.grid[8][100]).toBe('S');
+    expect(w.grid[5][100]).toBe('S');
     expect(w.def.theme).toBe('reef');
     const submerged = w.level.water.reduce((n, z) => n + z.x1 - z.x0 + 1, 0);
     expect(submerged / w.width).toBeGreaterThan(0.7);

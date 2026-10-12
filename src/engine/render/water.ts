@@ -111,7 +111,7 @@ export function drawWaterLayer(c: Ctx, world: World, style: WaterStyle | undefin
   const t = now / 1000;
   const zones = world.level.water;
   if (!zones.length && !world.level.bubbles.length) return;
-  waterSurface.draw(c, zones, style ?? DEFAULT_WATER, world.camX, t);
+  waterSurface.draw(c, zones, style ?? DEFAULT_WATER, world.camX, t, world.grid);
   for (const z of world.level.currents) drawCurrent(c, z, world.camX, t);
   drawVents(c, world, t);
   drawSwimmer(c, world, world.player, t);

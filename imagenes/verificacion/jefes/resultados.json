@@ -9,7 +9,7 @@
       "exitOpen": true,
       "farthest": 79.55,
       "minOxygen": 10,
-      "t": 8.10000000000018,
+      "t": 8.166666666666844,
       "checkpoint": true,
       "portrait": "/assets/jefe_grande.webp"
     },
@@ -21,7 +21,7 @@
       "exitOpen": true,
       "farthest": 91.55,
       "minOxygen": 10,
-      "t": 92.80833333335326,
+      "t": 92.89166666668666,
       "checkpoint": true,
       "phase2": true,
       "portrait": "/assets/bosses/kaiman.webp"
@@ -34,7 +34,7 @@
       "exitOpen": true,
       "farthest": 99.55,
       "minOxygen": 10,
-      "t": 26.15833333333249,
+      "t": 26.174999999999155,
       "checkpoint": true,
       "phase2": true,
       "portrait": "/assets/bosses/huayChivo.webp"
@@ -47,7 +47,7 @@
       "exitOpen": true,
       "farthest": 91.55,
       "minOxygen": 10,
-      "t": 37.39166666666519,
+      "t": 37.50833333333185,
       "checkpoint": true,
       "phase2": true,
       "portrait": "/assets/bosses/huayPek.webp"

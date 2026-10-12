@@ -1,5 +1,6 @@
 import type { LevelDef } from '../../../engine/level/types';
 import { blueCrab, jellyfish } from '../helpers';
+import { waterBank } from '../waterBanks';
 
 export const LEVEL_5_6: LevelDef = {
   id: '5-6', name: 'Akumal', width: 135, theme: 'reef', time: 420, checkpoint: 68,
@@ -19,5 +20,7 @@ export const LEVEL_5_6: LevelDef = {
     ['plat', 81, 9, 3], ['coins', 81, 8, 3],
     ['wall', 101], ['flag', 113], ['temple', 118],
     ...blueCrab(20, 63), ...jellyfish([48, 10]),
+    ...waterBank(23, 7, 1), ...waterBank(57, 7, -1),
+    ...waterBank(88, 7, 1), ...waterBank(101, 7, -1),
   ],
 };

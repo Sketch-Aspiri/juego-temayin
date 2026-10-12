@@ -1,5 +1,6 @@
 import type { LevelDef } from '../../../engine/level/types';
 import { blueCrab, nauyaca } from '../helpers';
+import { waterBank } from '../waterBanks';
 
 /**
  * El Triunfo: pantanos y popales de Tabasco (AGENTS.md §4.3).
@@ -75,5 +76,7 @@ export const LEVEL_1_4: LevelDef = {
     ['spawn', 'howler', 71, 7],
     ['spawn', 'howler', 117, 6],
     ['spawn', 'howler', 176, 7],
+    ...waterBank(27, 11, 1), ...waterBank(38, 11, -1),
+    ...waterBank(105, 11, 1), ...waterBank(137, 11, -1),
   ],
 };

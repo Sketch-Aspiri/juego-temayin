@@ -1,5 +1,6 @@
 import type { LevelDef } from '../../../engine/level/types';
 import { blueCrab, pirateCrab, urchin } from '../helpers';
+import { waterBank } from '../waterBanks';
 
 export const LEVEL_5_1: LevelDef = {
   id: '5-1', name: 'Cancún', width: 205, theme: 'beach',
@@ -25,5 +26,7 @@ export const LEVEL_5_1: LevelDef = {
     ['flag', 183], ['temple', 188],
     ...blueCrab(17, 42, 59, 111, 135, 173),
     ...pirateCrab(31, 54, 151), ...urchin(47, 108, 158),
+    ...waterBank(63, 10, 1), ...waterBank(88, 10, -1),
+    ...waterBank(115, 10, 1), ...waterBank(129, 10, -1),
   ],
 };

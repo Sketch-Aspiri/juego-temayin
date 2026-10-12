@@ -1,6 +1,7 @@
 import type { LevelDef } from '../../../engine/level/types';
 import { cavernCeiling, floodedTunnel, mesa, rockBlock } from '../caves';
 import { axolotls, bats, shades } from '../helpers';
+import { waterBank } from '../waterBanks';
 
 /** Superficie del agua (y techo de los túneles) en las dos cuevas inundadas. */
 const SURFACE = 7;
@@ -66,7 +67,7 @@ export const LEVEL_4_2: LevelDef = {
     ['row', 101, 8, '?M?'],
 
     // --- Gran sala inundada ---
-    ['row', 107, 8, '?S?'],
+    ['row', 107, 8, '?'], ['row', 108, 6, 'S'], ['row', 109, 3, '?'],
     ...cavernCeiling(111, 158, CEILING_ROWS),
     ['water', 111, 158, SURFACE],
     ['coins', 112, 10, 3],
@@ -89,5 +90,9 @@ export const LEVEL_4_2: LevelDef = {
     ...shades([22, 6], [86, 5], [99, 4], [180, 5], [196, 4]),
     ...axolotls([47, 9], [57, 10], [65, 9], [121, 10], [131, 9], [137, 11], [146, 10], [154, 9]),
     ...bats([12, 6], [76, 6], [84, 5], [90, 4], [98, 6], [168, 3], [188, 6], [204, 5]),
+    ...waterBank(23, 11, 1), ...waterBank(28, 11, -1),
+    ...waterBank(29, SURFACE, 1), ...waterBank(71, SURFACE, -1),
+    ...waterBank(110, SURFACE, 1), ...waterBank(159, SURFACE, -1),
+    ...waterBank(176, 11, 1), ...waterBank(183, 11, -1),
   ],
 };
