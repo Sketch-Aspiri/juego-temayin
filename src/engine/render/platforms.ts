@@ -4,6 +4,7 @@ import { drawCoastalPlatform } from './coastalPlatforms';
 import { CAR_TILES, MOVER_H, platformReach, TRAIN_CAR_H, type MovingPlatform, type TrainSpec } from '../entities/platforms';
 import { bakedFrame, type Frame } from './artCache';
 import { roundRect, type Ctx } from './drawUtils';
+import { drawGameplaySprite } from './gameplaySprites';
 
 /**
  * Dibujo de las plataformas móviles (AGENTS.md §5.4).
@@ -114,6 +115,7 @@ function drawMover(c: Ctx, m: MovingPlatform, camX: number): void {
   const x = Math.round(m.x - camX);
   if (!visible(x, m.w)) return;
   const y = Math.round(m.y);
+  if (drawGameplaySprite(c, 'log', x, y, m.w, MOVER_H)) return;
   c.fillStyle = PLANK_DARK;
   roundRect(c, x, y, m.w, MOVER_H, 4);
   c.fill();

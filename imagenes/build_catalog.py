@@ -13,7 +13,7 @@ MIN_COMPONENT_AREA = 32
 GROUPS = {
     "enemigos": "enemies", "jefes": "bosses", "paisajes": "backgrounds",
     "personajes": "personajes", "objetos": "objetos",
-    "mecanicas": "mecanicas", "complementos": "complementos", "escenarios": "escenarios",
+    "mecanicas": "mecanicas", "complementos": "complementos", "escenarios": "escenarios", "proyectiles": "proyectiles",
 }
 EXPECTED = {
     "enemigos": "bat howler tarantula nauyaca ants blueCrab lionfish jellyfish barracuda moray stalactite scorpion axolotl alux shade xtabay pirateCrab wheel truck".split(),
@@ -24,7 +24,8 @@ EXPECTED = {
     ],
     "objetos": ["objetos"],
     "mecanicas": ["mecanicas", "efectos"],
-    "complementos": "tren piramide banderas vegetacion utileria bloques historia".split(),
+    "complementos": "tren piramide banderas vegetacion utileria bloques historia toldo".split(),
+    "proyectiles": "pua fruto fuego-fatuo bola-sargazo ola-agua onda-espectral".split(),
     "escenarios": ["arcada-izamal", "guarida-puas"],
 }
 SHEETS = {

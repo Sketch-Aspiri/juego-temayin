@@ -1,6 +1,7 @@
 import { ROWS, T, VW } from '../constants';
 import { CRUMBLE_SHAKE_TIME, type Crumble } from '../entities/crumble';
 import type { Ctx } from './drawUtils';
+import { drawFragileTile } from './levelSprites';
 
 /** Amplitud máxima del temblor (px) justo antes de caer. */
 const SHAKE_AMPLITUDE = 3;
@@ -29,7 +30,7 @@ export function drawFallingCrumbles(c: Ctx, crumbles: readonly Crumble[], camX: 
     for (let i = 0; i < cr.len; i++) {
       const sx = Math.round((cr.x + i) * T - camX);
       if (sx < -T || sx > VW) continue;
-      c.drawImage(tex, sx, y);
+      if (!drawFragileTile(c, sx, y, i, cr.len)) c.drawImage(tex, sx, y);
     }
   }
   c.globalAlpha = 1;

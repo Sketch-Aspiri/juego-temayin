@@ -1,0 +1,120 @@
+{
+  "reports": [
+    {
+      "id": "quill",
+      "file": "proyectiles/pua.webp",
+      "ready": true
+    },
+    {
+      "id": "fruit",
+      "file": "proyectiles/fruto.webp",
+      "ready": true
+    },
+    {
+      "id": "wisp",
+      "file": "proyectiles/fuego-fatuo.webp",
+      "ready": true
+    },
+    {
+      "id": "algaeBall",
+      "file": "proyectiles/bola-sargazo.webp",
+      "ready": true
+    },
+    {
+      "id": "waterWave",
+      "file": "proyectiles/ola-agua.webp",
+      "ready": true
+    },
+    {
+      "id": "spectralWave",
+      "file": "proyectiles/onda-espectral.webp",
+      "ready": true
+    },
+    {
+      "id": "awning",
+      "file": "complementos/toldo.webp",
+      "ready": true
+    },
+    {
+      "level": "1-1",
+      "scene": "proyectiles",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "2-2",
+      "scene": "escombro",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "2-3",
+      "scene": "canones",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "3-4",
+      "scene": "columpio",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "3-4",
+      "scene": "agarre",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "4-1",
+      "scene": "pelota",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "4-4",
+      "scene": "resina",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "5-1",
+      "scene": "palapas",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "5-1",
+      "scene": "toldos",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "5-3",
+      "scene": "sargazo",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "5-5",
+      "scene": "barcos",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "5-6",
+      "scene": "tortugas",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "2-7",
+      "scene": "ola",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "3-5",
+      "scene": "fatuos",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "4-5",
+      "scene": "ondas",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "5-6",
+      "scene": "algas",
+      "simulationUnchanged": true
+    }
+  ],
+  "errors": []
+}

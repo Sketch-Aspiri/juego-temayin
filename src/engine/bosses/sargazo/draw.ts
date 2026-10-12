@@ -3,8 +3,12 @@ import { drawLazyFrame, footFrame } from '../../render/enemies/atlas';
 import { outlined, type Ctx } from '../../render/drawUtils';
 import type { Sargazo, SargazoState } from './index';
 import { ART_SCALE, isolatedArt } from './art';
+import { drawGameplaySprite, drawNewGameplaySprite } from '../../render/gameplaySprites';
 
 const SHEET = 'bosses/sargazo.webp';
+const ALGAE_DRAW_SIZE = 24;
+const WAVE_DRAW_WIDTH = 48;
+const WAVE_DRAW_HEIGHT = 42;
 const ART = {
   rest: footFrame(15, 69, 499, 447), walk: footFrame(536, 76, 487, 448),
   throw: footFrame(1036, 13, 490, 510), warn: footFrame(12, 577, 505, 383),
@@ -32,9 +36,11 @@ export function drawSargazo(c: Ctx, b: Sargazo, camX: number): void {
   }
   c.fillStyle = '#948032'; c.strokeStyle = '#d7b657'; c.lineWidth = 3;
   for (const ball of b.balls) {
+    if (drawNewGameplaySprite(c, 'algaeBall', ball.x - camX, ball.y, ALGAE_DRAW_SIZE)) continue;
     c.beginPath(); c.arc(ball.x - camX, ball.y, 12, 0, TAU); c.fill(); c.stroke();
   }
   if (b.waveX !== null) {
+    if (drawGameplaySprite(c, 'sargassum', b.waveX - camX - WAVE_DRAW_WIDTH / 2, GROUND * T, WAVE_DRAW_WIDTH, WAVE_DRAW_HEIGHT)) return;
     c.beginPath(); c.ellipse(b.waveX - camX, GROUND * T, 24, 42, 0, Math.PI, TAU); c.fill(); c.stroke();
   }
 }

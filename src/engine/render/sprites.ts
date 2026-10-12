@@ -5,6 +5,8 @@ import { POPUP_LIFETIME, SPARK_LIFETIME } from '../entities/particles';
 import { outlined, type Ctx } from './drawUtils';
 import { drawSwimPose } from './playerSwim';
 import { drawCacao, drawItemArt } from './props';
+import { drawPlayerMechanics } from './playerMechanics';
+import { drawFireballArt, drawQuillArt } from './projectileSprites';
 
 // Hoja de sprites del jugador.
 const PLAYER_CELL_W = 170;
@@ -18,16 +20,7 @@ export function drawPlayerSprite(c: Ctx, assets: Assets, p: Player, camX: number
   const cx = p.x + p.w / 2 - camX;
   const by = p.y + p.h;
 
-  if (p.shield) {
-    const t = now / 300;
-    c.fillStyle = `rgba(255,210,60,${0.18 + Math.sin(t) * 0.07})`;
-    c.beginPath();
-    c.ellipse(cx, by - 40, 46, 52, 0, 0, TAU);
-    c.fill();
-    c.strokeStyle = 'rgba(255,220,90,.7)';
-    c.lineWidth = 2;
-    c.stroke();
-  }
+  if (p.shield) drawShieldAura(c, cx, by, now);
 
   c.save();
   c.translate(cx, by);
@@ -43,7 +36,7 @@ export function drawPlayerSprite(c: Ctx, assets: Assets, p: Player, camX: number
     c.shadowColor = '#ff7a1a';
     c.shadowBlur = 12 + Math.sin(now / 80) * 4;
   }
-  if (p.swimming && !dying && drawSwimPose(c, p)) {
+  if (!dying && (drawPlayerMechanics(c, p) || (p.swimming && drawSwimPose(c, p)))) {
     c.restore();
     return;
   }
@@ -53,6 +46,17 @@ export function drawPlayerSprite(c: Ctx, assets: Assets, p: Player, camX: number
     (-PLAYER_CELL_W * PLAYER_SCALE) / 2, -158 * PLAYER_SCALE, PLAYER_CELL_W * PLAYER_SCALE, PLAYER_CELL_H * PLAYER_SCALE,
   );
   c.restore();
+}
+
+function drawShieldAura(c: Ctx, cx: number, by: number, now: number): void {
+  const t = now / 300;
+  c.fillStyle = `rgba(255,210,60,${0.18 + Math.sin(t) * 0.07})`;
+  c.beginPath();
+  c.ellipse(cx, by - 40, 46, 52, 0, 0, TAU);
+  c.fill();
+  c.strokeStyle = 'rgba(255,220,90,.7)';
+  c.lineWidth = 2;
+  c.stroke();
 }
 
 /** Icono de la cabeza del jugador (para el menú / HUD de canvas). */
@@ -69,6 +73,7 @@ export function drawItemSprite(c: Ctx, it: Item, camX: number, now: number): voi
 
 export function drawFireballs(c: Ctx, list: readonly Fireball[], camX: number): void {
   for (const f of list) {
+    if (drawFireballArt(c, f, camX)) continue;
     c.save();
     c.translate(f.x - camX, f.y);
     c.rotate(f.t * 20 * Math.sign(f.vx));
@@ -107,6 +112,7 @@ function drawFruit(c: Ctx, x: number, y: number): void {
 
 export function drawQuills(c: Ctx, list: readonly Quill[], camX: number): void {
   for (const q of list) {
+    if (drawQuillArt(c, q, camX)) continue;
     if (q.kind === 'fruit') {
       drawFruit(c, q.x - camX, q.y);
       continue;

@@ -4,6 +4,7 @@ import { outlined, star, type Ctx } from '../../render/drawUtils';
 import type { Kaiman, KaimanState } from './index';
 import { drawCrocodile, drawEyesAtSurface } from './drawBody';
 import { DEAD_TIME, DIVE_TIME, KAIMAN_H, RISE_TIME, WAVE_H, WAVE_W } from './tuning';
+import { drawNewGameplaySprite } from '../../render/gameplaySprites';
 
 /**
  * Dibujo del Kaimán Moreleti con la hoja pintada `bosses/kaiman.webp`
@@ -72,6 +73,10 @@ function drawWave(c: Ctx, x: number, dir: 1 | -1, t: number): void {
   c.save();
   c.translate(x, 0);
   c.scale(dir, 1);
+  if (drawNewGameplaySprite(c, 'waterWave', 0, GROUND * T, r.w * 2, r.h)) {
+    c.restore();
+    return;
+  }
   c.fillStyle = 'rgba(64,170,170,.85)';
   c.strokeStyle = '#e8fff6';
   c.lineWidth = 3;

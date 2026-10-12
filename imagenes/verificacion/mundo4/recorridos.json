@@ -11,7 +11,7 @@
       "hoopsLit": 1,
       "farthest": 205.55,
       "minOxygen": 10,
-      "t": 26.958333333332444,
+      "t": 26.558333333332467,
       "checkpoint": true
     },
     {
@@ -25,7 +25,7 @@
       "hoopsLit": 0,
       "farthest": 207.55,
       "minOxygen": 6.116666666666687,
-      "t": 38.84999999999844,
+      "t": 38.666666666665115,
       "swam": true,
       "airStops": 4,
       "checkpoint": true
@@ -71,7 +71,7 @@
       "hoopsLit": 0,
       "farthest": 91.55,
       "minOxygen": 10,
-      "t": 67.65833333333325,
+      "t": 61.92499999999713,
       "checkpoint": true,
       "phase2": true
     }

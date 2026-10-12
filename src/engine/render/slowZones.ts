@@ -1,11 +1,12 @@
 import { T, TAU, VW } from '../constants';
 import type { SlowZone } from '../level/slowZones';
 import { hash, type Ctx } from './drawUtils';
+import { drawGameplaySprite } from './gameplaySprites';
 
 /**
  * Dibujo de las zonas que frenan (AGENTS.md §5.5): resina de chicle (ámbar brillante
- * que gotea) y sargazo (marañas pardas con vesículas doradas). Procedural y sin estado:
- * solo se pintan las columnas visibles, y la animación depende del tiempo.
+ * que gotea) y sargazo (marañas pardas con vesículas doradas). Usa el atlas de
+ * mecánicas, con respaldo procedural; solo pinta columnas visibles, sin mutarlas.
  */
 
 const RESIN_H = 11;
@@ -102,8 +103,21 @@ export function drawSlowZones(c: Ctx, zones: readonly SlowZone[], camX: number, 
   const t = now / 1000;
   c.save();
   for (const z of zones) {
+    if (drawPaintedZone(c, z, camX, t)) continue;
     if (z.kind === 'resin') drawResin(c, z, camX, t);
     else drawSargassum(c, z, camX, t);
   }
   c.restore();
+}
+
+/** Repite piezas cortas: una zona larga no estira una única ilustración. */
+function drawPaintedZone(c: Ctx, z: SlowZone, camX: number, t: number): boolean {
+  const range = visibleRange(z, camX);
+  if (!range) return true;
+  const height = z.kind === 'resin' ? RESIN_H + 3 : SARGASSUM_H + 5;
+  for (let tx = range[0]; tx <= range[1]; tx++) {
+    const sway = z.kind === 'resin' ? 0 : Math.sin(t * SWAY_SPEED + tx) * SWAY_AMP;
+    if (!drawGameplaySprite(c, z.kind, tx * T - camX, (z.y + 1) * T, T, height + sway)) return false;
+  }
+  return true;
 }

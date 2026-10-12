@@ -1,0 +1,18 @@
+{
+  "image": "fruto.png",
+  "width": 1320,
+  "height": 1192,
+  "mode": "RGBA",
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "fruto",
+      "x": 193,
+      "y": 105,
+      "width": 1023,
+      "height": 995
+    }
+  ],
+  "qa": "Recorte medido con alfa >= 40; PNG original intacto; WebP sin pérdidas."
+}

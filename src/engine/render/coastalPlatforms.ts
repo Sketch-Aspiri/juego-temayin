@@ -1,15 +1,26 @@
 import { TAU } from '../constants';
 import type { MovingPlatform } from '../entities/platforms';
 import type { Ctx } from './drawUtils';
+import { drawGameplaySprite } from './gameplaySprites';
+
+const SUBMERGED_OFFSET = 55;
+const TURTLE_SUPPORT_WIDTH = 320;
+const TURTLE_SOURCE_WIDTH = 480;
+const TURTLE_DRAW_HEIGHT = 66;
 
 /** La cubierta y la cima del caparazón coinciden con la superficie de colisión. */
 export function drawCoastalPlatform(c: Ctx, m: MovingPlatform, camX: number): void {
   const turtle = m.spec.kind === 'mover' && m.spec.appearance === 'turtle';
-  const y = m.y + (m.submerged ? 55 : 0);
+  const y = m.y + (m.submerged ? SUBMERGED_OFFSET : 0);
   c.save(); c.translate(m.x - camX, y);
   if (m.submerged) c.globalAlpha = 0.55;
-  if (turtle) drawTurtle(c, m.w);
-  else drawBoat(c, m.w);
+  const painted = turtle
+    ? drawGameplaySprite(c, 'turtle', 0, 0, m.w * TURTLE_SOURCE_WIDTH / TURTLE_SUPPORT_WIDTH, TURTLE_DRAW_HEIGHT)
+    : drawGameplaySprite(c, 'boat', 0, 0, m.w);
+  if (!painted) {
+    if (turtle) drawTurtle(c, m.w);
+    else drawBoat(c, m.w);
+  }
   c.restore();
 }
 

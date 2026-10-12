@@ -20,7 +20,7 @@ dialog{width:min(1100px,94vw);border:1px solid #9bab92;border-radius:10px;backgr
 <script id="catalog" type="application/json">__CATALOG__</script>
 <script>
 const catalog=JSON.parse(document.getElementById('catalog').textContent);
-const labels={enemigos:'Enemigos',jefes:'Jefes',paisajes:'Paisajes',personajes:'Personajes',objetos:'Objetos',mecanicas:'Mecánicas',complementos:'Complementos',escenarios:'Decorados de arenas',actualizados:'Arte actualizado'};
+const labels={enemigos:'Enemigos',jefes:'Jefes',paisajes:'Paisajes',personajes:'Personajes',objetos:'Objetos',mecanicas:'Mecánicas',complementos:'Complementos',escenarios:'Decorados de arenas',proyectiles:'Proyectiles y ondas',actualizados:'Arte actualizado'};
 const category=document.getElementById('category'),search=document.getElementById('search'),grid=document.getElementById('grid'),dialog=document.getElementById('viewer');
 for(const key of Object.keys(labels)){const option=new Option(labels[key],key);category.add(option)}
 const pending=document.getElementById('missing');if(catalog.missing.length){pending.hidden=false;pending.textContent='En preparación: '+catalog.missing.join(', ')}

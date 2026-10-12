@@ -3228,6 +3228,223 @@
       "prompt": "nuevos/complementos/historia.prompt.txt"
     },
     {
+      "id": "toldo",
+      "category": "complementos",
+      "image": "nuevos/complementos/toldo.png",
+      "width": 2172,
+      "height": 724,
+      "mode": "RGBA",
+      "alpha": true,
+      "transparentFraction": 0.6622,
+      "runtime": "public/assets/complementos/toldo.webp",
+      "atlas": "nuevos/complementos/toldo.atlas.json",
+      "metadata": {
+        "image": "toldo.png",
+        "width": 2172,
+        "height": 724,
+        "mode": "RGBA",
+        "alpha": true,
+        "generator": "image_gen integrado",
+        "frames": [
+          {
+            "state": "toldo",
+            "x": 13,
+            "y": 160,
+            "width": 2147,
+            "height": 445
+          }
+        ],
+        "qa": "Recorte medido con alfa >= 40; PNG original intacto; WebP sin pérdidas."
+      },
+      "prompt": "nuevos/complementos/toldo.prompt.txt"
+    },
+    {
+      "id": "pua",
+      "category": "proyectiles",
+      "image": "nuevos/proyectiles/pua.png",
+      "width": 2172,
+      "height": 724,
+      "mode": "RGBA",
+      "alpha": true,
+      "transparentFraction": 0.8368,
+      "runtime": "public/assets/proyectiles/pua.webp",
+      "atlas": "nuevos/proyectiles/pua.atlas.json",
+      "metadata": {
+        "image": "pua.png",
+        "width": 2172,
+        "height": 724,
+        "mode": "RGBA",
+        "alpha": true,
+        "generator": "image_gen integrado",
+        "frames": [
+          {
+            "state": "pua",
+            "x": 129,
+            "y": 241,
+            "width": 1915,
+            "height": 241
+          }
+        ],
+        "qa": "Recorte medido con alfa >= 40; PNG original intacto; WebP sin pérdidas."
+      },
+      "prompt": "nuevos/proyectiles/pua.prompt.txt"
+    },
+    {
+      "id": "fruto",
+      "category": "proyectiles",
+      "image": "nuevos/proyectiles/fruto.png",
+      "width": 1320,
+      "height": 1192,
+      "mode": "RGBA",
+      "alpha": true,
+      "transparentFraction": 0.5942,
+      "runtime": "public/assets/proyectiles/fruto.webp",
+      "atlas": "nuevos/proyectiles/fruto.atlas.json",
+      "metadata": {
+        "image": "fruto.png",
+        "width": 1320,
+        "height": 1192,
+        "mode": "RGBA",
+        "alpha": true,
+        "generator": "image_gen integrado",
+        "frames": [
+          {
+            "state": "fruto",
+            "x": 193,
+            "y": 105,
+            "width": 1023,
+            "height": 995
+          }
+        ],
+        "qa": "Recorte medido con alfa >= 40; PNG original intacto; WebP sin pérdidas."
+      },
+      "prompt": "nuevos/proyectiles/fruto.prompt.txt"
+    },
+    {
+      "id": "fuego-fatuo",
+      "category": "proyectiles",
+      "image": "nuevos/proyectiles/fuego-fatuo.png",
+      "width": 1149,
+      "height": 1369,
+      "mode": "RGBA",
+      "alpha": true,
+      "transparentFraction": 0.7316,
+      "runtime": "public/assets/proyectiles/fuego-fatuo.webp",
+      "atlas": "nuevos/proyectiles/fuego-fatuo.atlas.json",
+      "metadata": {
+        "image": "fuego-fatuo.png",
+        "width": 1149,
+        "height": 1369,
+        "mode": "RGBA",
+        "alpha": true,
+        "generator": "image_gen integrado",
+        "frames": [
+          {
+            "state": "fuego-fatuo",
+            "x": 256,
+            "y": 97,
+            "width": 682,
+            "height": 1197
+          }
+        ],
+        "qa": "Recorte medido con alfa >= 40; PNG original intacto; WebP sin pérdidas."
+      },
+      "prompt": "nuevos/proyectiles/fuego-fatuo.prompt.txt"
+    },
+    {
+      "id": "bola-sargazo",
+      "category": "proyectiles",
+      "image": "nuevos/proyectiles/bola-sargazo.png",
+      "width": 1287,
+      "height": 1222,
+      "mode": "RGBA",
+      "alpha": true,
+      "transparentFraction": 0.4815,
+      "runtime": "public/assets/proyectiles/bola-sargazo.webp",
+      "atlas": "nuevos/proyectiles/bola-sargazo.atlas.json",
+      "metadata": {
+        "image": "bola-sargazo.png",
+        "width": 1287,
+        "height": 1222,
+        "mode": "RGBA",
+        "alpha": true,
+        "generator": "image_gen integrado",
+        "frames": [
+          {
+            "state": "bola-sargazo",
+            "x": 109,
+            "y": 79,
+            "width": 1075,
+            "height": 1078
+          }
+        ],
+        "qa": "Recorte medido con alfa >= 40; PNG original intacto; WebP sin pérdidas."
+      },
+      "prompt": "nuevos/proyectiles/bola-sargazo.prompt.txt"
+    },
+    {
+      "id": "ola-agua",
+      "category": "proyectiles",
+      "image": "nuevos/proyectiles/ola-agua.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "alpha": true,
+      "transparentFraction": 0.662,
+      "runtime": "public/assets/proyectiles/ola-agua.webp",
+      "atlas": "nuevos/proyectiles/ola-agua.atlas.json",
+      "metadata": {
+        "image": "ola-agua.png",
+        "width": 1774,
+        "height": 887,
+        "mode": "RGBA",
+        "alpha": true,
+        "generator": "image_gen integrado",
+        "frames": [
+          {
+            "state": "ola-agua",
+            "x": 45,
+            "y": 96,
+            "width": 1689,
+            "height": 684
+          }
+        ],
+        "qa": "Recorte medido con alfa >= 40; PNG original intacto; WebP sin pérdidas."
+      },
+      "prompt": "nuevos/proyectiles/ola-agua.prompt.txt"
+    },
+    {
+      "id": "onda-espectral",
+      "category": "proyectiles",
+      "image": "nuevos/proyectiles/onda-espectral.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "alpha": true,
+      "transparentFraction": 0.7663,
+      "runtime": "public/assets/proyectiles/onda-espectral.webp",
+      "atlas": "nuevos/proyectiles/onda-espectral.atlas.json",
+      "metadata": {
+        "image": "onda-espectral.png",
+        "width": 1536,
+        "height": 1024,
+        "mode": "RGBA",
+        "alpha": true,
+        "generator": "image_gen integrado",
+        "frames": [
+          {
+            "state": "onda-espectral",
+            "x": 349,
+            "y": 82,
+            "width": 985,
+            "height": 857
+          }
+        ],
+        "qa": "Recorte medido con alfa >= 40; PNG original intacto; WebP sin pérdidas."
+      },
+      "prompt": "nuevos/proyectiles/onda-espectral.prompt.txt"
+    },
+    {
       "id": "arcada-izamal",
       "category": "escenarios",
       "image": "nuevos/escenarios/arcada-izamal.png",

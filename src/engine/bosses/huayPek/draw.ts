@@ -5,6 +5,7 @@ import { drawSpectralDog, type EyeLook } from './drawBody';
 import { drawFog } from './fog';
 import type { HuayPek, HuayPekState } from './index';
 import { DEAD_TIME, FADE_TIME, WARN_TIME, WAVE_H, WAVE_W } from './tuning';
+import { drawNewGameplaySprite } from '../../render/gameplaySprites';
 
 /**
  * Dibujo del Huay Pek con la hoja pintada `bosses/huayPek.webp`
@@ -50,6 +51,7 @@ const BLINK_FREQ = 14;
 const CROUCH_SQUASH = 0.85;
 const GLOW_R = 22;
 const GLOW_PULSE = 9;
+const WAVE_ART_WIDTH_FACTOR = 1.5;
 const GLOW_COL: Readonly<Record<'lit' | 'red' | 'open', string>> = {
   lit: '120,255,235',
   red: '255,80,80',
@@ -105,6 +107,10 @@ function drawWave(c: Ctx, x: number, dir: 1 | -1, t: number): void {
   c.save();
   c.translate(x, base);
   c.scale(dir, 1);
+  if (drawNewGameplaySprite(c, 'spectralWave', 0, 0, WAVE_W * WAVE_ART_WIDTH_FACTOR, WAVE_H)) {
+    c.restore();
+    return;
+  }
   c.lineWidth = 4;
   for (let i = 0; i < 3; i++) {
     c.strokeStyle = `rgba(140,250,240,${(0.95 - i * 0.25).toFixed(2)})`;

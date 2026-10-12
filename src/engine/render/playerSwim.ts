@@ -5,7 +5,7 @@ import type { Ctx } from './drawUtils';
 /**
  * Poses de nado de Temayin del atlas `personajes/jugador-mecanicas.webp`
  * (`imagenes/nuevos/personajes/jugador-mecanicas.atlas.json`). Las poses de
- * cuerda y pelota del mismo atlas se usarán con sus mecánicas (AGENTS.md §5.6).
+ * cuerda y pelota del mismo atlas se dibujan desde `playerMechanics.ts`.
  */
 export const PLAYER_MECHANICS_FILE = 'personajes/jugador-mecanicas.webp';
 

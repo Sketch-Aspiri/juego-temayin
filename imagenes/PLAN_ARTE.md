@@ -17,7 +17,9 @@ Abre [galeria.html](galeria.html) para revisar las imágenes y sus recortes. [ca
 | Tren, pirámide, banderas, vegetación, utilería, bloques e historia | 7 |
 | Arte existente actualizado | 6 |
 | Decorados de arenas (arcada de Izamal y guarida de Púas) | 2 |
-| **Total** | **70** |
+| Proyectiles y ondas (púa, zapote, fuego fatuo, bola de sargazo, ola de agua y onda espectral) | 6 |
+| Toldo de Cancún | 1 |
+| **Total** | **77** |
 
 Los originales se conservan en `originales/`. Los prompts están junto a cada PNG o en `actualizados/prompts/`. Las variantes descartadas se conservan fuera del catálogo final.
 
@@ -49,9 +51,12 @@ Las seis variantes de Temayin se generaron con `image_gen` integrado tomando `ja
 
 ## Verificación
 
+- Los siete sprites incorporados el 11 de octubre de 2026 se generaron con `image_gen` integrado. Los prompts finales y atlas están junto a sus originales en `nuevos/proyectiles/` y `nuevos/complementos/toldo.*`. Las copias de servicio son WebP sin pérdidas. `data/gameplaySprites.ts` y `data/newGameplaySprites.ts` documentan recortes y anclas para las mecánicas actuales; no cambian cajas de colisión ni guardados.
+- `python imagenes/verify_gameplay_sprites.py`: revisa las imágenes nuevas y dieciséis escenas preparadas en Chromium, incluidos agarre de cuerda, lanzamiento, centro del aro, losas, cañones, palapas, toldos, zonas lentas, barcos, tortugas y ataques de jefes. Comprueba que el render conserva la simulación. Resultados en `verificacion/sprites-jugables/`; no mide dificultad ni puntería.
+
 - `python imagenes/build_catalog.py`: reconstruye el catálogo y la galería sin modificar los PNG.
 - `python imagenes/validate_catalog.py`: comprueba cobertura, transparencia y recortes visibles dentro de cada imagen.
 - `python imagenes/verify_runtime.py`: comprueba la galería, el título y el primer nivel con Chromium. Usa `TEMAYIN_QA_URL` para indicar la dirección del servidor local.
 - Resultados y capturas: `verificacion/`.
-- `npm test`: 551 pruebas aprobadas en 30 archivos tras integrar las expresiones de la historia.
+- `npm test`: 689 pruebas en 37 archivos con cobertura de los sprites jugables.
 - `npm run build`: compilación aprobada.

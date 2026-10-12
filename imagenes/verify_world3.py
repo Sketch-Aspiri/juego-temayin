@@ -1,5 +1,6 @@
 """Revisa el Mundo 3 en Chromium con controles del motor y guardado de pruebas aislado."""
 import json
+import os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
@@ -66,7 +67,7 @@ with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     page = browser.new_page(viewport={'width': 1280, 'height': 800})
     page.on('pageerror', lambda error: errors.append(str(error)))
-    page.goto('http://127.0.0.1:5198')
+    page.goto(os.environ.get('TEMAYIN_QA_URL', 'http://127.0.0.1:5197'))
     page.wait_for_load_state('networkidle')
     page.evaluate(INSTRUMENT)
     for level_id in ['3-1', '3-2', '3-3', '3-4', '3-5']:

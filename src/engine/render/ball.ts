@@ -3,6 +3,7 @@ import type { Ball } from '../entities/ball';
 import { hoopCenter, type Hoop } from '../entities/hoops';
 import type { Ctx } from './drawUtils';
 import { drawRubberBall, objectSprite } from './props';
+import { drawGameplaySprite } from './gameplaySprites';
 
 /** Altura en pantalla de la pelota en vuelo (algo mayor que su caja de colisión). */
 const BALL_DRAW_SIZE = 24;
@@ -75,6 +76,7 @@ function drawRing(c: Ctx, sx: number, cy: number, h: Hoop, now: number): void {
     c.arc(sx, cy, HOOP_OUTER + 10, 0, TAU);
     c.fill();
   }
+  if (drawGameplaySprite(c, 'hoop', sx, cy, HOOP_OUTER * 2)) return;
   // Anillo con perforación (regla evenodd: el centro queda vacío).
   c.beginPath();
   c.arc(sx, cy, HOOP_OUTER, 0, TAU);

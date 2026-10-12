@@ -2,6 +2,7 @@ import { BEACH_PROPS } from '../../data/beachProps';
 import { GROUND, T, VW } from '../constants';
 import type { World } from '../World';
 import type { Ctx } from './drawUtils';
+import { drawGameplaySprite, drawNewGameplaySprite } from './gameplaySprites';
 
 const POST_WIDTH = 6;
 const STRIPE_WIDTH = 20;
@@ -15,6 +16,10 @@ export function drawBeachProps(c: Ctx, world: World): void {
     if (x + width < 0 || x > VW) continue;
     c.fillStyle = '#765030';
     for (const post of [x + 12, x + width - 18]) c.fillRect(post, y, POST_WIDTH, GROUND * T - y);
+    const painted = prop.kind === 'palapa'
+      ? drawGameplaySprite(c, 'palapa', x, y, width, GROUND * T - y)
+      : drawNewGameplaySprite(c, 'awning', x, y, width);
+    if (painted) continue;
     if (prop.kind === 'palapa') {
       c.fillStyle = '#bd9654'; c.beginPath();
       c.moveTo(x - 8, y); c.lineTo(x + width / 2, y - ROOF_HEIGHT);

@@ -11,7 +11,7 @@
       "exitOpen": null,
       "farthest": 182.55,
       "minOxygen": 10,
-      "t": 18.358333333332933,
+      "t": 18.274999999999604,
       "swam": true,
       "checkpoint": true
     },
@@ -25,8 +25,8 @@
       "bossHp": null,
       "exitOpen": null,
       "farthest": 182.55,
-      "minOxygen": 7.283333333333411,
-      "t": 37.36666666666519,
+      "minOxygen": 7.233333333333409,
+      "t": 37.34166666666519,
       "swam": true,
       "checkpoint": true
     },
@@ -41,7 +41,7 @@
       "exitOpen": null,
       "farthest": 192.55,
       "minOxygen": 9.47500000000003,
-      "t": 20.991666666666116,
+      "t": 20.924999999999454,
       "swam": true,
       "checkpoint": true
     },
@@ -56,7 +56,7 @@
       "exitOpen": null,
       "farthest": 182.55,
       "minOxygen": 7.141666666666738,
-      "t": 38.024999999998485,
+      "t": 38.224999999998474,
       "swam": true,
       "checkpoint": true
     },
@@ -71,7 +71,7 @@
       "exitOpen": null,
       "farthest": 182.55,
       "minOxygen": 10,
-      "t": 19.066666666666226,
+      "t": 18.924999999999567,
       "swam": true,
       "checkpoint": true
     },
@@ -86,8 +86,8 @@
       "exitOpen": true,
       "farthest": 112.55,
       "layer": 3,
-      "minOxygen": 9.691666666666684,
-      "t": 41.2249999999983,
+      "minOxygen": 9.700000000000017,
+      "t": 40.716666666665,
       "swam": true,
       "checkpoint": true
     }

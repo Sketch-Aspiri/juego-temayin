@@ -74,8 +74,8 @@ temayin_juego/
   index.html
   package.json, tsconfig.json, vite.config.ts
   imagenes/                    Arte fuente (hojas de diseño); NO se sirve
-  public/assets/               Sprites usados por el juego (coati.png, erizo.png, guepardo.png,
-                               jaguar_titulo.png, jefe.png, jefe_grande.png)
+  public/assets/               Sprites usados por el juego (WebP), atlas JSON y familias
+                               enemies/, bosses/, personajes/, mecanicas/, proyectiles/, complementos/…
   src/
     main.tsx, App.tsx          Arranque y enrutado de pantallas (según `screen` del store)
     styles.css
@@ -119,7 +119,13 @@ temayin_juego/
         sprites.ts             drawPlayerSprite, drawItemSprite, proyectiles, partículas
         enemies/               drawEnemySprite + registro ENEMY_SPRITES; <id>.ts por enemigo
         drawUtils.ts
+        gameplaySprites.ts     Anclas y dibujo de sprites jugables con caché
+        playerMechanics.ts     Poses de agarre, balanceo y lanzamiento
+        projectileSprites.ts   Fuego animado, púas y frutos
+        levelSprites.ts        Cañones y tramos de losas frágiles
     data/                      CONTENIDO (aquí se añaden niveles y mundos)
+      gameplaySprites.ts       Recortes y anclas del arte de mecánicas existente
+      newGameplaySprites.ts    Siete sprites nuevos (proyectiles, ondas y toldo)
       worlds.ts                WORLDS, ALL_LEVELS, getLevel, nextLevelId
       levels.test.ts           Pruebas de coherencia de TODOS los niveles
       levels/
@@ -198,16 +204,16 @@ data/worlds.ts (WORLDS) ──> store/appStore.ts (startLevel) ──> ui/screen
 
 | Rol | Personaje | Descripción | Estado en el código |
 |---|---|---|---|
-| Protagonista | **Temayin** | Jaguar guardián de Palenque. Corre, salta, pisa enemigos, lanza fuego con el chile. | Existe. Sprite `public/assets/guepardo.png` (clave `player` en `assets.ts`). |
-| Protagonista (rescatada) | **Temayina** | Jaguar, guardiana del Sol de Jade. Aparece en la intro, en el clímax y en el epílogo. | Por crear (sprite + escenas). |
-| Aliado | **Toh, el pájaro reloj** | Motmot de cola en forma de péndulo. Da pistas, marca checkpoints, narra el mapa. | Por crear (dibujo procedural en `render/sprites.ts` o sprite nuevo). |
-| Villano | **Camazotz** | Señor murciélago de Xibalbá (Popol Vuh). Jefe final de 3 fases. | Por crear (`BossId` `'camazotz'`). |
+| Protagonista | **Temayin** | Jaguar guardián de Palenque. Corre, salta, pisa enemigos, lanza fuego con el chile. | Existe. Sprite `public/assets/guepardo.webp` (clave `player` en `assets.ts`), poses de nado, cuerda y lanzamiento en `personajes/jugador-mecanicas.webp`. |
+| Protagonista (rescatada) | **Temayina** | Jaguar, guardiana del Sol de Jade. Aparece en la intro, en el clímax y en el epílogo. | Sprite `personajes/temayina.webp` y presencia en la intro implementados; rescate y epílogo pendientes. |
+| Aliado | **Toh, el pájaro reloj** | Motmot de cola en forma de péndulo. Da pistas, marca checkpoints, narra el mapa. | Sprite `personajes/toh.webp`, intro y checkpoints implementados. |
+| Villano | **Camazotz** | Señor murciélago de Xibalbá (Popol Vuh). Jefe final de 3 fases. | Sprite `bosses/camazotz.webp` e intro existentes; lógica de jefe final pendiente (`BossId` todavía no lo incluye). |
 | Jefe M1 | **Púas el puercoespín** | Embiste, rueda y dispara púas. | **Existe** (`bosses/puas.ts`, `BossId` `'puas'`). |
 | Jefe M2 | **Kaimán Moreleti** | Cocodrilo de pantano (*Crocodylus moreletii*). | **Existe** (`bosses/kaiman/`, `BossId` `'kaiman'`; nivel 2-7). |
 | Jefe M3 | **Huay Chivo** | Brujo-cabra del folclor yucateco. | **Existe** (`bosses/huayChivo/`, `'huayChivo'`; nivel 3-5). |
 | Jefe M4 | **Huay Pek** | Perro espectral de la leyenda. | **Existe** (`bosses/huayPek/`, `'huayPek'`; nivel 4-5). |
 | Jefe M5 | **Capitán Sargazo** | Monstruo de sargazo; mensaje ecológico. | **Existe** (`bosses/sargazo/`, `'sargazo'`; nivel 5-6). |
-| Jefe M6 | **Lorencillo** | Pirata barracuda inspirado en el pirata histórico que atacó Campeche (1685). | Por crear (`'lorencillo'`). |
+| Jefe M6 | **Lorencillo** | Pirata barracuda inspirado en el pirata histórico que atacó Campeche (1685). | Sprite `bosses/lorencillo.webp` existente; lógica y nivel del Mundo 6 pendientes. |
 
 ### 4.3 Mundos y niveles
 
@@ -702,6 +708,13 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 ---
 
 ## 10. Definición de terminado
+
+### Sprites de las mecánicas jugables
+
+- `data/gameplaySprites.ts` registra los recortes y anclas de barcos, tortugas, palapas, cañones, losas frágiles, aros, cuerdas, troncos, resina, sargazo y poses de agarre, balanceo y lanzamiento. `data/newGameplaySprites.ts` registra siete imágenes nuevas de `image_gen`: púa, zapote, fuego fatuo, bola de sargazo, ola de agua, onda espectral y toldo. Los PNG originales y prompts están en `imagenes/nuevos/proyectiles/` y `imagenes/nuevos/complementos/toldo.*`; los WebP sin pérdidas y atlas se sirven desde `public/assets/`.
+- `render/gameplaySprites.ts` comparte caché de recorte y escalado, con respaldo procedural al faltar una imagen. El fuego usa los cuatro cuadros de `mecanicas/efectos.webp`; los ataques de Kaimán, Huay Chivo, Huay Pek y Sargazo usan los sprites pintados. Los cañones conservan sus dos bloques sólidos; las losas frágiles se recortan por tramo, conservando su temblor y caída. Barcos y tortugas mantienen su superficie de apoyo y la inmersión protegida.
+- Las poses de cuerda anclan las manos en el extremo del péndulo; el recorte de lanzamiento excluye la pelota ilustrada para evitar un segundo proyectil visual. La física, los ids de nivel, el HUD y la persistencia no cambian. El arte de los mundos 6 y 7 sigue disponible para sus futuras mecánicas, todavía pendientes.
+- Pruebas: `data/gameplaySprites.test.ts` verifica archivos, recortes, anclas, prompts y precarga; `render/gameplaySprites.test.ts` verifica posición, orientación, respaldo y ausencia de mutación. `python imagenes/verify_gameplay_sprites.py` revisa siete recursos y dieciséis escenas en Chromium, con capturas en `imagenes/verificacion/sprites-jugables/`. Las escenas de ataques se preparan para inspección visual; los recorridos y combates asistidos se verifican aparte con `verify_world3.py`, `verify_world4.py`, `verify_world5.py` y `verify_bosses.py`.
 
 ### Controles móviles
 

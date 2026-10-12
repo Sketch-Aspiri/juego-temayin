@@ -5,9 +5,11 @@ import type { World } from '../World';
 import { bakedFrame, type Frame } from './artCache';
 import type { Ctx } from './drawUtils';
 import { drawTorches } from './scenerySprites';
+import { drawGameplaySprite } from './gameplaySprites';
 
 const HAMMOCK: Frame = [27, 88, 605, 223];
 const TRUCK: Frame = [36, 181, 580, 408];
+const ROPE_DRAW_WIDTH = 14;
 
 export function drawHaciendaProps(c: Ctx, world: World, now: number): void {
   for (const h of world.level.hammocks) {
@@ -24,6 +26,10 @@ export function drawHaciendaProps(c: Ctx, world: World, now: number): void {
   for (const r of world.ropes) {
     const [x, y] = ropeTip(r);
     if (r.x - world.camX < -r.length || r.x - world.camX > VW + r.length) continue;
+    c.save(); c.translate(r.x - world.camX, r.y); c.rotate(-r.angle);
+    const painted = drawGameplaySprite(c, 'rope', 0, 0, ROPE_DRAW_WIDTH, r.length);
+    c.restore();
+    if (painted) continue;
     c.beginPath(); c.moveTo(r.x - world.camX, r.y); c.lineTo(x - world.camX, y); c.stroke();
     c.fillStyle = '#a77738'; c.fillRect(r.x - world.camX - 14, r.y - 5, 28, 10);
     c.beginPath(); c.arc(x - world.camX, y, 7, 0, TAU); c.stroke();

@@ -1,4 +1,6 @@
 import { assetUrl, isReady } from '../assets';
+import { GAMEPLAY_SPRITES } from '../../data/gameplaySprites';
+import { NEW_GAMEPLAY_SPRITES } from '../../data/newGameplaySprites';
 
 /**
  * Arte pintado que se carga bajo demanda (fondos, atlas de objetos, meta, Toh).
@@ -37,6 +39,8 @@ export function lazyImage(file: string): HTMLImageElement | null {
  * arrancar, para que fondos, meta y objetos ya estén listos al entrar al nivel.
  */
 export const PAINTED_ART: readonly string[] = [
+  ...new Set(Object.values(NEW_GAMEPLAY_SPRITES).map(sprite => sprite.file)),
+  ...new Set(Object.values(GAMEPLAY_SPRITES).map(sprite => sprite.file)),
   'bosses/sargazo.webp',
   'escenarios/arcada-izamal.webp',
   'escenarios/guarida-puas.webp',

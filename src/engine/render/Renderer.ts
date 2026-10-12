@@ -27,6 +27,7 @@ import { THEMES, type ThemeDef } from './themes';
 import { drawSnorkelItem, drawWaterLayer } from './water';
 import type { ThemeId } from '../types';
 import { drawBeachProps } from './beachProps';
+import { drawCannonTile, drawFragileTile } from './levelSprites';
 
 const BLOCK_QUESTION = new Set(['?', 'M', 'L', 'F', 'S', 'P']);
 const BUMP_HEIGHT = 10;
@@ -141,13 +142,16 @@ export class Renderer {
         const bump = world.bumps.get(`${tx},${ty}`);
         if (bump) sy -= Math.sin((bump / BUMP_TIME) * Math.PI) * BUMP_HEIGHT;
         if (t === CRUMBLE_TILE) {
-          c.drawImage(this.textures.rubble, sx + crumbleShakeAt(world.crumbles, tx, ty, now), sy);
+          const shaken = sx + crumbleShakeAt(world.crumbles, tx, ty, now);
+          const cr = world.crumbles.find(p => p.y === ty && tx >= p.x && tx < p.x + p.len);
+          if (!drawFragileTile(c, shaken, sy, cr ? tx - cr.x : 0, cr?.len)) c.drawImage(this.textures.rubble, shaken, sy);
           continue;
         }
         if (t === 'o') {
           drawCacao(c, sx + T / 2, sy + T / 2, now / 150 + tx);
           continue;
         }
+        if (drawCannonTile(c, world.grid, tx, ty, sx, sy, x0)) continue;
         c.drawImage(this.textures[this.textureFor(world, theme, t, tx, ty)], sx, sy);
         if (BLOCK_QUESTION.has(t) && blink > 0.7) {
           c.fillStyle = `rgba(255,255,255,${(blink - 0.7) * 0.8})`;

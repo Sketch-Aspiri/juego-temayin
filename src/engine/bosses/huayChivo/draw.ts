@@ -2,9 +2,12 @@ import { TAU } from '../../constants';
 import { drawLazyFrame, footFrame } from '../../render/enemies/atlas';
 import type { Ctx } from '../../render/drawUtils';
 import type { HuayChivo } from './index';
+import { drawNewGameplaySprite } from '../../render/gameplaySprites';
 
 const FRAMES = [footFrame(42, 64, 427, 466), footFrame(517, 139, 488, 390), footFrame(1035, 142, 494, 389), footFrame(36, 539, 474, 420), footFrame(556, 571, 441, 385), footFrame(1006, 718, 527, 238)] as const;
 const SCALE = 0.27;
+const WISP_WIDTH = 22;
+const WISP_HEIGHT = 38;
 
 export function drawHuayChivo(c: Ctx, b: HuayChivo, camX: number): void {
   if (b.st === 'gone') return;
@@ -19,6 +22,7 @@ export function drawHuayChivo(c: Ctx, b: HuayChivo, camX: number): void {
   }
   c.restore();
   for (const f of b.wisps) {
+    if (drawNewGameplaySprite(c, 'wisp', f.x - camX, f.y, WISP_WIDTH, WISP_HEIGHT)) continue;
     c.save(); c.translate(f.x - camX, f.y);
     c.fillStyle = '#c4ffcf'; c.shadowColor = '#51d881'; c.shadowBlur = 15;
     c.beginPath(); c.arc(0, 0, 12 + Math.sin(f.age * 10), 0, TAU); c.fill(); c.restore();

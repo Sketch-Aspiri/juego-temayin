@@ -55,6 +55,8 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 
 ## Contenido actual
 
+- Las mecánicas actuales tienen sprites pintados: barcos, tortugas, aros, cuerdas, troncos, losas frágiles, cañones, palapas, toldos, resina y sargazo. Temayin muestra poses de agarre, balanceo y lanzamiento; el fuego tiene cuatro cuadros animados. Se crearon siete recursos transparentes para los proyectiles y ondas de los enemigos y jefes, y para los toldos de Cancún. Se conservan las colisiones, el progreso y los respaldos procedurales.
+
 - Los cinco jefes jugables tienen retrato, consejo y paleta propios en su anuncio. Sus arenas muestran la guarida rocosa de Púas, el pantano con raíces de Kaimán, el atrio con arcadas amarillas de Huay Chivo, el claro nocturno de Huay Pek y la bahía de Akumal de Capitán Sargazo.
 - Los decorados de las arenas usan sprites pintados: arcada de Izamal, guarida de Púas, mangles, ceibas y lianas. Las antorchas de los mundos 3 y 4 usan su sprite con halo de luz; las plataformas de Kaimán y Huay Pek se muestran como troncos sobre sus colisiones existentes.
 
@@ -72,4 +74,4 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 
 El arte fuente está en `imagenes/`; los sprites usados por el juego en `public/assets/`. La versión original en un único `index.html` queda en el historial de git.
 
-La biblioteca de arte incluye 70 imágenes de enemigos, jefes, personajes, paisajes, objetos, complementos y decorados de arenas. Consulta [la galería](imagenes/galeria.html), [el catálogo](imagenes/catalogo.json) y [las instrucciones de arte](imagenes/PLAN_ARTE.md) para revisar los PNG, los prompts y los recortes antes de integrarlos.
+La biblioteca de arte incluye 77 imágenes de enemigos, jefes, personajes, paisajes, objetos, complementos, proyectiles y decorados de arenas. Consulta [la galería](imagenes/galeria.html), [el catálogo](imagenes/catalogo.json) y [las instrucciones de arte](imagenes/PLAN_ARTE.md) para revisar los PNG, los prompts y los recortes. `python imagenes/verify_gameplay_sprites.py` comprueba su integración con el servidor Vite en el puerto 5197. Los sprites de Lorencillo y Camazotz ya existen; sus combates y los mundos 6 y 7 siguen pendientes de la hoja de ruta.
