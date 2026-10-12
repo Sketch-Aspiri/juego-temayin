@@ -82,6 +82,13 @@ with sync_playwright() as playwright:
           w.camX=p.x-380;w.phaseT=3;
         }""", {'x': x, 'feet': feet})
         capture(f'{level}-antes-de-salir')
+        if level == '1-5':
+            for _ in range(240):
+                surfaced = page.evaluate("qa.advance(1/60,'escape')")
+                if 141 <= surfaced['x'] < 144 and surfaced['y'] + 66 / 40 <= 7:
+                    break
+            assert 141 <= surfaced['x'] < 144 and surfaced['y'] + 66 / 40 <= 7, surfaced
+            capture('1-5-hueco-superior')
         result = page.evaluate("qa.advance(3,'escape')")
         reports.append({'prueba': 'salida', **result})
         capture(f'{level}-salida')

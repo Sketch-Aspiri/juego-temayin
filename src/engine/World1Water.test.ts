@@ -45,13 +45,32 @@ describe('salidas del agua del Mundo 1', () => {
     },
   );
 
-  it.each([132.1, 136, 139.1, 140.1])('1-5 permite salir del túnel desde %s hacia la escalera', x => {
+  it.each([132.1, 136, 139.1, 140.1, 142.1])('1-5 permite salir del túnel desde %s por el hueco superior', x => {
     const world = submerged('1-5', x, GROUND);
     const p = world.player;
-    const escaped = () => p.x >= 145 * T && p.onGround && !p.swimming;
+    let emergedThroughOpening = false;
+    const escaped = () => {
+      if (p.x >= 141 * T && p.x < 144 * T && p.y + p.h <= 6 * T) emergedThroughOpening = true;
+      return p.x >= 144 * T && p.onGround && !p.swimming;
+    };
     swimRightUntil(world, escaped);
     expect(world.phase).toBe('play');
     expect(escaped(), `sin salida en ${p.x / T},${p.y / T}`).toBe(true);
+    expect(emergedThroughOpening).toBe(true);
     expect(p.oxygen).toBeGreaterThan(0);
+  });
+
+  it('1-5 contiene el agua con una pared y deja libre el hueco de arriba', () => {
+    const world = submerged('1-5', 142.1, GROUND);
+    for (let y = 6; y < ROWS; y++) expect(world.solid(144, y)).toBe(true);
+    for (const x of [141, 142, 143]) {
+      for (let y = 0; y < GROUND; y++) expect(world.solid(x, y)).toBe(false);
+    }
+    const initialY = world.player.y;
+    world.input.press('right');
+    for (let step = 0; step < 2 / STEP; step++) world.update(STEP);
+    expect(world.phase).toBe('play');
+    expect(Math.floor((world.player.x + world.player.w - 1) / T)).toBeLessThan(144);
+    expect(world.player.y).toBeCloseTo(initialY);
   });
 });

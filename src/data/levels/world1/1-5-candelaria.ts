@@ -2,21 +2,26 @@ import type { LevelDef, Op } from '../../../engine/level/types';
 import { barracudas, nauyaca, urchin } from '../helpers';
 import { waterBank } from '../waterBanks';
 
-/** Túnel submarino: techo de roca en la fila 7 entre estas columnas (inclusive). */
+/** Túnel submarino: techo de roca en la fila 7, con una salida abierta al final. */
 const TUNNEL_X0 = 97;
-const TUNNEL_X1 = 140;
+const TUNNEL_X1 = 143;
 /** Fila del techo del túnel (también es la superficie del agua). */
 const TUNNEL_CEIL = 7;
-/** El agua continúa tras el techo para subir la escalera sin quedar encerrado. */
-const TUNNEL_EXIT_X = 145;
+/** Hueco de tres bloques para emerger antes de saltar sobre la pared sólida. */
+const EXIT_OPENING_X = 141;
+const EXIT_WALL_X = TUNNEL_X1 + 1;
+const EXIT_WALL_TOP = TUNNEL_CEIL - 1;
 /** Columna izquierda de cada bolsa de aire (2 columnas de ancho). */
 const AIR_POCKETS = [107, 120, 132] as const;
 
 const inPocket = (x: number): boolean => AIR_POCKETS.some((p) => x === p || x === p + 1);
 
-/** Techo del túnel con huecos donde están las bolsas de aire. */
+/** Techo con bolsas de aire cerradas y una abertura final hacia el exterior. */
 const tunnelCeiling = (): Op => {
-  const blocks = Array.from({ length: TUNNEL_X1 - TUNNEL_X0 + 1 }, (_, i) => (inPocket(TUNNEL_X0 + i) ? ' ' : 'X'));
+  const blocks = Array.from({ length: TUNNEL_X1 - TUNNEL_X0 + 1 }, (_, i) => {
+    const x = TUNNEL_X0 + i;
+    return inPocket(x) || x >= EXIT_OPENING_X ? ' ' : 'X';
+  });
   return ['row', TUNNEL_X0, TUNNEL_CEIL, blocks.join('')];
 };
 
@@ -39,12 +44,12 @@ const rockWall = (x: number, y1: number): Op[] =>
  *  46-79     Rápidos: tres tramos de río con troncos (plataformas) y corrientes que
  *            empujan a la derecha (3 → 4 → 4.5 bloques/s); barracudas saltando.
  *  80-91     Orilla de descanso con el punto de control de Toh (columna 84).
- *  92-140    Túnel submarino: se bucea bajo un muro de roca; corrientes que llevan
+ *  92-143    Túnel submarino: se bucea bajo un muro de roca; corrientes que llevan
  *            hacia erizos, contracorriente con barracuda, 3 bolsas de aire y un
  *            respiradero de burbujas (OXYGEN_MAX = 10 s; tramos de ~11 bloques).
  *            Premio oculto: monedas y un `?` sobre el techo del túnel (se vuelve
- *            desde lo alto de la escalera de salida).
- * 141-160    Salida por la cascada: escalera, poza al pie de la cascada y troncos
+ *            desde la abertura de salida).
+ * 141-160    Salida superior: hueco de luz antes de una pared sólida, poza y troncos
  *            altos con un corazón de jade.
  * 161-199    Recta final hasta la bandera y el templo.
  */
@@ -78,7 +83,7 @@ export const LEVEL_1_5: LevelDef = {
     ['row', 86, 8, 'B?M'], ['row', 89, 5, '?'], ['row', 90, 3, 'B'], ['coins', 87, 4, 3],
 
     // --- Túnel submarino ---
-    ['water', 92, TUNNEL_EXIT_X - 1, TUNNEL_CEIL],
+    ['water', 92, TUNNEL_X1, TUNNEL_CEIL],
     ['current', 92, 95, TUNNEL_CEIL, 9, 0, 2], // remolino que ayuda a bucear
     ...rockWall(96, TUNNEL_CEIL - 1),
     tunnelCeiling(),
@@ -93,8 +98,9 @@ export const LEVEL_1_5: LevelDef = {
     // Premio oculto sobre el techo del túnel.
     ['coins', 135, 6, 5], ['row', 137, 3, '?'],
 
-    // --- Salida por la cascada ---
-    ['stairs', 141, 5, 1],
+    // La pared cierra el agua; el hueco superior deja emerger y saltar por encima.
+    ['coins', EXIT_OPENING_X, 5, 3], ['bubbles', 142, 11],
+    // --- Poza de la cascada ---
     ['water', 146, 151, 9], ['current', 146, 148, 9, 11, 0, 3], // la cascada hunde
     ['current', 149, 151, 9, 11, 1.5, 0], // y luego arrastra hacia la salida
     ['plat', 147, 6, 2], ['plat', 150, 4, 2], ['row', 151, 1, 'L'],
@@ -112,6 +118,6 @@ export const LEVEL_1_5: LevelDef = {
     ...waterBank(45, 11, 1), ...waterBank(53, 11, -1),
     ...waterBank(56, 11, 1), ...waterBank(65, 11, -1),
     ...waterBank(69, 11, 1), ...waterBank(80, 11, -1),
-    ...waterBank(91, 7, 1), ...waterBank(TUNNEL_EXIT_X, TUNNEL_CEIL, -1), ...waterBank(152, 9, -1),
+    ...waterBank(91, 7, 1), ...waterBank(EXIT_WALL_X, EXIT_WALL_TOP, -1), ...waterBank(152, 9, -1),
   ],
 };
