@@ -227,13 +227,15 @@ describe('Kaimán en 2-7 · pelea con el World real', () => {
       expect(ambushFailures(1, OPEN_COLS)).toEqual([]);
     });
 
-    // Fallo conocido, pendiente de arreglo (ver informe de cazabugs): pasar a `it` al corregirlo.
-    it.fails('en la fase 2 (agua crecida), tras emerger bajo el jugador, un salto vertical lo pisa en toda columna sin tronco fijo', () => {
+    it('en la fase 2 (agua crecida), tras emerger bajo el jugador, un salto vertical lo pisa en toda columna sin tronco fijo', () => {
       expect(ambushFailures(2, OPEN_COLS)).toEqual([]);
     });
 
-    // Fallo conocido, pendiente de arreglo (ver informe de cazabugs): pasar a `it` al corregirlo.
-    it.fails('en la fase 2, caer desde cualquier altura sobre el lomo por donde flota un tronco a la deriva le quita 1 PV', () => {
+    it('en la fase 3 (frenesí), tras emerger bajo el jugador, un salto vertical lo pisa en toda columna sin tronco fijo', () => {
+      expect(ambushFailures(3, OPEN_COLS)).toEqual([]);
+    });
+
+    it('en la fase 2, caer desde cualquier altura sobre el lomo por donde flota un tronco a la deriva le quita 1 PV', () => {
       // Organizar: el tronco 1 en su origen (columnas 67-68) y el lomo expuesto centrado bajo él.
       const f = startFight();
       toPhase(f, 2);

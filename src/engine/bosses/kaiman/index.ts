@@ -89,6 +89,8 @@ export class Kaiman implements Boss {
   private sinceDive = 0;
   private divesLeft = 0;
   private fireHits = 0;
+  /** Pies del jugador en el paso anterior (px): distingue caer sobre el lomo de estar quieto encima. */
+  private prevFeet = Infinity;
   private floodFrom: number | null = null;
   private readonly rng = makeRng(RNG_SEED);
   private readonly a0: number;
@@ -338,10 +340,17 @@ export class Kaiman implements Boss {
 
   private contactPlayer(world: World): void {
     const p = world.player;
+    const feet = p.y + p.h;
+    // Con la crecida, los troncos a la deriva quedan justo bajo el lomo: el jugador que
+    // cae se apoya en ellos (vy = 0) antes de este contacto. Si sus pies bajaron en este
+    // paso, sigue siendo un pisotón; quedarse quieto encima no lo es.
+    const falling = p.vy > 0 || feet > this.prevFeet;
+    this.prevFeet = feet;
     if (world.phase !== 'play' || !overlap(p, this)) return;
-    const stomp = p.vy > 0 && p.y + p.h - this.y < K.STOMP_MARGIN;
+    const feetOnBack = feet - this.y < K.STOMP_MARGIN;
+    const stomp = p.vy > 0 && feetOnBack;
     if (this.st === 'exposed') {
-      if (stomp) this.stomped(world);
+      if (feetOnBack && falling) this.stomped(world);
       return;
     }
     if (HARMLESS.has(this.st)) return;
