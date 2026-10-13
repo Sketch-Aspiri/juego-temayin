@@ -61,6 +61,8 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 
 - Las mecánicas actuales tienen sprites pintados: barcos, tortugas, aros, cuerdas, troncos, losas frágiles, cañones, palapas, toldos, resina y sargazo. Temayin muestra poses de agarre, balanceo y lanzamiento; el fuego tiene cuatro cuadros animados. Se crearon siete recursos transparentes para los proyectiles y ondas de los enemigos y jefes, y para los toldos de Cancún. Se conservan las colisiones, el progreso y los respaldos procedurales.
 
+- Las balas de los cañones de Campeche usan hierro pintado con giro y una estela de humo orientada detrás del disparo; el diámetro visible es el de su colisión (22 px). Generadas con la herramienta integrada `image_gen`: `public/assets/proyectiles/bala-canon.webp` y `public/assets/proyectiles/humo-canon.webp`, con atlas JSON. PNG originales y prompts en `imagenes/nuevos/proyectiles/bala-canon.*` y `humo-canon.*`. `python imagenes/verify_cannon_sprites.py` revisa disparos reales en ambas direcciones, escritorio y móvil, y un recorrido asistido de Campeche; capturas en `imagenes/verificacion/canones/`.
+
 - Los cinco jefes jugables tienen retrato, consejo y paleta propios en su anuncio. Sus arenas muestran la guarida rocosa de Púas, el pantano con raíces de Kaimán, el atrio con arcadas amarillas de Huay Chivo, el claro nocturno de Huay Pek y la bahía de Akumal de Capitán Sargazo.
 - Los decorados de las arenas usan sprites pintados: arcada de Izamal, guarida de Púas, mangles, ceibas y lianas. Las antorchas de los mundos 3 y 4 usan su sprite con halo de luz; las plataformas de Kaimán y Huay Pek se muestran como troncos sobre sus colisiones existentes.
 

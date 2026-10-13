@@ -13,6 +13,8 @@ export const NEW_GAMEPLAY_SPRITES = {
   propagule: { file: 'proyectiles/propagulo-mangle.webp', frame: [401, 62, 220, 1391], anchor: [0.5, 1] },
   kaimanSpit: { file: 'bosses/kaiman-escupitajo.webp', frame: [90, 257, 1631, 535], anchor: [0.5, 1] },
   kaimanSlam: { file: 'bosses/kaiman-mangle.webp', frame: [111, 51, 1338, 931], anchor: [0.5, 1] },
+  cannonball: { file: 'proyectiles/bala-canon.webp', frame: [247, 207, 792, 791], anchor: [0.5, 0.5] },
+  cannonSmoke: { file: 'proyectiles/humo-canon.webp', frame: [160, 136, 1860, 500], anchor: [1, 0.5] },
 } as const satisfies Readonly<Record<string, GameplaySprite>>;
 
 export type NewGameplaySpriteId = keyof typeof NEW_GAMEPLAY_SPRITES;

@@ -1,6 +1,7 @@
 import { T, TAU } from '../constants';
 import { CANNONBALL_RADIUS, fuseX, muzzleX, type Cannon, type Cannonball } from '../entities/cannons';
 import type { Ctx } from './drawUtils';
+import { drawNewGameplaySprite } from './gameplaySprites';
 
 /** Duración del fogonazo en la boca tras disparar (s). */
 const FLASH_TIME = 0.14;
@@ -15,8 +16,12 @@ const FUSE_HEIGHT = 6;
 const WARN_PULSE = 0.012;
 const WARN_GLOW_RADIUS = 14;
 /** Estela de la bala: largo (px) y opacidad. */
-const TRAIL_LENGTH = 26;
+const TRAIL_LENGTH = 36;
 const TRAIL_ALPHA = 0.35;
+const TRAIL_APPEAR_TIME = 0.12;
+const CANNONBALL_SPIN = 7;
+const TRAIL_PUFFS = 3;
+const PUFF_SPACING = 10;
 
 /** Mecha encendida durante el aviso y fogonazo justo después del disparo. */
 export function drawCannonFx(c: Ctx, cannons: readonly Cannon[], camX: number, now: number): void {
@@ -69,27 +74,42 @@ function drawFlash(c: Ctx, x: number, y: number, k: number): void {
   c.restore();
 }
 
-/** Balas de hierro con brillo y una estela tenue detrás. */
+/** Bala pintada, centrada en su colisión de 22 px, con humo orientado detrás del vuelo. */
 export function drawCannonballs(c: Ctx, balls: readonly Cannonball[], camX: number): void {
   for (const b of balls) {
+    if (b.gone) continue;
     const x = b.x - camX;
-    const back = -Math.sign(b.vx);
-    c.save();
-    c.globalAlpha = TRAIL_ALPHA;
-    c.fillStyle = '#d9d2c3';
-    c.fillRect(Math.min(x, x + back * TRAIL_LENGTH), b.y - CANNONBALL_RADIUS / 2, TRAIL_LENGTH, CANNONBALL_RADIUS);
-    c.globalAlpha = 1;
-    const g = c.createRadialGradient(x - 4, b.y - 4, 1, x, b.y, CANNONBALL_RADIUS);
-    g.addColorStop(0, '#8d949c');
-    g.addColorStop(0.5, '#3b3f45');
-    g.addColorStop(1, '#16181b');
-    c.fillStyle = g;
-    c.beginPath();
-    c.arc(x, b.y, CANNONBALL_RADIUS, 0, TAU);
-    c.fill();
-    c.strokeStyle = '#0b0c0e';
-    c.lineWidth = 1.5;
-    c.stroke();
+    const dir = b.vx < 0 ? -1 : 1;
+    drawSmoke(c, x, b.y, dir, b.t);
+    c.save(); c.translate(x, b.y); c.rotate(b.t * CANNONBALL_SPIN * dir);
+    const diameter = 2 * CANNONBALL_RADIUS;
+    if (!drawNewGameplaySprite(c, 'cannonball', 0, 0, diameter, diameter)) drawBallFallback(c);
     c.restore();
   }
+}
+
+function drawSmoke(c: Ctx, x: number, y: number, dir: 1 | -1, t: number): void {
+  c.save(); c.translate(x, y); c.scale(dir, 1);
+  c.globalAlpha *= TRAIL_ALPHA * Math.min(1, t / TRAIL_APPEAR_TIME);
+  if (!drawNewGameplaySprite(c, 'cannonSmoke', -CANNONBALL_RADIUS, 0, TRAIL_LENGTH)) {
+    c.fillStyle = '#d9d2c3';
+    for (let i = 0; i < TRAIL_PUFFS; i++) {
+      c.beginPath(); c.ellipse(-CANNONBALL_RADIUS - i * PUFF_SPACING - 4, 0, 8 - i, 5 - i, 0, 0, TAU); c.fill();
+    }
+  }
+  c.restore();
+}
+
+function drawBallFallback(c: Ctx): void {
+  const g = c.createRadialGradient(-4, -4, 1, 0, 0, CANNONBALL_RADIUS);
+  g.addColorStop(0, '#8d949c');
+  g.addColorStop(0.5, '#3b3f45');
+  g.addColorStop(1, '#16181b');
+  c.fillStyle = g;
+  c.beginPath();
+  c.arc(0, 0, CANNONBALL_RADIUS, 0, TAU);
+  c.fill();
+  c.strokeStyle = '#0b0c0e';
+  c.lineWidth = 1.5;
+  c.stroke();
 }

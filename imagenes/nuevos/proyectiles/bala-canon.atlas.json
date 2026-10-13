@@ -1,0 +1,17 @@
+{
+  "image": "bala-canon.png",
+  "width": 1290,
+  "height": 1219,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "bala-canon",
+      "x": 247,
+      "y": 207,
+      "width": 792,
+      "height": 791
+    }
+  ],
+  "qa": "Alfa >= 40; PNG original intacto; WebP sin pérdidas."
+}

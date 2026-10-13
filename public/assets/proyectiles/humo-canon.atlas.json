@@ -1,0 +1,17 @@
+{
+  "image": "humo-canon.png",
+  "width": 2120,
+  "height": 742,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "humo-canon",
+      "x": 160,
+      "y": 136,
+      "width": 1860,
+      "height": 500
+    }
+  ],
+  "qa": "Alfa >= 40; PNG original intacto; WebP sin pérdidas."
+}

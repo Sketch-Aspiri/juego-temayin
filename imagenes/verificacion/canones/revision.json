@@ -1,0 +1,66 @@
+{
+  "actualShots": {
+    "directions": [
+      1,
+      -1
+    ],
+    "balls": [
+      {
+        "x": 3222.000000000001,
+        "y": 340,
+        "vx": 220
+      },
+      {
+        "x": 3337.999999999999,
+        "y": 380,
+        "vx": -220
+      },
+      {
+        "x": 3622.000000000001,
+        "y": 340,
+        "vx": 220
+      },
+      {
+        "x": 3777.999999999999,
+        "y": 340,
+        "vx": -220
+      }
+    ],
+    "phase": "play"
+  },
+  "sprites": [
+    {
+      "file": "proyectiles/bala-canon.webp",
+      "frame": [
+        247,
+        207,
+        792,
+        791
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "file": "proyectiles/humo-canon.webp",
+      "frame": [
+        160,
+        136,
+        1860,
+        500
+      ],
+      "anchor": [
+        1,
+        0.5
+      ]
+    }
+  ],
+  "completion": {
+    "phase": "done",
+    "x": 7982,
+    "checkpoint": true
+  },
+  "errors": [],
+  "mode": "Disparos reales en un baluarte, escenas preparadas en escritorio y móvil, y recorrido con daño de contacto protegido; colisiones y hoyos activos."
+}

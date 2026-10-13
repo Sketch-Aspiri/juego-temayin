@@ -123,10 +123,11 @@ temayin_juego/
         gameplaySprites.ts     Anclas y dibujo de sprites jugables con caché
         playerMechanics.ts     Poses de agarre, balanceo y lanzamiento
         projectileSprites.ts   Fuego animado, púas y frutos
+        cannons.ts             Mecha, fogonazo y balas pintadas con estela de humo
         levelSprites.ts        Cañones y tramos de losas frágiles
     data/                      CONTENIDO (aquí se añaden niveles y mundos)
       gameplaySprites.ts       Recortes y anclas del arte de mecánicas existente
-      newGameplaySprites.ts    Siete sprites nuevos (proyectiles, ondas y toldo)
+      newGameplaySprites.ts    Sprites nuevos (proyectiles, poses de Kaimán, ondas y toldo)
       worlds.ts                WORLDS, ALL_LEVELS, getLevel, nextLevelId
       levels.test.ts           Pruebas de coherencia de TODOS los niveles
       levels/
@@ -792,7 +793,7 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
   - Ningún enemigo entra en la arena del jefe antes de que despierte.
   - Si quedan sombras tras el punto de control, hay un bloque `F` al alcance al reaparecer (el chile se pierde al morir).
   - Las carretas que se relevan sobre un barranco miden al menos 3 bloques y comparten periodo.
-- Los cañones de Campeche disparan (`entities/cannons.ts`, dibujo en `render/cannons.ts`: mecha que chispea, fogonazo y bala de hierro procedurales). En el primer foso, la bala del cañón 78 alcanza a quien espera sobre el cañón 84; en el paseo de ronda, los cañones 149 y 155 cruzan fuego sobre el hueco del cangrejo pirata (se salta de cañón a cañón por encima). Cobertura: `entities/cannons.test.ts` y `2-3-campeche.test.ts` (cacao entre cañones que disparan y espera segura sobre ellos).
+- Los cañones de Campeche disparan (`entities/cannons.ts`, dibujo en `render/cannons.ts`: mecha que chispea y fogonazo procedurales, bala de hierro y humo pintados). La bala gira centrada en su colisión de 22 px y el humo se orienta detrás del vuelo; ambos conservan respaldo procedural. Sprites y atlas en `public/assets/proyectiles/bala-canon.*` y `humo-canon.*`; PNG y prompts originales en `imagenes/nuevos/proyectiles/`. En el primer foso, la bala del cañón 78 alcanza a quien espera sobre el cañón 84; en el paseo de ronda, los cañones 149 y 155 cruzan fuego sobre el hueco del cangrejo pirata (se salta de cañón a cañón por encima). Cobertura: `entities/cannons.test.ts`, `render/cannons.test.ts` y `2-3-campeche.test.ts` (cacao entre cañones que disparan y espera segura sobre ellos); revisión en navegador con `python imagenes/verify_cannon_sprites.py`.
 
 - Kaimán Moreleti (`bosses/kaiman/`): ocho PV y tres fases. `choose.ts` sortea el siguiente ataque entre los de su fase con pesos por distancia (cerca: mordida y coletazo; lejos: emboscada y lodo), nunca repite el anterior y fuerza la emboscada tras `MAX_ATTACKS_WITHOUT_DIVE` ataques para garantizar el pisotón. El azar es determinista (`makeRng`). `hazards.ts` añade el escupitajo de lodo (fauces abiertas: el fuego daña) y el golpe al mangle, que deja caer propágulos con sombra de aviso y huecos mínimos de `PROPAGULE_GAP`. Fase 2: crecida y dos troncos `mover` a la deriva entre los fijos. Fase 3: más velocidad, dos olas delanteras, emboscada doble, tormenta (`drawHazards.ts`) y nubarrones en el decorado. `Boss.stage` (opcional) permite que `render/bossArena.ts` reaccione a la fase; el pantano añade heno, nenúfares sobre la superficie real del agua y garzas que huyen al despertar el jefe. Cobertura: `kaiman.test.ts` y `choose.test.ts`.
 
