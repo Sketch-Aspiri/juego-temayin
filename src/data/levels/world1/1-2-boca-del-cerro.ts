@@ -23,14 +23,16 @@ const overhang = (x: number, len: number): Op[] =>
  *   64-79   poza honda abierta: primer buceo, barracuda joven
  *   80-111  salientes de roca con bolsas de aire; bajo el bajío (97-103) una gruta
  *           escondida con un chile en el techo
- *   112-123 islote seco con el punto de control (Toh)
+ *   112-123 islote seco con el punto de control (Toh) y un escudo para quien reaparece
  *   120-163 corriente suave hacia la derecha, con un saliente corto
  *   160-171 salida del río
- *   172-210 tierra firme, escalinata, bandera y templo
+ *   172-210 tierra firme, escalinata, bandera y templo; corazón de jade escondido
+ *           sobre la columna final (se golpea desde lo alto)
  */
 export const LEVEL_1_2: LevelDef = {
   id: '1-2',
   name: 'Boca del Cerro',
+  hint: 'Pulsa saltar para nadar hacia arriba; saca la cabeza para recuperar aire.',
   width: 210,
   theme: 'river',
   checkpoint: 117,
@@ -62,7 +64,7 @@ export const LEVEL_1_2: LevelDef = {
 
     // Islote seco con el punto de control
     ['stairs', 112, 6, 1], ['stairs', 118, 6, -1],
-    ['row', 113, 2, '??'], ['coins', 113, 5, 2],
+    ['row', 113, 2, '?M'], ['coins', 113, 5, 2],
 
     // Corriente suave
     ['water', 120, 163, RIVER_SURFACE],
@@ -74,7 +76,7 @@ export const LEVEL_1_2: LevelDef = {
     // Salida del río y tierra firme
     ['stairs', 160, 6, 1], ['stairs', 166, 6, -1],
     ['row', 172, 8, 'B?B'], ['coins', 172, 4, 3],
-    ['stairs', 178, 8, 1], ['col', 186, 8], ['coins', 189, 5, 4],
+    ['stairs', 178, 8, 1], ['col', 186, 8], ['row', 187, 1, 'L'], ['coins', 189, 5, 4],
     ['flag', 195], ['temple', 200],
 
     ...urchin(25, 132, 150),
