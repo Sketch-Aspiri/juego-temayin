@@ -127,6 +127,8 @@ export interface LevelDef {
   /** Anchura del nivel en bloques. */
   width: number;
   theme: ThemeId;
+  /** false oculta el agua decorativa del tema en los fosos; no altera las zonas de nado. */
+  decorativeWater?: boolean;
   /** Segundos disponibles (300 por defecto). */
   time?: number;
   /** Columna del punto de control (mitad del nivel por defecto). */

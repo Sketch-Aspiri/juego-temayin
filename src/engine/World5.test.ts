@@ -42,10 +42,13 @@ describe('Riviera Maya: Cancún y Puerto Morelos', () => {
     expect(w.def.hint).toBeTruthy();
   });
 
-  it('Cancún ofrece vagones y una ruta alternativa por el agua', () => {
+  it('Cancún requiere vagones y plataformas móviles en sus fosos secos', () => {
     const w = make('5-1');
     expect(w.level.platforms.some(p => p.kind === 'train')).toBe(true);
-    expect(w.level.water).toHaveLength(2);
+    expect(w.level.platforms.some(p => p.kind === 'mover')).toBe(true);
+    expect(w.level.water).toHaveLength(0);
+    expect(w.level.bubbles).toHaveLength(0);
+    expect(w.def.decorativeWater).toBe(false);
     expect(new Set(w.enemies.map(e => e.id))).toEqual(new Set(['blueCrab', 'pirateCrab', 'urchin']));
   });
 

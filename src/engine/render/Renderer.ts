@@ -80,7 +80,9 @@ export class Renderer {
     const theme = THEMES[world.def.theme];
     const arenaPlatforms = arenaPlatformArt(world);
     this.drawBackdrop(world.def.theme, world.camX, now);
-    if (theme.water && !world.level.water.length) this.drawWater(theme, world.camX, now);
+    if (theme.water && !world.level.water.length && world.def.decorativeWater !== false) {
+      this.drawWater(theme, world.camX, now);
+    }
 
     c.save();
     if (world.shake > 0 && !paused) {
