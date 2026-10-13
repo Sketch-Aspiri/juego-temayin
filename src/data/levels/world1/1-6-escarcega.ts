@@ -1,10 +1,15 @@
 import type { LevelDef } from '../../../engine/level/types';
 import { coati, urchin } from '../helpers';
 
-/** Escárcega, guarida de Púas (jefe del Mundo 1): la arena va de la columna 50 a la 71, con muros en 49 y 72. */
+/**
+ * Escárcega, guarida de Púas (jefe del Mundo 1): la arena va de la columna 50 a la 71,
+ * con muros en 49 y 72. Los enemigos de la llegada quedan encerrados entre obstáculos
+ * (tubo, escalinatas) para que ninguno se cuele en la arena antes de cerrarse.
+ */
 export const LEVEL_1_6: LevelDef = {
   id: '1-6',
   name: 'Escárcega',
+  hint: 'El chile también daña a Púas, pero rebota cuando rueda como bola.',
   width: 95,
   theme: 'lair',
   boss: { id: 'puas', x: 64, arena: [50, 71] },
@@ -16,6 +21,6 @@ export const LEVEL_1_6: LevelDef = {
     ['wall', 72],
     ['flag', 80], ['temple', 85],
     ...coati(14, 33),
-    ...urchin(28, 45),
+    ...urchin(28, 40),
   ],
 };
