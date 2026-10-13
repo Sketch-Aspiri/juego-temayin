@@ -1,0 +1,45 @@
+{
+  "scenes": [
+    {
+      "level": "1-4",
+      "scene": "el-triunfo-inicio",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "1-4",
+      "scene": "el-triunfo-orilla",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "1-4",
+      "scene": "el-triunfo-checkpoint",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "2-4",
+      "scene": "petenes-inicio",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "2-4",
+      "scene": "petenes-orilla",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "2-7",
+      "scene": "calkini-inicio",
+      "simulationUnchanged": true
+    },
+    {
+      "level": "2-7",
+      "scene": "calkini-entrada-arena",
+      "simulationUnchanged": true
+    }
+  ],
+  "coverage": {
+    "opaque": true,
+    "repeats": true
+  },
+  "errors": [],
+  "mode": "Escenas preparadas; tamaño real y móvil; píxeles opacos y repetición; simulación congelada para revisar el dibujo."
+}

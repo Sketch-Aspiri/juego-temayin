@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { GAMEPLAY_SPRITES } from './gameplaySprites';
 import { NEW_GAMEPLAY_SPRITES } from './newGameplaySprites';
 import { MAYA_TILE_SPRITES } from './mayaTileSprites';
-import { TERRAIN_SPRITES } from './terrainSprites';
+import { MUD_TERRAIN_SPRITES, TERRAIN_SPRITES } from './terrainSprites';
 import { PAINTED_ART } from '../engine/render/artCache';
 
 interface Atlas { readonly width: number; readonly height: number; readonly alpha: boolean }
@@ -17,7 +17,7 @@ describe('Cobertura del arte jugable', () => {
     expect(runtimeImages[runtime]).toBeDefined();
     const atlas = atlases[runtime.replace('.webp', '.atlas.json')];
     const [x, y, w, h] = sprite.frame;
-    expect(atlas.alpha).toBe(true);
+    expect(atlas.alpha).toBe(sprite.file !== MUD_TERRAIN_SPRITES.mud.file);
     expect(x).toBeGreaterThanOrEqual(0);
     expect(y).toBeGreaterThanOrEqual(0);
     expect(w).toBeGreaterThan(0);
@@ -29,7 +29,7 @@ describe('Cobertura del arte jugable', () => {
   });
 
   it('conserva los originales y los prompts de todos los sprites nuevos', () => {
-    for (const sprite of Object.values({ ...NEW_GAMEPLAY_SPRITES, ...MAYA_TILE_SPRITES })) {
+    for (const sprite of Object.values({ ...NEW_GAMEPLAY_SPRITES, ...MAYA_TILE_SPRITES, ...MUD_TERRAIN_SPRITES })) {
       const source = sprite.file.replace('bosses/', 'jefes/').replace('.webp', '.png');
       const path = `../../imagenes/nuevos/${source}`;
       expect(sourceImages[path]).toBeDefined();

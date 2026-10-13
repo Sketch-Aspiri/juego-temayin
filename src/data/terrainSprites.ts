@@ -1,11 +1,24 @@
 import type { GameplaySprite } from './gameplaySprites';
 import type { TexId } from '../engine/render/textures';
 
-interface TerrainSprite extends GameplaySprite { readonly base: string }
+export interface TerrainSprite extends GameplaySprite {
+  readonly base: string;
+  /** Cuadros contiguos del mismo material: se eligen por columna y profundidad. */
+  readonly columns?: number;
+  readonly rows?: number;
+}
 const FILE = 'complementos/bloques.webp';
+const MUD_FILE = 'terreno/suelo-pantano.webp';
 
-/** Se aprovecha el terreno pintado del atlas existente, sin sus tubos ni cajas antiguas. */
+/** La primera fila lleva pasto; las tres siguientes continúan raíces y tierra sin bordes. */
+export const MUD_TERRAIN_SPRITES = {
+  mudTop: { file: MUD_FILE, frame: [0, 0, 256, 256], anchor: [0, 0], base: '#56341c', columns: 6 },
+  mud: { file: MUD_FILE, frame: [0, 256, 256, 256], anchor: [0, 0], base: '#56341c', columns: 6, rows: 3 },
+} as const satisfies Readonly<Record<string, TerrainSprite>>;
+
+/** El suelo nuevo de pantano convive con el terreno pintado del atlas histórico. */
 export const TERRAIN_SPRITES: Readonly<Partial<Record<TexId, TerrainSprite>>> = {
+  ...MUD_TERRAIN_SPRITES,
   grass: { file: FILE, frame: [42, 22, 300, 283], anchor: [0, 0], isolated: true, base: '#80542d' },
   dirt: { file: FILE, frame: [368, 52, 269, 252], anchor: [0, 0], isolated: true, base: '#80542d' },
   sandTop: { file: FILE, frame: [672, 50, 278, 254], anchor: [0, 0], isolated: true, base: '#d5b076' },

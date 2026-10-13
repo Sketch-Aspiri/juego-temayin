@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MAYA_TILE_SPRITES } from '../../data/mayaTileSprites';
+import { MUD_TERRAIN_SPRITES } from '../../data/terrainSprites';
 import { ALL_LEVELS } from '../../data/worlds';
 import { AudioEngine } from '../audio';
 import { Input } from '../input';
@@ -56,6 +57,33 @@ describe('Cofres y columnas mayas', () => {
     expect(mock.frame.mock.calls[0][3]).toBe(true);
     mock.frame.mockReturnValue(null); vi.clearAllMocks();
     expect(drawPaintedTerrain(c, 'grass', 120, 480)).toBe(false);
+    expect(fillRect).not.toHaveBeenCalled();
+  });
+
+  it('mantiene el mismo cuadro de pasto al desplazar la cámara y continúa al repetir el atlas', () => {
+    drawPaintedTerrain(c, 'mudTop', 120, 480, 4);
+    drawPaintedTerrain(c, 'mudTop', -19, 480, 4);
+    drawPaintedTerrain(c, 'mudTop', 360, 480, 10);
+    for (const call of mock.frame.mock.calls) {
+      expect(call).toEqual([MUD_TERRAIN_SPRITES.mudTop.file, [1024, 0, 256, 256], 40 / 256, false]);
+    }
+    expect(drawImage).toHaveBeenCalledWith(art, -19, 480, 40, 40);
+  });
+
+  it.each([1, 2, 3, 4])('continúa la tierra a profundidad %i desde la superficie de cada montículo', depth => {
+    drawPaintedTerrain(c, 'mud', 200, 360, 5, depth);
+    expect(mock.frame).toHaveBeenCalledWith(
+      MUD_TERRAIN_SPRITES.mud.file, [1280, 256 + ((depth - 1) % 3) * 256, 256, 256], 40 / 256, false,
+    );
+    expect(fillRect).toHaveBeenCalledWith(200, 360, 40, 40);
+    expect(drawImage).toHaveBeenCalledWith(art, 200, 360, 40, 40);
+  });
+
+  it('mantiene el respaldo de lodo durante la carga, sin dibujar una baldosa parcial', () => {
+    mock.frame.mockReturnValue(null);
+    expect(drawPaintedTerrain(c, 'mudTop', 0, 480, 2)).toBe(false);
+    expect(drawPaintedTerrain(c, 'mud', 0, 520, 2, 1)).toBe(false);
+    expect(drawImage).not.toHaveBeenCalled();
     expect(fillRect).not.toHaveBeenCalled();
   });
 });

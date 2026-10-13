@@ -164,10 +164,20 @@ export class Renderer {
         }
         if (drawCannonTile(c, world.grid, tx, ty, sx, sy, x0)) continue;
         const texture = this.textureFor(world, theme, t, tx, ty);
-        if (!drawMayaTile(c, t, sx, sy) && !drawPaintedTerrain(c, texture, sx, sy)) c.drawImage(this.textures[texture], sx, sy);
+        const depth = t === 'G' ? this.groundDepth(world, tx, ty) : 0;
+        if (!drawMayaTile(c, t, sx, sy) && !drawPaintedTerrain(c, texture, sx, sy, tx, depth)) {
+          c.drawImage(this.textures[texture], sx, sy);
+        }
         drawRewardLight(c, t, sx, sy, now);
       }
     }
+  }
+
+  /** La tierra continúa desde su propia orilla, también en peldaños y montículos. */
+  private groundDepth(world: World, tx: number, ty: number): number {
+    let depth = 0;
+    while (world.tileAt(tx, ty - depth - 1) === 'G') depth++;
+    return depth;
   }
 
   private textureFor(world: World, theme: ThemeDef, tile: string, tx: number, ty: number) {

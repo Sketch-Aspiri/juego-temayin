@@ -1,7 +1,7 @@
 import { MAYA_TILE_SPRITES } from '../../data/mayaTileSprites';
-import { TERRAIN_SPRITES } from '../../data/terrainSprites';
+import { TERRAIN_SPRITES, type TerrainSprite } from '../../data/terrainSprites';
 import { T } from '../constants';
-import { bakedFrame } from './artCache';
+import { bakedFrame, type Frame } from './artCache';
 import type { Ctx } from './drawUtils';
 import type { TexId } from './textures';
 
@@ -10,14 +10,26 @@ const COLUMN_TILES: ReadonlySet<string> = new Set(['p', 'q', 'l', 'r']);
 const LIGHT_PERIOD = 450;
 
 /** Un fondo sólido evita huecos entre las esquinas orgánicas de las baldosas pintadas. */
-export function drawPaintedTerrain(c: Ctx, texture: TexId, sx: number, sy: number): boolean {
+export function drawPaintedTerrain(
+  c: Ctx, texture: TexId, sx: number, sy: number, tileX = 0, depth = 0,
+): boolean {
   const sprite = TERRAIN_SPRITES[texture];
   if (!sprite) return false;
-  const art = bakedFrame(sprite.file, sprite.frame, T / sprite.frame[2], true);
+  const frame = terrainFrame(sprite, tileX, depth);
+  const art = bakedFrame(sprite.file, frame, T / frame[2], sprite.isolated ?? false);
   if (!art) return false;
   c.fillStyle = sprite.base; c.fillRect(sx, sy, T, T);
   c.drawImage(art, sx, sy, T, T);
   return true;
+}
+
+/** Usar la columna del mundo impide que el terreno cambie de cuadro al mover la cámara. */
+function terrainFrame(sprite: TerrainSprite, tileX: number, depth: number): Frame {
+  const [x, y, w, h] = sprite.frame;
+  const columns = sprite.columns ?? 1;
+  const column = ((tileX % columns) + columns) % columns;
+  const row = Math.max(0, depth - 1) % (sprite.rows ?? 1);
+  return [x + column * w, y + row * h, w, h];
 }
 
 /** Cada mitad de la columna ocupa su baldosa: tampoco desaparece al salir de cámara. */

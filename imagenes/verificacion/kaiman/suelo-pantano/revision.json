@@ -1,0 +1,79 @@
+{
+  "mode": "Escenas preparadas; recorrido con contacto protegido, ubicación en tronco durante el combate y fuego asistido solo en ventanas válidas; no evalúa dificultad ni puntería.",
+  "scenes": [
+    {
+      "state": "intro",
+      "stage": 1,
+      "hp": 8
+    },
+    {
+      "state": "spitPrep",
+      "stage": 1,
+      "hp": 8
+    },
+    {
+      "state": "spit",
+      "stage": 1,
+      "hp": 8
+    },
+    {
+      "state": "slamPrep",
+      "stage": 2,
+      "hp": 8
+    },
+    {
+      "state": "slam",
+      "stage": 2,
+      "hp": 8
+    },
+    {
+      "state": "tail",
+      "stage": 2,
+      "hp": 8
+    },
+    {
+      "state": "warn",
+      "stage": 2,
+      "hp": 8
+    },
+    {
+      "state": "exposed",
+      "stage": 2,
+      "hp": 8
+    },
+    {
+      "state": "spit",
+      "stage": 3,
+      "hp": 8
+    }
+  ],
+  "completion": {
+    "phase": "done",
+    "hp": 0,
+    "exitOpen": true,
+    "stage": 3,
+    "states": [
+      "sleep",
+      "intro",
+      "walk",
+      "spitPrep",
+      "hurt",
+      "tailPrep",
+      "tail",
+      "gape",
+      "dive",
+      "submerged",
+      "warn",
+      "emerge",
+      "exposed",
+      "rising",
+      "enrage",
+      "slamPrep",
+      "slam",
+      "dead",
+      "gone"
+    ],
+    "checkpoint": true
+  },
+  "errors": []
+}

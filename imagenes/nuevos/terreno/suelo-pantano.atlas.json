@@ -1,0 +1,178 @@
+{
+  "image": "suelo-pantano.png",
+  "width": 1536,
+  "height": 1024,
+  "alpha": false,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "superficie-0-0",
+      "x": 0,
+      "y": 0,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "superficie-0-1",
+      "x": 256,
+      "y": 0,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "superficie-0-2",
+      "x": 512,
+      "y": 0,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "superficie-0-3",
+      "x": 768,
+      "y": 0,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "superficie-0-4",
+      "x": 1024,
+      "y": 0,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "superficie-0-5",
+      "x": 1280,
+      "y": 0,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-1-0",
+      "x": 0,
+      "y": 256,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-1-1",
+      "x": 256,
+      "y": 256,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-1-2",
+      "x": 512,
+      "y": 256,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-1-3",
+      "x": 768,
+      "y": 256,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-1-4",
+      "x": 1024,
+      "y": 256,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-1-5",
+      "x": 1280,
+      "y": 256,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-2-0",
+      "x": 0,
+      "y": 512,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-2-1",
+      "x": 256,
+      "y": 512,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-2-2",
+      "x": 512,
+      "y": 512,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-2-3",
+      "x": 768,
+      "y": 512,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-2-4",
+      "x": 1024,
+      "y": 512,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-2-5",
+      "x": 1280,
+      "y": 512,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-3-0",
+      "x": 0,
+      "y": 768,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-3-1",
+      "x": 256,
+      "y": 768,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-3-2",
+      "x": 512,
+      "y": 768,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-3-3",
+      "x": 768,
+      "y": 768,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-3-4",
+      "x": 1024,
+      "y": 768,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "state": "tierra-3-5",
+      "x": 1280,
+      "y": 768,
+      "width": 256,
+      "height": 256
+    }
+  ],
+  "qa": "PNG original intacto; WebP sin pérdidas verificado píxel a píxel; 24 recortes contiguos."
+}
