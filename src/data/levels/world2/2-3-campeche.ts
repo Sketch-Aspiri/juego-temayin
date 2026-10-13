@@ -25,12 +25,13 @@ const RAMPART_TOP = 7;
  * su centro histórico es Patrimonio de la Humanidad desde 1999».
  *
  *   0-35    Extramuros y Puerta de Tierra: bloques `?`, escudo y el arco de la puerta.
- *   36-71   Calles del centro histórico: balcones y una zanja; chile en lo alto.
+ *   36-71   Calles del centro histórico: balcones y una zanja; chile en lo alto y un
+ *           cangrejo pirata encerrado entre dos columnas, junto al cacao.
  *   72-103  Baluartes y foso: dos fosos sin fondo que se cruzan saltando de cañón
  *           en cañón; cacao con espacio libre para saltar sobre el segundo foso.
- *   104-117 Plaza con el punto de control (Toh).
+ *   104-117 Plaza con el punto de control (Toh) y un escudo para quien reaparece.
  *   118-165 Paseo de ronda: muralla con cañones, almenas y una brecha;
- *           cangrejos pirata patrullando.
+ *           cangrejos pirata patrullando y un corazón de jade sobre la muralla.
  *   166-223 Puerta de Mar y malecón: poza del mar, escalinata, bandera y templo.
  */
 export const LEVEL_2_3: LevelDef = {
@@ -63,13 +64,13 @@ export const LEVEL_2_3: LevelDef = {
     ['stairs', 99, 5, -1],
 
     // --- Plaza del punto de control ---
-    ['row', 106, 8, 'B?B?B'], ['coins', 107, 4, 3],
+    ['row', 106, 8, 'B?M?B'], ['coins', 107, 4, 3],
 
     // --- Paseo de ronda ---
     ['stairs', 118, 5, 1],
     ...wall(123, 16, RAMPART_TOP, GROUND - 1),
     ['row', 131, RAMPART_TOP - 1, 'X'], // almena
-    ['coins', 125, 4, 5], ['row', 135, 3, '???'],
+    ['coins', 125, 4, 5], ['row', 135, 3, '?L?'],
     ['cannon', 140, 9, 1], ['coins', 140, 7, 2], // brecha en la muralla
     ...wall(144, 17, RAMPART_TOP, GROUND - 1),
     ['cannon', 149, RAMPART_TOP - 1, 1], ['cannon', 155, RAMPART_TOP - 1, -1],
@@ -83,10 +84,11 @@ export const LEVEL_2_3: LevelDef = {
     ['stairs', 192, 4, 1],
     ['flag', 200], ['temple', 206],
 
-    ...pirateCrab(21, 45, 114, 168),
-    ...blueCrab(33, 70, 106, 180, 196),
-    ['spawn', 'pirateCrab', 55, 7],
-    ['spawn', 'pirateCrab', 128, RAMPART_TOP - 1], ['spawn', 'pirateCrab', 135, RAMPART_TOP - 1],
+    ...pirateCrab(21, 45, 114, 180),
+    ...blueCrab(33, 70, 106, 196),
+    ['spawn', 'pirateCrab', 64],
+    ['spawn', 'pirateCrab', 125, RAMPART_TOP - 1], ['spawn', 'pirateCrab', 128, RAMPART_TOP - 1],
+    ['spawn', 'pirateCrab', 135, RAMPART_TOP - 1],
     ['spawn', 'pirateCrab', 152, RAMPART_TOP - 1],
   ],
 };
