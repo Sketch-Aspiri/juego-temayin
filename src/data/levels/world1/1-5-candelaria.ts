@@ -40,9 +40,11 @@ const rockWall = (x: number, y1: number): Op[] =>
  * Candelaria: río Candelaria y sus rápidos (AGENTS.md §4.3). El nivel acuático más
  * difícil del Mundo 1 antes del jefe.
  *
- *   0-45     Orilla: bloques `?`, pozas pequeñas, nauyacas emboscadas en la hierba.
+ *   0-45     Orilla: bloques `?`, pozas pequeñas, una nauyaca emboscada en la hierba.
  *  46-79     Rápidos: tres tramos de río con troncos (plataformas) y corrientes que
- *            empujan a la derecha (3 → 4 → 4.5 bloques/s); barracudas saltando.
+ *            empujan a la derecha (3 → 4 → 4.5 bloques/s); barracudas saltando. Una
+ *            nauyaca guarda la orilla del último rápido, a 4 bloques de donde se sale
+ *            del anterior: fuera de su alcance de aviso al pisar tierra.
  *  80-91     Orilla de descanso con el punto de control de Toh (columna 84).
  *  92-143    Túnel submarino: se bucea bajo un muro de roca; corrientes que llevan
  *            hacia erizos, contracorriente con barracuda, 3 bolsas de aire y un
@@ -56,6 +58,7 @@ const rockWall = (x: number, y1: number): Op[] =>
 export const LEVEL_1_5: LevelDef = {
   id: '1-5',
   name: 'Candelaria',
+  hint: 'Los rápidos te arrastran: en el túnel, respira en las bolsas de aire.',
   width: 200,
   theme: 'river',
   checkpoint: 84,
@@ -111,7 +114,7 @@ export const LEVEL_1_5: LevelDef = {
     ['stairs', 172, 5, 1],
     ['flag', 182], ['temple', 188],
 
-    ...nauyaca(22, 35, 68, 166), ['spawn', 'nauyaca', 56, 10],
+    ...nauyaca(22, 166), ['spawn', 'nauyaca', 69, 10],
     ...urchin(42, 104, 126, 129),
     ...barracudas([50, 12], [61, 12], [76, 12], [114, 9], [137, 10]),
     ...waterBank(29, 11, 1), ...waterBank(33, 11, -1),
