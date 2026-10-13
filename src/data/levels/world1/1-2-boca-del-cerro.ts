@@ -27,7 +27,7 @@ const overhang = (x: number, len: number): Op[] =>
  *   120-163 corriente suave hacia la derecha, con un saliente corto
  *   160-171 salida del río
  *   172-210 tierra firme, escalinata, bandera y templo; corazón de jade escondido
- *           sobre la columna final (se golpea desde lo alto)
+ *           sobre la columna final (se golpea saltando desde lo alto de la columna)
  */
 export const LEVEL_1_2: LevelDef = {
   id: '1-2',
