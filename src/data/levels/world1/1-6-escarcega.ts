@@ -9,7 +9,7 @@ import { coati, urchin } from '../helpers';
 export const LEVEL_1_6: LevelDef = {
   id: '1-6',
   name: 'Escárcega',
-  hint: 'El chile también daña a Púas, pero rebota cuando rueda como bola.',
+  hint: 'El chile también daña a Púas, salvo cuando rueda como bola.',
   width: 95,
   theme: 'lair',
   boss: { id: 'puas', x: 64, arena: [50, 71] },
