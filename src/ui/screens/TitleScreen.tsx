@@ -5,6 +5,7 @@ import { Renderer } from '../../engine/render/Renderer';
 import { hiScore } from '../../store/progress';
 import { useAppStore } from '../../store/appStore';
 import { useAssets } from '../assetsContext';
+import { VersionNote } from '../components/VersionNote';
 
 const SCROLL_SPEED = 0.05; // píxeles de cámara por milisegundo
 
@@ -51,6 +52,7 @@ export function TitleScreen() {
             <li><kbd>P</kbd> pausa · <kbd>M</kbd> silencio</li>
           </ul>
           {best > 0 && <p className="title__record">RÉCORD: {best}</p>}
+          <VersionNote />
         </div>
         <img className="title__jaguar" src={assetUrl('jaguar_titulo.webp')} alt="Temayin, el jaguar aventurero" />
       </div>

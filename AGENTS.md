@@ -715,6 +715,11 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 
 ## 10. Definición de terminado
 
+### Nota de versión del menú principal
+
+- `scripts/buildInfo.ts` lee el hash, asunto y cuerpo del último commit al iniciar Vite o compilar. `vite.config.ts` incluye el resultado mediante `__BUILD_INFO__`, tipado en `src/buildInfo.d.ts` y expuesto por `src/data/buildInfo.ts`; los metadatos permanecen ligados al archivo publicado. Las variables opcionales `TEMAYIN_BUILD_COMMIT`, `TEMAYIN_BUILD_SUMMARY` y `TEMAYIN_BUILD_CHANGES` permiten compilar fuentes sin `.git`; un hash inválido o ausente muestra información no disponible, sin inventar una revisión. Los mensajes de commit destinados a publicación deben describir los cambios en español; el cuerpo puede detallar cada cambio en una línea.
+- `ui/components/VersionNote.tsx` muestra la revisión y el resumen bajo los controles del título, con detalles accesibles si hay notas adicionales. Distingue «Versión desplegada» en producción y «Versión local» en desarrollo; no consulta Git desde el navegador. El título permite desplazamiento vertical cuando el contenido supera la pantalla. Pruebas de metadatos y presentación: `data/buildInfo.test.ts` y `ui/components/VersionNote.test.tsx`. `imagenes/verify_version_note.py --expected-commit SHA_COMPLETO --production` revisa el build servido por `npm run preview -- --port 5198`, tres tamaños, detalles y acceso al selector; resultados en `imagenes/.temp/nota-version/`.
+
 ### Recortes y proporciones de personajes
 
 - `data/playerSprites.ts` registra las 36 poses reales de `guepardo.webp`, con anclas de pies y escala uniforme en cada recorte. Reposo, carrera y celebración comparten 82 px de altura visible; salto y caída conservan la flexión de sus poses. `render/sprites.ts` deja de dibujar el personaje desde celdas completas con alturas internas distintas. Las colisiones y la simulación no cambian.
