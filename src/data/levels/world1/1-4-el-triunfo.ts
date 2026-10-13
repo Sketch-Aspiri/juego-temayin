@@ -21,6 +21,7 @@ import { waterBank } from '../waterBanks';
 export const LEVEL_1_4: LevelDef = {
   id: '1-4',
   name: 'El Triunfo',
+  hint: 'La nauyaca se yergue antes de lanzarse: písala solo cuando esté enroscada.',
   width: 215,
   theme: 'swamp',
   checkpoint: 100,
