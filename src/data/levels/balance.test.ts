@@ -1,24 +1,26 @@
 import { describe, expect, it, vi } from 'vitest';
-import { AudioEngine } from '../../../engine/audio';
-import { GROUND, ROWS, START_LIVES, STEP, T, VW } from '../../../engine/constants';
-import { isAirborne, updateEnemies } from '../../../engine/entities/enemies';
-import type { Enemy } from '../../../engine/entities/types';
-import { platformReach } from '../../../engine/entities/platforms';
-import { Input } from '../../../engine/input';
-import { buildLevel } from '../../../engine/level/build';
-import type { LevelDef } from '../../../engine/level/types';
-import { waterColumn } from '../../../engine/level/zones';
-import { isSolidTile } from '../../../engine/tiles';
-import { World } from '../../../engine/World';
-import { WORLDS } from '../../worlds';
-import { LEVEL_2_1 } from './2-1-carrillo-puerto';
-import { LEVEL_2_4 } from './2-4-petenes';
+import { AudioEngine } from '../../engine/audio';
+import { GROUND, ROWS, START_LIVES, STEP, T, VW } from '../../engine/constants';
+import { isAirborne, updateEnemies } from '../../engine/entities/enemies';
+import { NOTICE_RANGE } from '../../engine/entities/enemies/nauyaca';
+import { platformReach } from '../../engine/entities/platforms';
+import type { Enemy } from '../../engine/entities/types';
+import { Input } from '../../engine/input';
+import { buildLevel } from '../../engine/level/build';
+import type { LevelDef } from '../../engine/level/types';
+import { waterColumn } from '../../engine/level/zones';
+import { isSolidTile } from '../../engine/tiles';
+import { World } from '../../engine/World';
+import { WORLDS } from '../worlds';
+import { LEVEL_2_1 } from './world2/2-1-carrillo-puerto';
+import { LEVEL_2_4 } from './world2/2-4-petenes';
 
 /**
- * Equilibrio del Mundo 2 (Golfo de Campeche): reglas de justicia que no dependen
- * del gusto, comprobadas con el motor real y sin DOM.
+ * Equilibrio de los Mundos 1 y 2: reglas de justicia que no dependen del gusto,
+ * comprobadas con el motor real y sin DOM.
  */
-const WORLD_2 = WORLDS.find((w) => w.number === 2)?.levels ?? [];
+const BALANCED_WORLDS = 2;
+const BALANCED = WORLDS.filter((w) => w.number <= BALANCED_WORLDS).flatMap((w) => w.levels);
 
 /** Ritmos de avance del jugador (bloques/s): cauteloso, normal y rápido. */
 const PACES = [2.5, 4, 7] as const;
@@ -27,8 +29,12 @@ const PACES = [2.5, 4, 7] as const;
  * desfasa saltos y pinzas, y con ello los choques entre enemigos.
  */
 const SEEDS = [1, 7, 42, 1234] as const;
-/** Columnas tras el borde de un hoyo en las que no debe nacer un enemigo de suelo. */
+/** Columnas tras un aterrizaje en las que no debe nacer un enemigo de suelo. */
 const LANDING_CLEARANCE = 2;
+/** La nauyaca ataca en cuanto el jugador entra en su alcance de aviso: esa es su distancia mínima. */
+const NAUYACA_CLEARANCE = NOTICE_RANGE / T;
+/** Filas sobre el suelo desde las que un enemigo puede emboscar un aterrizaje (orillas incluidas). */
+const AMBUSH_ROWS = 3;
 /** Largo mínimo de una plataforma móvil sobre un barranco (sin saltos de píxel exacto). */
 const MIN_BRIDGE_LENGTH = 3;
 /** Tramo del túnel de Petenes con la marea en contra (columnas) y tiempo máximo para remontarlo. */
@@ -53,34 +59,44 @@ function seededRandom(seed: number): () => number {
   };
 }
 
-/** `simulateLost` con el azar de los enemigos fijado por `seed`. */
-function enemiesLostAt(def: LevelDef, pace: number, seed: number): string[] {
+/** Ejecuta `run` con el azar de los enemigos fijado por `seed`. */
+function withSeed<R>(seed: number, run: () => R): R {
   const random = vi.spyOn(Math, 'random').mockImplementation(seededRandom(seed));
   try {
-    return simulateLost(def, pace);
+    return run();
   } finally {
     random.mockRestore();
   }
 }
 
 /**
- * Avanza la cámara al ritmo dado con un jugador invulnerable a ras de suelo y
- * devuelve los enemigos que desaparecen (caen al vacío) sin haber llegado nunca
- * hasta él: ese enemigo solo existe para quien juega deprisa.
+ * Avanza la cámara al ritmo dado con un jugador invulnerable a ras de suelo; solo se
+ * actualizan los enemigos. Se detiene cuando `done` devuelve true.
  */
-function simulateLost(def: LevelDef, pace: number): string[] {
-  const world = makeWorld(def);
-  const spawnX = new Map(world.enemies.map((e) => [e, e.x] as const));
-  const settled = new Set<Enemy>();
-  const lost: string[] = [];
+function sweep(world: World, pace: number, done: () => boolean, onStep: () => void = () => {}): void {
   const p = world.player;
-  while (world.camX < def.width * T - VW) {
+  while (!done()) {
     world.camX += pace * T * STEP;
     p.x = world.camX + 0.4 * VW - p.w / 2;
     p.y = GROUND * T - p.h;
     p.vy = 0;
     p.inv = Infinity;
     updateEnemies(world, STEP);
+    onStep();
+  }
+}
+
+/**
+ * Enemigos que desaparecen (caen al vacío) sin haber llegado nunca hasta el jugador:
+ * ese enemigo solo existe para quien juega deprisa.
+ */
+function enemiesLost(def: LevelDef, pace: number): string[] {
+  const world = makeWorld(def);
+  const spawnX = new Map(world.enemies.map((e) => [e, e.x] as const));
+  const settled = new Set<Enemy>();
+  const lost: string[] = [];
+  const p = world.player;
+  sweep(world, pace, () => world.camX >= def.width * T - VW, () => {
     for (const e of world.enemies) {
       if (settled.has(e)) continue;
       if (e.x <= p.x + p.w) settled.add(e);
@@ -89,29 +105,54 @@ function simulateLost(def: LevelDef, pace: number): string[] {
         lost.push(`${e.id}@${Math.round(spawnX.get(e)! / T)}`);
       }
     }
-  }
+  });
   return lost;
 }
 
-describe.each(WORLD_2.map((l) => [l.id, l] as const))('equilibrio del nivel %s', (_id, def) => {
+/** Enemigos dentro de la arena del jefe cuando el jugador entra y el jefe despierta. */
+function enemiesInArena(def: LevelDef, pace: number): string[] {
+  if (!def.boss) return [];
+  const [a0, a1] = def.boss.arena;
+  const world = makeWorld(def);
+  sweep(world, pace, () => world.player.x >= (a0 + 1) * T);
+  return world.enemies
+    .filter((e) => e.alive && !e.dead && e.x + e.w > a0 * T && e.x < (a1 + 1) * T)
+    .map((e) => `${e.id}@${(e.x / T).toFixed(1)}`);
+}
+
+describe.each(BALANCED.map((l) => [l.id, l] as const))('equilibrio del nivel %s', (_id, def) => {
   const lvl = buildLevel(def);
   const solid = (x: number, y: number): boolean =>
     y >= 0 && y < ROWS && x >= 0 && x < lvl.width && isSolidTile(lvl.grid[y][x]);
   const swimmable = (x: number): boolean => waterColumn(lvl.water, x) !== null;
   const isPit = (x: number): boolean => !solid(x, GROUND) && !swimmable(x);
 
+  it('tiene un consejo de Toh', () => {
+    expect(def.hint?.trim()).toBeTruthy();
+  });
+
   it.each(PACES)('ningún enemigo cae solo al vacío antes de cruzarse con el jugador (%s bloques/s)', (pace) => {
-    const lost = SEEDS.flatMap((seed) => enemiesLostAt(def, pace, seed).map((e) => `${e} (semilla ${seed})`));
+    const lost = SEEDS.flatMap((seed) => withSeed(seed, () => enemiesLost(def, pace)).map((e) => `${e} (semilla ${seed})`));
     expect(lost).toEqual([]);
   });
 
-  it('ningún enemigo de suelo nace junto al aterrizaje de un hoyo', () => {
-    const landings = Array.from({ length: lvl.width }, (_, x) => x).filter((x) => x > 0 && solid(x, GROUND) && isPit(x - 1));
+  // Se aterriza al otro lado de un hoyo o al salir del agua por su orilla.
+  it('ningún enemigo de suelo acecha junto a un aterrizaje', () => {
+    const landings = new Set(Array.from({ length: lvl.width }, (_, x) => x).filter((x) => x > 0 && solid(x, GROUND) && isPit(x - 1)));
+    for (const z of lvl.water) if (solid(z.x1 + 1, GROUND) && !swimmable(z.x1 + 1)) landings.add(z.x1 + 1);
     const ambushes = lvl.enemies
-      .filter((e) => !isAirborne(e.id) && e.ty === GROUND - 1)
-      .filter((e) => landings.some((l) => e.tx >= l && e.tx <= l + LANDING_CLEARANCE))
-      .map((e) => `${e.id}@${e.tx}`);
+      .filter((e) => !isAirborne(e.id) && e.ty >= GROUND - AMBUSH_ROWS)
+      .filter((e) => {
+        const reach = e.id === 'nauyaca' ? NAUYACA_CLEARANCE : LANDING_CLEARANCE;
+        return [...landings].some((l) => e.tx >= l && e.tx - l <= reach);
+      })
+      .map((e) => `${e.id}@${e.tx},${e.ty}`);
     expect(ambushes).toEqual([]);
+  });
+
+  it.runIf(!!def.boss)('ningún enemigo entra en la arena del jefe antes de que despierte', () => {
+    const inside = PACES.flatMap((pace) => SEEDS.flatMap((seed) => withSeed(seed, () => enemiesInArena(def, pace))));
+    expect(inside).toEqual([]);
   });
 
   // Al reaparecer se pierde el chile y las sombras solo se disuelven con fuego.

@@ -786,9 +786,10 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 
 ### Ajustes del Mundo 2
 
-- Equilibrio: la dificultad sube de forma gradual de 2-1 a 2-6 y culmina en Kaimán. 2-1 presenta el tren sobre un arroyo (fallar no cuesta vida); 2-2 practica el escombro sin sombras antes de combinarlos; 2-6 combina escombro y sombras como prueba previa al jefe. Reglas, comprobadas con el motor en `data/levels/world2/balance.test.ts`:
+- Equilibrio de los Mundos 1 y 2: la dificultad sube de forma gradual dentro de cada mundo y culmina en su jefe. Mundo 1: 1-1 es el tutorial (una vida extra), 1-2 enseña a nadar con escudo al reaparecer y una vida escondida, 1-3 presenta las hormigas de una en una, 1-5 no embosca a la salida del agua y en 1-6 ningún enemigo se cuela en la arena de Púas. Mundo 2: 2-1 presenta el tren sobre un arroyo (fallar no cuesta vida); 2-2 practica el escombro sin sombras antes de combinarlos; 2-6 combina escombro y sombras como prueba previa al jefe. Todos los niveles de ambos mundos tienen consejo de Toh (`LevelDef.hint`). Reglas, comprobadas con el motor en `data/levels/balance.test.ts`:
   - Ningún enemigo cae solo al vacío antes de cruzarse con el jugador, a 2,5, 4 y 7 bloques/s y con varias semillas del azar de `createEnemy`. Los caminantes (coatí, ruedas, cangrejos) no miran el suelo: no van en islas entre hoyos ni con un hoyo cerca a su espalda.
-  - Ningún enemigo de suelo nace a 2 bloques o menos del aterrizaje de un hoyo.
+  - Ningún enemigo de suelo nace a 2 bloques o menos de un aterrizaje (el otro lado de un hoyo o la orilla por la que se sale del agua); la nauyaca, no más cerca que su alcance de aviso (`NOTICE_RANGE`, 3,2 bloques).
+  - Ningún enemigo entra en la arena del jefe antes de que despierte.
   - Si quedan sombras tras el punto de control, hay un bloque `F` al alcance al reaparecer (el chile se pierde al morir).
   - Las carretas que se relevan sobre un barranco miden al menos 3 bloques y comparten periodo.
 - Los cañones de Campeche disparan (`entities/cannons.ts`, dibujo en `render/cannons.ts`: mecha que chispea, fogonazo y bala de hierro procedurales). En el primer foso, la bala del cañón 78 alcanza a quien espera sobre el cañón 84; en el paseo de ronda, los cañones 149 y 155 cruzan fuego sobre el hueco del cangrejo pirata (se salta de cañón a cañón por encima). Cobertura: `entities/cannons.test.ts` y `2-3-campeche.test.ts` (cacao entre cañones que disparan y espera segura sobre ellos).
