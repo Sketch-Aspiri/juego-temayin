@@ -51,7 +51,7 @@ export const LEVEL_2_7: LevelDef = {
     ['flag', 92], ['temple', 97],
 
     // --- Enemigos ---
-    ...nauyaca(24, 45),
+    ...nauyaca(31, 45),
     ...blueCrab(13, 52),
     ['spawn', 'howler', 42, 8],
     ...waterBank(15, 11, 1), ...waterBank(23, 11, -1),
