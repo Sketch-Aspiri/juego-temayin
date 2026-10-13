@@ -2,6 +2,12 @@ import type { LevelDef } from '../../../engine/level/types';
 import { coati, wheel } from '../helpers';
 
 /**
+ * Periodo (s) de las dos carretas que se relevan sobre el barranco del patio. Iguales
+ * para que el ritmo del relevo no cambie entre un intento y otro.
+ */
+const CART_RELAY_PERIOD = 3.5;
+
+/**
  * Tenabo: pueblo agrícola del Camino Real, la antigua ruta entre Campeche y Mérida
  * (AGENTS.md §4.3). Tema `hacienda`: henequenales, carretas y ruedas de desfibradora.
  * Las carretas son plataformas `mover` (§5.4) que cruzan los barrancos del camino.
@@ -13,10 +19,16 @@ import { coati, wheel } from '../helpers';
  * Recorrido (columnas):
  *  -   0–42  Camino Real: bloques `?` con escudo, coatíes y la primera rueda.
  *  -  43–79  Barrancos del henequenal: dos carretas móviles sobre hoyos anchos.
- *  -  80–115 La desfibradora: escalinata con ruedas que bajan rodando al encuentro.
+ *  -  80–115 La desfibradora: dos ruedas bajan rodando por la escalinata, separadas
+ *            para saltarlas una tras otra; un coatí encerrado entre la escalinata y la
+ *            columna 114 bajo el chile.
  *  - 116–160 Patio del casco (punto de control al entrar): elevador hacia la terraza
- *            alta con un corazón de jade, y un barranco con dos carretas en relevo.
- *  - 161–224 Salida del pueblo: chile, ruedas en el llano, último barranco y templo.
+ *            alta con un corazón de jade, y un barranco con dos carretas en relevo
+ *            (mismo largo y mismo periodo).
+ *  - 161–224 Salida del pueblo: rueda y coatíes en el llano, último barranco y templo.
+ *
+ * Las islas entre barrancos no llevan enemigos: los coatíes y las ruedas caminan sin
+ * mirar el suelo y caerían solos al vacío antes de encontrarse con el jugador.
  */
 export const LEVEL_2_5: LevelDef = {
   id: '2-5',
@@ -56,8 +68,8 @@ export const LEVEL_2_5: LevelDef = {
     ['mover', 124, 10, 3, 0, -5, 5],
     ['plat', 128, 5, 7], ['coins', 128, 4, 5], ['row', 133, 1, 'L'],
     ['pit', 138, 149],
-    ['mover', 139, 9, 3, 4, 0, 3.5],
-    ['mover', 145, 8, 2, 3, 0, 3],
+    ['mover', 139, 9, 3, 4, 0, CART_RELAY_PERIOD],
+    ['mover', 145, 8, 3, 3, 0, CART_RELAY_PERIOD],
     ['coins', 142, 6, 6],
 
     // Salida del pueblo
@@ -71,9 +83,9 @@ export const LEVEL_2_5: LevelDef = {
     ['coins', 191, 7, 4],
     ['flag', 208], ['temple', 213],
 
-    ...coati(15, 22, 34, 41, 54, 71, 82, 117, 136, 154, 168, 178, 201),
-    ...wheel(28, 112, 160, 177, 203),
-    ['spawn', 'wheel', 95, 5],
+    ...coati(15, 22, 34, 106, 117, 136, 162, 168),
+    ...wheel(28, 112, 160),
+    ['spawn', 'wheel', 93, 5],
     ['spawn', 'wheel', 97, 5],
   ],
 };
