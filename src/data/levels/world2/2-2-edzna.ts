@@ -16,9 +16,14 @@ import { nauyaca, shades, tarantula } from '../helpers';
  *             cima con cacao y bajada; primer puente de escombro sobre un canal.
  *  -  65–111  Gran Acrópolis: chile de fuego para disolver las sombras de Xibalbá,
  *             pasarelas talladas y nauyacas en la hierba.
- *  - 112–158  Punto de control (Toh) y el gran canal: tres tramos de escombro seguidos
- *             sobre un hoyo de 10, vigilado por una sombra; después, el juego de pelota.
+ *  - 112–158  Punto de control (Toh), un chile para quien reaparece sin fuego y el gran
+ *             canal: tres tramos de escombro seguidos sobre un hoyo de 10, sin enemigos
+ *             para practicar el derrumbe; después, el juego de pelota con una sombra.
  *  - 159–222  Templo menor: escombro a media altura, escalinata final, bandera y templo.
+ *             Aquí se combinan sombra, nauyaca y tarántula: la prueba final del nivel.
+ *
+ * Las nauyacas acechan lejos de los aterrizajes y de la cima de los Cinco Pisos,
+ * para que su aviso (se yerguen) llegue antes del lance.
  */
 export const LEVEL_2_2: LevelDef = {
   id: '2-2',
@@ -51,7 +56,8 @@ export const LEVEL_2_2: LevelDef = {
     ['col', 101, 2], ['col', 102, 3], ['coins', 101, 7, 2],
     ['row', 106, 8, 'B?B'],
 
-    // Gran canal y juego de pelota
+    // Gran canal y juego de pelota. El chile de 114 queda al alcance al reaparecer.
+    ['row', 114, 8, 'F'],
     ['pit', 118, 127],
     ['crumble', 119, 10, 2], ['crumble', 122, 9, 2], ['crumble', 125, 10, 2],
     ['coins', 119, 8, 2], ['coins', 122, 7, 2], ['coins', 125, 8, 2],
@@ -68,8 +74,7 @@ export const LEVEL_2_2: LevelDef = {
     ['flag', 204], ['temple', 210],
 
     ...tarantula(14, 30, 95, 146, 185),
-    ...nauyaca(24, 70, 91, 110, 160, 180),
-    ['spawn', 'nauyaca', 44, 6],
-    ...shades([76, 5], [98, 6], [122, 5], [140, 5], [176, 5], [199, 4]),
+    ...nauyaca(24, 70, 110, 160, 180),
+    ...shades([76, 5], [98, 6], [140, 5], [176, 5], [199, 4]),
   ],
 };
