@@ -1,9 +1,14 @@
 import type { LevelDef } from '../../../engine/level/types';
 import { coati } from '../helpers';
 
+/**
+ * Palenque: tutorial de la campaña (correr, saltar, bloques `?`, primer chile). Solo
+ * coatíes, con escudos de sobra y una vida extra escondida al principio (fila 4).
+ */
 export const LEVEL_1_1: LevelDef = {
   id: '1-1',
   name: 'Palenque',
+  hint: '¡Pisa a los coatíes y golpea los bloques ? desde abajo!',
   width: 205,
   theme: 'palenque',
   ops: [
@@ -16,7 +21,7 @@ export const LEVEL_1_1: LevelDef = {
     ['row', 78, 4, 'BBB?'], ['row', 81, 8, 'M'],
     ['row', 87, 8, 'BB'], ['coins', 94, 8, 4],
     ['row', 101, 8, '?'], ['row', 104, 8, '?'], ['row', 104, 4, 'M'], ['row', 107, 8, '?'],
-    ['row', 113, 8, 'B'], ['row', 116, 4, 'BBB'], ['row', 123, 4, 'B?LB'], ['row', 124, 8, 'BB'],
+    ['row', 113, 8, 'B'], ['row', 116, 4, 'BBB'], ['row', 123, 4, 'B??B'], ['row', 124, 8, 'BB'],
     ['stairs', 132, 4, 1], ['coins', 137, 6, 5], ['stairs', 142, 4, -1],
     ['pipe', 150, 2], ['row', 155, 8, 'BB?B'], ['pipe', 163, 2],
     ['stairs', 168, 8, 1], ['col', 176, 8],
