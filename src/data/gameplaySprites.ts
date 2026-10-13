@@ -3,6 +3,7 @@ import type { Frame } from '../engine/render/artCache';
 export interface GameplaySprite {
   readonly file: string;
   readonly frame: Frame;
+  readonly isolated?: boolean;
   /** Ancla normalizada: centro de impacto o superficie de apoyo. */
   readonly anchor: readonly [number, number];
 }
@@ -15,7 +16,7 @@ const PLAYER = 'personajes/jugador-mecanicas.webp';
 export const GAMEPLAY_SPRITES = {
   boat: { file: PROPS, frame: [935, 79, 584, 273], anchor: [0, 54 / 273] },
   turtle: { file: PROPS, frame: [1043, 717, 480, 266], anchor: [67 / 480, 13 / 266] },
-  palapa: { file: PROPS, frame: [28, 330, 487, 354], anchor: [0, 0] },
+  palapa: { file: PROPS, frame: [28, 330, 487, 354], anchor: [0, 0], isolated: true },
   cannon: { file: PROPS, frame: [566, 386, 531, 304], anchor: [0, 0] },
   hoop: { file: MECHANICS, frame: [668, 368, 265, 261], anchor: [139 / 265, 144 / 261] },
   log: { file: MECHANICS, frame: [994, 154, 517, 149], anchor: [0, 0] },

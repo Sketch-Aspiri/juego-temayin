@@ -1,0 +1,282 @@
+{
+  "atlasMasks": [
+    {
+      "pose": "perch",
+      "rawPixels": 61114,
+      "cleanedPixels": 61004,
+      "removed": 110
+    },
+    {
+      "pose": "perchLook",
+      "rawPixels": 61007,
+      "cleanedPixels": 61007,
+      "removed": 0
+    },
+    {
+      "pose": "perchTail",
+      "rawPixels": 68899,
+      "cleanedPixels": 66713,
+      "removed": 2186
+    },
+    {
+      "pose": "flyUp",
+      "rawPixels": 114288,
+      "cleanedPixels": 108977,
+      "removed": 5311
+    },
+    {
+      "pose": "flyDown",
+      "rawPixels": 90969,
+      "cleanedPixels": 86693,
+      "removed": 4276
+    },
+    {
+      "pose": "point",
+      "rawPixels": 91948,
+      "cleanedPixels": 85061,
+      "removed": 6887
+    }
+  ],
+  "otherMasks": [
+    {
+      "file": "bosses/kaiman.webp",
+      "removed": 378
+    },
+    {
+      "file": "bosses/camazotz.webp",
+      "removed": 1028
+    },
+    {
+      "file": "complementos/utileria.webp",
+      "removed": 1082
+    },
+    {
+      "file": "complementos/banderas.webp",
+      "removed": 110
+    }
+  ],
+  "playerFrames": [
+    {
+      "anim": "idle",
+      "frame": 0,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "idle",
+      "frame": 1,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "idle",
+      "frame": 2,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "idle",
+      "frame": 3,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "idle",
+      "frame": 4,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "idle",
+      "frame": 5,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "idle",
+      "frame": 6,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "run",
+      "frame": 0,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "run",
+      "frame": 1,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "run",
+      "frame": 2,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "run",
+      "frame": 3,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "run",
+      "frame": 4,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "run",
+      "frame": 5,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "run",
+      "frame": 6,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "jump",
+      "frame": 0,
+      "height": 69,
+      "bottom": 124
+    },
+    {
+      "anim": "jump",
+      "frame": 1,
+      "height": 79,
+      "bottom": 124
+    },
+    {
+      "anim": "jump",
+      "frame": 2,
+      "height": 84,
+      "bottom": 124
+    },
+    {
+      "anim": "jump",
+      "frame": 3,
+      "height": 86,
+      "bottom": 124
+    },
+    {
+      "anim": "jump",
+      "frame": 4,
+      "height": 81,
+      "bottom": 124
+    },
+    {
+      "anim": "jump",
+      "frame": 5,
+      "height": 71,
+      "bottom": 124
+    },
+    {
+      "anim": "jump",
+      "frame": 6,
+      "height": 67,
+      "bottom": 124
+    },
+    {
+      "anim": "jump",
+      "frame": 7,
+      "height": 58,
+      "bottom": 124
+    },
+    {
+      "anim": "fall",
+      "frame": 0,
+      "height": 73,
+      "bottom": 124
+    },
+    {
+      "anim": "fall",
+      "frame": 1,
+      "height": 72,
+      "bottom": 124
+    },
+    {
+      "anim": "fall",
+      "frame": 2,
+      "height": 70,
+      "bottom": 124
+    },
+    {
+      "anim": "fall",
+      "frame": 3,
+      "height": 67,
+      "bottom": 124
+    },
+    {
+      "anim": "fall",
+      "frame": 4,
+      "height": 67,
+      "bottom": 124
+    },
+    {
+      "anim": "fall",
+      "frame": 5,
+      "height": 58,
+      "bottom": 124
+    },
+    {
+      "anim": "fall",
+      "frame": 6,
+      "height": 56,
+      "bottom": 124
+    },
+    {
+      "anim": "win",
+      "frame": 0,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "win",
+      "frame": 1,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "win",
+      "frame": 2,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "win",
+      "frame": 3,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "win",
+      "frame": 4,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "win",
+      "frame": 5,
+      "height": 82,
+      "bottom": 124
+    },
+    {
+      "anim": "win",
+      "frame": 6,
+      "height": 82,
+      "bottom": 124
+    }
+  ],
+  "completion": {
+    "phase": "done",
+    "checkpoint": true
+  },
+  "mode": "Palenque con contacto protegido; colisiones y entrada del motor activas.",
+  "errors": []
+}

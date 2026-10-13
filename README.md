@@ -55,6 +55,8 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 
 ## Contenido actual
 
+- Los recortes de Toh, Camazotz, palapas, banderas y Kaimán aíslan sus siluetas para evitar fragmentos de poses vecinas. Temayin tiene 82 px de altura visible tanto en reposo como en carrera y celebración, con los pies anclados al suelo; salto y caída conservan sus poses. Datos en `src/data/playerSprites.ts` y `src/data/tohSprites.ts`. Verificación de sprites e historia, con recorrido de Palenque: `python imagenes/verify_sprite_crops.py`; capturas y mediciones en `imagenes/verificacion/recortes/`.
+
 - El agua termina contra orillas sólidas o continúa en otra zona de agua; nunca acaba junto a espacio vacío. Los bloques del bioma contienen cada poza y los peldaños permiten entrar y salir. El líquido se recorta contra el terreno; las arenas conservan su orilla al abrir la salida. Se mantienen los degradados, reflejos y espuma fina. Las reglas de nado, el oxígeno, los ids y los guardados se conservan. `levels.test.ts` comprueba los límites de toda la campaña y `python imagenes/verify_water_transitions.py` revisa los quince niveles con agua navegable o decorativa en Chromium.
 
 - Las mecánicas actuales tienen sprites pintados: barcos, tortugas, aros, cuerdas, troncos, losas frágiles, cañones, palapas, toldos, resina y sargazo. Temayin muestra poses de agarre, balanceo y lanzamiento; el fuego tiene cuatro cuadros animados. Se crearon siete recursos transparentes para los proyectiles y ondas de los enemigos y jefes, y para los toldos de Cancún. Se conservan las colisiones, el progreso y los respaldos procedurales.

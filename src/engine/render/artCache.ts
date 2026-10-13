@@ -1,6 +1,7 @@
 import { assetUrl, isReady } from '../assets';
 import { GAMEPLAY_SPRITES } from '../../data/gameplaySprites';
 import { NEW_GAMEPLAY_SPRITES } from '../../data/newGameplaySprites';
+import { ALPHA_CUTOFF, isolateSprite } from './spriteMask';
 
 /**
  * Arte pintado que se carga bajo demanda (fondos, atlas de objetos, meta, Toh).
@@ -12,11 +13,9 @@ import { NEW_GAMEPLAY_SPRITES } from '../../data/newGameplaySprites';
 /** Rectángulo de origen dentro de un atlas: [x, y, ancho, alto] en píxeles. */
 export type Frame = readonly [x: number, y: number, w: number, h: number];
 
-/** Alfa mínimo que se conserva al hornear: limpia el halo semitransparente de los atlas. */
-const ALPHA_CUTOFF = 40;
-
 const images = new Map<string, HTMLImageElement>();
 const baked = new Map<string, HTMLCanvasElement | null>();
+const isolatedUrls = new Map<string, Promise<string | null>>();
 
 const hasDom = (): boolean => typeof Image !== 'undefined' && typeof document !== 'undefined';
 
@@ -114,8 +113,8 @@ function cutAlpha(canvas: HTMLCanvasElement): void {
  * Recorta `frame` de un atlas y lo escala a `scale` en un lienzo propio, una sola vez.
  * Así cada fotograma solo copia un lienzo pequeño (sin reescalar el atlas entero).
  */
-export function bakedFrame(file: string, frame: Frame, scale: number): HTMLCanvasElement | null {
-  const key = `${file}|${frame.join(',')}|${scale}`;
+export function bakedFrame(file: string, frame: Frame, scale: number, isolated = false): HTMLCanvasElement | null {
+  const key = `${file}|${frame.join(',')}|${scale}|${isolated}`;
   const hit = baked.get(key);
   if (hit !== undefined) return hit;
   const img = lazyImage(file);
@@ -128,8 +127,40 @@ export function bakedFrame(file: string, frame: Frame, scale: number): HTMLCanva
     return null;
   }
   c.imageSmoothingQuality = 'high';
-  c.drawImage(img, x, y, w, h, 0, 0, canvas.width, canvas.height);
+  const source = isolated ? isolatedSource(img, frame) : null;
+  if (source) c.drawImage(source, 0, 0, canvas.width, canvas.height);
+  else c.drawImage(img, x, y, w, h, 0, 0, canvas.width, canvas.height);
   cutAlpha(canvas);
   baked.set(key, canvas);
   return canvas;
+}
+
+/** Se aísla a resolución original para no perder patas, hilos o colas al reducir. */
+function isolatedSource(img: HTMLImageElement, [x, y, w, h]: Frame): HTMLCanvasElement | null {
+  const source = makeCanvas(w, h);
+  const ctx = source.getContext('2d');
+  if (!ctx) return null;
+  ctx.drawImage(img, x, y, w, h, 0, 0, w, h);
+  const data = ctx.getImageData(0, 0, w, h);
+  isolateSprite(data.data, w);
+  ctx.putImageData(data, 0, 0);
+  return source;
+}
+
+/** Recorte limpio para los actores CSS de la historia; comparte caché con el canvas. */
+export function isolatedFrameUrl(file: string, frame: Frame): Promise<string | null> {
+  const key = `${file}|${frame.join(',')}`;
+  let pending = isolatedUrls.get(key);
+  if (!pending) { pending = prepareIsolatedUrl(file, frame); isolatedUrls.set(key, pending); }
+  return pending;
+}
+
+async function prepareIsolatedUrl(file: string, frame: Frame): Promise<string | null> {
+  if (!hasDom()) return null;
+  lazyImage(file);
+  const img = images.get(file);
+  if (!img) return null;
+  try { await img.decode(); }
+  catch { return null; }
+  return bakedFrame(file, frame, 1, true)?.toDataURL('image/png') ?? null;
 }

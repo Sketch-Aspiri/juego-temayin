@@ -2,6 +2,7 @@ import { GROUND, T, TAU, VW } from '../constants';
 import type { World } from '../World';
 import { bakedFrame, type Frame } from './artCache';
 import type { Ctx } from './drawUtils';
+import { TOH_FILE, TOH_POSES, type TohPoseId } from '../../data/tohSprites';
 
 /**
  * Meta (asta + banderín), pirámide final y punto de control con Toh, usando el
@@ -11,7 +12,6 @@ import type { Ctx } from './drawUtils';
 
 const FLAGS_FILE = 'complementos/banderas.webp';
 const PYRAMID_FILE = 'complementos/piramide.webp';
-const TOH_FILE = 'personajes/toh.webp';
 
 /** banderas.webp (1774×887): 4 fotogramas de ondeo con el anclaje a la derecha. */
 const FLAG_FRAMES: readonly Frame[] = [
@@ -30,25 +30,6 @@ const POST_TIP_X = 1105 - 960;
 const POST_TIP_Y = 418 - 412;
 /** piramide.webp (1536×1024): la pirámide completa. */
 const PYRAMID_FRAME: Frame = [10, 71, 1516, 865];
-
-/**
- * toh.webp (1536×1024, 3×2): rectángulo y punto de apoyo de las patas de cada pose.
- * Las poses de vuelo quedan medidas para escenas futuras (carteles, mapa).
- */
-interface TohPose {
-  frame: Frame;
-  footX: number;
-  footY: number;
-}
-export const TOH_POSES = {
-  perch: { frame: [24, 20, 444, 452], footX: 330, footY: 332 },
-  perchLook: { frame: [524, 20, 396, 452], footX: 815, footY: 332 },
-  perchTail: { frame: [1092, 16, 420, 380], footX: 1215, footY: 335 },
-  flyUp: { frame: [20, 464, 560, 524], footX: 300, footY: 870 },
-  flyDown: { frame: [504, 572, 552, 372], footX: 730, footY: 810 },
-  point: { frame: [972, 556, 552, 452], footX: 1255, footY: 905 },
-} as const satisfies Readonly<Record<string, TohPose>>;
-type TohPoseId = keyof typeof TOH_POSES;
 
 /** Secuencia de reposo de Toh: mira, vuelve, menea la cola-péndulo («marca la hora»). */
 const TOH_IDLE: readonly TohPoseId[] = ['perch', 'perch', 'perchLook', 'perch', 'perchTail', 'perchTail'];
@@ -89,7 +70,7 @@ function drawPoleArt(c: Ctx, fx: number): boolean {
 
 function drawFlagArt(c: Ctx, fx: number, fy: number, now: number): boolean {
   const frame = FLAG_FRAMES[Math.floor(now / FLAG_FRAME_MS) % FLAG_FRAMES.length];
-  const img = bakedFrame(FLAGS_FILE, frame, FLAG_SCALE);
+  const img = bakedFrame(FLAGS_FILE, frame, FLAG_SCALE, true);
   if (!img) return false;
   c.drawImage(img, Math.round(fx + FLAG_RING_OVERLAP - img.width), Math.round(fy - 4));
   return true;
@@ -170,7 +151,7 @@ function checkpointSpot(world: World): { x: number; y: number } {
 
 function drawToh(c: Ctx, pose: TohPoseId, x: number, y: number, flip: boolean): void {
   const { frame, footX, footY } = TOH_POSES[pose];
-  const img = bakedFrame(TOH_FILE, frame, TOH_SCALE);
+  const img = bakedFrame(TOH_FILE, frame, TOH_SCALE, true);
   if (!img) return;
   c.save();
   c.translate(Math.round(x), Math.round(y));

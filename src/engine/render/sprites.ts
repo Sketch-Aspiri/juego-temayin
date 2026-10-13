@@ -7,11 +7,12 @@ import { drawSwimPose } from './playerSwim';
 import { drawCacao, drawItemArt } from './props';
 import { drawPlayerMechanics } from './playerMechanics';
 import { drawFireballArt, drawQuillArt } from './projectileSprites';
+import { PLAYER_SPRITES } from '../../data/playerSprites';
+import { drawAtlasFrame } from './enemies/atlas';
 
 // Hoja de sprites del jugador.
 const PLAYER_CELL_W = 170;
 const PLAYER_CELL_H = 160;
-const PLAYER_SCALE = 0.6;
 const ANIM_ROW = { run: 0, jump: 1, fall: 2, idle: 3, win: 4 } as const;
 
 export function drawPlayerSprite(c: Ctx, assets: Assets, p: Player, camX: number, dying: boolean, dyingT: number, now: number): void {
@@ -26,11 +27,10 @@ export function drawPlayerSprite(c: Ctx, assets: Assets, p: Player, camX: number
   c.translate(cx, by);
   if (p.face < 0) c.scale(-1, 1);
   if (dying) c.rotate(Math.min(dyingT, 0.4) * 0.5);
-  let row: number = ANIM_ROW[dying ? 'fall' : p.anim];
-  let fr = dying ? 0 : p.frame;
+  const frames = PLAYER_SPRITES[dying ? 'fall' : p.anim];
+  let frame = frames[dying ? 0 : p.frame] ?? frames[0];
   if (p.throwT > 0 && !dying) {
-    row = ANIM_ROW.jump; // pose de lanzar
-    fr = 3;
+    frame = PLAYER_SPRITES.jump[3];
   }
   if (p.fire) {
     c.shadowColor = '#ff7a1a';
@@ -40,11 +40,7 @@ export function drawPlayerSprite(c: Ctx, assets: Assets, p: Player, camX: number
     c.restore();
     return;
   }
-  c.drawImage(
-    assets.player,
-    fr * PLAYER_CELL_W, row * PLAYER_CELL_H, PLAYER_CELL_W, PLAYER_CELL_H,
-    (-PLAYER_CELL_W * PLAYER_SCALE) / 2, -158 * PLAYER_SCALE, PLAYER_CELL_W * PLAYER_SCALE, PLAYER_CELL_H * PLAYER_SCALE,
-  );
+  drawAtlasFrame(c, assets.player, frame, frame.scale);
   c.restore();
 }
 

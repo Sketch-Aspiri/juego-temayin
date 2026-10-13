@@ -1,0 +1,1111 @@
+{
+  "atlasFramesReviewed": 232,
+  "candidates": [
+    {
+      "file": "public/assets/bosses/camazotz.webp",
+      "state": "camara invocacion",
+      "frame": [
+        429,
+        449,
+        448,
+        356
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 2586,
+          "box": [
+            788,
+            622,
+            861,
+            732
+          ],
+          "seed": [
+            857,
+            622
+          ]
+        },
+        {
+          "pixels": 1247,
+          "box": [
+            839,
+            574,
+            1244,
+            799
+          ],
+          "seed": [
+            999,
+            574
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/bosses/camazotz.webp",
+      "state": "camara aturdido",
+      "frame": [
+        838,
+        552,
+        406,
+        248
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 1685,
+          "box": [
+            431,
+            449,
+            874,
+            805
+          ],
+          "seed": [
+            441,
+            449
+          ]
+        },
+        {
+          "pixels": 713,
+          "box": [
+            788,
+            622,
+            861,
+            732
+          ],
+          "seed": [
+            857,
+            622
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/bosses/camazotz.webp",
+      "state": "eclipse vuelo",
+      "frame": [
+        6,
+        808,
+        451,
+        382
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 1028,
+          "box": [
+            428,
+            823,
+            925,
+            1237
+          ],
+          "seed": [
+            786,
+            823
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/bosses/camazotz.webp",
+      "state": "eclipse rayo",
+      "frame": [
+        428,
+        820,
+        502,
+        420
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 1048,
+          "box": [
+            7,
+            813,
+            457,
+            1189
+          ],
+          "seed": [
+            235,
+            813
+          ]
+        },
+        {
+          "pixels": 925,
+          "box": [
+            915,
+            924,
+            1239,
+            1200
+          ],
+          "seed": [
+            1091,
+            924
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/bosses/camazotz.webp",
+      "state": "derrotado",
+      "frame": [
+        914,
+        924,
+        325,
+        276
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 753,
+          "box": [
+            428,
+            823,
+            925,
+            1237
+          ],
+          "seed": [
+            786,
+            823
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/bosses/huayChivo.webp",
+      "state": "cornada",
+      "frame": [
+        1035,
+        142,
+        494,
+        389
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 3321,
+          "box": [
+            1308,
+            144,
+            1526,
+            418
+          ],
+          "seed": [
+            1308,
+            144
+          ]
+        },
+        {
+          "pixels": 2599,
+          "box": [
+            1170,
+            145,
+            1390,
+            208
+          ],
+          "seed": [
+            1170,
+            145
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/bosses/huayPek.webp",
+      "state": "ladrido",
+      "frame": [
+        1027,
+        152,
+        509,
+        358
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 10543,
+          "box": [
+            1439,
+            244,
+            1536,
+            465
+          ],
+          "seed": [
+            1475,
+            244
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/bosses/kaiman.webp",
+      "state": "reposo",
+      "frame": [
+        15,
+        182,
+        517,
+        297
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 190,
+          "box": [
+            522,
+            207,
+            1041,
+            460
+          ],
+          "seed": [
+            627,
+            207
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/bosses/kaiman.webp",
+      "state": "embestida",
+      "frame": [
+        522,
+        207,
+        520,
+        253
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 378,
+          "box": [
+            16,
+            183,
+            532,
+            479
+          ],
+          "seed": [
+            90,
+            183
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/bosses/sargazo.webp",
+      "state": "preparacion",
+      "frame": [
+        12,
+        577,
+        505,
+        383
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 2055,
+          "box": [
+            17,
+            670,
+            98,
+            722
+          ],
+          "seed": [
+            58,
+            670
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/bosses/sargazo.webp",
+      "state": "nucleo expuesto",
+      "frame": [
+        531,
+        542,
+        491,
+        422
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 403,
+          "box": [
+            1007,
+            693,
+            1529,
+            980
+          ],
+          "seed": [
+            1200,
+            693
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/bosses/sargazo.webp",
+      "state": "derrotado",
+      "frame": [
+        1007,
+        691,
+        523,
+        290
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 653,
+          "box": [
+            532,
+            542,
+            1021,
+            963
+          ],
+          "seed": [
+            704,
+            542
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/complementos/banderas.webp",
+      "state": "ondear 1",
+      "frame": [
+        15,
+        14,
+        414,
+        320
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 157,
+          "box": [
+            111,
+            324,
+            327,
+            860
+          ],
+          "seed": [
+            219,
+            324
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/complementos/utileria.webp",
+      "state": "palapa",
+      "frame": [
+        28,
+        330,
+        487,
+        354
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 1082,
+          "box": [
+            97,
+            654,
+            441,
+            1005
+          ],
+          "seed": [
+            270,
+            654
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/complementos/utileria.webp",
+      "state": "cristales",
+      "frame": [
+        94,
+        650,
+        350,
+        358
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 2741,
+          "box": [
+            31,
+            333,
+            512,
+            681
+          ],
+          "seed": [
+            288,
+            333
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/enemies/shade.webp",
+      "state": "disolución",
+      "frame": [
+        709,
+        679,
+        511,
+        516
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 3526,
+          "box": [
+            714,
+            846,
+            826,
+            924
+          ],
+          "seed": [
+            734,
+            846
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/enemies/stalactite.webp",
+      "state": "fragmentada",
+      "frame": [
+        767,
+        686,
+        349,
+        487
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 13345,
+          "box": [
+            878,
+            907,
+            1027,
+            1052
+          ],
+          "seed": [
+            981,
+            907
+          ]
+        },
+        {
+          "pixels": 5541,
+          "box": [
+            912,
+            1052,
+            989,
+            1170
+          ],
+          "seed": [
+            931,
+            1052
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/mecanicas/efectos.webp",
+      "state": "brazada 1",
+      "frame": [
+        71,
+        486,
+        229,
+        174
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 4207,
+          "box": [
+            144,
+            490,
+            217,
+            562
+          ],
+          "seed": [
+            172,
+            490
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/mecanicas/efectos.webp",
+      "state": "brazada 2",
+      "frame": [
+        403,
+        450,
+        302,
+        216
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 3808,
+          "box": [
+            491,
+            453,
+            562,
+            522
+          ],
+          "seed": [
+            520,
+            453
+          ]
+        },
+        {
+          "pixels": 3198,
+          "box": [
+            406,
+            528,
+            470,
+            592
+          ],
+          "seed": [
+            435,
+            528
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/mecanicas/efectos.webp",
+      "state": "brazada 3",
+      "frame": [
+        733,
+        415,
+        355,
+        257
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 5298,
+          "box": [
+            829,
+            418,
+            911,
+            500
+          ],
+          "seed": [
+            862,
+            418
+          ]
+        },
+        {
+          "pixels": 2823,
+          "box": [
+            782,
+            498,
+            842,
+            557
+          ],
+          "seed": [
+            807,
+            498
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/mecanicas/efectos.webp",
+      "state": "luz 4",
+      "frame": [
+        1134,
+        774,
+        251,
+        248
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 2699,
+          "box": [
+            1309,
+            847,
+            1377,
+            926
+          ],
+          "seed": [
+            1343,
+            847
+          ]
+        },
+        {
+          "pixels": 2055,
+          "box": [
+            1220,
+            861,
+            1274,
+            924
+          ],
+          "seed": [
+            1244,
+            861
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/mecanicas/mecanicas.webp",
+      "state": "burbujas",
+      "frame": [
+        1135,
+        423,
+        272,
+        244
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 9613,
+          "box": [
+            1138,
+            520,
+            1249,
+            630
+          ],
+          "seed": [
+            1188,
+            520
+          ]
+        },
+        {
+          "pixels": 3939,
+          "box": [
+            1279,
+            582,
+            1350,
+            653
+          ],
+          "seed": [
+            1311,
+            582
+          ]
+        },
+        {
+          "pixels": 2123,
+          "box": [
+            1164,
+            438,
+            1216,
+            489
+          ],
+          "seed": [
+            1184,
+            438
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/personajes/jugador-mecanicas.webp",
+      "state": "lanzar pelota",
+      "frame": [
+        1025,
+        600,
+        489,
+        365
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 5332,
+          "box": [
+            1431,
+            659,
+            1514,
+            742
+          ],
+          "seed": [
+            1473,
+            659
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/personajes/toh.webp",
+      "state": "reposo",
+      "frame": [
+        24,
+        20,
+        446,
+        452
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 110,
+          "box": [
+            23,
+            464,
+            579,
+            986
+          ],
+          "seed": [
+            208,
+            464
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/personajes/toh.webp",
+      "state": "alas arriba",
+      "frame": [
+        20,
+        460,
+        562,
+        529
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 5028,
+          "box": [
+            507,
+            572,
+            1055,
+            942
+          ],
+          "seed": [
+            890,
+            572
+          ]
+        },
+        {
+          "pixels": 283,
+          "box": [
+            27,
+            23,
+            467,
+            469
+          ],
+          "seed": [
+            315,
+            23
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/personajes/toh.webp",
+      "state": "alas abajo",
+      "frame": [
+        503,
+        568,
+        555,
+        377
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 2384,
+          "box": [
+            973,
+            558,
+            1521,
+            1008
+          ],
+          "seed": [
+            1262,
+            558
+          ]
+        },
+        {
+          "pixels": 1892,
+          "box": [
+            23,
+            464,
+            579,
+            986
+          ],
+          "seed": [
+            208,
+            464
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/personajes/toh.webp",
+      "state": "guía",
+      "frame": [
+        970,
+        555,
+        554,
+        456
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 6887,
+          "box": [
+            507,
+            572,
+            1055,
+            942
+          ],
+          "seed": [
+            890,
+            572
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/proyectiles/fuego-fatuo.webp",
+      "state": "fuego-fatuo",
+      "frame": [
+        256,
+        97,
+        682,
+        1197
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 11088,
+          "box": [
+            734,
+            304,
+            843,
+            520
+          ],
+          "seed": [
+            748,
+            304
+          ]
+        },
+        {
+          "pixels": 3885,
+          "box": [
+            876,
+            738,
+            938,
+            876
+          ],
+          "seed": [
+            878,
+            738
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/proyectiles/ola-agua.webp",
+      "state": "ola-agua",
+      "frame": [
+        45,
+        96,
+        1689,
+        684
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 7041,
+          "box": [
+            564,
+            448,
+            679,
+            539
+          ],
+          "seed": [
+            641,
+            448
+          ]
+        },
+        {
+          "pixels": 5349,
+          "box": [
+            1641,
+            412,
+            1729,
+            524
+          ],
+          "seed": [
+            1646,
+            412
+          ]
+        },
+        {
+          "pixels": 4363,
+          "box": [
+            1154,
+            127,
+            1241,
+            198
+          ],
+          "seed": [
+            1206,
+            127
+          ]
+        },
+        {
+          "pixels": 3650,
+          "box": [
+            224,
+            539,
+            292,
+            623
+          ],
+          "seed": [
+            264,
+            539
+          ]
+        },
+        {
+          "pixels": 3079,
+          "box": [
+            1066,
+            156,
+            1120,
+            237
+          ],
+          "seed": [
+            1092,
+            156
+          ]
+        },
+        {
+          "pixels": 2789,
+          "box": [
+            1630,
+            496,
+            1684,
+            571
+          ],
+          "seed": [
+            1637,
+            496
+          ]
+        },
+        {
+          "pixels": 2706,
+          "box": [
+            1663,
+            307,
+            1734,
+            369
+          ],
+          "seed": [
+            1670,
+            307
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public/assets/proyectiles/onda-espectral.webp",
+      "state": "onda-espectral",
+      "frame": [
+        349,
+        82,
+        985,
+        857
+      ],
+      "missingBodyPixels": 0,
+      "neighborFragments": [
+        {
+          "pixels": 104360,
+          "box": [
+            543,
+            263,
+            945,
+            802
+          ],
+          "seed": [
+            599,
+            263
+          ]
+        },
+        {
+          "pixels": 49525,
+          "box": [
+            360,
+            353,
+            617,
+            722
+          ],
+          "seed": [
+            487,
+            353
+          ]
+        },
+        {
+          "pixels": 4011,
+          "box": [
+            849,
+            82,
+            953,
+            146
+          ],
+          "seed": [
+            874,
+            82
+          ]
+        },
+        {
+          "pixels": 3017,
+          "box": [
+            709,
+            224,
+            795,
+            292
+          ],
+          "seed": [
+            718,
+            224
+          ]
+        },
+        {
+          "pixels": 2971,
+          "box": [
+            1022,
+            432,
+            1072,
+            510
+          ],
+          "seed": [
+            1036,
+            432
+          ]
+        },
+        {
+          "pixels": 2289,
+          "box": [
+            1067,
+            499,
+            1097,
+            614
+          ],
+          "seed": [
+            1074,
+            499
+          ]
+        },
+        {
+          "pixels": 2118,
+          "box": [
+            1178,
+            188,
+            1228,
+            255
+          ],
+          "seed": [
+            1185,
+            188
+          ]
+        }
+      ]
+    }
+  ],
+  "unreadable": []
+}

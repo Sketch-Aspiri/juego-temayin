@@ -5,7 +5,8 @@ import type { Ctx } from './drawUtils';
 
 /** Escala el recorte una sola vez; el ancla permanece en la posición física recibida. */
 export function drawSprite(c: Ctx, sprite: GameplaySprite, x: number, y: number, width: number, height?: number): boolean {
-  const art = bakedFrame(sprite.file, sprite.frame, width / sprite.frame[2]);
+  const scale = width / sprite.frame[2];
+  const art = sprite.isolated ? bakedFrame(sprite.file, sprite.frame, scale, true) : bakedFrame(sprite.file, sprite.frame, scale);
   if (!art) return false;
   const h = height ?? sprite.frame[3] * width / sprite.frame[2];
   c.drawImage(art, x - width * sprite.anchor[0], y - h * sprite.anchor[1], width, h);

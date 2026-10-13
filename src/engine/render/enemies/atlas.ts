@@ -28,8 +28,9 @@ export const centerFrame = (x: number, y: number, w: number, h: number): AtlasFr
  * (`artCache`) y el cuadro horneado a su escala una sola vez. Así los enemigos nuevos
  * no pasan por `MANIFEST` ni retrasan el arranque. Devuelve false mientras carga.
  */
-export function drawLazyFrame(c: Ctx, file: string, f: AtlasFrame, scale: number, dx = 0, dy = 0): boolean {
-  const img = bakedFrame(file, [f.x, f.y, f.w, f.h], scale);
+export function drawLazyFrame(c: Ctx, file: string, f: AtlasFrame, scale: number, dx = 0, dy = 0, isolated = false): boolean {
+  const frame = [f.x, f.y, f.w, f.h] as const;
+  const img = isolated ? bakedFrame(file, frame, scale, true) : bakedFrame(file, frame, scale);
   if (!img) return false;
   c.drawImage(img, Math.round(dx + (f.x - f.ax) * scale), Math.round(dy + (f.y - f.ay) * scale));
   return true;

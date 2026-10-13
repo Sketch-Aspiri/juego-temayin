@@ -710,6 +710,13 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 
 ## 10. Definición de terminado
 
+### Recortes y proporciones de personajes
+
+- `data/playerSprites.ts` registra las 36 poses reales de `guepardo.webp`, con anclas de pies y escala uniforme en cada recorte. Reposo, carrera y celebración comparten 82 px de altura visible; salto y caída conservan la flexión de sus poses. `render/sprites.ts` deja de dibujar el personaje desde celdas completas con alturas internas distintas. Las colisiones y la simulación no cambian.
+- `data/tohSprites.ts` reúne las seis poses completas y el apoyo de sus patas para la historia y los checkpoints. `render/spriteMask.ts` aísla la silueta principal a resolución original; `artCache.bakedFrame(..., true)` la escala y guarda en caché. El aislamiento se utiliza también en palapas, banderas, la embestida de Kaimán y los recortes inferiores de Sargazo; se conservan los originales. Los efectos que contienen varias piezas intencionales mantienen sus recortes completos.
+- `SpriteRef.isolated` permite que `SpriteFrame` use el mismo recorte alfa en la historia mediante una imagen de canvas en caché. Toh y Camazotz dejan de arrastrar partes de otra pose. `public/assets/complementos/bloques.webp`, antes vacío, se restauró sin pérdidas desde su PNG existente.
+- `imagenes/audit_sprite_crops.py` mide recortes sin editar imágenes y puede regenerar únicamente los datos TypeScript del jugador con `--write-player`. `imagenes/verify_sprite_crops.py` comprueba seis siluetas de Toh sin perder píxeles de su cuerpo, 36 poses del jugador y altura/apoyo iguales al correr y descansar; revisa historia en escritorio y móvil y recorre Palenque hasta checkpoint y meta con contacto protegido. Resultados en `imagenes/verificacion/recortes/`. Pruebas sin DOM: `spriteMask.test.ts` y `playerSprites.test.ts`.
+
 ### Transiciones suaves del agua
 
 - El Triunfo (`1-4`) permite recuperarse al caer bajo la pasarela: el agua llega a la fila 10, las orillas tienen peldaños y el último tramo deja espacio para emerger. El saraguato conserva una plataforma firme en la columna 175. En Candelaria (`1-5`), el agua del túnel termina en 143 contra una pared maciza en 144 que llega a la fila 6. Se sale por el hueco superior de las columnas 141–143 y se salta sobre la pared; hay burbujas al pie del hueco. `engine/World1Water.test.ts` comprueba las 22 columnas bajo la pasarela, cinco posiciones de salida del túnel y el cierre lateral con colisiones, cámara, corrientes y oxígeno activos. `python imagenes/verify_world1_water.py` revisa las salidas y recorre ambos niveles hasta el checkpoint y la bandera en Chromium con protección de contacto; capturas y resultados en `imagenes/verificacion/mundo1-agua/`.

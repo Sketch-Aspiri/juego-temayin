@@ -1,4 +1,4 @@
-import { TOH_POSES } from '../engine/render/goal';
+import { TOH_POSES } from './tohSprites';
 import { TEMAYIN_EXPRESSIONS } from './temayinExpressions';
 
 /**
@@ -12,6 +12,8 @@ export interface SpriteRef {
   sheetW: number;
   sheetH: number;
   frame: readonly [x: number, y: number, w: number, h: number];
+  /** Aísla la silueta cuando el rectángulo invade otra pose del atlas. */
+  isolated?: boolean;
 }
 
 /** Movimiento de entrada o en bucle de un personaje (clases `intro-actor--<anim>`). */
@@ -59,10 +61,10 @@ export const SPRITES = {
   temayinaStand: { ...TEMAYINA_SHEET, frame: [67, 8, 362, 504] },
   temayinaSun: { ...TEMAYINA_SHEET, frame: [63, 512, 368, 493] },
   temayinaCaptive: { ...TEMAYINA_SHEET, frame: [589, 550, 315, 429] },
-  tohPerch: { ...TOH_SHEET, frame: TOH_POSES.perch.frame },
-  tohFly: { ...TOH_SHEET, frame: TOH_POSES.flyDown.frame },
+  tohPerch: { ...TOH_SHEET, frame: TOH_POSES.perch.frame, isolated: true },
+  tohFly: { ...TOH_SHEET, frame: TOH_POSES.flyDown.frame, isolated: true },
   camazotzNight: { ...CAMAZOTZ_SHEET, frame: [398, 1, 451, 429] },
-  camazotzEclipse: { ...CAMAZOTZ_SHEET, frame: [6, 808, 451, 382] },
+  camazotzEclipse: { ...CAMAZOTZ_SHEET, frame: [6, 808, 451, 382], isolated: true },
   sunDormant: { ...STORY_SHEET, frame: [65, 12, 444, 433] },
   shadowCage: { ...STORY_SHEET, frame: [33, 451, 506, 555] },
   bat: { file: 'enemies/bat.webp', sheetW: 1254, sheetH: 1254, frame: [593, 216, 648, 313] },
@@ -134,7 +136,7 @@ export const INTRO_SCENES: readonly IntroScene[] = [
     text: '¡Temayin! Soy Toh, el pájaro reloj. Sube al Tren Maya: te guiaré estación por estación hasta rescatarla.',
     actors: [
       { sprite: SPRITES.atento, x: 30, bottom: 12, height: 66, anim: 'still' },
-      { sprite: SPRITES.tohPerch, x: 68, bottom: 30, height: 34, flip: true, anim: 'fly-in' },
+      { sprite: SPRITES.tohPerch, x: 68, bottom: 42, height: 34, flip: true, anim: 'fly-in' },
     ],
     effects: [],
   },

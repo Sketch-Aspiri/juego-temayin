@@ -65,7 +65,7 @@ function drawSheet(c: Ctx, b: Kaiman): boolean {
     c.rect((x - fr.ax) * SHEET_SCALE, (y - fr.ay) * SHEET_SCALE, w * SHEET_SCALE, h * SHEET_SCALE);
     c.clip('evenodd');
   }
-  const painted = drawLazyFrame(c, KAIMAN_SHEET, fr, SHEET_SCALE);
+  const painted = drawLazyFrame(c, KAIMAN_SHEET, fr, SHEET_SCALE, 0, 0, fr === ART.charge);
   c.restore();
   return painted;
 }
