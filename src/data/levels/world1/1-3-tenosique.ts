@@ -9,9 +9,10 @@ import { ants, coati, tarantula } from '../helpers';
  *  -  38–99  Ascenso al dosel: plataformas sobre lianas. Ruta alta opcional
  *            (59–81) con saraguato y un corazón de jade escondido en 80; la
  *            ruta baja pasa bajo las ramas, donde acechan tarántulas.
- *  - 100–157 Caminos de hormigas: primero una sola fila en el suelo (108), luego
- *            filas en las pasarelas y una pareja final; chile escondido sobre la
- *            plataforma alta (143).
+ *  - 100–157 Caminos de hormigas: primero una sola fila en el suelo (108); después,
+ *            una fila en el suelo bajo la pasarela 117–123 con otras dos encima,
+ *            dos más en la pasarela 133–138 y una pareja final (147, 149); chile
+ *            escondido sobre la plataforma alta (143).
  *  - 158–215 Bajada a la ribera: escalinata, saltos sobre el río y templo; un coatí
  *            espera al pie de la última columna.
  *
