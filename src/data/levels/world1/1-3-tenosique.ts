@@ -9,13 +9,19 @@ import { ants, coati, tarantula } from '../helpers';
  *  -  38–99  Ascenso al dosel: plataformas sobre lianas. Ruta alta opcional
  *            (59–81) con saraguato y un corazón de jade escondido en 80; la
  *            ruta baja pasa bajo las ramas, donde acechan tarántulas.
- *  - 100–157 Caminos de hormigas: filas de arrieras en el suelo y en pasarelas;
- *            chile escondido sobre la plataforma alta (143).
- *  - 158–215 Bajada a la ribera: escalinata, saltos sobre el río y templo.
+ *  - 100–157 Caminos de hormigas: primero una sola fila en el suelo (108), luego
+ *            filas en las pasarelas y una pareja final; chile escondido sobre la
+ *            plataforma alta (143).
+ *  - 158–215 Bajada a la ribera: escalinata, saltos sobre el río y templo; un coatí
+ *            espera al pie de la última columna.
+ *
+ * Los coatíes nacen lejos de los bordes de los hoyos: caminan sin mirar el suelo y,
+ * cerca de un borde, caerían solos antes de encontrarse con el jugador.
  */
 export const LEVEL_1_3: LevelDef = {
   id: '1-3',
   name: 'Tenosique',
+  hint: '¡Mira arriba: las tarántulas se descuelgan cuando pasas debajo!',
   width: 218,
   theme: 'jungle',
   checkpoint: 102,
@@ -59,9 +65,9 @@ export const LEVEL_1_3: LevelDef = {
     ['stairs', 190, 6, 1], ['col', 196, 6],
     ['flag', 203], ['temple', 208],
 
-    ...coati(16, 24, 30, 74, 84, 97, 156, 188),
+    ...coati(16, 24, 30, 77, 84, 97, 156, 200),
     ...tarantula(55, 80, 136, 176),
-    ...ants(108, 110, 112, 120, 147, 149),
+    ...ants(108, 120, 147, 149),
     ['spawn', 'ants', 119, 7], ['spawn', 'ants', 121, 7],
     ['spawn', 'ants', 135, 7], ['spawn', 'ants', 137, 7],
     ['spawn', 'howler', 73, 2],
