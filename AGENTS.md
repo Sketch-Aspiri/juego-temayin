@@ -246,7 +246,7 @@ Temas: `jungle`, `ruins` (nuevo), `fortress` (nuevo), `mangrove` (nuevo). Piedra
 
 | Id | Estación | Lugar real | Tema / ambiente | Tipo | Mecánica clave | Enemigos |
 |---|---|---|---|---|---|---|
-| 2-1 | Carrillo Puerto | Paradero rural en la selva baja campechana | `jungle` | jungla / tren | Primer nivel con vagones de tren móviles | `coati`, saraguato, vagones de truck |
+| 2-1 | Carrillo Puerto | Paradero rural en la selva baja campechana | `jungle` | jungla / tren | Primer nivel con vagones de tren móviles; el primero cruza un arroyo (fallar no cuesta vida) | `coati`, saraguato, tarántula, nauyaca |
 | 2-2 | Edzná | Zona arqueológica, Edificio de los Cinco Pisos | `ruins` | ruinas | Escaleras de pirámide (`stairs`), plataformas que caen | tarántula, nauyaca, sombras de Xibalbá (menor) |
 | 2-3 | San Francisco de Campeche | Ciudad amurallada, baluartes y puertas de Mar y de Tierra | `fortress` | ciudad | Cañones de baluarte como plataformas, muros con troneras | piratas cangrejo, cangrejo azul |
 | 2-4 | Petenes | Reserva de la Biosfera Los Petenes: manglares e islas de selva | `mangrove` | acuático | Nado entre raíces de mangle; corrientes de marea | morena, cangrejo azul, `urchin` |
