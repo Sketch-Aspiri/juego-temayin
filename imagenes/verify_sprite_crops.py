@@ -50,7 +50,7 @@ with sync_playwright() as p:
         c.strokeStyle='#f6dca8';c.beginPath();c.moveTo(20,36+(pose.footY-y)*.46);c.lineTo(340,36+(pose.footY-y)*.46);c.stroke();
         board.append(canvas);metrics.push({pose:name,rawPixels,cleanedPixels,removed:rawPixels-cleanedPixels});
       }
-      window.qaSprites={assets,board,metrics,PLAYER_SPRITES,createPlayer,drawPlayerSprite,World:null,world:null,hold:false,drive:false,stats:{}};
+      window.qaSprites={assets,board,metrics,lazyImage,PLAYER_SPRITES,createPlayer,drawPlayerSprite,World:null,world:null,hold:false,drive:false,stats:{}};
       return metrics;
     }""")
     page.screenshot(path=str(out / 'toh-seis-poses.png'))
@@ -99,6 +99,60 @@ with sync_playwright() as p:
     }""")
     page.locator('#qa-gallery').evaluate('e=>{e.style.inset="auto";e.style.position="absolute";e.style.top="0";e.style.left="0";e.style.width="1280px";e.style.overflow="visible"}')
     page.screenshot(path=str(out / 'temayin-todas-las-poses.png'), full_page=True)
+    page.wait_for_function("qaSprites.lazyImage('personajes/jugador-mecanicas.webp')")
+    poses = page.evaluate("""()=>{
+      const qa=qaSprites;qa.board.replaceChildren();
+      const cases=[['Carrera',{}],['Nado avance',{swimming:true,animT:0}],
+        ['Nado patada',{swimming:true,animT:.4}],['Brazada',{swimming:true,strokeT:.2}],
+        ['Agarre',{swinging:0,vx:0}],['Balanceo',{swinging:0,vx:100}],['Pelota',{ball:true,throwT:.2}]];
+      const metrics=[];
+      for(const face of [1,-1])for(const [pose,state]of cases){
+        const canvas=document.createElement('canvas');canvas.width=150;canvas.height=210;const c=canvas.getContext('2d');
+        const p=Object.assign(qa.createPlayer(0),{anim:'run',frame:0,face},state);
+        p.x=75-p.w/2;p.y=125-p.h;const before=JSON.stringify(p);
+        qa.drawPlayerSprite(c,qa.assets,p,0,false,0,100);
+        const data=c.getImageData(0,0,150,210).data;let top=210,bottom=0,left=150,right=0;
+        for(let y=0;y<210;y++)for(let x=0;x<150;x++)if(data[(y*150+x)*4+3]>=40){
+          top=Math.min(top,y);bottom=Math.max(bottom,y);left=Math.min(left,x);right=Math.max(right,x);
+        }
+        metrics.push({pose,face,height:bottom-top+1,width:right-left+1,simulationUnchanged:JSON.stringify(p)===before});
+        c.strokeStyle='#f6dca8';c.beginPath();c.moveTo(0,top);c.lineTo(150,top);c.moveTo(0,bottom+1);c.lineTo(150,bottom+1);c.stroke();
+        c.fillStyle='#fff';c.font='14px sans-serif';c.fillText(pose,8,20);qa.board.append(canvas);
+      }
+      return metrics;
+    }""")
+    page.screenshot(path=str(out / 'temayin-nado-cuerda-pelota.png'), full_page=True)
+    page.evaluate("""async()=>{
+      const loaded=s=>performance.getEntriesByType('resource').filter(e=>new URL(e.name).pathname===s).at(-1)?.name||s;
+      const [{World},{Renderer},{Input},{AudioEngine},{ALL_LEVELS}]=await Promise.all([
+        import(loaded('/src/engine/World.ts')),import(loaded('/src/engine/render/Renderer.ts')),
+        import(loaded('/src/engine/input.ts')),import(loaded('/src/engine/audio.ts')),import(loaded('/src/data/worlds.ts'))]);
+      const qa=qaSprites;Object.assign(qa,{World,Renderer,Input,AudioEngine,ALL_LEVELS});
+      qa.board.replaceChildren();qa.board.style.gridTemplateColumns='1fr';
+      qa.sceneCanvas=document.createElement('canvas');qa.sceneCanvas.width=960;qa.sceneCanvas.height=560;qa.board.append(qa.sceneCanvas);
+    }""")
+    scenes = []
+    for level, pose in [('1-2', 'avance'), ('1-2', 'patada'), ('1-2', 'brazada'),
+                        ('3-4', 'agarre'), ('3-4', 'balanceo'), ('4-1', 'pelota')]:
+        scene = page.evaluate("""({level,pose})=>{
+          const qa=qaSprites,audio=new qa.AudioEngine();audio.muted=true;
+          const w=new qa.World({def:qa.ALL_LEVELS.find(l=>l.id===level),audio,input:new qa.Input(),session:{score:0,coins:0,lives:3}});
+          const p=w.player;w.phaseT=10;
+          if(level==='1-2'){
+            p.x=70*40;p.y=9*40;p.swimming=true;p.onGround=false;
+            p.animT=pose==='patada'?.4:0;p.strokeT=pose==='brazada'?.2:0;
+          }else if(level==='3-4'){
+            const r=w.ropes[0];r.angle=pose==='balanceo'?.35:0;
+            p.swinging=0;p.vx=pose==='balanceo'?100:0;p.onGround=false;
+            p.x=r.x+Math.sin(r.angle)*r.length-p.w/2;p.y=r.y+Math.cos(r.angle)*r.length-p.h/2;
+          }else{p.x=27*40;p.y=480-p.h;p.ball=true;p.throwT=.2;}
+          w.camX=Math.max(0,p.x-9*40);
+          const state=()=>JSON.stringify({player:p,grid:w.grid,ropes:w.ropes,session:w.session});
+          const before=state();new qa.Renderer(qa.sceneCanvas,qa.assets).render(w,1000,false);
+          return {level,pose,simulationUnchanged:state()===before};
+        }""", {'level': level, 'pose': pose})
+        scenes.append(scene)
+        page.locator('#qa-gallery canvas').screenshot(path=str(out / f'{level}-{pose}.png'))
     page.evaluate('qaSprites.board.remove()')
     page.evaluate("""async()=>{
       const loaded=s=>performance.getEntriesByType('resource').filter(e=>new URL(e.name).pathname===s).at(-1)?.name||s;
@@ -170,7 +224,7 @@ with sync_playwright() as p:
         page.get_by_role('button', name='¡A la aventura!', exact=True).click()
     browser.close()
 
-payload = {'atlasMasks': report, 'otherMasks': others, 'playerFrames': players,
+payload = {'atlasMasks': report, 'otherMasks': others, 'playerFrames': players, 'mechanicsPoses': poses, 'mechanicsScenes': scenes,
            'completion': completion, 'mode': 'Palenque con contacto protegido; colisiones y entrada del motor activas.', 'errors': errors}
 (out / 'revision-navegador.json').write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 print(json.dumps(payload, ensure_ascii=False))
@@ -181,4 +235,6 @@ assert all(item['cleanedPixels'] == expected[item['pose']] for item in report), 
 assert max(item['height'] for item in players) - min(item['height'] for item in players) <= 2, players
 assert all(abs(item['height'] - 82) <= 1 for item in players), players
 assert len(set(item['bottom'] for item in players)) == 1, players
+assert all(abs(item['height'] - 82) <= 1 and item['simulationUnchanged'] for item in poses), poses
+assert all(item['simulationUnchanged'] for item in scenes), scenes
 assert completion['phase'] == 'done' and completion['checkpoint'], completion

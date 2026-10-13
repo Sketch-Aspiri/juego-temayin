@@ -24,6 +24,10 @@ export const GAMEPLAY_SPRITES = {
   fragile: { file: MECHANICS, frame: [44, 464, 531, 177], anchor: [0, 0] },
   sargassum: { file: MECHANICS, frame: [17, 739, 592, 239], anchor: [0, 1] },
   resin: { file: MECHANICS, frame: [628, 776, 398, 185], anchor: [0, 1] },
+  // El nado mantiene el cuerpo centrado en la posición física del jugador.
+  swimGlide: { file: PLAYER, frame: [60, 93, 439, 270], anchor: [0.5, 0.5] },
+  swimKick: { file: PLAYER, frame: [553, 80, 418, 274], anchor: [0.5, 0.5] },
+  swimStroke: { file: PLAYER, frame: [1089, 40, 381, 387], anchor: [0.5, 0.5] },
   // Se excluyen la cuerda superior y la pelota ya en vuelo para evitar duplicarlas.
   hanging: { file: PLAYER, frame: [105, 548, 264, 410], anchor: [155 / 264, 60 / 410] },
   swinging: { file: PLAYER, frame: [555, 571, 400, 375], anchor: [168 / 400, 49 / 375] },
@@ -31,3 +35,4 @@ export const GAMEPLAY_SPRITES = {
 } as const satisfies Readonly<Record<string, GameplaySprite>>;
 
 export type GameplaySpriteId = keyof typeof GAMEPLAY_SPRITES;
+export type PlayerPoseId = 'swimGlide' | 'swimKick' | 'swimStroke' | 'hanging' | 'swinging' | 'throwing';
