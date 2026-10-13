@@ -1,5 +1,5 @@
 import type { LevelDef } from '../../../engine/level/types';
-import { alux, tarantula } from '../helpers';
+import { alux, shades, tarantula } from '../helpers';
 
 /**
  * Hecelchakán: pueblo del Camino Real entre Campeche y Mérida (AGENTS.md §4.3).
@@ -13,12 +13,18 @@ import { alux, tarantula } from '../helpers';
  *
  * Recorrido (columnas):
  *  -   0–41   Camino Real: bloques `?`, cacao para empezar y los primeros aluxes.
- *  -  42–79   Derrumbes: escalera opcional de escombro hasta una fila alta de cacao;
- *             canal de 8 con dos tramos de escombro; aluxes en la plaza.
+ *  -  42–79   Derrumbes: escalera opcional de escombro hasta una fila alta de cacao y
+ *             un corazón de jade; canal de 8 con dos tramos de escombro; aluxes.
  *  -  80–105  Patio del museo: chile de fuego, tarántulas bajo las cornisas.
- *  - 106–160  Punto de control (Toh) y el gran derrumbe: tres tramos seguidos sobre
- *             un hoyo de 13; después, una fila de cacao custodiada por tres aluxes.
- *  - 161–215  Subida final: escombro sobre un canal de 7, escalinata, bandera y templo.
+ *  - 106–160  Punto de control (Toh) con otro chile y el gran derrumbe: tres tramos
+ *             seguidos sobre un hoyo de 13; después, una fila de cacao custodiada por
+ *             tres aluxes y la primera sombra de Xibalbá del atardecer.
+ *  - 161–215  Subida final: escombro sobre un canal de 7, otra sombra, escalinata,
+ *             bandera y templo.
+ *
+ * Es el nivel más exigente antes del jefe: combina el escombro y las sombras de Edzná.
+ * Las sombras flotan a 7 bloques o más de cualquier derrumbe, para no perseguir al
+ * jugador mientras salta de tramo en tramo.
  */
 export const LEVEL_2_6: LevelDef = {
   id: '2-6',
@@ -36,7 +42,7 @@ export const LEVEL_2_6: LevelDef = {
 
     // Derrumbes
     ['crumble', 44, 10, 2], ['crumble', 47, 8, 2], ['crumble', 50, 6, 2],
-    ['plat', 53, 6, 3], ['coins', 50, 4, 6],
+    ['plat', 53, 6, 3], ['coins', 50, 4, 6], ['row', 54, 2, 'L'],
     ['pit', 58, 65],
     ['crumble', 59, 9, 2], ['crumble', 62, 9, 2], ['coins', 59, 7, 5],
     ['row', 70, 8, 'B?B'],
@@ -47,7 +53,7 @@ export const LEVEL_2_6: LevelDef = {
     ['pit', 96, 100], ['coins', 96, 8, 5],
 
     // Gran derrumbe
-    ['row', 108, 8, '??'],
+    ['row', 108, 8, '?F'], // chile al alcance al reaparecer
     ['pit', 112, 124],
     ['crumble', 113, 10, 3], ['crumble', 117, 9, 3], ['crumble', 121, 10, 3],
     ['coins', 113, 8, 3], ['coins', 117, 7, 3], ['coins', 121, 8, 3],
@@ -64,7 +70,8 @@ export const LEVEL_2_6: LevelDef = {
     ['stairs', 188, 5, 1], ['col', 193, 5],
     ['flag', 201], ['temple', 206],
 
-    ...alux(22, 38, 70, 74, 128, 132, 136, 184),
+    ...alux(22, 38, 70, 74, 130, 133, 136, 184),
     ...tarantula(11, 36, 86, 92, 142, 150, 181),
+    ...shades([146, 5], [186, 5]),
   ],
 };

@@ -251,7 +251,7 @@ Temas: `jungle`, `ruins` (nuevo), `fortress` (nuevo), `mangrove` (nuevo). Piedra
 | 2-3 | San Francisco de Campeche | Ciudad amurallada, baluartes y puertas de Mar y de Tierra | `fortress` | ciudad | Cañones de baluarte como plataformas, muros con troneras | piratas cangrejo, cangrejo azul |
 | 2-4 | Petenes | Reserva de la Biosfera Los Petenes: manglares e islas de selva | `mangrove` | acuático | Nado entre raíces de mangle; corrientes de marea | morena, cangrejo azul, `urchin` |
 | 2-5 | Tenabo | Pueblo agrícola del Camino Real | `hacienda` | hacienda | Carretas y sacos como plataformas | ruedas de henequén, `coati` |
-| 2-6 | Hecelchakán | Pueblo del Camino Real, museo arqueológico | `ruins`, atardecer | ruinas / ciudad | Estelas que se derrumban; primeras cuerdas de henequén | aluxes, tarántula |
+| 2-6 | Hecelchakán | Pueblo del Camino Real, museo arqueológico | `ruins`, atardecer | ruinas / ciudad | Estelas que se derrumban; primeras cuerdas de henequén | aluxes, tarántula, sombras de Xibalbá |
 | 2-7 | Calkiní | Pueblo del Camino Real, límite con Yucatán | `swamp` | jefe | Arena pantanosa con agua poco profunda | **Jefe: Kaimán Moreleti** (`'kaiman'`) |
 
 #### Mundo 3 · Yucatán de las haciendas (Tramo Calkiní–Izamal)
