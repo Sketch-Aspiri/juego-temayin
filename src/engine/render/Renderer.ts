@@ -30,6 +30,7 @@ import type { ThemeId } from '../types';
 import { drawBeachProps } from './beachProps';
 import { drawCannonTile, drawFragileTile } from './levelSprites';
 import { drawMayaTile, drawPaintedTerrain, drawRewardLight } from './mayaTiles';
+import { renderViewport } from './viewport';
 
 const BUMP_HEIGHT = 10;
 const BUMP_TIME = 0.15;
@@ -43,7 +44,7 @@ export class Renderer {
   private readonly ctx: Ctx;
   private readonly textures: Textures;
 
-  constructor(canvas: HTMLCanvasElement, private readonly assets: Assets) {
+  constructor(private readonly canvas: HTMLCanvasElement, private readonly assets: Assets) {
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('Canvas 2D no disponible en este navegador');
     this.ctx = ctx;
@@ -78,6 +79,7 @@ export class Renderer {
 
   render(world: World, now: number, paused: boolean): void {
     const c = this.ctx;
+    this.beginViewport(world);
     const theme = THEMES[world.def.theme];
     const arenaPlatforms = arenaPlatformArt(world);
     this.drawBackdrop(world.def.theme, world.camX, now);
@@ -115,7 +117,19 @@ export class Renderer {
     c.restore();
     this.lighting.draw(c, world);
     drawWeather(c, world, now);
-    drawTohHint(c, world);
+    if (this.canvas.width >= VW) drawTohHint(c, world);
+    c.restore();
+  }
+
+  /** El recorte cambia solo el dibujo: enemigos, saltos y cámara física siguen siendo los mismos. */
+  private beginViewport(world: World): void {
+    const c = this.ctx;
+    const view = renderViewport(world, this.canvas.width);
+    c.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    c.save();
+    c.translate(0, view.offsetY);
+    c.scale(view.scale, view.scale);
+    c.translate(-view.offsetX, 0);
   }
 
   private drawWater(theme: ThemeDef, camX: number, now: number): void {

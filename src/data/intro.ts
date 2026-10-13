@@ -19,6 +19,12 @@ export interface SpriteRef {
 /** Movimiento de entrada o en bucle de un personaje (clases `intro-actor--<anim>`). */
 export type ActorAnim = 'enter-left' | 'enter-right' | 'float' | 'carried' | 'fly-in' | 'descend' | 'still';
 
+export interface IntroPlacement {
+  readonly x: number;
+  readonly bottom: number;
+  readonly height: number;
+}
+
 export interface IntroActor {
   sprite: SpriteRef;
   /** Posición horizontal del centro, en % del escenario. */
@@ -27,6 +33,8 @@ export interface IntroActor {
   bottom: number;
   /** Alto del sprite, en % del escenario. */
   height: number;
+  /** Composición para el escenario vertical, separado de la narración. */
+  readonly portrait?: IntroPlacement;
   flip?: boolean;
   anim: ActorAnim;
   /** Brillo del Sol de Jade entre las manos. */
@@ -80,7 +88,7 @@ export const INTRO_SCENES: readonly IntroScene[] = [
     background: 'backgrounds/ruins.webp',
     tone: 'dawn',
     text: 'En lo profundo de la selva de Palenque vive Temayin, el jaguar guardián de las ruinas.',
-    actors: [{ sprite: SPRITES.alegre, x: 30, bottom: 12, height: 72, anim: 'enter-left' }],
+    actors: [{ sprite: SPRITES.alegre, x: 30, bottom: 12, height: 72, anim: 'enter-left', portrait: { x: 50, bottom: 8, height: 62 } }],
     effects: [],
   },
   {
@@ -89,8 +97,8 @@ export const INTRO_SCENES: readonly IntroScene[] = [
     tone: 'day',
     text: 'Su compañera, Temayina, custodia el Sol de Jade: la joya que cada mañana hace salir el sol sobre la península de Yucatán.',
     actors: [
-      { sprite: SPRITES.carinoso, x: 24, bottom: 12, height: 62, anim: 'still' },
-      { sprite: SPRITES.temayinaSun, x: 70, bottom: 4, height: 64, flip: true, anim: 'enter-right', glow: true },
+      { sprite: SPRITES.carinoso, x: 24, bottom: 12, height: 62, anim: 'still', portrait: { x: 26, bottom: 8, height: 40 } },
+      { sprite: SPRITES.temayinaSun, x: 70, bottom: 4, height: 64, flip: true, anim: 'enter-right', glow: true, portrait: { x: 73, bottom: 8, height: 46 } },
     ],
     effects: ['sunrise'],
   },
@@ -100,9 +108,9 @@ export const INTRO_SCENES: readonly IntroScene[] = [
     tone: 'night',
     text: 'Pero una noche, Camazotz, el señor murciélago de Xibalbá, descendió sobre Palenque envuelto en sombras.',
     actors: [
-      { sprite: SPRITES.sorprendido, x: 16, bottom: 12, height: 56, anim: 'still' },
-      { sprite: SPRITES.temayinaStand, x: 66, bottom: 4, height: 62, flip: true, anim: 'still' },
-      { sprite: SPRITES.camazotzNight, x: 34, bottom: 38, height: 58, anim: 'descend' },
+      { sprite: SPRITES.sorprendido, x: 16, bottom: 12, height: 56, anim: 'still', portrait: { x: 24, bottom: 8, height: 35 } },
+      { sprite: SPRITES.temayinaStand, x: 66, bottom: 4, height: 62, flip: true, anim: 'still', portrait: { x: 75, bottom: 8, height: 40 } },
+      { sprite: SPRITES.camazotzNight, x: 34, bottom: 38, height: 58, anim: 'descend', portrait: { x: 50, bottom: 54, height: 34 } },
     ],
     effects: ['bats'],
   },
@@ -112,11 +120,11 @@ export const INTRO_SCENES: readonly IntroScene[] = [
     tone: 'eclipse',
     text: 'Se llevó a Temayina y al Sol de Jade. Si llega a su trono, la península quedará para siempre bajo un eclipse.',
     actors: [
-      { sprite: SPRITES.preocupado, x: 22, bottom: 12, height: 58, anim: 'still' },
-      { sprite: SPRITES.camazotzEclipse, x: 62, bottom: 50, height: 46, flip: true, anim: 'float' },
-      { sprite: SPRITES.sunDormant, x: 80, bottom: 58, height: 14, anim: 'float' },
-      { sprite: SPRITES.temayinaCaptive, x: 64, bottom: 14, height: 36, anim: 'carried' },
-      { sprite: SPRITES.shadowCage, x: 64, bottom: 12, height: 42, anim: 'carried' },
+      { sprite: SPRITES.preocupado, x: 22, bottom: 12, height: 58, anim: 'still', portrait: { x: 24, bottom: 8, height: 35 } },
+      { sprite: SPRITES.camazotzEclipse, x: 62, bottom: 50, height: 46, flip: true, anim: 'float', portrait: { x: 62, bottom: 54, height: 31 } },
+      { sprite: SPRITES.sunDormant, x: 80, bottom: 58, height: 14, anim: 'float', portrait: { x: 88, bottom: 74, height: 10 } },
+      { sprite: SPRITES.temayinaCaptive, x: 64, bottom: 14, height: 36, anim: 'carried', portrait: { x: 72, bottom: 14, height: 29 } },
+      { sprite: SPRITES.shadowCage, x: 64, bottom: 12, height: 42, anim: 'carried', portrait: { x: 72, bottom: 12, height: 32 } },
     ],
     effects: ['eclipse', 'bats'],
   },
@@ -125,7 +133,7 @@ export const INTRO_SCENES: readonly IntroScene[] = [
     background: 'backgrounds/river.webp',
     tone: 'dusk',
     text: 'Camazotz huyó por las vías del Tren Maya hacia la gran pirámide de Calakmul, y dejó a un lugarteniente custodiando cada tramo.',
-    actors: [{ sprite: SPRITES.decidido, x: 22, bottom: 12, height: 62, anim: 'still' }],
+    actors: [{ sprite: SPRITES.decidido, x: 22, bottom: 12, height: 62, anim: 'still', portrait: { x: 32, bottom: 12, height: 50 } }],
     effects: ['train', 'bats'],
   },
   {
@@ -135,8 +143,8 @@ export const INTRO_SCENES: readonly IntroScene[] = [
     speaker: 'Toh',
     text: '¡Temayin! Soy Toh, el pájaro reloj. Sube al Tren Maya: te guiaré estación por estación hasta rescatarla.',
     actors: [
-      { sprite: SPRITES.atento, x: 30, bottom: 12, height: 66, anim: 'still' },
-      { sprite: SPRITES.tohPerch, x: 68, bottom: 42, height: 34, flip: true, anim: 'fly-in' },
+      { sprite: SPRITES.atento, x: 30, bottom: 12, height: 66, anim: 'still', portrait: { x: 30, bottom: 8, height: 46 } },
+      { sprite: SPRITES.tohPerch, x: 68, bottom: 42, height: 34, flip: true, anim: 'fly-in', portrait: { x: 75, bottom: 43, height: 24 } },
     ],
     effects: [],
   },

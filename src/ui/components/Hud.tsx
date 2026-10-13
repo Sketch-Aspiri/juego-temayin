@@ -61,7 +61,7 @@ function OxygenBar({ ratio }: OxygenBarProps) {
   const pct = Math.round(Math.max(0, Math.min(1, ratio)) * 100);
   const low = ratio <= LOW_OXYGEN;
   return (
-    <div className="stat">
+    <div className="stat stat--oxygen">
       <span className="stat__label">OXÍGENO</span>
       <span
         role="meter"

@@ -3,6 +3,7 @@ import { INTRO_SCENES, SPRITES, type IntroActor, type IntroEffect, type IntroSce
 import { assetUrl } from '../../engine/assets';
 import { useAppStore } from '../../store/appStore';
 import { SpriteFrame } from '../components/SpriteFrame';
+import { usePortrait } from '../usePortrait';
 
 /** Letras por segundo del efecto máquina de escribir. */
 const TYPE_RATE = 45;
@@ -27,11 +28,12 @@ function useTypewriter(text: string): { shown: string; done: boolean; finish: ()
   return { shown: text.slice(0, count), done: count >= text.length, finish: () => setCount(text.length) };
 }
 
-function Actor({ actor }: { actor: IntroActor }) {
+function Actor({ actor, portrait }: { actor: IntroActor; portrait: boolean }) {
+  const placement = portrait ? actor.portrait ?? actor : actor;
   return (
     <div
       className={`intro-actor intro-actor--${actor.anim}`}
-      style={{ left: `${actor.x}%`, bottom: `${actor.bottom}%`, height: `${actor.height}%` }}
+      style={{ left: `${placement.x}%`, bottom: `${placement.bottom}%`, height: `${placement.height}%` }}
     >
       {actor.glow && <div className="intro-glow" />}
       <SpriteFrame sprite={actor.sprite} className={`intro-sprite${actor.flip ? ' intro-sprite--flip' : ''}`} />
@@ -72,16 +74,16 @@ function Effect({ effect }: { effect: IntroEffect }) {
   }
 }
 
-function Scene({ scene }: { scene: IntroScene }) {
+function Scene({ scene, portrait }: { scene: IntroScene; portrait: boolean }) {
   return (
     <div className={`intro-scene intro-scene--${scene.tone}`}>
       <div className="intro-bg" style={{ backgroundImage: `url(${assetUrl(scene.background)})` }} />
       {scene.effects.map((e) => (
         <Effect key={e} effect={e} />
       ))}
-      {scene.actors.map((a, i) => (
-        <Actor key={`${scene.id}-${i}`} actor={a} />
-      ))}
+      <div className="intro-cast">
+        {scene.actors.map((a, i) => <Actor key={`${scene.id}-${i}`} actor={a} portrait={portrait} />)}
+      </div>
       <div className="intro-tint" />
     </div>
   );
@@ -89,6 +91,7 @@ function Scene({ scene }: { scene: IntroScene }) {
 
 /** Cinemática con la historia: escenas con texto, avance automático o manual, y opción de saltar. */
 export function IntroScreen() {
+  const portrait = usePortrait();
   const finishIntro = useAppStore((s) => s.finishIntro);
   const [index, setIndex] = useState(0);
   const scene = INTRO_SCENES[index];
@@ -126,7 +129,7 @@ export function IntroScreen() {
   return (
     <main className="intro" onClick={advance}>
       <div className="intro-stage">
-        <Scene key={scene.id} scene={scene} />
+        <Scene key={scene.id} scene={scene} portrait={portrait} />
         <div className="intro-caption" aria-live="polite">
           {scene.speaker && <span className="intro-caption__speaker">{scene.speaker}</span>}
           <p className="intro-caption__text">
@@ -144,7 +147,9 @@ export function IntroScreen() {
                 ¡A la aventura!
               </button>
             ) : (
-              <span className="intro-hint">{done ? 'Clic o Enter para seguir' : ''}</span>
+              <button type="button" className="btn intro-next" onClick={(e) => { e.stopPropagation(); advance(); }}>
+                {done ? 'Continuar →' : 'Mostrar texto'}
+              </button>
             )}
           </div>
         </div>

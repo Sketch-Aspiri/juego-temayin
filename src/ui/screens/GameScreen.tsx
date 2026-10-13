@@ -12,10 +12,13 @@ import { BossBanner } from '../components/BossBanner';
 import { Hud } from '../components/Hud';
 import { GameOver, LevelComplete, PauseMenu } from '../components/Overlays';
 import { TouchControls } from '../components/TouchControls';
+import { PORTRAIT_VIEW_WIDTH } from '../../engine/render/viewport';
+import { usePortrait } from '../usePortrait';
 
 type Outcome = { kind: 'complete'; result: LevelResult } | { kind: 'gameover'; score: number };
 
 export function GameScreen() {
+  const portrait = usePortrait();
   const run = useAppStore((s) => s.run);
   const touchMode = useAppStore((s) => s.settings.touchControls);
   const { go, startLevel, retryLevel, finishLevel, updateSettings } = useAppStore.getState();
@@ -91,43 +94,49 @@ export function GameScreen() {
     if (nextId) startLevel(nextId, result.session);
   };
 
+  const status = <>
+    {hud && <Hud hud={hud} />}
+    <button type="button" className="pause-btn" onClick={togglePause} aria-label="Pausa">❚❚</button>
+  </>;
+
   return (
-    <div className="game">
-      <div className="stage">
-        <canvas ref={canvasRef} className="stage__canvas" width={VW} height={VH} />
-        {hud && (
-          <>
-            <Hud hud={hud} />
-            {hud.boss && <BossBanner boss={hud.boss} />}
-            <div className="level-card" key={hud.spawnId} aria-hidden="true" style={hud.boss ? { visibility: 'hidden' } : undefined}>
-              <span className="level-card__world">MUNDO {level.id}</span>
-              <span className="level-card__name">{level.name}</span>
-            </div>
-          </>
-        )}
-        <button type="button" className="pause-btn" onClick={togglePause} aria-label="Pausa">❚❚</button>
-        {paused && (
-          <PauseMenu
-            onResume={() => setPaused(false)}
-            onRestart={() => {
-              setPaused(false);
-              retryLevel();
-            }}
-            onExit={() => go('levels')}
-          />
-        )}
-        {outcome?.kind === 'complete' && (
-          <LevelComplete
-            result={outcome.result}
-            levelName={level.name}
-            hasNext={!!nextId}
-            onNext={() => goNext(outcome.result)}
-            onRetry={retryLevel}
-            onExit={() => go('levels')}
-          />
-        )}
-        {outcome?.kind === 'gameover' && <GameOver score={outcome.score} onRetry={retryLevel} onExit={() => go('levels')} />}
+    <div className={`game${portrait ? ' game--portrait' : ''}`}>
+      {portrait && <div className="game__status">{status}</div>}
+      <div className="game__field">
+        <div className="stage">
+          <canvas ref={canvasRef} className="stage__canvas" width={portrait ? PORTRAIT_VIEW_WIDTH : VW} height={VH} />
+          {!portrait && status}
+          {hud && (
+            <>
+              {hud.boss && <BossBanner boss={hud.boss} />}
+              <div className="level-card" key={hud.spawnId} aria-hidden="true" style={hud.boss ? { visibility: 'hidden' } : undefined}>
+                <span className="level-card__world">MUNDO {level.id}</span>
+                <span className="level-card__name">{level.name}</span>
+              </div>
+            </>
+          )}
+        </div>
+        {portrait && hud && !hud.boss && !outcome && level.hint &&
+          <p className="game__hint" key={hud.spawnId}><strong>Toh:</strong> {level.hint}</p>}
       </div>
+      {paused && (
+        <PauseMenu
+          onResume={() => setPaused(false)}
+          onRestart={() => { setPaused(false); retryLevel(); }}
+          onExit={() => go('levels')}
+        />
+      )}
+      {outcome?.kind === 'complete' && (
+        <LevelComplete
+          result={outcome.result}
+          levelName={level.name}
+          hasNext={!!nextId}
+          onNext={() => goNext(outcome.result)}
+          onRetry={retryLevel}
+          onExit={() => go('levels')}
+        />
+      )}
+      {outcome?.kind === 'gameover' && <GameOver score={outcome.score} onRetry={retryLevel} onExit={() => go('levels')} />}
       {!paused && !outcome && <TouchControls mode={touchMode} />}
     </div>
   );

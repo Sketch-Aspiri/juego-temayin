@@ -41,6 +41,19 @@ describe('datos de la cinemática', () => {
     expect(new Set(used.map((actors) => actors[0].sprite.file))).toEqual(expressions);
     for (const file of expressions) expect(INTRO_FILES).toContain(file);
   });
+
+  it('contiene todos los actores en el escenario vertical, de hasta 4:5', () => {
+    for (const scene of INTRO_SCENES) for (const actor of scene.actors) {
+      const portrait = actor.portrait;
+      expect(portrait, scene.id).toBeDefined();
+      if (!portrait) continue;
+      const width = portrait.height * 1.25 * actor.sprite.frame[2] / actor.sprite.frame[3];
+      expect(portrait.x - width / 2, scene.id).toBeGreaterThanOrEqual(0);
+      expect(portrait.x + width / 2, scene.id).toBeLessThanOrEqual(100);
+      expect(portrait.bottom).toBeGreaterThanOrEqual(0);
+      expect(portrait.bottom + portrait.height).toBeLessThanOrEqual(100);
+    }
+  });
 });
 
 describe('flujo de la cinemática', () => {

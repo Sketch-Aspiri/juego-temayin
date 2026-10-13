@@ -55,6 +55,8 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 
 ## Contenido actual
 
+En celulares verticales, el juego acerca el encuadre a Temayin y coloca el HUD y los controles fuera del área jugable. La cinemática tiene composiciones verticales y texto separado de los personajes. Girar el teléfono conserva la partida y la escena; las arenas de jefe mantienen su vista completa. Verificación en Chromium y WebKit: `python imagenes/verify_portrait.py --browser all` (capturas en `imagenes/.temp/vertical/`).
+
 - La portada utiliza letras doradas con relieve y contornos verde selva, con Lilita One para el título y los botones y Bree Serif para el subtítulo. Las fuentes originales y sus licencias están incluidas en `public/assets/fonts/`; se cargan desde el juego. El nombre del título sigue siendo accesible como «Temayin» y se adapta a pantallas pequeñas.
 
 - La pantalla principal muestra una nota con el commit de la versión compilada y su resumen de cambios. Si el commit tiene cuerpo, «Ver cambios de esta versión» despliega los detalles. `npm run build` incluye esa información en el archivo publicado; el navegador no consulta commits posteriores. Para compilar fuentes sin `.git`, se pueden proporcionar `TEMAYIN_BUILD_COMMIT`, `TEMAYIN_BUILD_SUMMARY` y `TEMAYIN_BUILD_CHANGES` (cambios separados por saltos de línea). El servidor de desarrollo muestra «Versión local». Revisión del build en escritorio y móvil: `python imagenes/verify_version_note.py --expected-commit SHA_COMPLETO --production`, usando `npm run preview -- --port 5198`; capturas en `imagenes/.temp/nota-version/`.
