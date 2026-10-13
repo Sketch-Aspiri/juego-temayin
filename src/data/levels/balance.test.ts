@@ -3,10 +3,10 @@ import { AudioEngine } from '../../engine/audio';
 import { GROUND, ROWS, START_LIVES, STEP, T, VW } from '../../engine/constants';
 import { isAirborne, updateEnemies } from '../../engine/entities/enemies';
 import { NOTICE_RANGE } from '../../engine/entities/enemies/nauyaca';
-import { platformReach } from '../../engine/entities/platforms';
+import { platformReach, type MoverSpec } from '../../engine/entities/platforms';
 import type { Enemy } from '../../engine/entities/types';
 import { Input } from '../../engine/input';
-import { buildLevel } from '../../engine/level/build';
+import { buildLevel, type BuiltLevel } from '../../engine/level/build';
 import type { LevelDef } from '../../engine/level/types';
 import { waterColumn } from '../../engine/level/zones';
 import { isSolidTile } from '../../engine/tiles';
@@ -41,6 +41,12 @@ const MIN_BRIDGE_LENGTH = 3;
 const PETENES_COUNTER_X0 = 156;
 const PETENES_COUNTER_X1 = 164;
 const PETENES_COUNTER_MAX_TIME = 6;
+/** Fila (bloques) a la que nada el jugador dentro del túnel de Petenes. */
+const PETENES_SWIM_ROW = 10;
+/** La cámara deja al jugador al 40 % del ancho de la pantalla (`World.update`). */
+const CAMERA_LEAD = 0.4;
+/** Rango de un entero de 32 bits sin signo: lleva la salida de mulberry32 a [0, 1). */
+const UINT32_RANGE = 2 ** 32;
 
 function makeWorld(def: LevelDef, fromCheckpoint = false): World {
   const audio = new AudioEngine();
@@ -48,14 +54,14 @@ function makeWorld(def: LevelDef, fromCheckpoint = false): World {
   return new World({ def, input: new Input(), audio, session: { score: 0, coins: 0, lives: START_LIVES }, fromCheckpoint });
 }
 
-/** Generador pseudoaleatorio reproducible (mulberry32) para sustituir a `Math.random`. */
+/** Generador pseudoaleatorio reproducible (mulberry32, con sus constantes originales) para sustituir a `Math.random`. */
 function seededRandom(seed: number): () => number {
   let a = seed;
   return () => {
     a = (a + 0x6d2b79f5) | 0;
     let t = Math.imul(a ^ (a >>> 15), 1 | a);
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    return ((t ^ (t >>> 14)) >>> 0) / UINT32_RANGE;
   };
 }
 
@@ -77,7 +83,7 @@ function sweep(world: World, pace: number, done: () => boolean, onStep: () => vo
   const p = world.player;
   while (!done()) {
     world.camX += pace * T * STEP;
-    p.x = world.camX + 0.4 * VW - p.w / 2;
+    p.x = world.camX + CAMERA_LEAD * VW - p.w / 2;
     p.y = GROUND * T - p.h;
     p.vy = 0;
     p.inv = Infinity;
@@ -102,7 +108,7 @@ function enemiesLost(def: LevelDef, pace: number): string[] {
       if (e.x <= p.x + p.w) settled.add(e);
       else if (!e.alive && !e.dead) {
         settled.add(e);
-        lost.push(`${e.id}@${Math.round(spawnX.get(e)! / T)}`);
+        lost.push(`${e.id}@${Math.round((spawnX.get(e) ?? e.x) / T)}`);
       }
     }
   });
@@ -120,12 +126,73 @@ function enemiesInArena(def: LevelDef, pace: number): string[] {
     .map((e) => `${e.id}@${(e.x / T).toFixed(1)}`);
 }
 
-describe.each(BALANCED.map((l) => [l.id, l] as const))('equilibrio del nivel %s', (_id, def) => {
-  const lvl = buildLevel(def);
+type ColumnTest = (x: number) => boolean;
+
+/** Terreno de un nivel construido: bloque sólido, columna con agua navegable y hoyo sin agua. */
+function terrainOf(lvl: BuiltLevel): { solid: (x: number, y: number) => boolean; swimmable: ColumnTest; isPit: ColumnTest } {
   const solid = (x: number, y: number): boolean =>
     y >= 0 && y < ROWS && x >= 0 && x < lvl.width && isSolidTile(lvl.grid[y][x]);
   const swimmable = (x: number): boolean => waterColumn(lvl.water, x) !== null;
   const isPit = (x: number): boolean => !solid(x, GROUND) && !swimmable(x);
+  return { solid, swimmable, isPit };
+}
+
+/**
+ * Columnas donde se pisa tierra: la primera con suelo tras un hoyo y la columna `x1 + 1`
+ * de cada zona de agua si es suelo (la orilla de salida). No incluye los peldaños
+ * siguientes de una orilla escalonada ni las plataformas altas.
+ */
+function landingsOf(lvl: BuiltLevel): number[] {
+  const { solid, swimmable, isPit } = terrainOf(lvl);
+  const landings = new Set<number>();
+  for (let x = 1; x < lvl.width; x++) if (solid(x, GROUND) && isPit(x - 1)) landings.add(x);
+  for (const z of lvl.water) if (solid(z.x1 + 1, GROUND) && !swimmable(z.x1 + 1)) landings.add(z.x1 + 1);
+  return [...landings];
+}
+
+/** Enemigos de suelo que nacen al alcance de un aterrizaje (la nauyaca, dentro de su aviso). */
+function ambushesOf(lvl: BuiltLevel): string[] {
+  const landings = landingsOf(lvl);
+  return lvl.enemies
+    .filter((e) => !isAirborne(e.id) && e.ty >= GROUND - AMBUSH_ROWS)
+    .filter((e) => {
+      const reach = e.id === 'nauyaca' ? NAUYACA_CLEARANCE : LANDING_CLEARANCE;
+      return landings.some((l) => e.tx >= l && e.tx - l <= reach);
+    })
+    .map((e) => `${e.id}@${e.tx},${e.ty}`);
+}
+
+/** Plataformas genéricas horizontales que cruzan un barranco. */
+function bridgesOf(lvl: BuiltLevel): MoverSpec[] {
+  const { isPit } = terrainOf(lvl);
+  return lvl.platforms.filter((s): s is MoverSpec => s.kind === 'mover' && s.dy === 0 && isPit(s.x));
+}
+
+/** Plataformas que se relevan con `s`: sus recorridos se solapan o se tocan. */
+function relayPartners(s: MoverSpec, bridges: readonly MoverSpec[]): MoverSpec[] {
+  const r = platformReach(s);
+  return bridges.filter((o) => {
+    const q = platformReach(o);
+    return o !== s && q.x0 <= r.x1 + 1 && q.x1 >= r.x0 - 1;
+  });
+}
+
+/** Al reaparecer: primera sombra por delante sin un bloque `F` al alcance antes de ella (o `null`). */
+function shadeWithoutFire(def: LevelDef): number | null {
+  const world = makeWorld(def, true);
+  world.update(STEP);
+  const shades = world.enemies.filter((e) => e.id === 'shade').map((e) => Math.floor(e.x / T));
+  // Todas las sombras quedan antes del punto de control: nada que comprobar.
+  if (shades.length === 0) return null;
+  const firstShade = Math.min(...shades);
+  const leftmost = Math.floor(world.camX / T);
+  const fire = world.grid.some((row) => row.some((t, x) => t === 'F' && x >= leftmost && x < firstShade));
+  return fire ? null : firstShade;
+}
+
+describe.each(BALANCED.map((l) => [l.id, l] as const))('equilibrio del nivel %s', (_id, def) => {
+  const lvl = buildLevel(def);
+  const hasShades = lvl.enemies.some((e) => e.id === 'shade');
 
   it('tiene un consejo de Toh', () => {
     expect(def.hint?.trim()).toBeTruthy();
@@ -136,18 +203,9 @@ describe.each(BALANCED.map((l) => [l.id, l] as const))('equilibrio del nivel %s'
     expect(lost).toEqual([]);
   });
 
-  // Se aterriza al otro lado de un hoyo o al salir del agua por su orilla.
+  // Se aterriza al otro lado de un hoyo o al salir del agua por su orilla (ver `landingsOf`).
   it('ningún enemigo de suelo acecha junto a un aterrizaje', () => {
-    const landings = new Set(Array.from({ length: lvl.width }, (_, x) => x).filter((x) => x > 0 && solid(x, GROUND) && isPit(x - 1)));
-    for (const z of lvl.water) if (solid(z.x1 + 1, GROUND) && !swimmable(z.x1 + 1)) landings.add(z.x1 + 1);
-    const ambushes = lvl.enemies
-      .filter((e) => !isAirborne(e.id) && e.ty >= GROUND - AMBUSH_ROWS)
-      .filter((e) => {
-        const reach = e.id === 'nauyaca' ? NAUYACA_CLEARANCE : LANDING_CLEARANCE;
-        return [...landings].some((l) => e.tx >= l && e.tx - l <= reach);
-      })
-      .map((e) => `${e.id}@${e.tx},${e.ty}`);
-    expect(ambushes).toEqual([]);
+    expect(ambushesOf(lvl)).toEqual([]);
   });
 
   it.runIf(!!def.boss)('ningún enemigo entra en la arena del jefe antes de que despierte', () => {
@@ -156,28 +214,15 @@ describe.each(BALANCED.map((l) => [l.id, l] as const))('equilibrio del nivel %s'
   });
 
   // Al reaparecer se pierde el chile y las sombras solo se disuelven con fuego.
-  it('si quedan sombras tras el punto de control, hay chile al alcance al reaparecer', () => {
-    const world = makeWorld(def, true);
-    world.update(STEP);
-    const shades = world.enemies.filter((e) => e.id === 'shade').map((e) => Math.floor(e.x / T));
-    if (shades.length === 0) return;
-    const firstShade = Math.min(...shades);
-    const leftmost = Math.floor(world.camX / T);
-    const fire = world.grid.some((row) => row.some((t, x) => t === 'F' && x >= leftmost && x < firstShade));
-    expect(fire, `chile antes de la sombra en ${firstShade}`).toBe(true);
+  it.runIf(hasShades)('si quedan sombras tras el punto de control, hay chile al alcance al reaparecer', () => {
+    expect(withSeed(SEEDS[0], () => shadeWithoutFire(def))).toBeNull();
   });
 
-  it('las plataformas de un mismo barranco comparten ritmo y miden al menos 3 bloques', () => {
-    const overPit = lvl.platforms.filter((s) => s.kind === 'mover' && s.dy === 0 && isPit(s.x));
-    for (const s of overPit) {
-      if (s.kind !== 'mover') continue;
+  it.runIf(bridgesOf(lvl).length > 0)('las plataformas de un mismo barranco comparten ritmo y miden al menos 3 bloques', () => {
+    const bridges = bridgesOf(lvl);
+    for (const s of bridges) {
       expect(s.length, `plataforma en ${s.x}`).toBeGreaterThanOrEqual(MIN_BRIDGE_LENGTH);
-      const r = platformReach(s);
-      const partners = overPit.filter((o) => {
-        const q = platformReach(o);
-        return o !== s && q.x0 <= r.x1 + 1 && q.x1 >= r.x0 - 1;
-      });
-      for (const o of partners) if (o.kind === 'mover') expect(o.period, `relevo en ${s.x}-${o.x}`).toBe(s.period);
+      for (const o of relayPartners(s, bridges)) expect(o.period, `relevo en ${s.x}-${o.x}`).toBe(s.period);
     }
   });
 });
@@ -186,8 +231,8 @@ describe('Carrillo Puerto', () => {
   it('presenta el tren sobre agua navegable: el primer fallo no cuesta una vida', () => {
     const lvl = buildLevel(LEVEL_2_1);
     const first = lvl.platforms.find((s) => s.kind === 'train');
-    expect(first).toBeDefined();
-    const r = platformReach(first!);
+    if (!first) throw new Error('Carrillo Puerto no tiene trenes');
+    const r = platformReach(first);
     for (let x = r.x0; x <= r.x1; x++) {
       if (isSolidTile(lvl.grid[GROUND][x])) continue;
       expect(waterColumn(lvl.water, x), `barranco sin agua en ${x}`).not.toBeNull();
@@ -197,20 +242,22 @@ describe('Carrillo Puerto', () => {
 
 describe('Petenes', () => {
   it('el último tramo del túnel se remonta contra la marea sin agotar el oxígeno', () => {
-    const world = makeWorld(LEVEL_2_4);
-    const p = world.player;
-    p.x = PETENES_COUNTER_X0 * T + 2;
-    p.y = 10 * T;
-    p.inv = Infinity;
-    world.camX = p.x - 0.4 * VW;
-    world.input.press('right');
-    let elapsed = 0;
-    while (p.x < PETENES_COUNTER_X1 * T && elapsed < PETENES_COUNTER_MAX_TIME) {
-      world.update(STEP);
-      elapsed += STEP;
-    }
-    expect(world.phase).toBe('play');
-    expect(p.x).toBeGreaterThanOrEqual(PETENES_COUNTER_X1 * T);
-    expect(p.oxygen).toBeGreaterThan(0);
+    withSeed(SEEDS[0], () => {
+      const world = makeWorld(LEVEL_2_4);
+      const p = world.player;
+      p.x = PETENES_COUNTER_X0 * T + 2;
+      p.y = PETENES_SWIM_ROW * T;
+      p.inv = Infinity;
+      world.camX = p.x - CAMERA_LEAD * VW;
+      world.input.press('right');
+      let elapsed = 0;
+      while (p.x < PETENES_COUNTER_X1 * T && elapsed < PETENES_COUNTER_MAX_TIME) {
+        world.update(STEP);
+        elapsed += STEP;
+      }
+      expect(world.phase).toBe('play');
+      expect(p.x).toBeGreaterThanOrEqual(PETENES_COUNTER_X1 * T);
+      expect(p.oxygen).toBeGreaterThan(0);
+    });
   });
 });
