@@ -27,6 +27,12 @@ const TUNNEL_X1 = 170;
 const AIR_POCKETS = [142, 154, 164] as const;
 /** Raíz que cuelga del techo del túnel: debajo vive una morena. */
 const HANGING_ROOT = 148;
+/**
+ * Contracorriente del último tramo del túnel (bloques/s). Igual que la de Candelaria
+ * (1-5): la prueba acuática del Mundo 2 no es más suave que la del Mundo 1. Se
+ * remonta a 2 bloques/s netos y hay respiradero y bolsa de aire a mitad.
+ */
+const TUNNEL_COUNTER_CURRENT = -2.5;
 
 const inPocket = (x: number): boolean => AIR_POCKETS.some((p) => x === p || x === p + 1);
 
@@ -62,7 +68,8 @@ const rootWall = (x: number): Op[] => Array.from({ length: SURFACE }, (_, y) => 
  *            remontable), más raíces y otra morena.
  *   118-129  Petén del punto de control (Toh) con un snorkel de caracol.
  *   130-175  Túnel bajo las raíces: tres bolsas de aire, un respiradero de burbujas,
- *            corriente a favor y luego en contra; morena colgada del techo.
+ *            corriente a favor y luego en contra (TUNNEL_COUNTER_CURRENT); morena
+ *            colgada del techo.
  *   176-221  Orilla final, poza con marea, bandera y templo.
  */
 export const LEVEL_2_4: LevelDef = {
@@ -112,7 +119,7 @@ export const LEVEL_2_4: LevelDef = {
     ['coins', 134, 9, 6],
     ['coins', 144, 10, 4],
     ['coins', 156, 9, 6], ['bubbles', 160, 11],
-    ['current', 156, 163, SURFACE + 1, 11, -2, 0], // y luego empuja en contra
+    ['current', 156, 163, SURFACE + 1, 11, TUNNEL_COUNTER_CURRENT, 0], // y luego empuja en contra
     ['coins', 166, 10, 3],
     // Premio oculto sobre el techo del túnel (se vuelve desde la orilla final).
     ['coins', 167, SURFACE - 1, 4], ['row', 169, 3, '?'],
