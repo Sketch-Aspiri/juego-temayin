@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { PLAYER_GROUND_ART_HEIGHT, PLAYER_SPRITES } from '../../data/playerSprites';
+import { PLAYER_ART_HEIGHT, PLAYER_SPRITES } from '../../data/playerSprites';
 import { TOH_POSES } from '../../data/tohSprites';
 import { SPRITES } from '../../data/intro';
 import { PLAYER_FRAMES, createPlayer } from '../entities/player';
@@ -13,9 +13,9 @@ function context() {
 }
 
 describe('Tamaño y apoyo de Temayin', () => {
-  it.each(['idle', 'run', 'win'] as const)('mantiene la altura visible en todos los cuadros de %s', anim => {
+  it.each(['idle', 'run', 'jump', 'fall', 'win'] as const)('mantiene la altura visible en todos los cuadros de %s', anim => {
     for (const frame of PLAYER_SPRITES[anim]) {
-      expect(frame.h * frame.scale).toBeCloseTo(PLAYER_GROUND_ART_HEIGHT);
+      expect(frame.h * frame.scale).toBeCloseTo(PLAYER_ART_HEIGHT);
       expect(frame.y + frame.h).toBe(frame.ay);
     }
   });
@@ -28,11 +28,12 @@ describe('Tamaño y apoyo de Temayin', () => {
     }
   });
 
-  it('cambia de reposo a carrera sin mover los pies ni modificar al jugador', () => {
+  it.each([1, -1] as const)('conserva tamaño, proporción y apoyo al cambiar de animación mirando hacia %s', face => {
     const p = createPlayer(4);
+    p.face = face;
     const assets = { player: { complete: true, naturalWidth: 1360 } } as unknown as Assets;
     const { c, methods } = context();
-    for (const anim of ['idle', 'run'] as const) {
+    for (const anim of ['idle', 'run', 'jump', 'fall', 'win'] as const) {
       p.anim = anim;
       for (let i = 0; i < PLAYER_SPRITES[anim].length; i++) {
         p.frame = i;
@@ -40,15 +41,13 @@ describe('Tamaño y apoyo de Temayin', () => {
         drawPlayerSprite(c, assets, p, 40, false, 0, 100);
         const call = methods.drawImage.mock.calls.at(-1)!;
         expect(call[6] + call[8]).toBeCloseTo(0);
-        expect(call[8]).toBeCloseTo(PLAYER_GROUND_ART_HEIGHT);
+        expect(call[8]).toBeCloseTo(PLAYER_ART_HEIGHT);
+        const frame = PLAYER_SPRITES[anim][i];
+        expect(call[7] / call[8]).toBeCloseTo(frame.w / frame.h);
+        expect(methods.translate).toHaveBeenLastCalledWith(p.x + p.w / 2 - 40, p.y + p.h);
         expect(p).toEqual(before);
       }
     }
-  });
-
-  it('conserva la proporción y la flexión natural de las poses aéreas', () => {
-    for (const frame of [...PLAYER_SPRITES.jump, ...PLAYER_SPRITES.fall]) expect(frame.scale).toBe(0.6);
-    expect(PLAYER_SPRITES.jump[6].h).toBeLessThan(PLAYER_SPRITES.jump[3].h);
   });
 });
 

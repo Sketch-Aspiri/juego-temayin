@@ -7,8 +7,9 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parent.parent
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--url', default='http://127.0.0.1:5197')
+parser.add_argument('--output', default='imagenes/verificacion/recortes', help='Carpeta de capturas e informe')
 args = parser.parse_args()
-out = ROOT / 'imagenes/verificacion/recortes'
+out = ROOT / args.output
 out.mkdir(parents=True, exist_ok=True)
 errors = []
 
@@ -131,6 +132,12 @@ with sync_playwright() as p:
     page.evaluate("qaSprites.world.player.anim='run';qaSprites.world.player.frame=1")
     page.wait_for_timeout(100)
     page.screenshot(path=str(out / 'checkpoint-carrera.png'))
+    for anim, frame in [('jump', 4), ('fall', 0)]:
+        page.evaluate("""({anim,frame})=>{const p=qaSprites.world.player;
+          p.anim=anim;p.frame=frame;p.y=360-p.h;}""", {'anim': anim, 'frame': frame})
+        page.wait_for_timeout(100)
+        page.screenshot(path=str(out / f'checkpoint-{anim}.png'))
+    page.evaluate("""()=>{const p=qaSprites.world.player;p.anim='idle';p.frame=0;p.y=480-p.h;}""")
     page.evaluate('qaSprites.world.checkpointReached=true')
     page.wait_for_timeout(100)
     page.screenshot(path=str(out / 'toh-checkpoint-activo.png'))
@@ -171,7 +178,7 @@ assert not errors, errors
 assert all(item['removed'] > 0 for item in others), others
 expected = {'perch': 61004, 'perchLook': 61007, 'perchTail': 66713, 'flyUp': 108977, 'flyDown': 86693, 'point': 85061}
 assert all(item['cleanedPixels'] == expected[item['pose']] for item in report), report
-ground = [item for item in players if item['anim'] in ['idle', 'run', 'win']]
-assert max(item['height'] for item in ground) - min(item['height'] for item in ground) <= 2, ground
-assert len(set(item['bottom'] for item in ground)) == 1, ground
+assert max(item['height'] for item in players) - min(item['height'] for item in players) <= 2, players
+assert all(abs(item['height'] - 82) <= 1 for item in players), players
+assert len(set(item['bottom'] for item in players)) == 1, players
 assert completion['phase'] == 'done' and completion['checkpoint'], completion
