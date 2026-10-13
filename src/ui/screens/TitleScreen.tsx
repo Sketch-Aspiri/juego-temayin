@@ -37,7 +37,10 @@ export function TitleScreen() {
       <Backdrop />
       <div className="title__content">
         <div className="title__panel">
-          <h1 className="logo">TEMAYIN</h1>
+          <h1 className="logo" aria-label="Temayin">
+            <span className="logo__depth" aria-hidden="true">TEMAYIN</span>
+            <span className="logo__face" aria-hidden="true">TEMAYIN</span>
+          </h1>
           <p className="logo__sub">La Aventura del Jaguar</p>
           <nav className="title__menu" aria-label="Menú principal">
             <button type="button" className="btn btn--primary btn--big" onClick={() => go('levels')} autoFocus>Jugar</button>

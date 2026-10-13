@@ -1,3 +1,18 @@
+@font-face {
+  font-family: 'Lilita One';
+  src: url('/assets/fonts/lilita-one.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bree Serif';
+  src: url('/assets/fonts/bree-serif.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bg: #10241a;
   --bg-2: #183a29;
@@ -145,31 +160,72 @@ body:has(.title) { touch-action: pan-y; }
   max-width: 100%;
 }
 .logo {
-  margin: 0;
-  font-size: clamp(3rem, 11vw, 6rem);
-  line-height: 1;
-  letter-spacing: 0.04em;
-  transform: rotate(-2deg);
-  background: linear-gradient(#fff07a, var(--gold-deep));
+  position: relative;
+  display: grid;
+  isolation: isolate;
+  margin: 0.1rem 0 0.25rem;
+  padding: 0.05em 0.08em 0.12em;
+  font-family: 'Lilita One', var(--font);
+  font-weight: 400;
+  font-size: clamp(3.1rem, 10vw, 6rem);
+  line-height: 1.05;
+  letter-spacing: 0.025em;
+  transform: rotate(-3deg);
+  filter: drop-shadow(0 6px 10px rgba(0, 16, 9, 0.45));
+}
+.logo__depth, .logo__face { grid-area: 1 / 1; }
+.logo__depth {
+  color: #995918;
+  -webkit-text-stroke: 0.105em #0c2918;
+  paint-order: stroke fill;
+  transform: translate(0.012em, 0.065em);
+  text-shadow: 0 0.025em 0 #70410c, 0 0.055em 0 #081c11;
+}
+.logo__face {
+  position: relative;
+  background: linear-gradient(#fffbb8 0%, #ffe578 23%, #ffc343 48%, #eba31c 51%, #ffdc67 62%, #ef991d 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  -webkit-text-stroke: 3px #1a3d1f;
+  -webkit-text-stroke: 0.052em #286135;
   paint-order: stroke fill;
-  filter: drop-shadow(0 4px 0 #1a3d1f);
+  filter: drop-shadow(0 -0.012em 0 #f9ee9f);
 }
 .logo__sub {
-  margin: 0 0 0.6rem;
-  font-size: clamp(1.1rem, 3.5vw, 1.9rem);
-  font-weight: 800;
-  text-shadow: 0 2px 0 #1a3d1f, 0 0 12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 0 0 0.65rem;
+  font-family: 'Bree Serif', Georgia, serif;
+  font-size: clamp(1.05rem, 3.1vw, 1.55rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  color: #fff2c6;
+  text-shadow: 0 2px 0 #153f29, 0 2px 10px rgba(0, 0, 0, 0.65);
 }
+.logo__sub::before, .logo__sub::after {
+  content: '';
+  width: clamp(0.65rem, 2vw, 1.8rem);
+  height: 2px;
+  flex-shrink: 0;
+  background: linear-gradient(90deg, transparent, #ffe17a);
+}
+.logo__sub::after { transform: rotate(180deg); }
 .title__menu {
   display: flex;
   gap: 0.8rem;
   flex-wrap: wrap;
   justify-content: center;
 }
+.title__menu .btn {
+  font-family: 'Lilita One', var(--font);
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.025em;
+}
+.title__menu .btn--big { font-size: 1.65rem; }
 .controls-help {
   list-style: none;
   margin: 0.6rem 0 0;

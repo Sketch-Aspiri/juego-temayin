@@ -55,6 +55,8 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 
 ## Contenido actual
 
+- La portada utiliza letras doradas con relieve y contornos verde selva, con Lilita One para el título y los botones y Bree Serif para el subtítulo. Las fuentes originales y sus licencias están incluidas en `public/assets/fonts/`; se cargan desde el juego. El nombre del título sigue siendo accesible como «Temayin» y se adapta a pantallas pequeñas.
+
 - La pantalla principal muestra una nota con el commit de la versión compilada y su resumen de cambios. Si el commit tiene cuerpo, «Ver cambios de esta versión» despliega los detalles. `npm run build` incluye esa información en el archivo publicado; el navegador no consulta commits posteriores. Para compilar fuentes sin `.git`, se pueden proporcionar `TEMAYIN_BUILD_COMMIT`, `TEMAYIN_BUILD_SUMMARY` y `TEMAYIN_BUILD_CHANGES` (cambios separados por saltos de línea). El servidor de desarrollo muestra «Versión local». Revisión del build en escritorio y móvil: `python imagenes/verify_version_note.py --expected-commit SHA_COMPLETO --production`, usando `npm run preview -- --port 5198`; capturas en `imagenes/.temp/nota-version/`.
 
 - El suelo de El Triunfo, Petenes y Calkiní incorpora 24 sprites pintados de pasto, raíces y tierra húmeda. Las variantes continúan entre bloques y conservan su posición al avanzar la cámara. [Arte original, atlas y prompt](imagenes/nuevos/terreno/SUELO_PANTANO.md); recurso WebP sin pérdidas en `public/assets/terreno/suelo-pantano.webp`. Verificación de continuidad, escritorio, móvil y orillas: `python imagenes/verify_terrain.py`; capturas en `imagenes/verificacion/suelo-pantano/`.

@@ -5,12 +5,13 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 OUTPUT = Path(__file__).resolve().parent / '.temp/nota-version'
-VIEWPORTS = [('escritorio', 1280, 850), ('movil-horizontal', 844, 390), ('movil-vertical', 390, 844)]
+VIEWPORTS = [('escritorio', 1280, 850), ('movil-horizontal', 844, 390), ('movil-vertical', 390, 844), ('movil-pequeno', 360, 640)]
 
 
 def capture(page, name, width, height, expected, production):
     page.set_viewport_size({'width': width, 'height': height})
     note = page.get_by_role('region', name='Notas de versión')
+    assert page.get_by_role('heading', name='Temayin', exact=True).count() == 1
     note.scroll_into_view_if_needed()
     assert note.is_visible()
     assert note.get_by_text(f'commit {expected[:7]}', exact=True).is_visible()
@@ -20,6 +21,8 @@ def capture(page, name, width, height, expected, production):
     page.screenshot(path=str(OUTPUT / f'{name}.png'))
     overflow = note.evaluate('(el)=>el.scrollWidth>el.clientWidth')
     assert not overflow, name
+    title = page.locator('.logo').bounding_box()
+    assert title['x'] >= 0 and title['x'] + title['width'] <= width, title
     return {'viewport': name, 'commit': expected, 'horizontalOverflow': overflow}
 
 
@@ -52,10 +55,16 @@ def main():
         page.goto(args.url)
         page.wait_for_load_state('networkidle')
         page.wait_for_selector('.version-note')
+        fonts = page.evaluate("""async()=>{
+          await document.fonts.ready;
+          return ['Lilita One','Bree Serif'].map(family=>({family,
+            loaded:[...document.fonts].some(font=>font.family===family&&font.status==='loaded')}));
+        }""")
+        assert all(font['loaded'] for font in fonts), fonts
         reports = [capture(page, name, w, h, args.expected_commit, args.production) for name, w, h in VIEWPORTS]
         verify_details_and_menu(page)
         browser.close()
-    payload = {'screens': reports, 'errors': errors, 'menuWorks': True}
+    payload = {'screens': reports, 'fonts': fonts, 'errors': errors, 'menuWorks': True}
     (OUTPUT / 'revision.json').write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     assert not errors, errors
     print(json.dumps(payload, ensure_ascii=False))
