@@ -15,7 +15,9 @@ import { waterBank } from '../waterBanks';
  *   61       Columna que se cierra al entrar en la arena.
  *   62-83    Arena: agua poco profunda (superficie 11.5) sobre el suelo; troncos
  *            (plat) en la fila 9 a ambos lados y uno alto en el centro con chile.
- *            En la fase 2 el agua sube a 10.75: se nada y los troncos son refugio.
+ *            Fase 2 (5 PV): el agua sube a 10.75, se nada y dos troncos flotan a la
+ *            deriva entre los troncos fijos; caen propágulos del mangle.
+ *            Fase 3 (2 PV): frenesí bajo la tormenta (bosses/kaiman/tuning.ts).
  *   84       Muro de salida (se rompe al vencer al jefe).
  *   85-106   Bandera y templo.
  */

@@ -90,15 +90,18 @@ describe('Kaimán Moreleti', () => {
     expect(boss.hp).toBe(K.KAIMAN_HP - 1);
   });
 
-  it('a mitad de vida pasa a la fase 2 y el agua de la arena sube', () => {
+  it('al bajar a PHASE2_HP pasa a la fase 2, el agua sube y aparecen troncos a la deriva', () => {
     const { world, boss } = setup();
     const before = world.level.water;
-    boss.hp = K.KAIMAN_HP / 2 + 1;
+    const platforms = world.platforms.length;
+    boss.hp = K.PHASE2_HP + 1;
     enter('exposed', boss);
     dropOnBack(world, boss);
     boss.update(world, STEP);
     expect(boss.phase2).toBe(true);
+    expect(boss.phase).toBe(2);
     expect(boss.st).toBe('rising');
+    expect(world.platforms.length).toBe(platforms + K.DRIFT_LOGS.length);
     expect(boss.hittable).toBe(false);
 
     run(world, boss, K.RISE_TIME * 0.98);
@@ -158,5 +161,125 @@ describe('Kaimán Moreleti', () => {
     expect(boss.lockCamera).toBe(false);
     expect(boss.hudVisible).toBe(false);
     expect(world.tileAt(exit, 5)).toBe(' ');
+  });
+
+  it('al bajar a PHASE3_HP entra en frenesí: ruge sin recibir daño y luego sigue', () => {
+    const { world, boss } = setup();
+    boss.phase = 2;
+    boss.hp = K.PHASE3_HP + 1;
+    enter('exposed', boss);
+    dropOnBack(world, boss);
+    boss.update(world, STEP);
+    expect(boss.phase).toBe(3);
+    expect(boss.st).toBe('enrage');
+    expect(boss.hittable).toBe(false);
+    run(world, boss, K.ENRAGE_TIME + 0.05);
+    expect(boss.st).toBe('walk');
+  });
+
+  it('en la fase 3 el coletazo lanza tres olas (dos hacia delante), también junto al muro', () => {
+    const { world, boss } = setup();
+    boss.phase = 3;
+    boss.x = 76 * T;
+    world.player.x = 64 * T;
+    enter('tailPrep', boss);
+    run(world, boss, K.TAIL_PREP_TIME[2] + STEP * 2);
+    expect(boss.waves.length).toBe(3);
+    expect(boss.waves.filter((w) => w.dir === boss.face).length).toBe(2);
+    // La ola trasera sale de la arena; la segunda delantera ya viaja tras la primera.
+    run(world, boss, 0.6);
+    const front = boss.waves.filter((w) => w.dir === boss.face && !(w.wait && w.wait > 0));
+    expect(front.length).toBe(2);
+    expect(Math.abs(front[0].x - front[1].x)).toBeGreaterThan(K.WAVE_GAP * 0.8);
+  });
+
+  it('en la fase 3 emerge dos veces antes de quedar expuesto', () => {
+    const { world, boss } = setup();
+    const p = world.player;
+    p.x = 66 * T;
+    p.y = 4 * T; // en el aire, lejos del hocico
+    boss.phase = 3;
+    // Fuerza la emboscada: lleva demasiados ataques sin sumergirse.
+    boss.lastAttack = 'bite';
+    (boss as unknown as { sinceDive: number }).sinceDive = K.MAX_ATTACKS_WITHOUT_DIVE;
+    enter('walk', boss);
+    const seen: KaimanState[] = [];
+    for (let t = 0; t < 12 && boss.st !== 'exposed'; t += STEP) {
+      p.inv = 10;
+      boss.update(world, STEP);
+      if (seen[seen.length - 1] !== boss.st) seen.push(boss.st);
+    }
+    expect(seen.filter((s) => s === 'emerge').length).toBe(2);
+    expect(boss.st).toBe('exposed');
+  });
+
+  it('el escupitajo abre las fauces (el fuego daña) y lanza bolas de lodo que hieren', () => {
+    const { world, boss } = setup();
+    const p = world.player;
+    boss.x = 76 * T;
+    p.x = 66 * T;
+    p.y = 12 * T - p.h;
+    p.shield = true;
+    p.inv = 0;
+    enter('spitPrep', boss);
+    expect(boss.jawsOpen).toBe(true);
+    run(world, boss, K.SPIT_PREP_TIME[0] + STEP * 2);
+    expect(boss.st).toBe('spit');
+    expect(boss.mud.length).toBe(K.SPIT_BALLS[0]);
+    for (let i = 0; i < K.FIRE_HITS_PER_HP; i++) boss.onFireball(world);
+    expect(boss.hp).toBe(K.KAIMAN_HP - 1);
+    run(world, boss, 2);
+    expect(p.shield).toBe(false);
+    expect(boss.mud.length).toBe(0);
+  });
+
+  it('el golpe al mangle hace caer propágulos con aviso: uno sobre el jugador', () => {
+    const { world, boss } = setup();
+    const p = world.player;
+    boss.phase = 2;
+    boss.x = 76 * T;
+    p.x = 66 * T;
+    p.y = 12 * T - p.h;
+    p.shield = true;
+    p.inv = 0;
+    enter('slamPrep', boss);
+    run(world, boss, K.SLAM_PREP_TIME[1] + STEP * 2);
+    expect(boss.st).toBe('slam');
+    expect(boss.propagules.length).toBe(K.PROPAGULES[1]);
+    expect(boss.propagules.some((s) => Math.abs(s.x - (p.x + p.w / 2)) < 1)).toBe(true);
+    // Durante el aviso no hace daño.
+    run(world, boss, K.PROPAGULE_WARN[1] * 0.8);
+    expect(p.shield).toBe(true);
+    run(world, boss, 1.2);
+    expect(p.shield).toBe(false);
+  });
+
+  it('la pelea completa se puede ganar: recorre las tres fases y usa todo el repertorio', () => {
+    const { world, boss } = setup();
+    const p = world.player;
+    p.x = 64 * T;
+    const attacks = new Set<string>();
+    const phases = new Set<number>();
+    let t = 0;
+    for (; t < 240 && boss.st !== 'gone'; t += STEP) {
+      p.inv = 10; // invulnerable: solo se mide el ritmo de la pelea
+      if (boss.st === 'exposed' && boss.t > 0.2) {
+        p.inv = 0;
+        dropOnBack(world, boss);
+        p.inv = 0;
+      } else if (boss.st !== 'exposed') {
+        // Se mueve de lado a lado para provocar ataques cercanos y lejanos.
+        p.x = (Math.sin(t / 3) > 0 ? 65 : 81) * T;
+        p.y = 12 * T - p.h;
+        p.vy = 0;
+      }
+      boss.update(world, STEP);
+      if (boss.lastAttack) attacks.add(boss.lastAttack);
+      phases.add(boss.phase);
+    }
+    expect(boss.st).toBe('gone');
+    expect([...phases].sort()).toEqual([1, 2, 3]);
+    expect([...attacks].sort()).toEqual(['bite', 'dive', 'slam', 'spit', 'tail']);
+    expect(t).toBeLessThan(180);
   });
 });

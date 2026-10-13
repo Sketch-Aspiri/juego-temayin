@@ -17,6 +17,8 @@ export interface Boss extends Rect {
   readonly intro: boolean;
   /** Una bola de fuego puede impactarle ahora mismo. */
   readonly hittable: boolean;
+  /** Etapa actual de la pelea (1 = inicial) para que el decorado reaccione; opcional. */
+  readonly stage?: number;
   update(world: World, dt: number): void;
   onFireball(world: World): void;
   draw(ctx: CanvasRenderingContext2D, assets: Assets, camX: number): void;

@@ -44,4 +44,11 @@ describe('Presentación de jefes', () => {
     expect(markup).toContain('width:50%');
     expect(markup).not.toContain('boss-intro__img');
   });
+
+  it('oculta el fragmento de la pose vecina en el retrato de Kaimán', () => {
+    const markup = renderToStaticMarkup(<BossBanner boss={{ id: 'kaiman', name: 'Kaimán', hp: 8, maxHp: 8, intro: true }} />);
+    expect(markup).toContain('clip-path="url(#boss-portrait-kaiman)"');
+    expect(markup).toContain('clip-rule="evenodd"');
+    expect(markup).toContain('M522 243h10v28h-10z');
+  });
 });

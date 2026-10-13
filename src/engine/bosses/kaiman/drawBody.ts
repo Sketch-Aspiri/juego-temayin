@@ -22,7 +22,7 @@ const COL = {
 
 const WALK_STATES: ReadonlySet<KaimanState> = new Set(['walk', 'bite']);
 const DIZZY_STATES: ReadonlySet<KaimanState> = new Set(['exposed', 'dead']);
-const OPEN_STATES: ReadonlySet<KaimanState> = new Set(['gape', 'bite', 'pant']);
+const OPEN_STATES: ReadonlySet<KaimanState> = new Set(['gape', 'bite', 'pant', 'spitPrep', 'spit', 'enrage']);
 const JAW_OPEN = 0.4;
 const HEAD_SCALE_X = 0.86;
 const HEAD_SCALE_Y = 1.12;
@@ -36,8 +36,8 @@ function jawAngle(st: KaimanState, clock: number, roar: number): number {
 }
 
 function tailSwing(st: KaimanState, t: number): number {
-  if (st === 'tail') return Math.sin(t * 16) * 22 * Math.max(0, 1 - t);
-  if (st === 'tailPrep') return -18;
+  if (st === 'tail' || st === 'slam') return Math.sin(t * 16) * 22 * Math.max(0, 1 - t);
+  if (st === 'tailPrep' || st === 'slamPrep') return -18;
   return 0;
 }
 

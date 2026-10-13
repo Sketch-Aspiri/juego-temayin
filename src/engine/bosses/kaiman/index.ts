@@ -1,49 +1,63 @@
 import type { Assets } from '../../assets';
 import { GROUND, T } from '../../constants';
 import { makeParticle } from '../../entities/particles';
+import { createPlatform } from '../../entities/platforms';
 import type { BossConfig } from '../../level/types';
 import { moveX, moveY, overlap, type SolidFn } from '../../physics';
 import type { World } from '../../World';
 import { closeArena, entranceColumn, openExit, rewardBurst } from '../arena';
 import type { Boss } from '../types';
 import { emergeX, splash, stepWaves, surfaceY, tailWaves, type TailWave } from './attacks';
+import { type Attack, chooseAttack } from './choose';
 import { drawKaiman } from './draw';
 import { arenaSurface, floodArena, risingSurface } from './flood';
+import { dropPropagules, makeRng, type MudBall, type Propagule, spitMud, stepMud, stepPropagules } from './hazards';
 import * as K from './tuning';
 
 export type KaimanState =
   | 'sleep' | 'intro' | 'walk'
   | 'gape' | 'bite' | 'pant'
   | 'tailPrep' | 'tail'
+  | 'spitPrep' | 'spit'
+  | 'slamPrep' | 'slam'
   | 'dive' | 'submerged' | 'warn' | 'emerge' | 'exposed'
-  | 'hurt' | 'rising' | 'dead' | 'gone';
-type Attack = 'bite' | 'tail' | 'dive';
+  | 'hurt' | 'rising' | 'enrage' | 'dead' | 'gone';
 
 /** Estados en los que las bolas de fuego le pasan de largo (bajo el agua, presentándose, herido…). */
 const NON_HITTABLE: ReadonlySet<KaimanState> = new Set([
-  'sleep', 'intro', 'dive', 'submerged', 'warn', 'hurt', 'rising', 'dead', 'gone',
+  'sleep', 'intro', 'dive', 'submerged', 'warn', 'hurt', 'rising', 'enrage', 'dead', 'gone',
 ]);
 /** Fauces abiertas: el único momento en que el fuego le hace daño. */
-const JAWS_OPEN: ReadonlySet<KaimanState> = new Set(['gape', 'bite', 'pant', 'rising']);
+const JAWS_OPEN: ReadonlySet<KaimanState> = new Set(['gape', 'bite', 'pant', 'spitPrep', 'spit', 'rising', 'enrage']);
 /** Tocarlo en estos estados no hace daño (en `exposed` se le pisa). */
 const HARMLESS: ReadonlySet<KaimanState> = new Set([
-  'sleep', 'intro', 'dive', 'submerged', 'warn', 'exposed', 'hurt', 'rising', 'dead', 'gone',
+  'sleep', 'intro', 'dive', 'submerged', 'warn', 'exposed', 'hurt', 'rising', 'enrage', 'dead', 'gone',
 ]);
 const UNDERWATER: ReadonlySet<KaimanState> = new Set(['submerged', 'warn']);
 
-const PATTERN_1: readonly Attack[] = ['bite', 'dive', 'tail', 'dive'];
-const PATTERN_2: readonly Attack[] = ['dive', 'bite', 'tail', 'dive', 'tail'];
-const FIRST_STATE: Readonly<Record<Attack, KaimanState>> = { bite: 'gape', tail: 'tailPrep', dive: 'dive' };
+const FIRST_STATE: Readonly<Record<Attack, KaimanState>> = {
+  bite: 'gape', tail: 'tailPrep', dive: 'dive', spit: 'spitPrep', slam: 'slamPrep',
+};
 
 /** Velocidad (px/s) con la que la cámara se centra en la arena. */
 const CAM_PAN = 1200;
 const STOMP_REBOUND = 600;
+/** Semilla del azar del jefe: misma pelea para la misma partida de entradas. */
+const RNG_SEED = 0x2a7c;
+/** Altura (px) de la boca respecto a la parte superior de la caja. */
+const MOUTH_Y = 18;
 
 /**
  * Kaimán Moreleti, jefe del Mundo 2 (AGENTS.md §4.4): cocodrilo de pantano
- * (*Crocodylus moreletii*). Muerde en carrera, lanza olas con la cola y se sumerge
- * para emerger bajo el jugador. Punto débil: el lomo tras emerger (pisotón) y el
- * fuego dentro de las fauces abiertas. A mitad de vida el agua de la arena sube.
+ * (*Crocodylus moreletii*). Tres fases:
+ *  1. Muerde en carrera, lanza olas con la cola, escupe lodo y se sumerge para
+ *     emerger bajo el jugador.
+ *  2. (≤ `PHASE2_HP`) El agua sube, flotan troncos a la deriva y golpea las raíces del
+ *     mangle para que caigan propágulos.
+ *  3. (≤ `PHASE3_HP`) Frenesí bajo la tormenta: más rápido, dos olas seguidas,
+ *     emboscada doble y más proyectiles.
+ * Elige ataques con pesos según la distancia (`choose.ts`). Punto débil: el lomo
+ * tras emerger (pisotón) y el fuego dentro de las fauces abiertas.
  */
 export class Kaiman implements Boss {
   readonly id = 'kaiman';
@@ -63,15 +77,20 @@ export class Kaiman implements Boss {
   t = 0;
   /** Reloj continuo para animaciones. */
   clock = 0;
-  phase2 = false;
+  phase: K.KaimanPhase = 1;
   waves: TailWave[] = [];
+  mud: MudBall[] = [];
+  propagules: Propagule[] = [];
   /** Altura (px) de la superficie bajo el jefe (para el dibujo de ondas y ojos). */
   surfY = GROUND * T;
+  /** Último ataque elegido (no se repite dos veces seguidas). */
+  lastAttack: Attack | null = null;
   private targetX = 0;
-  private next: Attack = 'bite';
-  private cycle = 0;
+  private sinceDive = 0;
+  private divesLeft = 0;
   private fireHits = 0;
   private floodFrom: number | null = null;
+  private readonly rng = makeRng(RNG_SEED);
   private readonly a0: number;
   private readonly a1: number;
 
@@ -80,6 +99,12 @@ export class Kaiman implements Boss {
     [this.a0, this.a1] = cfg.arena;
   }
 
+  get phase2(): boolean {
+    return this.phase >= 2;
+  }
+  get stage(): number {
+    return this.phase;
+  }
   get lockCamera(): boolean {
     return this.st !== 'sleep' && this.st !== 'gone';
   }
@@ -111,6 +136,10 @@ export class Kaiman implements Boss {
     this.t = 0;
   }
 
+  private by(values: K.ByPhase): number {
+    return K.byPhase(values, this.phase);
+  }
+
   private faceToPlayer(world: World): void {
     const p = world.player;
     this.face = p.x + p.w / 2 < this.x + this.w / 2 ? -1 : 1;
@@ -129,6 +158,8 @@ export class Kaiman implements Boss {
     // La cámara queda fija sobre la arena mientras dura la pelea.
     if (this.st !== 'dead') world.camX = Math.min(entranceColumn(this.a0) * T, world.camX + CAM_PAN * dt);
     this.waves = stepWaves(world, this.waves, dt, this.left, this.right);
+    this.mud = stepMud(world, this.mud, dt, this.left, this.right);
+    this.propagules = stepPropagules(world, this.propagules, dt);
     this.vy = Math.min(this.vy + K.GRAVITY * dt, K.MAX_FALL);
     this.runState(world, dt);
     this.move(world, dt);
@@ -154,18 +185,23 @@ export class Kaiman implements Boss {
       world.shake = 0.4;
       world.audio.play('brk');
     }
-    if (this.st === 'emerge' && this.onGround && wasAir) {
-      this.set('exposed');
-      splash(world, this.x + this.w / 2, this.surfY);
-      world.shake = 0.25;
-      world.audio.play('bump');
-    }
+    if (this.st === 'emerge' && this.onGround && wasAir) this.land(world);
+  }
+
+  /** Cae tras emerger: en la fase 3 vuelve a hundirse una vez antes de quedar expuesto. */
+  private land(world: World): void {
+    splash(world, this.x + this.w / 2, this.surfY);
+    world.shake = 0.25;
+    world.audio.play('bump');
+    if (--this.divesLeft > 0) {
+      this.faceToPlayer(world);
+      this.set('dive');
+    } else this.set('exposed');
   }
 
   /** Lógica de cada estado: velocidad horizontal y transiciones por tiempo. */
   private runState(world: World, dt: number): void {
-    const p2 = this.phase2;
-    const speed = p2 ? K.PHASE2_SPEED : 1;
+    const speed = this.by(K.PHASE_SPEED);
     this.vx = 0;
     switch (this.st) {
       case 'intro':
@@ -174,11 +210,11 @@ export class Kaiman implements Boss {
       case 'walk':
         this.faceToPlayer(world);
         this.vx = this.face * K.WALK_SPEED * speed;
-        if (this.t > K.byPhase(K.WALK_TIME, p2)) this.startAttack(world);
+        if (this.t > this.by(K.WALK_TIME)) this.startAttack(world);
         break;
       case 'gape': // aviso: abre las fauces y tiembla
         this.faceToPlayer(world);
-        if (this.t > K.byPhase(K.GAPE_TIME, p2)) this.set('bite');
+        if (this.t > this.by(K.GAPE_TIME)) this.set('bite');
         break;
       case 'bite':
         this.vx = this.face * K.BITE_SPEED * speed;
@@ -187,34 +223,47 @@ export class Kaiman implements Boss {
         break;
       case 'tailPrep':
         this.faceToPlayer(world);
-        if (this.t > K.byPhase(K.TAIL_PREP_TIME, p2)) this.tailSweep(world);
+        if (this.t > this.by(K.TAIL_PREP_TIME)) this.tailSweep(world);
+        break;
+      case 'spitPrep':
+        this.faceToPlayer(world);
+        if (this.t > this.by(K.SPIT_PREP_TIME)) this.spit(world);
+        break;
+      case 'slamPrep':
+        if (this.t > this.by(K.SLAM_PREP_TIME)) this.slam(world);
         break;
       case 'submerged':
         this.chase(world, speed);
         break;
       case 'warn': // quieto bajo el jugador: burbujas y ondas
         this.x = this.targetX;
-        if (this.t > K.byPhase(K.WARN_TIME, p2)) this.emerge(world);
+        if (this.t > this.by(K.WARN_TIME)) this.emerge(world);
         break;
       case 'rising':
         this.flood(world);
         if (this.t > K.RISE_TIME) this.set('walk');
         break;
+      case 'enrage':
+        if (Math.random() < dt * 6) world.shake = Math.max(world.shake, 0.15);
+        if (this.t > K.ENRAGE_TIME) this.set('walk');
+        break;
       case 'dead':
         if (this.t > K.DEAD_TIME) this.vanish(world);
         break;
       default:
-        this.timeouts(p2);
+        this.timeouts();
     }
   }
 
   /** Estados quietos que solo esperan a que pase su tiempo. */
-  private timeouts(p2: boolean): void {
+  private timeouts(): void {
     const limits: Partial<Record<KaimanState, [number, KaimanState]>> = {
-      pant: [K.byPhase(K.PANT_TIME, p2), 'walk'],
+      pant: [this.by(K.PANT_TIME), 'walk'],
       tail: [K.TAIL_TIME, 'walk'],
+      spit: [K.SPIT_TIME, 'walk'],
+      slam: [K.SLAM_TIME, 'walk'],
       dive: [K.DIVE_TIME, 'submerged'],
-      exposed: [K.byPhase(K.EXPOSED_TIME, p2), 'walk'],
+      exposed: [this.by(K.EXPOSED_TIME), 'walk'],
       hurt: [K.HURT_TIME, 'walk'],
     };
     const lim = limits[this.st];
@@ -222,11 +271,15 @@ export class Kaiman implements Boss {
   }
 
   private startAttack(world: World): void {
-    const pattern = this.phase2 ? PATTERN_2 : PATTERN_1;
-    this.next = pattern[this.cycle++ % pattern.length];
-    this.set(FIRST_STATE[this.next]);
+    const p = world.player;
+    const distTiles = Math.abs(p.x + p.w / 2 - (this.x + this.w / 2)) / T;
+    const next = chooseAttack({ phase: this.phase, last: this.lastAttack, sinceDive: this.sinceDive, distTiles }, this.rng);
+    this.lastAttack = next;
+    this.sinceDive = next === 'dive' ? 0 : this.sinceDive + 1;
+    if (next === 'dive') this.divesLeft = this.by(K.DIVE_CHAIN);
+    this.set(FIRST_STATE[next]);
     world.audio.play('warn');
-    if (this.next === 'dive') splash(world, this.x + this.w / 2, this.surfY);
+    if (next === 'dive') splash(world, this.x + this.w / 2, this.surfY);
   }
 
   private kickDust(world: World, dt: number): void {
@@ -237,11 +290,29 @@ export class Kaiman implements Boss {
 
   private tailSweep(world: World): void {
     const tailX = this.x + this.w / 2 - this.face * (this.w / 2);
-    this.waves = [...this.waves, ...tailWaves(tailX, this.face, this.phase2)];
+    this.waves = [...this.waves, ...tailWaves(tailX, this.face, this.phase)];
     splash(world, tailX, this.surfY);
     world.shake = 0.25;
     world.audio.play('quills');
     this.set('tail');
+  }
+
+  /** Escupe bolas de lodo en arco hacia donde está el jugador. */
+  private spit(world: World): void {
+    const p = world.player;
+    const mouthX = this.x + this.w / 2 + this.face * (this.w / 2);
+    this.mud = [...this.mud, ...spitMud(mouthX, this.y + MOUTH_Y, p.x + p.w / 2, this.phase)];
+    world.audio.play('quills');
+    this.set('spit');
+  }
+
+  /** Coletazo contra las raíces del mangle: llueven propágulos con aviso. */
+  private slam(world: World): void {
+    this.propagules = [...this.propagules, ...dropPropagules(world, this.left, this.right, this.phase, this.rng)];
+    splash(world, this.x + this.w / 2 - this.face * (this.w / 2), this.surfY);
+    world.shake = 0.45;
+    world.audio.play('brk');
+    this.set('slam');
   }
 
   /** Bajo el agua nada hacia el jugador; luego se detiene y avisa. */
@@ -249,7 +320,7 @@ export class Kaiman implements Boss {
     const target = emergeX(world, this.w, this.left, this.right);
     const d = target - this.x;
     this.vx = Math.abs(d) > 4 ? Math.sign(d) * K.SUBMERGED_SPEED * speed : 0;
-    if (this.t <= K.byPhase(K.SUBMERGED_TIME, this.phase2)) return;
+    if (this.t <= this.by(K.SUBMERGED_TIME)) return;
     this.targetX = target;
     this.faceToPlayer(world);
     this.set('warn');
@@ -316,19 +387,35 @@ export class Kaiman implements Boss {
     if (this.hp <= 0) {
       this.set('dead');
       this.waves = [];
+      this.mud = [];
+      this.propagules = [];
       world.addScore(K.SCORE_KILL, this.x + this.w / 2, this.y - 30);
-    } else if (!this.phase2 && this.hp <= this.maxHp / 2) {
+    } else if (this.phase < 2 && this.hp <= K.PHASE2_HP) {
       this.startPhase2(world);
+    } else if (this.phase < 3 && this.hp <= K.PHASE3_HP) {
+      this.startPhase3(world);
     } else this.set('hurt');
   }
 
-  /** Fase 2: ruge y el agua del pantano sube durante `RISE_TIME`. */
+  /** Fase 2: ruge, el agua del pantano sube durante `RISE_TIME` y flotan troncos a la deriva. */
   private startPhase2(world: World): void {
-    this.phase2 = true;
-    this.cycle = 0;
+    this.phase = 2;
     this.floodFrom = arenaSurface(world.level.water, this.a0, this.a1);
+    for (const [x, length, dx, period] of K.DRIFT_LOGS) {
+      world.platforms.push(createPlatform({ kind: 'mover', x, y: K.DRIFT_LOG_ROW, length, dx, dy: 0, period }));
+    }
     world.shake = 0.6;
     this.set('rising');
+  }
+
+  /** Fase 3: frenesí bajo la tormenta. */
+  private startPhase3(world: World): void {
+    this.phase = 3;
+    this.sinceDive = 0;
+    this.mud = [];
+    world.shake = 0.7;
+    world.audio.play('roar');
+    this.set('enrage');
   }
 
   private flood(world: World): void {

@@ -1,0 +1,17 @@
+{
+  "image": "kaiman-escupitajo.png",
+  "width": 1774,
+  "height": 887,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "kaiman-escupitajo",
+      "x": 90,
+      "y": 257,
+      "width": 1631,
+      "height": 535
+    }
+  ],
+  "qa": "Alfa >= 40; PNG original intacto; WebP sin pérdidas."
+}

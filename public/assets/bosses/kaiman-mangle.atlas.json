@@ -1,0 +1,17 @@
+{
+  "image": "kaiman-mangle.png",
+  "width": 1536,
+  "height": 1024,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "kaiman-mangle",
+      "x": 111,
+      "y": 51,
+      "width": 1338,
+      "height": 931
+    }
+  ],
+  "qa": "Alfa >= 40; PNG original intacto; WebP sin pérdidas."
+}

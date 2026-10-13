@@ -1,0 +1,17 @@
+{
+  "image": "lodo.png",
+  "width": 1330,
+  "height": 1182,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "lodo",
+      "x": 296,
+      "y": 239,
+      "width": 745,
+      "height": 747
+    }
+  ],
+  "qa": "Alfa >= 40; PNG original intacto; WebP sin pérdidas."
+}

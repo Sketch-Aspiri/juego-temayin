@@ -6,15 +6,22 @@ interface BossBannerProps {
   boss: BossHud;
 }
 
+const rectanglePath = ([x, y, w, h]: readonly [number, number, number, number]): string => `M${x} ${y}h${w}v${h}h${-w}z`;
+
 /** Cartel de presentación mientras el jefe despierta, y barra de vida durante la pelea. */
 export function BossBanner({ boss }: BossBannerProps) {
   const presentation = BOSS_PRESENTATIONS[boss.id];
+  const clipId = `boss-portrait-${boss.id}`;
   if (boss.intro) {
     return (
       <div className={`boss-intro boss-intro--${boss.id}`} role="alert" style={{ borderColor: presentation.color }}>
         {presentation.frame ? (
           <svg className="boss-intro__img" viewBox={presentation.frame.join(' ')} aria-hidden="true">
-            <image href={assetUrl(presentation.image)} width="1536" height="1024" />
+            {presentation.cutout && <defs><clipPath id={clipId}>
+              <path d={`${rectanglePath(presentation.frame)} ${rectanglePath(presentation.cutout)}`} clipRule="evenodd" />
+            </clipPath></defs>}
+            <image href={assetUrl(presentation.image)} width="1536" height="1024"
+              clipPath={presentation.cutout ? `url(#${clipId})` : undefined} />
           </svg>
         ) : <img src={assetUrl(presentation.image)} alt="" className="boss-intro__img" />}
         <div className="boss-intro__text">

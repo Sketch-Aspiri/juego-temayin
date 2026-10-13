@@ -4,7 +4,7 @@ import { waterColumn } from '../../level/zones';
 import { overlap } from '../../physics';
 import type { Rect } from '../../types';
 import type { World } from '../../World';
-import { byPhase, WAVE_H, WAVE_SPEED, WAVE_W } from './tuning';
+import { byPhase, type KaimanPhase, WAVE_GAP, WAVE_H, WAVE_SPEED, WAVE_W } from './tuning';
 
 /**
  * Ataques a distancia del Kaimán: la ola del coletazo y la posición de emersión.
@@ -17,6 +17,8 @@ export interface TailWave {
   readonly dir: 1 | -1;
   readonly speed: number;
   t: number;
+  /** Segundos antes de ponerse en marcha (la segunda ola de la fase 3 sale después). */
+  wait?: number;
 }
 
 const SPLASH_PARTICLES = 10;
@@ -30,11 +32,17 @@ export function surfaceY(world: World, px: number): number {
 
 export const waveRect = (w: TailWave): Rect => ({ x: w.x - WAVE_W / 2, y: GROUND * T - WAVE_H, w: WAVE_W, h: WAVE_H });
 
-/** Olas que lanza un coletazo desde `x`: hacia el jugador; en la fase 2, también hacia atrás. */
-export function tailWaves(x: number, face: 1 | -1, phase2: boolean): TailWave[] {
-  const speed = byPhase(WAVE_SPEED, phase2);
-  const front: TailWave = { x, dir: face, speed, t: 0 };
-  return phase2 ? [front, { x, dir: face === 1 ? -1 : 1, speed, t: 0 }] : [front];
+/**
+ * Olas que lanza un coletazo desde `x`: hacia el jugador; en la fase 2, también hacia
+ * atrás; en la fase 3, además, una segunda ola delantera que obliga a saltar dos veces.
+ */
+export function tailWaves(x: number, face: 1 | -1, phase: KaimanPhase): TailWave[] {
+  const speed = byPhase(WAVE_SPEED, phase);
+  const back: 1 | -1 = face === 1 ? -1 : 1;
+  const waves: TailWave[] = [{ x, dir: face, speed, t: 0 }];
+  if (phase >= 2) waves.push({ x, dir: back, speed, t: 0 });
+  if (phase >= 3) waves.push({ x, dir: face, speed, t: 0, wait: WAVE_GAP / speed });
+  return waves;
 }
 
 /**
@@ -44,6 +52,11 @@ export function tailWaves(x: number, face: 1 | -1, phase2: boolean): TailWave[] 
 export function stepWaves(world: World, waves: readonly TailWave[], dt: number, left: number, right: number): TailWave[] {
   const out: TailWave[] = [];
   for (const w of waves) {
+    if (w.wait !== undefined && w.wait > 0) {
+      w.wait -= dt;
+      out.push(w);
+      continue;
+    }
     w.x += w.dir * w.speed * dt;
     w.t += dt;
     if (w.x < left || w.x > right) continue;

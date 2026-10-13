@@ -1,0 +1,17 @@
+{
+  "image": "propagulo-mangle.png",
+  "width": 1024,
+  "height": 1536,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "propagulo-mangle",
+      "x": 401,
+      "y": 62,
+      "width": 220,
+      "height": 1391
+    }
+  ],
+  "qa": "Alfa >= 40; PNG original intacto; WebP sin pérdidas."
+}

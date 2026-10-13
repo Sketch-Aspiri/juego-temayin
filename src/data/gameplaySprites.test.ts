@@ -26,9 +26,10 @@ describe('Cobertura del arte jugable', () => {
     expect(PAINTED_ART).toContain(sprite.file);
   });
 
-  it('conserva los originales y los prompts de los siete sprites nuevos', () => {
+  it('conserva los originales y los prompts de todos los sprites nuevos', () => {
     for (const sprite of Object.values(NEW_GAMEPLAY_SPRITES)) {
-      const path = `../../imagenes/nuevos/${sprite.file.replace('.webp', '.png')}`;
+      const source = sprite.file.replace('bosses/', 'jefes/').replace('.webp', '.png');
+      const path = `../../imagenes/nuevos/${source}`;
       expect(sourceImages[path]).toBeDefined();
       expect(prompts[path.replace('.png', '.prompt.txt')]).toContain('stylized-concept');
     }

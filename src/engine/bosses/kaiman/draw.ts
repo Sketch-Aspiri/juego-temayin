@@ -3,8 +3,11 @@ import { type AtlasFrame, drawLazyFrame, footFrame } from '../../render/enemies/
 import { outlined, star, type Ctx } from '../../render/drawUtils';
 import type { Kaiman, KaimanState } from './index';
 import { drawCrocodile, drawEyesAtSurface } from './drawBody';
-import { DEAD_TIME, DIVE_TIME, KAIMAN_H, RISE_TIME, WAVE_H, WAVE_W } from './tuning';
+import { DEAD_TIME, DIVE_TIME, ENRAGE_TIME, KAIMAN_H, RISE_TIME, WAVE_H, WAVE_W } from './tuning';
 import { drawNewGameplaySprite } from '../../render/gameplaySprites';
+import { NEW_GAMEPLAY_SPRITES } from '../../../data/newGameplaySprites';
+import { KAIMAN_REST_FRAME, KAIMAN_REST_NEIGHBOR } from '../../../data/kaimanArt';
+import { drawFrenzyAura, drawMud, drawPropagules, drawStorm } from './drawHazards';
 
 /**
  * Dibujo del Kaimán Moreleti con la hoja pintada `bosses/kaiman.webp`
@@ -13,7 +16,7 @@ import { drawNewGameplaySprite } from '../../render/gameplaySprites';
  */
 const KAIMAN_SHEET = 'bosses/kaiman.webp';
 const ART = {
-  rest: footFrame(15, 182, 517, 297),
+  rest: footFrame(...KAIMAN_REST_FRAME),
   charge: footFrame(522, 207, 520, 253),
   tail: footFrame(1056, 111, 470, 381),
   dive: footFrame(13, 616, 495, 308),
@@ -22,15 +25,26 @@ const ART = {
 } as const satisfies Readonly<Record<string, AtlasFrame>>;
 /** ~517 px de largo en la hoja → ~200 px en pantalla (caja de 170 × 62; cola y hocico sobresalen). */
 const SHEET_SCALE = 0.38;
+const ATTACK_POSE_WIDTH = 200;
+/** La pose estirada tiene más cola: mantiene el tamaño del hocico y del torso. */
+const SPIT_POSE_WIDTH = 240;
+const SPIT_RECOIL_TIME = 0.3;
+const SPIT_RECOIL_PX = 7;
+const SLAM_SWING_TIME = 0.35;
+const SLAM_SWING_ANGLE = 0.08;
+const STATUS_GAP = 26;
 const SHEET_FRAME: Readonly<Partial<Record<KaimanState, AtlasFrame>>> = {
-  intro: ART.rest, walk: ART.rest, hurt: ART.rest, rising: ART.charge,
-  gape: ART.charge, bite: ART.charge, pant: ART.charge,
-  tailPrep: ART.tail, tail: ART.tail,
+  intro: ART.rest, walk: ART.rest, hurt: ART.rest, rising: ART.charge, enrage: ART.charge,
+  gape: ART.charge, bite: ART.charge, pant: ART.charge, spitPrep: ART.charge, spit: ART.charge,
+  tailPrep: ART.tail, tail: ART.tail, slamPrep: ART.tail, slam: ART.tail,
   dive: ART.dive, emerge: ART.exposed, exposed: ART.exposed,
   dead: ART.dead,
 };
 
-const TELEGRAPH: ReadonlySet<KaimanState> = new Set(['gape', 'tailPrep', 'rising']);
+const TELEGRAPH: ReadonlySet<KaimanState> = new Set(['gape', 'tailPrep', 'spitPrep', 'slamPrep', 'rising', 'enrage']);
+const ALERT: Readonly<Partial<Record<KaimanState, string>>> = {
+  gape: '¡MORDIDA!', tailPrep: '¡OLA!', spitPrep: '¡LODO!', slamPrep: '¡MANGLE!', warn: '¡APÁRTATE!',
+};
 const SHAKE_FREQ = 70;
 const SHAKE_PX = 4;
 const BLINK_FREQ = 14;
@@ -40,8 +54,30 @@ const WARN_BUBBLES = 7;
 
 /** Sprite de la hoja si está activada y cargada; si no, `false` para usar el respaldo. */
 function drawSheet(c: Ctx, b: Kaiman): boolean {
+  if (b.st === 'spitPrep' || b.st === 'spit') return drawNewGameplaySprite(c, 'kaimanSpit', 0, 0, SPIT_POSE_WIDTH);
+  if (b.st === 'slamPrep' || b.st === 'slam') return drawNewGameplaySprite(c, 'kaimanSlam', 0, 0, ATTACK_POSE_WIDTH);
   const fr = SHEET_FRAME[b.st];
-  return fr !== undefined && drawLazyFrame(c, KAIMAN_SHEET, fr, SHEET_SCALE);
+  if (!fr) return false;
+  c.save();
+  if (fr === ART.rest) {
+    const [x, y, w, h] = KAIMAN_REST_NEIGHBOR;
+    c.beginPath(); c.rect(-VW, -VW, 2 * VW, 2 * VW);
+    c.rect((x - fr.ax) * SHEET_SCALE, (y - fr.ay) * SHEET_SCALE, w * SHEET_SCALE, h * SHEET_SCALE);
+    c.clip('evenodd');
+  }
+  const painted = drawLazyFrame(c, KAIMAN_SHEET, fr, SHEET_SCALE);
+  c.restore();
+  return painted;
+}
+
+/** Los avisos quedan por encima de la silueta pintada, que sobresale de la caja física. */
+function poseTop(b: Kaiman): number {
+  const pose = b.st === 'spitPrep' || b.st === 'spit' ? NEW_GAMEPLAY_SPRITES.kaimanSpit
+    : b.st === 'slamPrep' || b.st === 'slam' ? NEW_GAMEPLAY_SPRITES.kaimanSlam : null;
+  const width = pose === NEW_GAMEPLAY_SPRITES.kaimanSpit ? SPIT_POSE_WIDTH : ATTACK_POSE_WIDTH;
+  const height = pose ? pose.frame[3] * width / pose.frame[2]
+    : (SHEET_FRAME[b.st]?.h ?? KAIMAN_H / SHEET_SCALE) * SHEET_SCALE;
+  return b.y + b.h - height;
 }
 
 /** Ondas concéntricas en la superficie y burbujas que delatan al cocodrilo sumergido. */
@@ -73,7 +109,7 @@ function drawWave(c: Ctx, x: number, dir: 1 | -1, t: number): void {
   c.save();
   c.translate(x, 0);
   c.scale(dir, 1);
-  if (drawNewGameplaySprite(c, 'waterWave', 0, GROUND * T, r.w * 2, r.h)) {
+  if (drawNewGameplaySprite(c, 'waterWave', 0, GROUND * T, r.w, r.h)) {
     c.restore();
     return;
   }
@@ -81,10 +117,10 @@ function drawWave(c: Ctx, x: number, dir: 1 | -1, t: number): void {
   c.strokeStyle = '#e8fff6';
   c.lineWidth = 3;
   c.beginPath();
-  c.moveTo(-r.w, GROUND * T);
-  c.quadraticCurveTo(-r.w / 2, top - 6, r.w / 2, top);
-  c.quadraticCurveTo(r.w / 2 + 6, top + 14, r.w / 4, top + 10);
-  c.quadraticCurveTo(r.w * 0.8, GROUND * T - 8, r.w, GROUND * T);
+  c.moveTo(-r.w / 2, GROUND * T);
+  c.quadraticCurveTo(-r.w / 4, top, r.w / 4, top);
+  c.quadraticCurveTo(r.w / 4 + 3, top + 14, r.w / 8, top + 10);
+  c.quadraticCurveTo(r.w * 0.4, GROUND * T - 8, r.w / 2, GROUND * T);
   c.closePath();
   c.fill();
   c.stroke();
@@ -92,18 +128,27 @@ function drawWave(c: Ctx, x: number, dir: 1 | -1, t: number): void {
 }
 
 function drawStatusFx(c: Ctx, b: Kaiman, x: number): void {
+  c.save();
   if (b.st === 'exposed') {
+    const y = poseTop(b);
     for (let i = 0; i < 3; i++) {
       const a = b.t * 5 + i * 2.1;
-      star(c, x + Math.cos(a) * 50, b.y - 22 + Math.sin(a) * 10, 9);
+      star(c, x + Math.cos(a) * 50, y - 8 + Math.sin(a) * 10, 9);
     }
-  }
-  if (b.st === 'gape' || b.st === 'tailPrep' || b.st === 'warn') {
-    c.font = 'bold 40px "Trebuchet MS", sans-serif';
+    c.font = 'bold 17px "Trebuchet MS", sans-serif';
     c.textAlign = 'center';
-    const y = b.st === 'warn' ? b.surfY - 60 : b.y - 30;
-    outlined(c, '!', x, y, '#ff5e5b', 6);
+    outlined(c, '¡PISA EL LOMO!', x, y - STATUS_GAP, '#ffe29a', 4);
+    c.strokeStyle = '#ffe29a'; c.lineWidth = 3;
+    c.beginPath(); c.moveTo(x - 6, y - 14); c.lineTo(x, y - 7); c.lineTo(x + 6, y - 14); c.stroke();
   }
+  const alert = ALERT[b.st];
+  if (alert) {
+    c.font = 'bold 19px "Trebuchet MS", sans-serif';
+    c.textAlign = 'center';
+    const y = b.st === 'warn' ? b.surfY - 68 : poseTop(b) - STATUS_GAP;
+    outlined(c, alert, x, y, b.st === 'slamPrep' ? '#ffe29a' : '#ffba91', 5);
+  }
+  c.restore();
 }
 
 /** Cuerpo del cocodrilo (sprite o procedural) con el temblor, el parpadeo y la inmersión. */
@@ -124,21 +169,30 @@ function drawBody(c: Ctx, b: Kaiman, x: number): void {
   if (b.st === 'dead') c.globalAlpha = Math.max(0, Math.min(1, (DEAD_TIME - b.t) * 2));
   if (b.face < 0) c.scale(-1, 1);
   if (b.st === 'emerge') c.rotate(-0.18);
+  if (b.st === 'spit') c.translate(-Math.sin(Math.min(1, b.t / SPIT_RECOIL_TIME) * Math.PI) * SPIT_RECOIL_PX, 0);
+  if (b.st === 'slam') c.rotate(-Math.sin(Math.min(1, b.t / SLAM_SWING_TIME) * Math.PI) * SLAM_SWING_ANGLE);
   if (!drawSheet(c, b)) {
-    const roar = b.st === 'rising' ? Math.min(1, b.t / (RISE_TIME / 4)) : 0;
+    const roarTime = b.st === 'enrage' ? ENRAGE_TIME : RISE_TIME;
+    const roar = b.st === 'rising' || b.st === 'enrage' ? Math.min(1, b.t / (roarTime / 4)) : 0;
     drawCrocodile(c, b.st, b.clock, b.t, roar);
   }
   c.restore();
 }
 
 export function drawKaiman(c: Ctx, b: Kaiman, camX: number): void {
-  for (const w of b.waves) drawWave(c, w.x - camX, w.dir, w.t);
+  if (b.phase === 3 && b.st !== 'gone') drawStorm(c, b.clock, b.st === 'dead' ? Math.max(0, 1 - b.t / DEAD_TIME) : 1);
+  for (const w of b.waves) if (!w.wait || w.wait <= 0) drawWave(c, w.x - camX, w.dir, w.t);
+  drawPropagules(c, b.propagules, camX, b.clock);
+  drawMud(c, b.mud, camX);
   if (b.st === 'gone') return;
   const x = b.x + b.w / 2 - camX;
   if (x < -300 || x > VW + 300) return;
   if (b.underwater) {
     if (b.st === 'submerged') drawEyesAtSurface(c, x, b.surfY, b.face, b.clock);
     drawRipples(c, x, b.surfY, b.clock, b.st === 'warn');
-  } else drawBody(c, b, x);
+  } else {
+    if (b.phase === 3 && b.st !== 'dead') drawFrenzyAura(c, x, b.y + b.h / 2, b.clock);
+    drawBody(c, b, x);
+  }
   drawStatusFx(c, b, x);
 }
