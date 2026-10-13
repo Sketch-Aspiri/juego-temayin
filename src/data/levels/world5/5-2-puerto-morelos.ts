@@ -16,7 +16,8 @@ export const LEVEL_5_2: LevelDef = {
     ['coins', 22, 8, 5], ['coins', 38, 6, 5], ['coins', 54, 9, 5],
     ['row', 59, 7, 'S'], ['coins', 74, 6, 5], ['coins', 85, 9, 4],
     // Islote seco para reaparecer con oxígeno completo y otro snorkel disponible.
-    ['row', 99, 7, 'M'], ['row', 100, 5, 'S'], ['row', 101, 3, 'F'],
+    // Dejan espacio para subir al siguiente peldaño incluso después de usarlos.
+    ['row', 99, 6, 'M'], ['row', 100, 4, 'S'], ['row', 101, 2, 'F'],
     ['pit', 104, 180], ['water', 104, 180, 3],
     ['bubbles', 108, 11], ['bubbles', 120, 11], ['bubbles', 132, 11],
     ['bubbles', 144, 11], ['bubbles', 156, 11], ['bubbles', 168, 11], ['bubbles', 178, 11],
