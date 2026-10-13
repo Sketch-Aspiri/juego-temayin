@@ -1,5 +1,6 @@
 import { T, TAU } from '../constants';
-import { makeTile, roundRect, type Ctx } from './drawUtils';
+import { makeTile, type Ctx } from './drawUtils';
+import { createMayaTextures } from './mayaTextures';
 import { createRuinsTextures, type RuinsTexId } from './ruinsTextures';
 import { createGulfTextures, type GulfTexId } from './gulfTextures';
 import { createHaciendaTextures } from './haciendaTextures';
@@ -49,49 +50,6 @@ const squares = (c: Ctx, color: string, pts: ReadonlyArray<readonly [number, num
   for (const [x, y] of pts) c.fillRect(x, y, 3, 3);
 };
 
-function pipeTile(top: boolean, left: boolean): HTMLCanvasElement {
-  return makeTile(T, (c) => {
-    const x0 = top ? 0 : left ? 4 : 0;
-    const x1 = top ? T : left ? T : T - 4;
-    const grd = c.createLinearGradient(left ? 0 : -T, 0, left ? 2 * T : T, 0);
-    grd.addColorStop(0, '#1e7a2c');
-    grd.addColorStop(0.3, '#6ee36f');
-    grd.addColorStop(0.55, '#2fae3e');
-    grd.addColorStop(1, '#0f4d18');
-    c.fillStyle = grd;
-    c.fillRect(x0, 0, x1 - x0, T);
-    c.fillStyle = '#0b3a12';
-    if (left) c.fillRect(x0, 0, 3, T);
-    else c.fillRect(x1 - 3, 0, 3, T);
-    if (top) {
-      c.fillRect(0, 0, T, 3);
-      c.fillRect(0, T - 3, T, 3);
-    }
-  });
-}
-
-function questionTile(): HTMLCanvasElement {
-  return makeTile(T, (c) => {
-    c.fillStyle = '#5a3a08';
-    roundRect(c, 0, 0, T, T, 4);
-    c.fill();
-    c.fillStyle = '#f7b928';
-    roundRect(c, 2, 2, T - 4, T - 4, 3);
-    c.fill();
-    c.fillStyle = '#ffe17a';
-    c.fillRect(4, 4, T - 8, 3);
-    c.fillStyle = '#5a3a08';
-    for (const [x, y] of [[5, 5], [T - 7, 5], [5, T - 7], [T - 7, T - 7]]) c.fillRect(x, y, 2, 2);
-    c.font = 'bold 26px "Trebuchet MS", sans-serif';
-    c.textAlign = 'center';
-    c.textBaseline = 'middle';
-    c.fillStyle = '#5a3a08';
-    c.fillText('?', T / 2 + 2, T / 2 + 3);
-    c.fillStyle = '#fff';
-    c.fillText('?', T / 2, T / 2 + 1);
-  });
-}
-
 /** Genera todas las texturas de bloques una sola vez (requiere DOM). */
 export function createTextures(): Textures {
   return {
@@ -116,30 +74,6 @@ export function createTextures(): Textures {
       }
       c.fillStyle = '#7ee07f';
       c.fillRect(0, 0, T, 3);
-    }),
-    brick: makeTile(T, (c) => {
-      c.fillStyle = '#c4622d';
-      c.fillRect(0, 0, T, T);
-      c.fillStyle = '#5a2a10';
-      c.fillRect(0, 0, T, 2);
-      c.fillRect(0, 19, T, 2);
-      c.fillRect(19, 0, 2, 20);
-      c.fillRect(9, 20, 2, 20);
-      c.fillRect(29, 20, 2, 20);
-      c.fillStyle = '#e8925a';
-      c.fillRect(0, 2, T, 2);
-      c.fillRect(0, 21, T, 2);
-    }),
-    question: questionTile(),
-    used: makeTile(T, (c) => {
-      c.fillStyle = '#3d2610';
-      roundRect(c, 0, 0, T, T, 4);
-      c.fill();
-      c.fillStyle = '#8a5a2b';
-      roundRect(c, 2, 2, T - 4, T - 4, 3);
-      c.fill();
-      c.fillStyle = '#3d2610';
-      for (const [x, y] of [[5, 5], [T - 7, 5], [5, T - 7], [T - 7, T - 7]]) c.fillRect(x, y, 2, 2);
     }),
     stone: makeTile(T, (c) => {
       c.fillStyle = '#6f6a62';
@@ -240,10 +174,7 @@ export function createTextures(): Textures {
       c.fillStyle = '#1d3354';
       c.fillRect(0, T - 3, T, 3);
     }),
-    pipeTL: pipeTile(true, true),
-    pipeTR: pipeTile(true, false),
-    pipeBL: pipeTile(false, true),
-    pipeBR: pipeTile(false, false),
+    ...createMayaTextures(),
     ...createRuinsTextures(),
     ...createGulfTextures(),
     ...createHaciendaTextures(),

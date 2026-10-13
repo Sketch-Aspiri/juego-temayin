@@ -1,0 +1,17 @@
+{
+  "image": "estela-remate.png",
+  "width": 1774,
+  "height": 887,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "estela-remate",
+      "x": 32,
+      "y": 186,
+      "width": 1710,
+      "height": 516
+    }
+  ],
+  "qa": "Alfa >= 40; PNG original intacto; WebP sin pérdidas."
+}

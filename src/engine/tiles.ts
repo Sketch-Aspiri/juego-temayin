@@ -1,8 +1,8 @@
 /**
  * Leyenda de bloques:
- * G suelo, B ladrillo, ? bloque moneda, M bloque escudo, L bloque vida,
- * F bloque chile de fuego, S bloque snorkel, U bloque usado, X piedra/plataforma,
- * o moneda suelta, p/q tubo arriba, l/r cuerpo del tubo,
+ * G suelo, B sillar rompible, ? cofre de cacao, M cofre escudo, L cofre vida,
+ * F cofre chile de fuego, S cofre snorkel, U cofre vacío, X piedra/plataforma,
+ * o cacao suelto, p/q remate de columna, l/r cuerpo de columna (op `pipe` conservada),
  * D escombro que se derrumba (op `crumble`, ver `entities/crumble.ts`).
  * K culata de cañón de baluarte, > / < boca del cañón hacia la derecha / izquierda.
  * P bloque pelota de pok ta pok (ver `entities/ball.ts`).

@@ -124,10 +124,14 @@ temayin_juego/
         playerMechanics.ts     Poses de agarre, balanceo y lanzamiento
         projectileSprites.ts   Fuego animado, púas y frutos
         cannons.ts             Mecha, fogonazo y balas pintadas con estela de humo
+        mayaTiles.ts           Cofres, sillares, columnas y terreno pintado
+        mayaTextures.ts        Respaldos de piedra, jade y cacao
         levelSprites.ts        Cañones y tramos de losas frágiles
     data/                      CONTENIDO (aquí se añaden niveles y mundos)
       gameplaySprites.ts       Recortes y anclas del arte de mecánicas existente
       newGameplaySprites.ts    Sprites nuevos (proyectiles, poses de Kaimán, ondas y toldo)
+      mayaTileSprites.ts       Cinco sprites nuevos de cofres, sillares y columnas
+      terrainSprites.ts        Recortes aislados del atlas de terreno existente
       worlds.ts                WORLDS, ALL_LEVELS, getLevel, nextLevelId
       levels.test.ts           Pruebas de coherencia de TODOS los niveles
       levels/
@@ -562,7 +566,7 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
    | `row` | `['row', x, y, 'B?BMB']` | Un carácter por bloque; `' '` = vacío. Leyenda en `tiles.ts`: `B` ladrillo, `?` moneda, `M` escudo, `L` vida, `F` chile, `P` pelota de pok ta pok, `X` piedra, `o` moneda suelta. |
    | `plat` | `['plat', x, y, largo]` | Plataforma de piedra (`X`). |
    | `coins` | `['coins', x, y, cantidad]` | Fila de monedas sueltas (`o`). |
-   | `pipe` | `['pipe', x, alto]` | Tubo de 2 columnas. |
+   | `pipe` | `['pipe', x, alto]` | Columna tallada de 2 bloques de ancho. Se conserva el nombre histórico del DSL. |
    | `stairs` | `['stairs', x, n, dir]` | `dir` 1 sube, -1 baja. |
    | `col` | `['col', x, alto]` | Columna de piedra. |
    | `wall` | `['wall', x]` | Muro de arriba abajo (cierre de arena de jefe). |
@@ -815,6 +819,13 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 - Enemigos nuevos: `stalactite` (avisa, cae, se fragmenta) y `scorpion` (acelera con saltos cercanos). Se reutilizan los aluxes y ruedas del Mundo 2.
 - Jefe `huayChivo`: carpeta `bosses/huayChivo/`, seis PV, vulnerable tras chocar contra los bordes del atrio; segunda fase con oscuridad y más velocidad. Los arcos son escénicos. Abre el muro y el siguiente tramo al vencerlo.
 - Los registros antiguos y los ids publicados se conservan. Cobertura específica: `src/engine/World3.test.ts`.
+
+### Arte de cofres y columnas
+
+- Los bloques `?`, `M`, `L`, `F`, `S` y `P` comparten un cofre de jade con sello de cacao y cierre luminoso; `U` muestra su versión vacía, con el sello ausente y sin luz. `B` se dibuja como sillar agrietado. Los caracteres y la lógica de premios se conservan; el consejo de Palenque habla de cofres de jade.
+- La op histórica `pipe` conserva las baldosas sólidas `p/q/l/r`, ahora con remate de jaguar y cuerpo de columna modular. Cada mitad dibuja 40 × 40 px, también en los extremos de la cámara, sin depender de que la otra mitad esté visible. El arte se ajusta a los 80 px de ancho y a la altura de cada tramo.
+- `data/mayaTileSprites.ts` registra cinco sprites transparentes generados con `image_gen`. PNG, atlas y prompts: `imagenes/nuevos/complementos/`; WebP sin pérdidas: `public/assets/complementos/`. `data/terrainSprites.ts` conecta césped, tierra, caliza, arena, roca, madera y cristal del atlas existente `bloques.webp`, con aislamiento de siluetas y fondo bajo las esquinas para mantener suelo continuo. Los temas conservan sus propias texturas cuando no hay sprite equivalente.
+- `render/mayaTiles.ts` dibuja el arte y `render/mayaTextures.ts` mantiene respaldos del mismo estilo. Pruebas: `render/mayaTiles.test.ts` y `data/gameplaySprites.test.ts`. `python imagenes/verify_maya_tiles.py` comprueba un premio real, columnas de distintas alturas, escritorio y móvil, un recorrido de Palenque con checkpoint y meta, y escenas de costa y cueva. El contacto está protegido durante el recorrido; las colisiones y los hoyos están activos. Resultados en `imagenes/verificacion/arte-maya/`.
 
 Una tarea está terminada solo si se cumple **todo** lo siguiente:
 

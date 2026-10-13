@@ -19,7 +19,7 @@ import type { Darkness } from '../render/lighting';
  *  ['row', x, y, 'B?BMB']     fila de bloques (un carácter por bloque, ' ' = vacío)
  *  ['plat', x, y, largo]      plataforma de piedra
  *  ['coins', x, y, cantidad]  fila de monedas
- *  ['pipe', x, alto]          tubo de 2 columnas
+ *  ['pipe', x, alto]          columna tallada de 2 bloques de ancho (id histórico conservado)
  *  ['stairs', x, n, dir]      escalera de n escalones (dir 1 sube, -1 baja)
  *  ['col', x, alto]           columna de piedra
  *  ['wall', x]                muro de arriba a abajo (arenas de jefe)

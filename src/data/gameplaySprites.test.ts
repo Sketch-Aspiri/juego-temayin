@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { GAMEPLAY_SPRITES } from './gameplaySprites';
 import { NEW_GAMEPLAY_SPRITES } from './newGameplaySprites';
+import { MAYA_TILE_SPRITES } from './mayaTileSprites';
+import { TERRAIN_SPRITES } from './terrainSprites';
 import { PAINTED_ART } from '../engine/render/artCache';
 
 interface Atlas { readonly width: number; readonly height: number; readonly alpha: boolean }
@@ -10,7 +12,7 @@ const sourceImages = import.meta.glob<string>('../../imagenes/nuevos/**/*.png', 
 const prompts = import.meta.glob<string>('../../imagenes/nuevos/**/*.prompt.txt', { eager: true, query: '?raw', import: 'default' });
 
 describe('Cobertura del arte jugable', () => {
-  it.each(Object.entries({ ...GAMEPLAY_SPRITES, ...NEW_GAMEPLAY_SPRITES }))('%s tiene arte, recorte válido y precarga', (_id, sprite) => {
+  it.each(Object.entries({ ...GAMEPLAY_SPRITES, ...NEW_GAMEPLAY_SPRITES, ...MAYA_TILE_SPRITES, ...TERRAIN_SPRITES }))('%s tiene arte, recorte válido y precarga', (_id, sprite) => {
     const runtime = `../../public/assets/${sprite.file}`;
     expect(runtimeImages[runtime]).toBeDefined();
     const atlas = atlases[runtime.replace('.webp', '.atlas.json')];
@@ -27,11 +29,11 @@ describe('Cobertura del arte jugable', () => {
   });
 
   it('conserva los originales y los prompts de todos los sprites nuevos', () => {
-    for (const sprite of Object.values(NEW_GAMEPLAY_SPRITES)) {
+    for (const sprite of Object.values({ ...NEW_GAMEPLAY_SPRITES, ...MAYA_TILE_SPRITES })) {
       const source = sprite.file.replace('bosses/', 'jefes/').replace('.webp', '.png');
       const path = `../../imagenes/nuevos/${source}`;
       expect(sourceImages[path]).toBeDefined();
-      expect(prompts[path.replace('.png', '.prompt.txt')]).toContain('stylized-concept');
+      expect(prompts[path.replace('.png', '.prompt.txt')]).toMatch(/stylized-concept|precise-object-edit/);
     }
   });
 });

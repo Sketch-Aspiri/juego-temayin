@@ -8,7 +8,7 @@ import { coati } from '../helpers';
 export const LEVEL_1_1: LevelDef = {
   id: '1-1',
   name: 'Palenque',
-  hint: '¡Pisa a los coatíes y golpea los bloques ? desde abajo!',
+  hint: '¡Pisa a los coatíes y golpea los cofres de jade desde abajo!',
   width: 205,
   theme: 'palenque',
   ops: [

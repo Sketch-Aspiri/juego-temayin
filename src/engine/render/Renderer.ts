@@ -29,8 +29,8 @@ import { drawSnorkelItem, drawWaterLayer } from './water';
 import type { ThemeId } from '../types';
 import { drawBeachProps } from './beachProps';
 import { drawCannonTile, drawFragileTile } from './levelSprites';
+import { drawMayaTile, drawPaintedTerrain, drawRewardLight } from './mayaTiles';
 
-const BLOCK_QUESTION = new Set(['?', 'M', 'L', 'F', 'S', 'P']);
 const BUMP_HEIGHT = 10;
 const BUMP_TIME = 0.15;
 const DECORATIVE_WATER_OFFSET = 14;
@@ -143,7 +143,6 @@ export class Renderer {
     const c = this.ctx;
     const x0 = Math.floor(world.camX / T);
     const x1 = Math.min(world.width - 1, x0 + Math.ceil(VW / T) + 1);
-    const blink = (Math.sin(now / 180) + 1) / 2;
     for (let ty = 0; ty < ROWS; ty++) {
       for (let tx = x0; tx <= x1; tx++) {
         const t = world.grid[ty][tx];
@@ -164,11 +163,9 @@ export class Renderer {
           continue;
         }
         if (drawCannonTile(c, world.grid, tx, ty, sx, sy, x0)) continue;
-        c.drawImage(this.textures[this.textureFor(world, theme, t, tx, ty)], sx, sy);
-        if (BLOCK_QUESTION.has(t) && blink > 0.7) {
-          c.fillStyle = `rgba(255,255,255,${(blink - 0.7) * 0.8})`;
-          c.fillRect(sx + 2, sy + 2, T - 4, T - 4);
-        }
+        const texture = this.textureFor(world, theme, t, tx, ty);
+        if (!drawMayaTile(c, t, sx, sy) && !drawPaintedTerrain(c, texture, sx, sy)) c.drawImage(this.textures[texture], sx, sy);
+        drawRewardLight(c, t, sx, sy, now);
       }
     }
   }

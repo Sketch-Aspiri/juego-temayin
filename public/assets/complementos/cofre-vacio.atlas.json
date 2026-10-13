@@ -1,0 +1,17 @@
+{
+  "image": "cofre-vacio.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "cofre-vacio",
+      "x": 102,
+      "y": 92,
+      "width": 1052,
+      "height": 1061
+    }
+  ],
+  "qa": "Alfa >= 40; PNG original intacto; WebP sin pérdidas."
+}
