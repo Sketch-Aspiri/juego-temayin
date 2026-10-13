@@ -131,7 +131,7 @@ export const LEVEL_2_4: LevelDef = {
     ['coins', 192, 8, 5],
     ['flag', 205], ['temple', 211],
 
-    ...blueCrab(16, 189, 199),
+    ...blueCrab(16, 189, 201),
     ...urchin(44, 104, 150),
     ...morays([51, 10], [95, 10], [HANGING_ROOT, SURFACE + 2]),
     ...barracudas([63, 9], [110, 9], [172, 9]),
