@@ -19,7 +19,9 @@ const RAMPART_TOP = 7;
 
 /**
  * San Francisco de Campeche: ciudad amurallada, baluartes y puertas de Mar y de
- * Tierra (AGENTS.md §4.3). Primer nivel con cañones de baluarte como plataformas.
+ * Tierra (AGENTS.md §4.3). Primer nivel con cañones de baluarte como plataformas;
+ * cuando la mecha chispea, disparan una bala recta a la altura de su fila
+ * (`entities/cannons.ts`).
  *
  * Toh: «Campeche levantó murallas y baluartes para defenderse de los piratas;
  * su centro histórico es Patrimonio de la Humanidad desde 1999».
@@ -37,7 +39,7 @@ const RAMPART_TOP = 7;
 export const LEVEL_2_3: LevelDef = {
   id: '2-3',
   name: 'San Francisco de Campeche',
-  hint: '¡Salta de cañón en cañón para cruzar los fosos de la muralla!',
+  hint: '¡Salta de cañón en cañón y esquiva sus balas: también puedes pisarlas!',
   width: 224,
   theme: 'fortress',
   checkpoint: 112,

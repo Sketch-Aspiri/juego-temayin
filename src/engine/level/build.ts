@@ -4,6 +4,7 @@ import type { RopeDef } from '../entities/ropes';
 import { createTorch, type LightSource } from '../render/lighting';
 import type { PlatformSpec } from '../entities/platforms';
 import type { EnemyId } from '../types';
+import type { CannonSpec } from '../entities/cannons';
 import { CRUMBLE_TILE, type CrumbleSpan } from '../entities/crumble';
 import { HOOP_COINS, type HoopSpec } from '../entities/hoops';
 import type { SlowZone } from './slowZones';
@@ -42,6 +43,8 @@ export interface BuiltLevel {
   platforms: readonly PlatformSpec[];
   /** Aros del juego de pelota (op `hoop`). */
   hoops: readonly HoopSpec[];
+  /** Cañones de baluarte que disparan (op `cannon`); sus bloques ya están en `grid`. */
+  cannons: readonly CannonSpec[];
 }
 
 /** Convierte la definición declarativa de un nivel en una cuadrícula de bloques. */
@@ -69,6 +72,7 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   const crumbles: CrumbleSpan[] = [];
   const platforms: PlatformSpec[] = [];
   const hoops: HoopSpec[] = [];
+  const cannons: CannonSpec[] = [];
   let flagX = W - 10;
   let templeX = W - 5;
 
@@ -143,6 +147,7 @@ export function buildLevel(def: LevelDef): BuiltLevel {
         const [, x, y, dir] = op;
         set(x, y, dir > 0 ? 'K' : '<');
         set(x + 1, y, dir > 0 ? '>' : 'K');
+        cannons.push({ x, y, dir: dir > 0 ? 1 : -1 });
         break;
       }
       case 'train': {
@@ -173,5 +178,5 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   for (const row of grid) for (const c of row) if (c === 'o' || c === '?') totalCoins++;
   totalCoins += hoops.length * HOOP_COINS; // cacao que suelta cada aro al encestar
 
-  return { grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles, crumbles, platforms, hammocks, ropes, lights, hoops, slowZones };
+  return { grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles, crumbles, platforms, hammocks, ropes, lights, hoops, slowZones, cannons };
 }

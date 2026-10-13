@@ -15,6 +15,7 @@ import {
   VW,
 } from './constants';
 import { updateBalls, type Ball } from './entities/ball';
+import { createCannons, updateCannons, type Cannon, type Cannonball } from './entities/cannons';
 import { createCrumbles, updateCrumbles, type Crumble } from './entities/crumble';
 import { createEnemy, ENEMIES, updateEnemies } from './entities/enemies';
 import { createHoops, updateHoops, type Hoop } from './entities/hoops';
@@ -75,6 +76,9 @@ export class World {
   /** Pelotas de pok ta pok en el aire y aros del juego de pelota (op `hoop`). */
   balls: Ball[] = [];
   hoops: Hoop[];
+  /** Cañones de baluarte que disparan (op `cannon`) y sus balas en vuelo. */
+  cannons: Cannon[];
+  cannonballs: Cannonball[] = [];
   /** Tramos de escombro que se derrumban (op `crumble`). */
   crumbles: Crumble[];
   /** Plataformas móviles (vagones y plataformas genéricas, AGENTS.md §5.4). */
@@ -109,6 +113,7 @@ export class World {
     this.checkpointReached = !!init.fromCheckpoint;
     this.crumbles = createCrumbles(this.level.crumbles);
     this.hoops = createHoops(this.level.hoops);
+    this.cannons = createCannons(this.level.cannons);
     this.input.reset();
 
     const startTile = init.fromCheckpoint ? this.checkpointTile : PLAYER_START_TILE;
@@ -294,6 +299,7 @@ export class World {
     updateItems(this, dt);
     this.boss?.update(this, dt);
     updateQuills(this, dt);
+    updateCannons(this, dt);
     updateFireballs(this, dt);
     updateBalls(this, dt);
     updateHoops(this.hoops, dt);

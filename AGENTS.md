@@ -98,6 +98,7 @@ temayin_juego/
         items.ts               createItem, updateItems, collectItem (escudo, vida, chile)
         projectiles.ts         Bolas de fuego del jugador y púas del jefe
         ball.ts, hoops.ts      Pelota de pok ta pok (rebotes, golpes) y aros del juego de pelota (op `hoop`)
+        cannons.ts             Cañones de baluarte que avisan y disparan balas rectas (op `cannon`)
         particles.ts           Partículas y popups
         types.ts               Player, Enemy, Item, Particle, Popup, Fireball, Quill
       bosses/
@@ -571,7 +572,7 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
    | `train` | `['train', x, y, vagones, velocidad, recorrido]` | Tren con el techo en la fila `y`; va y vuelve `recorrido` bloques (negativo = izquierda) a `velocidad` bloques/s. Va a `BuiltLevel.platforms`. |
    | `mover` | `['mover', x, y, largo, dx, dy, periodo]` | Plataforma de `largo` bloques que oscila hasta (x+dx, y+dy) y vuelve en `periodo` s. Va a `BuiltLevel.platforms`. |
    | `crumble` | `['crumble', x, y, largo]` | Escombro sólido (`D`) que tiembla al pisarlo, cae y reaparece a los 4 s si el hueco está libre (`entities/crumble.ts`). Nunca en la fila del suelo. |
-   | `cannon` | `['cannon', x, y, dir]` | Cañón de baluarte de 2 bloques sólidos: culata `K` y boca `>` (dir 1) o `<` (dir -1). Se pisa como plataforma. |
+   | `cannon` | `['cannon', x, y, dir]` | Cañón de baluarte de 2 bloques sólidos: culata `K` y boca `>` (dir 1) o `<` (dir -1). Se pisa como plataforma. Con la boca en pantalla dispara (`entities/cannons.ts`): espera 1 s al aparecer, la mecha chispea 0,7 s de aviso y sale una bala recta a 5,5 bloques/s, a la altura de su fila, hasta chocar con un bloque; recarga 2,7 s. La bala se salta o se pisa (rebote, +100); quien está de pie sobre un cañón de la misma fila queda por encima. Va a `BuiltLevel.cannons`. |
    | `hoop` | `['hoop', x, y]` | Aro de piedra del juego de pelota en el bloque (x, y), no sólido (`entities/hoops.ts`). Al pasar la pelota (bloque `P`) por su centro se enciende una vez: +2000 puntos y 5 granos de cacao (incluidos en `totalCoins`). Va a `BuiltLevel.hoops`. |
 
    Atajos en `src/data/levels/helpers.ts`: `...coati(22, 32)`, `...urchin(26, 58)`, `...bats([20, 7], [48, 6])`. Añade un atajo por cada enemigo nuevo.
@@ -783,6 +784,7 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
   - Ningún enemigo de suelo nace a 2 bloques o menos del aterrizaje de un hoyo.
   - Si quedan sombras tras el punto de control, hay un bloque `F` al alcance al reaparecer (el chile se pierde al morir).
   - Las carretas que se relevan sobre un barranco miden al menos 3 bloques y comparten periodo.
+- Los cañones de Campeche disparan (`entities/cannons.ts`, dibujo en `render/cannons.ts`: mecha que chispea, fogonazo y bala de hierro procedurales). En el primer foso, la bala del cañón 78 alcanza a quien espera sobre el cañón 84; en el paseo de ronda, los cañones 149 y 155 cruzan fuego sobre el hueco del cangrejo pirata (se salta de cañón a cañón por encima). Cobertura: `entities/cannons.test.ts` y `2-3-campeche.test.ts` (cacao entre cañones que disparan y espera segura sobre ellos).
 
 - Kaimán Moreleti (`bosses/kaiman/`): ocho PV y tres fases. `choose.ts` sortea el siguiente ataque entre los de su fase con pesos por distancia (cerca: mordida y coletazo; lejos: emboscada y lodo), nunca repite el anterior y fuerza la emboscada tras `MAX_ATTACKS_WITHOUT_DIVE` ataques para garantizar el pisotón. El azar es determinista (`makeRng`). `hazards.ts` añade el escupitajo de lodo (fauces abiertas: el fuego daña) y el golpe al mangle, que deja caer propágulos con sombra de aviso y huecos mínimos de `PROPAGULE_GAP`. Fase 2: crecida y dos troncos `mover` a la deriva entre los fijos. Fase 3: más velocidad, dos olas delanteras, emboscada doble, tormenta (`drawHazards.ts`) y nubarrones en el decorado. `Boss.stage` (opcional) permite que `render/bossArena.ts` reaccione a la fase; el pantano añade heno, nenúfares sobre la superficie real del agua y garzas que huyen al despertar el jefe. Cobertura: `kaiman.test.ts` y `choose.test.ts`.
 

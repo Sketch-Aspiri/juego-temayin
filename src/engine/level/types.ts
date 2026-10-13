@@ -55,6 +55,9 @@ import type { Darkness } from '../render/lighting';
  *                                           fila y (columnas x y x+1): culata `K` y boca
  *                                           `>` (dir 1, apunta a la derecha) o `<` (dir -1).
  *                                           Es una plataforma: se pisa como cualquier bloque.
+ *                                           Con la boca en pantalla avisa (mecha) y dispara
+ *                                           balas rectas a la altura de su fila; van a
+ *                                           `BuiltLevel.cannons` (`entities/cannons.ts`).
  *
  * Plataformas móviles (AGENTS.md §5.4). Tampoco tocan la cuadrícula: van a
  * `BuiltLevel.platforms` (ver `entities/platforms.ts`). Son de un solo sentido: se

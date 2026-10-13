@@ -11,9 +11,11 @@ export type { EnemyDef, EnemyMove } from './types';
 const DEAD_FALL_GRAVITY = 1800;
 const DEAD_FADE_TIME = 0.5;
 const ACTIVATION_MARGIN = 60;
-const STOMP_TOLERANCE = 22;
-const STOMP_BOUNCE_HELD = -820;
-const STOMP_BOUNCE = -500;
+/** Margen (px) entre los pies del jugador y el lomo de lo que pisa para contar como pisotón. */
+export const STOMP_TOLERANCE = 22;
+/** Rebote tras un pisotón con el salto pulsado / sin pulsar (px/s). */
+export const STOMP_BOUNCE_HELD = -820;
+export const STOMP_BOUNCE = -500;
 
 export function createEnemy(spawn: EnemySpawn): Enemy {
   const def = ENEMIES[spawn.id];
