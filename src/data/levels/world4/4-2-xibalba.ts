@@ -81,6 +81,8 @@ export const LEVEL_4_2: LevelDef = {
 
     // --- Ascenso ---
     ['stairs', 160, 5, 1], ['plat', 166, 6, 3], ['coins', 166, 4, 3], ['stairs', 170, 5, -1],
+    // Peldaños interiores para poder salir si se cae debajo de la plataforma.
+    ['col', 165, 2], ['col', 169, 2],
     ['pit', 177, 182], ['water', 177, 182, 11], ['coins', 177, 8, 6],
     ['row', 186, 8, '?L?'], ['coins', 186, 4, 3],
     ['pit', 191, 195], ['plat', 192, 9, 2],
