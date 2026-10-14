@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { PLAYER_SPRITES } from '../../data/playerSprites';
-import { PLAYER_HEAD_WIDTH, PLAYER_HEAD_WIDTHS } from '../../data/playerScale';
+import { PLAYER_HEAD_WIDTH, PLAYER_HEAD_WIDTHS, PLAYER_RUN_HEAD_WIDTH } from '../../data/playerScale';
 import { TOH_POSES } from '../../data/tohSprites';
 import { SPRITES } from '../../data/intro';
 import { PLAYER_FRAMES, createPlayer } from '../entities/player';
@@ -17,7 +17,7 @@ describe('Tamaño y apoyo de Temayin', () => {
   it.each(['idle', 'run', 'jump', 'fall', 'win'] as const)('mantiene la cabeza y el apoyo en todos los cuadros de %s', anim => {
     expect(PLAYER_HEAD_WIDTHS[anim]).toHaveLength(PLAYER_SPRITES[anim].length);
     for (const [index, frame] of PLAYER_SPRITES[anim].entries()) {
-      expect(PLAYER_HEAD_WIDTHS[anim][index] * frame.scale).toBeCloseTo(PLAYER_HEAD_WIDTH);
+      expect(PLAYER_HEAD_WIDTHS[anim][index] * frame.scale).toBeCloseTo(anim === 'run' ? PLAYER_RUN_HEAD_WIDTH : PLAYER_HEAD_WIDTH);
       expect(frame.y + frame.h).toBe(frame.ay);
     }
   });
@@ -44,12 +44,20 @@ describe('Tamaño y apoyo de Temayin', () => {
         const call = methods.drawImage.mock.calls.at(-1)!;
         expect(call[6] + call[8]).toBeCloseTo(0);
         const frame = PLAYER_SPRITES[anim][i];
-        expect(call[7] * PLAYER_HEAD_WIDTHS[anim][i] / frame.w).toBeCloseTo(PLAYER_HEAD_WIDTH);
+        expect(call[7] * PLAYER_HEAD_WIDTHS[anim][i] / frame.w).toBeCloseTo(anim === 'run' ? PLAYER_RUN_HEAD_WIDTH : PLAYER_HEAD_WIDTH);
         expect(call[7] / call[8]).toBeCloseTo(frame.w / frame.h);
         expect(methods.translate).toHaveBeenLastCalledWith(p.x + p.w / 2 - 40, p.y + p.h);
         expect(p).toEqual(before);
       }
     }
+  });
+
+  it('no crece al pasar del reposo a la carrera y conserva el movimiento de las zancadas', () => {
+    const idleHeights = PLAYER_SPRITES.idle.map(frame => frame.h * frame.scale);
+    const runHeights = PLAYER_SPRITES.run.map(frame => frame.h * frame.scale);
+    expect(Math.max(...runHeights)).toBeLessThanOrEqual(Math.max(...idleHeights) + 2);
+    expect(Math.min(...runHeights)).toBeGreaterThanOrEqual(Math.min(...idleHeights) - 2);
+    expect(Math.max(...runHeights) - Math.min(...runHeights)).toBeGreaterThan(3);
   });
 
   it('permite estirarse al saltar y encogerse al aterrizar sin reducir la cabeza', () => {

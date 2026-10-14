@@ -25,7 +25,7 @@ with sync_playwright() as p:
       const {bakedFrame,lazyImage,warmArt}=await import(loaded('/src/engine/render/artCache.ts'));
       const {TOH_POSES,TOH_FILE}=await import('/src/data/tohSprites.ts');
       const {PLAYER_SPRITES}=await import('/src/data/playerSprites.ts');
-      const {PLAYER_HEAD_WIDTHS,PLAYER_POSE_HEAD_WIDTHS}=await import('/src/data/playerScale.ts');
+      const {PLAYER_HEAD_WIDTH,PLAYER_RUN_HEAD_WIDTH,PLAYER_HEAD_WIDTHS,PLAYER_POSE_HEAD_WIDTHS}=await import('/src/data/playerScale.ts');
       const {GAMEPLAY_SPRITES}=await import('/src/data/gameplaySprites.ts');
       const {createPlayer}=await import(loaded('/src/engine/entities/player.ts'));
       const {loadAssets}=await import(loaded('/src/engine/assets.ts'));
@@ -52,7 +52,7 @@ with sync_playwright() as p:
         c.strokeStyle='#f6dca8';c.beginPath();c.moveTo(20,36+(pose.footY-y)*.46);c.lineTo(340,36+(pose.footY-y)*.46);c.stroke();
         board.append(canvas);metrics.push({pose:name,rawPixels,cleanedPixels,removed:rawPixels-cleanedPixels});
       }
-      window.qaSprites={assets,board,metrics,lazyImage,PLAYER_SPRITES,PLAYER_HEAD_WIDTHS,PLAYER_POSE_HEAD_WIDTHS,GAMEPLAY_SPRITES,
+      window.qaSprites={assets,board,metrics,lazyImage,PLAYER_SPRITES,PLAYER_HEAD_WIDTH,PLAYER_RUN_HEAD_WIDTH,PLAYER_HEAD_WIDTHS,PLAYER_POSE_HEAD_WIDTHS,GAMEPLAY_SPRITES,
         createPlayer,drawPlayerSprite,World:null,world:null,hold:false,drive:false,stats:{}};
       return metrics;
     }""")
@@ -97,7 +97,8 @@ with sync_playwright() as p:
           top=Math.min(top,y);bottom=Math.max(bottom,y);left=Math.min(left,x);right=Math.max(right,x);
         }
         const head=(right-left+1)*qa.PLAYER_HEAD_WIDTHS[anim][i]/qa.PLAYER_SPRITES[anim][i].w;
-        metrics.push({anim,frame:i,height:bottom-top+1,bottom,head});
+        metrics.push({anim,frame:i,height:bottom-top+1,bottom,head,
+          expectedHead:anim==='run'?qa.PLAYER_RUN_HEAD_WIDTH:qa.PLAYER_HEAD_WIDTH});
         c.strokeStyle='#f6dca8';c.beginPath();c.moveTo(0,125);c.lineTo(150,125);c.moveTo(0,43);c.lineTo(150,43);c.stroke();
         c.fillStyle='#fff';c.font='14px sans-serif';c.fillText(`${animNames[anim]} ${i+1}`,8,20);qa.board.append(canvas);
       }
@@ -128,6 +129,7 @@ with sync_playwright() as p:
         const sourceWidth=id?qa.GAMEPLAY_SPRITES[id].frame[2]:qa.PLAYER_SPRITES[p.anim][p.frame].w;
         const headWidth=id?qa.PLAYER_POSE_HEAD_WIDTHS[id]:qa.PLAYER_HEAD_WIDTHS[p.anim][p.frame];
         metrics.push({pose,face,height:bottom-top+1,width:right-left+1,head:(right-left+1)*headWidth/sourceWidth,
+          expectedHead:!id&&p.anim==='run'?qa.PLAYER_RUN_HEAD_WIDTH:qa.PLAYER_HEAD_WIDTH,
           simulationUnchanged:JSON.stringify(p)===before});
         c.strokeStyle='#f6dca8';c.beginPath();c.moveTo(0,top);c.lineTo(150,top);c.moveTo(0,bottom+1);c.lineTo(150,bottom+1);c.stroke();
         c.fillStyle='#fff';c.font='14px sans-serif';c.fillText(pose,8,20);qa.board.append(canvas);
@@ -246,8 +248,8 @@ assert all(item['removed'] > 0 for item in others), others
 expected = {'perch': 61004, 'perchLook': 61007, 'perchTail': 66713, 'flyUp': 108977, 'flyDown': 86693, 'point': 85061}
 assert all(item['cleanedPixels'] == expected[item['pose']] for item in report), report
 assert max(item['height'] for item in players) - min(item['height'] for item in players) > 15, players
-assert all(abs(item['head'] - 56) <= 1 for item in players), players
+assert all(abs(item['head'] - item['expectedHead']) <= 1 for item in players), players
 assert len(set(item['bottom'] for item in players)) == 1, players
-assert all(abs(item['head'] - 56) <= 1 and item['simulationUnchanged'] for item in poses), poses
+assert all(abs(item['head'] - item['expectedHead']) <= 1 and item['simulationUnchanged'] for item in poses), poses
 assert all(item['simulationUnchanged'] for item in scenes), scenes
 assert completion['phase'] == 'done' and completion['checkpoint'], completion

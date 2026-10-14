@@ -1,8 +1,11 @@
 import type { AnimName } from '../engine/entities/types';
 import type { PlayerPoseId } from './gameplaySprites';
 
-/** Referencia anatómica común; brazos, piernas y cola no determinan la escala. */
+/** Referencia anatómica base; brazos, piernas y cola no determinan la escala. */
 export const PLAYER_HEAD_WIDTH = 56;
+
+/** El perfil de carrera necesita menos ancho que el rostro frontal para conservar el tamaño del cuerpo. */
+export const PLAYER_RUN_HEAD_WIDTH = 48;
 
 /** Anchos de cabeza medidos de oreja exterior a hocico en guepardo.webp. */
 export const PLAYER_HEAD_WIDTHS = {
@@ -24,7 +27,8 @@ export const PLAYER_POSE_HEAD_WIDTHS = {
 } as const satisfies Readonly<Record<PlayerPoseId, number>>;
 
 export function playerScale(anim: AnimName, index: number): number {
-  return PLAYER_HEAD_WIDTH / PLAYER_HEAD_WIDTHS[anim][index];
+  const headWidth = anim === 'run' ? PLAYER_RUN_HEAD_WIDTH : PLAYER_HEAD_WIDTH;
+  return headWidth / PLAYER_HEAD_WIDTHS[anim][index];
 }
 
 export function playerPoseScale(id: PlayerPoseId): number {
