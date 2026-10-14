@@ -35,6 +35,8 @@ const LANDING_CLEARANCE = 2;
 const NAUYACA_CLEARANCE = NOTICE_RANGE / T;
 /** Filas sobre el suelo desde las que un enemigo puede emboscar un aterrizaje (orillas incluidas). */
 const AMBUSH_ROWS = 3;
+/** Ancho máximo (bloques) de un hoyo que se salta sin ayuda (igual que en `levels.test.ts`). */
+const MAX_PLAIN_PIT = 6;
 /** Largo mínimo de una plataforma móvil sobre un barranco (sin saltos de píxel exacto). */
 const MIN_BRIDGE_LENGTH = 3;
 /** Tramo del túnel de Petenes con la marea en contra (columnas) y tiempo máximo para remontarlo. */
@@ -228,15 +230,15 @@ describe.each(BALANCED.map((l) => [l.id, l] as const))('equilibrio del nivel %s'
 });
 
 describe('Carrillo Puerto', () => {
-  it('presenta el tren sobre agua navegable: el primer fallo no cuesta una vida', () => {
+  it('el primer tren cruza un barranco sin agua y cubre todo el hoyo: no hay otra forma de pasar', () => {
     const lvl = buildLevel(LEVEL_2_1);
     const first = lvl.platforms.find((s) => s.kind === 'train');
     if (!first) throw new Error('Carrillo Puerto no tiene trenes');
     const r = platformReach(first);
-    for (let x = r.x0; x <= r.x1; x++) {
-      if (isSolidTile(lvl.grid[GROUND][x])) continue;
-      expect(waterColumn(lvl.water, x), `barranco sin agua en ${x}`).not.toBeNull();
-    }
+    expect(lvl.water, 'Carrillo Puerto no tiene agua').toHaveLength(0);
+    let pit = 0;
+    for (let x = r.x0; x <= r.x1; x++) if (!isSolidTile(lvl.grid[GROUND][x])) pit++;
+    expect(pit, 'el hoyo bajo el tren supera el salto máximo').toBeGreaterThan(MAX_PLAIN_PIT);
   });
 });
 

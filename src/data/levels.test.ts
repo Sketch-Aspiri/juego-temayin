@@ -116,6 +116,21 @@ describe.each(ALL_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, def) 
     }
   });
 
+  // Trenes, carretas y vagonetas ruedan sobre tierra: debajo hay vacío, no agua. Con agua
+  // navegable el jugador podría nadar hasta la otra orilla sin subirse a la plataforma.
+  it('los trenes, carretas y vagonetas cruzan vacío, no agua navegable', () => {
+    const landPlatforms = lvl.platforms.filter(
+      (s) => s.kind === 'train' || (s.appearance !== 'boat' && s.appearance !== 'turtle'),
+    );
+    for (const s of landPlatforms) {
+      const r = platformReach(s);
+      for (let x = r.x0; x <= r.x1; x++) {
+        if (solid(x, GROUND)) continue;
+        expect(swimmable(x), `agua bajo la plataforma de ${s.x} en la columna ${x}`).toBe(false);
+      }
+    }
+  });
+
   it('los enemigos no nacen dentro de bloques sólidos', () => {
     for (const e of lvl.enemies) expect(solid(e.tx, e.ty), `${e.id} en ${e.tx},${e.ty}`).toBe(false);
   });

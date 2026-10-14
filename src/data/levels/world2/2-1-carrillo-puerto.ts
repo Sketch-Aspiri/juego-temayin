@@ -1,4 +1,3 @@
-import { GROUND } from '../../../engine/constants';
 import type { LevelDef } from '../../../engine/level/types';
 import { coati, nauyaca, tarantula } from '../helpers';
 
@@ -12,11 +11,11 @@ import { coati, nauyaca, tarantula } from '../helpers';
  *
  * Recorrido (columnas):
  *  -   0–41  Andén del paradero: bloques `?` con escudo, pozos y coatíes.
- *  -  42–60  Primer tren (1 vagón) sobre un arroyo: si fallas el salto caes al agua y
- *            nadas a la orilla, así el tren se aprende sin perder vidas.
+ *  -  42–60  Primer tren (1 vagón) sobre un barranco sin fondo y sin agua: la única forma
+ *            de cruzar es subirse al vagón; si fallas el salto caes al vacío.
  *  -  61–98  Selva baja: tarántula bajo los bloques, escalinata, saraguato en lo alto,
  *            nauyaca antes del chile y hoyos cortos.
- *  -  99–121 Segundo tren (2 vagones) bajo la mirada de un saraguato; ya sobre un barranco
+ *  -  99–121 Segundo tren (2 vagones) bajo la mirada de un saraguato, sobre otro barranco
  *            sin fondo. Punto de control antes, en una isla sin enemigos.
  *  - 122–160 El pueblo: tarántula bajo los bloques, plataforma elevadora hacia una
  *            terraza con monedas y un corazón de jade.
@@ -42,9 +41,9 @@ export const LEVEL_2_1: LevelDef = {
     ['pipe', 31, 3],
     ['row', 36, 8, '??'],
 
-    // Primer tren: un vagón sobre el arroyo. Los trenes empiezan ya sobre el hoyo
-    // para que el jugador suba de un salto desde la orilla (no atraviese el vagón a pie).
-    ['pit', 46, 57], ['water', 46, 57, GROUND],
+    // Primer tren: un vagón sobre un barranco sin fondo. Los trenes empiezan ya sobre el
+    // hoyo para que el jugador suba de un salto desde la orilla (no atraviese el vagón a pie).
+    ['pit', 46, 57],
     ['train', 46, 10, 1, 2.5, 7],
     ['coins', 48, 8, 6],
 

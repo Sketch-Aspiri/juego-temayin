@@ -254,7 +254,7 @@ Temas: `jungle`, `ruins` (nuevo), `fortress` (nuevo), `mangrove` (nuevo). Piedra
 
 | Id | Estación | Lugar real | Tema / ambiente | Tipo | Mecánica clave | Enemigos |
 |---|---|---|---|---|---|---|
-| 2-1 | Carrillo Puerto | Paradero rural en la selva baja campechana | `jungle` | jungla / tren | Primer nivel con vagones de tren móviles; el primero cruza un arroyo (fallar no cuesta vida) | `coati`, saraguato, tarántula, nauyaca |
+| 2-1 | Carrillo Puerto | Paradero rural en la selva baja campechana | `jungle` | jungla / tren | Primer nivel con vagones de tren móviles; el primero cruza un barranco sin agua: solo se pasa subiendo al vagón | `coati`, saraguato, tarántula, nauyaca |
 | 2-2 | Edzná | Zona arqueológica, Edificio de los Cinco Pisos | `ruins` | ruinas | Escaleras de pirámide (`stairs`), plataformas que caen | tarántula, nauyaca, sombras de Xibalbá (menor) |
 | 2-3 | San Francisco de Campeche | Ciudad amurallada, baluartes y puertas de Mar y de Tierra | `fortress` | ciudad | Cañones de baluarte como plataformas, muros con troneras | piratas cangrejo, cangrejo azul |
 | 2-4 | Petenes | Reserva de la Biosfera Los Petenes: manglares e islas de selva | `mangrove` | acuático | Nado entre raíces de mangle; corrientes de marea | morena, cangrejo azul, `urchin` |
@@ -814,7 +814,7 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 
 ### Ajustes del Mundo 2
 
-- Equilibrio de los Mundos 1 y 2: la dificultad sube de forma gradual dentro de cada mundo y culmina en su jefe. Mundo 1: 1-1 es el tutorial (una vida extra), 1-2 enseña a nadar con escudo al reaparecer y una vida escondida, 1-3 presenta las hormigas de una en una, 1-5 no embosca a la salida del agua y en 1-6 ningún enemigo se cuela en la arena de Púas. Mundo 2: 2-1 presenta el tren sobre un arroyo (fallar no cuesta vida); 2-2 practica el escombro sin sombras antes de combinarlos; 2-6 combina escombro y sombras como prueba previa al jefe. Todos los niveles de ambos mundos tienen consejo de Toh (`LevelDef.hint`). Reglas, comprobadas con el motor en `data/levels/balance.test.ts`:
+- Equilibrio de los Mundos 1 y 2: la dificultad sube de forma gradual dentro de cada mundo y culmina en su jefe. Mundo 1: 1-1 es el tutorial (una vida extra), 1-2 enseña a nadar con escudo al reaparecer y una vida escondida, 1-3 presenta las hormigas de una en una, 1-5 no embosca a la salida del agua y en 1-6 ningún enemigo se cuela en la arena de Púas. Mundo 2: 2-1 presenta el tren sobre un barranco sin agua (el vagón es la única forma de cruzar y fallar el salto cuesta una vida); 2-2 practica el escombro sin sombras antes de combinarlos; 2-6 combina escombro y sombras como prueba previa al jefe. Todos los niveles de ambos mundos tienen consejo de Toh (`LevelDef.hint`). Reglas, comprobadas con el motor en `data/levels/balance.test.ts`:
   - Ningún enemigo cae solo al vacío antes de cruzarse con el jugador, a 2,5, 4 y 7 bloques/s y con varias semillas del azar de `createEnemy`. Los caminantes (coatí, ruedas, cangrejos) no miran el suelo: no van en islas entre hoyos ni con un hoyo cerca a su espalda.
   - Ningún enemigo de suelo nace a 2 bloques o menos de un aterrizaje (el otro lado de un hoyo o la orilla por la que se sale del agua); la nauyaca, no más cerca que su alcance de aviso (`NOTICE_RANGE`, 3,2 bloques).
   - Ningún enemigo entra en la arena del jefe antes de que despierte.
