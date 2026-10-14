@@ -1,4 +1,4 @@
-"""Verifica siluetas, altura del jugador, historia y recorrido de Palenque en Chromium."""
+"""Verifica siluetas, proporciones del jugador, historia y recorrido de Palenque en Chromium."""
 import argparse
 import json
 from pathlib import Path
@@ -25,6 +25,8 @@ with sync_playwright() as p:
       const {bakedFrame,lazyImage,warmArt}=await import(loaded('/src/engine/render/artCache.ts'));
       const {TOH_POSES,TOH_FILE}=await import('/src/data/tohSprites.ts');
       const {PLAYER_SPRITES}=await import('/src/data/playerSprites.ts');
+      const {PLAYER_HEAD_WIDTHS,PLAYER_POSE_HEAD_WIDTHS}=await import('/src/data/playerScale.ts');
+      const {GAMEPLAY_SPRITES}=await import('/src/data/gameplaySprites.ts');
       const {createPlayer}=await import(loaded('/src/engine/entities/player.ts'));
       const {loadAssets}=await import(loaded('/src/engine/assets.ts'));
       const {drawPlayerSprite}=await import(loaded('/src/engine/render/sprites.ts'));
@@ -50,7 +52,8 @@ with sync_playwright() as p:
         c.strokeStyle='#f6dca8';c.beginPath();c.moveTo(20,36+(pose.footY-y)*.46);c.lineTo(340,36+(pose.footY-y)*.46);c.stroke();
         board.append(canvas);metrics.push({pose:name,rawPixels,cleanedPixels,removed:rawPixels-cleanedPixels});
       }
-      window.qaSprites={assets,board,metrics,lazyImage,PLAYER_SPRITES,createPlayer,drawPlayerSprite,World:null,world:null,hold:false,drive:false,stats:{}};
+      window.qaSprites={assets,board,metrics,lazyImage,PLAYER_SPRITES,PLAYER_HEAD_WIDTHS,PLAYER_POSE_HEAD_WIDTHS,GAMEPLAY_SPRITES,
+        createPlayer,drawPlayerSprite,World:null,world:null,hold:false,drive:false,stats:{}};
       return metrics;
     }""")
     page.screenshot(path=str(out / 'toh-seis-poses.png'))
@@ -89,9 +92,12 @@ with sync_playwright() as p:
         const canvas=document.createElement('canvas');canvas.width=150;canvas.height=155;const c=canvas.getContext('2d');
         const p=qa.createPlayer(0);p.x=75-p.w/2;p.y=125-p.h;p.anim=anim;p.frame=i;
         qa.drawPlayerSprite(c,qa.assets,p,0,false,0,100);
-        const data=c.getImageData(0,0,150,155).data;let top=155,bottom=0;
-        for(let y=0;y<155;y++)for(let x=0;x<150;x++)if(data[(y*150+x)*4+3]>=40){top=Math.min(top,y);bottom=Math.max(bottom,y)}
-        metrics.push({anim,frame:i,height:bottom-top+1,bottom});
+        const data=c.getImageData(0,0,150,155).data;let top=155,bottom=0,left=150,right=0;
+        for(let y=0;y<155;y++)for(let x=0;x<150;x++)if(data[(y*150+x)*4+3]>=40){
+          top=Math.min(top,y);bottom=Math.max(bottom,y);left=Math.min(left,x);right=Math.max(right,x);
+        }
+        const head=(right-left+1)*qa.PLAYER_HEAD_WIDTHS[anim][i]/qa.PLAYER_SPRITES[anim][i].w;
+        metrics.push({anim,frame:i,height:bottom-top+1,bottom,head});
         c.strokeStyle='#f6dca8';c.beginPath();c.moveTo(0,125);c.lineTo(150,125);c.moveTo(0,43);c.lineTo(150,43);c.stroke();
         c.fillStyle='#fff';c.font='14px sans-serif';c.fillText(`${animNames[anim]} ${i+1}`,8,20);qa.board.append(canvas);
       }
@@ -102,7 +108,9 @@ with sync_playwright() as p:
     page.wait_for_function("qaSprites.lazyImage('personajes/jugador-mecanicas.webp')")
     poses = page.evaluate("""()=>{
       const qa=qaSprites;qa.board.replaceChildren();
-      const cases=[['Carrera',{}],['Nado avance',{swimming:true,animT:0}],
+      qa.board.style.gridTemplateColumns='repeat(5,1fr)';
+      const cases=[['Reposo',{anim:'idle'}],['Carrera',{}],['Salto',{anim:'jump',frame:3}],['Caída',{anim:'fall'}],
+        ['Nado avance',{swimming:true,animT:0}],
         ['Nado patada',{swimming:true,animT:.4}],['Brazada',{swimming:true,strokeT:.2}],
         ['Agarre',{swinging:0,vx:0}],['Balanceo',{swinging:0,vx:100}],['Pelota',{ball:true,throwT:.2}]];
       const metrics=[];
@@ -115,7 +123,12 @@ with sync_playwright() as p:
         for(let y=0;y<210;y++)for(let x=0;x<150;x++)if(data[(y*150+x)*4+3]>=40){
           top=Math.min(top,y);bottom=Math.max(bottom,y);left=Math.min(left,x);right=Math.max(right,x);
         }
-        metrics.push({pose,face,height:bottom-top+1,width:right-left+1,simulationUnchanged:JSON.stringify(p)===before});
+        const poseIds={'Nado avance':'swimGlide','Nado patada':'swimKick','Brazada':'swimStroke',
+          'Agarre':'hanging','Balanceo':'swinging','Pelota':'throwing'},id=poseIds[pose];
+        const sourceWidth=id?qa.GAMEPLAY_SPRITES[id].frame[2]:qa.PLAYER_SPRITES[p.anim][p.frame].w;
+        const headWidth=id?qa.PLAYER_POSE_HEAD_WIDTHS[id]:qa.PLAYER_HEAD_WIDTHS[p.anim][p.frame];
+        metrics.push({pose,face,height:bottom-top+1,width:right-left+1,head:(right-left+1)*headWidth/sourceWidth,
+          simulationUnchanged:JSON.stringify(p)===before});
         c.strokeStyle='#f6dca8';c.beginPath();c.moveTo(0,top);c.lineTo(150,top);c.moveTo(0,bottom+1);c.lineTo(150,bottom+1);c.stroke();
         c.fillStyle='#fff';c.font='14px sans-serif';c.fillText(pose,8,20);qa.board.append(canvas);
       }
@@ -232,9 +245,9 @@ assert not errors, errors
 assert all(item['removed'] > 0 for item in others), others
 expected = {'perch': 61004, 'perchLook': 61007, 'perchTail': 66713, 'flyUp': 108977, 'flyDown': 86693, 'point': 85061}
 assert all(item['cleanedPixels'] == expected[item['pose']] for item in report), report
-assert max(item['height'] for item in players) - min(item['height'] for item in players) <= 2, players
-assert all(abs(item['height'] - 82) <= 1 for item in players), players
+assert max(item['height'] for item in players) - min(item['height'] for item in players) > 15, players
+assert all(abs(item['head'] - 56) <= 1 for item in players), players
 assert len(set(item['bottom'] for item in players)) == 1, players
-assert all(abs(item['height'] - 82) <= 1 and item['simulationUnchanged'] for item in poses), poses
+assert all(abs(item['head'] - 56) <= 1 and item['simulationUnchanged'] for item in poses), poses
 assert all(item['simulationUnchanged'] for item in scenes), scenes
 assert completion['phase'] == 'done' and completion['checkpoint'], completion

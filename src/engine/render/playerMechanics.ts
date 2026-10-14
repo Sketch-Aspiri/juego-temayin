@@ -1,16 +1,16 @@
 import { GAMEPLAY_SPRITES, type PlayerPoseId } from '../../data/gameplaySprites';
-import { PLAYER_ART_HEIGHT } from '../../data/playerSprites';
+import { playerPoseScale } from '../../data/playerScale';
 import type { Player } from '../entities/types';
 import type { Ctx } from './drawUtils';
 import { drawGameplaySprite } from './gameplaySprites';
 
 const SWING_SPEED = 65;
 
-/** Cada pose conserva su proporción y comparte la altura del jugador de tierra. */
+/** La cabeza conserva su tamaño aunque el cuerpo se estire o nade horizontalmente. */
 export function drawPlayerPose(c: Ctx, id: PlayerPoseId, x: number, y: number): boolean {
   const frame = GAMEPLAY_SPRITES[id].frame;
-  const width = PLAYER_ART_HEIGHT * frame[2] / frame[3];
-  return drawGameplaySprite(c, id, x, y, width, PLAYER_ART_HEIGHT);
+  const scale = playerPoseScale(id);
+  return drawGameplaySprite(c, id, x, y, frame[2] * scale, frame[3] * scale);
 }
 
 /** El agarre coincide con la punta de la cuerda; el lanzamiento conserva el apoyo de los pies. */

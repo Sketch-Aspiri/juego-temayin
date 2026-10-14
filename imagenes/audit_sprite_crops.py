@@ -96,10 +96,9 @@ def player_frames():
 def write_player_data():
     frames = player_frames()
     lines = ["import type { AnimName } from '../engine/entities/types';",
-             "import type { AtlasFrame } from '../engine/render/enemies/atlas';", '',
+             "import type { AtlasFrame } from '../engine/render/enemies/atlas';",
+             "import { playerScale } from './playerScale';", '',
              'export interface PlayerSpriteFrame extends AtlasFrame { readonly scale: number }', '',
-             '/** Altura visible compartida: cambiar de pose no encoge al jugador. */',
-             'export const PLAYER_ART_HEIGHT = 82;', '',
              '/** Recortes alfa de guepardo.webp (1360×800), con los pies en su apoyo real. */',
              'export const PLAYER_SPRITES = {']
     for row, state in enumerate(['run', 'jump', 'fall', 'idle', 'win']):
@@ -109,7 +108,8 @@ def write_player_data():
             x, y = f['index'] * 170 + x0, row * 160 + y0
             w, h = x1 - x0, y1 - y0
             ax, ay = f['index'] * 170 + 85, row * 160 + 158
-            scale = f'PLAYER_ART_HEIGHT / {h}'
+            # La calibración anatómica se conserva al regenerar los recortes alfa.
+            scale = f"playerScale('{state}', {f['index']})"
             lines.append(f'    {{ x: {x}, y: {y}, w: {w}, h: {h}, ax: {ax}, ay: {ay}, scale: {scale} }},')
         lines.append('  ],')
     lines.append('} as const satisfies Readonly<Record<AnimName, readonly PlayerSpriteFrame[]>>;')
