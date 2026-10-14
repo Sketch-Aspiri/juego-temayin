@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { audio } from './engine/audio';
 import { loadAssets, type Assets } from './engine/assets';
-import { INTRO_FILES } from './data/intro';
+import { CINEMATIC_FILES } from './data/cinematics';
 import { warmArt } from './engine/render/artCache';
 import { useAppStore } from './store/appStore';
 import { AssetsContext } from './ui/assetsContext';
@@ -10,6 +10,7 @@ import { LevelSelect } from './ui/screens/LevelSelect';
 import { SettingsScreen } from './ui/screens/SettingsScreen';
 import { TitleScreen } from './ui/screens/TitleScreen';
 import { IntroScreen } from './ui/screens/IntroScreen';
+import { HistoryScreen } from './ui/screens/HistoryScreen';
 
 export function App() {
   const screen = useAppStore((s) => s.screen);
@@ -22,7 +23,7 @@ export function App() {
       if (cancelled) return;
       setAssets(a);
       warmArt();
-      warmArt(INTRO_FILES);
+      warmArt(CINEMATIC_FILES);
       useAppStore.getState().go('title');
     });
     return () => {
@@ -49,6 +50,7 @@ export function App() {
     <AssetsContext.Provider value={assets}>
       {screen === 'title' && <TitleScreen />}
       {screen === 'intro' && <IntroScreen />}
+      {screen === 'history' && <HistoryScreen />}
       {screen === 'levels' && <LevelSelect />}
       {screen === 'settings' && <SettingsScreen />}
       {screen === 'game' && <GameScreen />}

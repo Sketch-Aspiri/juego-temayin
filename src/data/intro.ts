@@ -3,7 +3,7 @@ import { TEMAYIN_EXPRESSIONS } from './temayinExpressions';
 
 /**
  * Cinemática de introducción (AGENTS.md §4.1): cuenta la historia antes del
- * nivel 1-1. Solo datos; `ui/screens/IntroScreen.tsx` la reproduce.
+ * nivel 1-1. Solo datos; `ui/components/CinematicPlayer.tsx` la reproduce.
  */
 
 /** Recorte de una hoja de sprites: archivo, tamaño de la hoja y rectángulo [x, y, w, h]. */

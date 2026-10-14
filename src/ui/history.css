@@ -1,0 +1,51 @@
+body:has(.history) { touch-action: pan-y; }
+.history {
+  height: 100%;
+  overflow-y: auto;
+  background: radial-gradient(ellipse at 80% 0, #43634870, transparent 60%), #0c241b;
+  padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+}
+.history__content { width: min(100%, 1040px); margin: 0 auto; }
+.history__header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.history__header .btn { min-height: 44px; }
+.history__count { color: #cad8b9; font-size: 14px; text-align: right; }
+.history__heading { margin: 38px 0 28px; }
+.history__eyebrow { color: var(--gold); text-transform: uppercase; letter-spacing: .19em; font-size: 12px; font-weight: 700; }
+.history__heading h1 { margin: 5px 0 8px; font: 400 clamp(42px, 6vw, 68px)/1.05 'Lilita One', sans-serif; color: #ffdf84; text-shadow: 0 4px 0 #06150f; }
+.history__heading > p:last-child { color: #d1ddc8; margin: 0; font-size: 17px; line-height: 1.5; }
+.history__chapters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
+.history-card { overflow: hidden; border-radius: 18px; border: 1px solid #d9b66180; background: #193d2e; box-shadow: 0 8px 0 #071a14, 0 12px 35px #0003; }
+.history-card__cover { position: relative; height: 220px; background-size: cover; background-position: center; overflow: hidden; isolation: isolate; }
+.history-card__cover::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 30%, #122b20ee); z-index: 1; }
+.history-card__actor { position: absolute; height: 96%; right: 15%; bottom: -7%; filter: drop-shadow(0 6px 8px #0008); }
+.history-card__badge { position: absolute; top: 16px; left: 16px; background: #0c2b20eb; border: 1px solid #d4c38a; padding: 6px 12px; border-radius: 999px; font-size: 12px; color: #fff0b8; z-index: 2; }
+.history-card__chapter { position: absolute; left: 24px; bottom: 18px; color: #ffe6a0; font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; z-index: 2; }
+.history-card__body { padding: 0 24px 24px; }
+.history-card h2 { font: 400 clamp(23px, 2.6vw, 29px)/1.2 'Bree Serif', serif; margin: 4px 0 12px; }
+.history-card p { line-height: 1.5; color: #d5e0cd; margin: 0; min-height: 48px; }
+.history-card .history-card__requirement { font-size: 13px; color: #bcd4ba; margin: 18px 0 16px; min-height: 20px; }
+.history-card .btn { width: 100%; min-height: 46px; }
+.history-card .btn > span { margin-right: 7px; }
+.history-card--locked { border-color: #7e897e; background: #1b3028; }
+.history-card--locked .history-card__cover { filter: saturate(.25); }
+.history-card--locked .btn:disabled { cursor: default; opacity: .7; background: #ffffff08; }
+.history__future { max-width: 600px; margin: 30px auto 8px; text-align: center; font-size: 14px; line-height: 1.6; color: #b3c8b8; }
+.cinematic-overlay { position: fixed; inset: 0; z-index: 100; background: #000; }
+/* El tren pasa por encima de la cartela, también con las animaciones reducidas. */
+.intro-scene--train .intro-train { bottom: 25%; height: 22%; }
+@media (prefers-reduced-motion: reduce) {
+  .intro-train__cars { animation: none !important; left: 0; }
+}
+
+@media (max-width: 600px) {
+  .history { padding: max(16px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom)); }
+  .history__header { gap: 10px; }
+  .history__header .btn { padding: 9px 14px; font-size: 13px; }
+  .history__count { font-size: 12px; max-width: 100px; }
+  .history__heading { margin: 28px 0 24px; }
+  .history__heading > p:last-child { font-size: 15px; }
+  .history__chapters { grid-template-columns: 1fr; gap: 24px; }
+  .history-card__cover { height: 185px; }
+  .history-card__body { padding: 0 20px 20px; }
+  .history-card p { min-height: 0; }
+}

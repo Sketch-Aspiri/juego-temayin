@@ -128,6 +128,8 @@ temayin_juego/
         mayaTextures.ts        Respaldos de piedra, jade y cacao
         levelSprites.ts        Cañones y tramos de losas frágiles
     data/                      CONTENIDO (aquí se añaden niveles y mundos)
+      cinematics.ts            Catálogo, desbloqueos por nivel y precarga de cinemáticas
+      puasVictory.ts           Cuatro escenas tras completar Escárcega
       gameplaySprites.ts       Recortes y anclas del arte de mecánicas existente
       newGameplaySprites.ts    Sprites nuevos (proyectiles, poses de Kaimán, ondas y toldo)
       mayaTileSprites.ts       Cinco sprites nuevos de cofres, sillares y columnas
@@ -149,8 +151,8 @@ temayin_juego/
       persistence.ts           loadSaved / save en localStorage (clave 'temayin:v3'; migra 'temayin:v2')
     ui/
       assetsContext.tsx
-      screens/                 TitleScreen, LevelSelect, GameScreen, SettingsScreen
-      components/              Hud, BossBanner, Overlays, Stars, TouchControls
+      screens/                 TitleScreen, LevelSelect, GameScreen, SettingsScreen, IntroScreen, HistoryScreen
+      components/              Hud, BossBanner, Overlays, Stars, TouchControls, CinematicPlayer
 ```
 
 ### Flujo de datos
@@ -714,6 +716,15 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 ---
 
 ## 10. Definición de terminado
+
+### Archivo de Historia y cinemáticas de victoria
+
+- El botón «Historia» abre `ui/screens/HistoryScreen.tsx`: muestra las cinemáticas disponibles y el nivel necesario para desbloquear cada capítulo. El prólogo está disponible desde el principio; «El primer tramo libre» contiene cuatro escenas de la victoria sobre Púas y el viaje hacia Campeche (`data/puasVictory.ts`). La galería permite volver a verlas y regresar a la tarjeta seleccionada, con teclado o controles táctiles.
+- `data/cinematics.ts` registra `CinematicDef` por `CinematicId`: título, capítulo, portada, escenas y `afterLevel` opcional. Para añadir una cinemática futura se incorpora su id y su entrada al registro. El menú, la precarga `CINEMATIC_FILES` y el disparador `cinematicAfterLevel` la incorporan automáticamente. Las escenas reutilizan los tipos de `data/intro.ts` y sus composiciones verticales.
+- `store/cinematics.ts` deriva el desbloqueo de `Progress.levels[afterLevel].completions > 0`. Los guardados v3 que ya completaron `1-6`, y los v2 que migran la antigua guarida a ese id, desbloquean la escena sin volver a jugar. No se modifica el esquema de persistencia ni se otorgan recompensas al reproducirla desde Historia. Borrar el progreso vuelve a bloquear los capítulos de victoria.
+- `ui/components/CinematicPlayer.tsx` comparte el reproductor entre prólogo, galería y fin de nivel: texto progresivo, avance automático/manual, salto de escena, salida con Escape y respeto del movimiento reducido. `IntroScreen` conserva la entrada automática antes de Palenque. El tren permanece visible también con movimiento reducido.
+- `GameScreen` guarda la finalización antes de reproducir la cinemática asociada al nivel. Durante ella pausa el motor y deja inerte el juego; al terminar u omitirla muestra los resultados ya obtenidos. No remonta la partida, no duplica la finalización y conserva la sesión al continuar al siguiente nivel. Se reproduce al completar Escárcega, tras vencer a Púas y alcanzar la meta.
+- Pruebas: `data/cinematics.test.ts`, `store/cinematics.test.ts`, `ui/screens/HistoryScreen.test.tsx` y el flujo de introducción existente. `python imagenes/verify_cinematics.py` verifica partidas nuevas, v3 y v2, reproducción repetida, foco, omisión, rotación, movimiento reducido y avance automático en escritorio y móvil. Recorre Escárcega hasta checkpoint y meta, con contacto protegido y fuego asistido en ventanas válidas, y comprueba los resultados y la sesión al pasar a `2-1`. Capturas e informe en `imagenes/.temp/cinematicas/`; no evalúa dificultad ni puntería.
 
 ### Nota de versión del menú principal
 

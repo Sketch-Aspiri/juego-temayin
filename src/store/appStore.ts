@@ -8,7 +8,7 @@ import { loadSaved, save } from './persistence';
 import { EMPTY_PROGRESS, isUnlocked, recordCompletion, type Progress } from './progress';
 import type { Settings } from './settings';
 
-export type Screen = 'loading' | 'title' | 'intro' | 'levels' | 'game' | 'settings';
+export type Screen = 'loading' | 'title' | 'intro' | 'history' | 'levels' | 'game' | 'settings';
 
 /** Partida en curso: nivel + estado arrastrado. `attempt` fuerza a reiniciar el motor. */
 export interface Run {

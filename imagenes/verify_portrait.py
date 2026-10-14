@@ -29,6 +29,7 @@ def overlaps(a, b):
 
 def story(page, width, height):
     page.get_by_role('button', name='Historia', exact=True).click()
+    page.get_by_role('button', name='Ver: El eclipse de Camazotz', exact=True).click()
     for index in range(1, 7):
         page.get_by_label(f'Escena {index} de 6').wait_for()
         page.wait_for_function("Array.from(document.querySelectorAll('.intro-sprite')).every(e=>getComputedStyle(e).backgroundImage!=='none')")
@@ -59,7 +60,8 @@ def story(page, width, height):
                 page.locator('.intro-next').tap()
             else:
                 page.keyboard.press('Enter')
-    page.get_by_role('button', name='¡A la aventura!', exact=True).tap()
+    page.get_by_role('button', name='Volver a Historia', exact=True).tap()
+    page.get_by_role('button', name='← Volver al menú', exact=True).tap()
 
 
 def prepare_game(page):
