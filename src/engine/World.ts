@@ -3,7 +3,6 @@ import { createRope, type Rope } from './entities/ropes';
 import { lightSources, type Darkness, type LightSource } from './render/lighting';
 import { createBoss, type Boss } from './bosses';
 import {
-  COINS_PER_LIFE,
   DEFAULT_LEVEL_TIME,
   GOAL_PAN_RATE,
   GOAL_VIEW_WIDTH,
@@ -93,6 +92,8 @@ export class World {
   flagY = 2 * T;
   checkpointReached: boolean;
   coinsCollected = 0;
+  /** Presentación del encuentro: solo dibujo, sin avanzar la simulación. */
+  offeringActive = false;
 
   private timeAcc = 0;
 
@@ -163,17 +164,11 @@ export class World {
     if (x !== undefined && y !== undefined) this.popups.push({ x, y, t: 0, txt: String(n) });
   }
 
-  addCoin(x: number, y: number): void {
+  addCoin(_x: number, _y: number): void {
     this.session.coins++;
     this.coinsCollected++;
     this.addScore(100);
     this.audio.play('coin');
-    if (this.session.coins >= COINS_PER_LIFE) {
-      this.session.coins -= COINS_PER_LIFE;
-      this.session.lives++;
-      this.audio.play('life');
-      this.popups.push({ x, y: y - 20, t: 0, txt: '1UP' });
-    }
   }
 
   hurt(): void {

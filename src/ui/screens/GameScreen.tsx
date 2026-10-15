@@ -48,10 +48,16 @@ export function GameScreen() {
       audio,
       input,
       level,
-      session: run.session,
+      // La simulación recibe su propia copia; publicar el cacao no sustituye ni muta Run.
+      session: { ...run.session },
+      initialBlessings: run.initialBlessings,
       callbacks: {
-        onHud: setHud,
+        onHud: (state) => {
+          useAppStore.getState().syncCacao(run, state.coins);
+          setHud(state);
+        },
         onComplete: (result) => {
+          useAppStore.getState().syncCacao(run, result.session.coins);
           finishLevel(result);
           setOutcome({ kind: 'complete', result });
           setCinematic(cinematicAfterLevel(result.levelId) ?? null);

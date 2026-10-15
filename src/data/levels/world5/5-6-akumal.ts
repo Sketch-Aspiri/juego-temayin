@@ -1,8 +1,10 @@
+import { EK_CHUAH_OFFERING } from '../../offerings';
 import type { LevelDef } from '../../../engine/level/types';
 import { blueCrab, jellyfish } from '../helpers';
 import { waterBank } from '../waterBanks';
 
 export const LEVEL_5_6: LevelDef = {
+  offering: EK_CHUAH_OFFERING,
   id: '5-6', name: 'Akumal', width: 135, theme: 'reef', time: 420, checkpoint: 68,
   hint: 'Las tortugas son aliadas: puedes apoyarte en su caparazón y nunca reciben daño. Esquiva las algas y golpea el núcleo del Capitán cuando se abra. ¡Cuidemos el mar!',
   boss: { id: 'sargazo', x: 90, arena: [78, 100] },

@@ -1,0 +1,70 @@
+/* El encuentro comparte jade, cacao y tipografía con la aventura. */
+body:has(.offering) { touch-action: pan-y; }
+.offering {
+  height: 100dvh;
+  overflow-y: auto;
+  touch-action: pan-y;
+  background: radial-gradient(ellipse at 15% 40%, #34533a, #10241a 65%);
+  padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+}
+.offering__layout { min-height: 100%; max-width: 1080px; margin: auto; display: grid; grid-template-columns: .9fr 1.1fr; gap: 36px; align-items: center; }
+.offering__scene { position: relative; align-self: stretch; min-height: 540px; border-radius: 28px 28px 90px 28px; overflow: hidden; border: 2px solid #d4bd7060; background: #203e2b; box-shadow: 0 18px 50px #06130e80; }
+.offering__scene canvas { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center bottom; position: absolute; bottom: 0; left: 0; }
+.offering__scene::after { content: ''; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 65px #09231777; }
+.offering__station { position: absolute; top: 24px; left: 24px; right: 24px; z-index: 1; color: #fff2c4; font-family: 'Bree Serif', serif; font-size: 19px; text-shadow: 0 2px 5px #000; }
+.offering__caption { position: absolute; z-index: 1; bottom: 13px; left: 24px; margin: 0; font-size: 12px; color: #fff1c1; text-shadow: 0 1px 3px #000; }
+.offering__panel { padding: 14px 0; }
+.offering__header { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+.offering__eyebrow { color: #c2d0a5; text-transform: uppercase; letter-spacing: .14em; font-size: 10px; margin: 0 0 7px; }
+.offering h1 { font-family: 'Lilita One', cursive; font-weight: 400; color: #ffe17a; font-size: clamp(38px, 4vw, 52px); margin: 0; text-shadow: 0 3px #70441d; }
+.offering h1:focus { outline: none; }
+.offering__wallet { display: grid; justify-items: center; min-width: 86px; padding: 9px 13px; background: #132b20; border: 1px solid #d4bd7070; border-radius: 16px; color: #e6d3a0; font-size: 11px; }
+.offering__wallet strong { font-family: 'Lilita One', cursive; font-size: 29px; color: #ffe17a; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; max-width: 140px; }
+.offering__greeting { font-family: 'Bree Serif', serif; line-height: 1.55; color: #e2e8ce; margin: 18px 0 23px; font-size: 16px; }
+.offering__offers { display: grid; gap: 10px; }
+.blessing { position: relative; display: grid; grid-template-columns: 44px 1fr 78px; align-items: center; gap: 12px; background: linear-gradient(110deg, #284f3b, #19372a); border: 1px solid #629c7466; border-radius: 15px; padding: 14px; box-shadow: 0 3px 0 #081e16; }
+.blessing__symbol { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 13px; background: #112e22; color: #77d9ac; font-size: 33px; }
+.blessing--fire .blessing__symbol { color: #ffbb62; }
+.blessing--life .blessing__symbol { color: #9be4a9; font-size: 27px; }
+.blessing h2 { font-family: 'Bree Serif', serif; font-weight: 400; font-size: 18px; margin: 0 0 4px; color: #fff0bd; }
+.blessing p { font-size: 12px; line-height: 1.45; color: #c7d6c3; margin: 0; }
+.blessing button { display: grid; place-content: center; min-height: 52px; padding: 7px; border: 1px solid #e7c679; border-radius: 11px; background: #ffe17a; color: #3c2c16; cursor: pointer; font-size: 11px; }
+.blessing button strong { font-family: 'Lilita One', cursive; font-size: 24px; font-weight: 400; }
+.blessing button:hover:enabled { background: #fff0a8; transform: translateY(-1px); }
+.blessing button:disabled { background: #20392d; border-color: #6c8069; color: #bfccb7; cursor: default; }
+.blessing--bought { border-color: #8ed6a9; }
+.blessing--bought button:disabled { color: #bbefcb; border-color: #81b791; }
+.blessing__shortage { grid-column: 2 / -1; color: #e1c491; font-size: 11px; margin-top: -5px; }
+.offering__message { min-height: 32px; margin: 18px 0 8px; color: #c5e3b9; font-size: 12px; line-height: 1.5; }
+.offering__note { font-size: 11px; line-height: 1.5; color: #b5c4aa; margin: 0 0 18px; }
+.offering__continue { width: 100%; min-height: 52px; display: flex; justify-content: space-between; align-items: center; }
+.offering__back { display: block; margin: 8px auto 0; background: none; border: none; cursor: pointer; color: #d4ddc6; min-height: 44px; padding: 8px 20px; font-size: 12px; }
+.offering__fiction { font-size: 10px; color: #a8b99e; text-align: center; line-height: 1.4; margin: 3px 0 0; }
+.menu__treasures { display: grid; justify-items: end; gap: 4px; font-size: 12px; }
+.menu__wallet { color: #d4dcbf; }
+@media (max-width: 700px) and (orientation: portrait) {
+  .offering { padding: max(12px, env(safe-area-inset-top)) 14px max(16px, env(safe-area-inset-bottom)); }
+  .offering__layout { grid-template-columns: 1fr; gap: 10px; align-content: start; }
+  .offering__scene { min-height: 0; aspect-ratio: 480 / 390; border-radius: 20px 20px 48px 20px; }
+  .offering__scene canvas { height: auto; }
+  .offering__station { top: 14px; left: 16px; font-size: 16px; }
+  .offering__caption { left: 16px; font-size: 11px; }
+  .offering__panel { padding: 5px 2px; }
+  .offering h1 { font-size: 38px; }
+  .offering__greeting { margin: 12px 0 16px; font-size: 14px; }
+  .blessing { padding: 12px 10px; gap: 9px; grid-template-columns: 38px 1fr 73px; }
+  .blessing__symbol { width: 38px; height: 42px; }
+  .blessing h2 { font-size: 16px; }
+  .blessing p { font-size: 11px; }
+  .menu__treasures { font-size: 10px; }
+}
+@media (max-height: 600px) and (orientation: landscape) {
+  .offering { padding: 14px 20px; }
+  .offering__layout { gap: 22px; grid-template-columns: .8fr 1.2fr; }
+  .offering__scene { min-height: 480px; }
+  .offering__greeting { font-size: 14px; margin: 12px 0 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .blessing button { transition: none; }
+  .blessing button:hover:enabled { transform: none; }
+}

@@ -54,12 +54,13 @@ describe('World', () => {
     expect(world.session.score).toBe(100);
   });
 
-  it('100 monedas dan una vida extra', () => {
+  it('el cacao se acumula por encima de 100 sin consumirlo en vidas', () => {
     const { world } = make('1-1');
     world.session.coins = 99;
     world.addCoin(0, 0);
-    expect(world.session.coins).toBe(0);
-    expect(world.session.lives).toBe(START_LIVES + 1);
+    expect(world.session.coins).toBe(100);
+    expect(world.session.lives).toBe(START_LIVES);
+    expect(world.coinsCollected).toBe(1);
   });
 
   it('el daño sin escudo mata y con escudo solo lo quita', () => {

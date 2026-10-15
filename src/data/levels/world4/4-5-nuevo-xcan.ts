@@ -1,3 +1,4 @@
+import { EK_CHUAH_OFFERING } from '../../offerings';
 import type { LevelDef } from '../../../engine/level/types';
 import { bats, shades, tarantula } from '../helpers';
 
@@ -27,6 +28,7 @@ import { bats, shades, tarantula } from '../helpers';
  *   85-106   Bandera y templo.
  */
 export const LEVEL_4_5: LevelDef = {
+  offering: EK_CHUAH_OFFERING,
   id: '4-5',
   name: 'Nuevo Xcán',
   hint: '¡Salta sobre los ladridos! Cuando brillen sus ojos, puedes golpear a Huay Pek.',

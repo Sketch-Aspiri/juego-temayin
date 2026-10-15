@@ -3,6 +3,7 @@ import { ALL_LEVELS } from '../data/worlds';
 import { migrateV2Progress, V2_TO_V3_LEVEL_IDS } from './migrations';
 import { LEGACY_KEY, loadSaved, STORAGE_KEY } from './persistence';
 import { EMPTY_PROGRESS, isUnlocked, sanitizeProgress } from './progress';
+import { EMPTY_WALLET } from './wallet';
 import { DEFAULT_SETTINGS } from './settings';
 
 const rec = (bestScore: number) => ({ bestScore, stars: 2, completions: 1 });
@@ -67,7 +68,7 @@ describe('loadSaved con migración', () => {
   afterEach(() => vi.unstubAllGlobals());
 
   it('sin datos devuelve el estado vacío', () => {
-    expect(loadSaved()).toEqual({ progress: EMPTY_PROGRESS, settings: DEFAULT_SETTINGS });
+    expect(loadSaved()).toEqual({ progress: EMPTY_PROGRESS, settings: DEFAULT_SETTINGS, wallet: EMPTY_WALLET });
   });
 
   it('migra la clave v2, guarda en v3 y conserva la v2', () => {
@@ -91,6 +92,6 @@ describe('loadSaved con migración', () => {
 
   it('un guardado v2 corrupto no rompe la carga', () => {
     store.set(LEGACY_KEY, '{no es json');
-    expect(loadSaved()).toEqual({ progress: EMPTY_PROGRESS, settings: DEFAULT_SETTINGS });
+    expect(loadSaved()).toEqual({ progress: EMPTY_PROGRESS, settings: DEFAULT_SETTINGS, wallet: EMPTY_WALLET });
   });
 });

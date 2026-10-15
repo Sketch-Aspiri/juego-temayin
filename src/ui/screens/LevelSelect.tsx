@@ -3,6 +3,7 @@ import type { LevelDef } from '../../engine/level/types';
 import { useAppStore } from '../../store/appStore';
 import { isUnlocked, totalStars } from '../../store/progress';
 import { Stars } from '../components/Stars';
+import '../offering.css';
 
 interface LevelCardProps {
   level: LevelDef;
@@ -31,12 +32,13 @@ function LevelCard({ level }: LevelCardProps) {
 export function LevelSelect() {
   const go = useAppStore((s) => s.go);
   const stars = useAppStore((s) => totalStars(s.progress));
+  const cacao = useAppStore(s => s.wallet.cacao);
   return (
     <main className="menu">
       <header className="menu__header">
         <button type="button" className="btn btn--ghost" onClick={() => go('title')}>← Volver</button>
         <h2>Elige tu nivel</h2>
-        <span className="menu__stars">★ {stars}</span>
+        <div className="menu__treasures"><span className="menu__stars">★ {stars}</span><span className="menu__wallet">CACAO · {cacao}</span></div>
       </header>
       <div className="menu__body">
         {WORLDS.map((w) => (

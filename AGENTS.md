@@ -83,7 +83,7 @@ temayin_juego/
       World.ts                 Estado y reglas de un nivel (testeable sin DOM)
       World.test.ts
       Game.ts                  Bucle de tiempo fijo (STEP = 1/120), muertes, fin de nivel
-      constants.ts             T=40, ROWS=14, GROUND=12, VW=960, VH=560, START_LIVES, COINS_PER_LIFE…
+      constants.ts             T=40, ROWS=14, GROUND=12, VW=960, VH=560, START_LIVES…
       types.ts                 Rect, Body, EnemyId, BossId, ThemeId, Session
       tiles.ts                 Leyenda de bloques, SOLID_TILES, ITEM_BLOCKS, ItemKind
       physics.ts (+ .test)     moveX / moveY / overlap contra la cuadrícula
@@ -405,7 +405,7 @@ Estado: **Existe** = id en `EnemyId` y en `ENEMIES`; **Nuevo** = id propuesto. L
 
 | Objeto | Efecto | Estado en el código | Implementación |
 |---|---|---|---|
-| **Granos de cacao** (monedas) | Puntos; **100 = vida extra** | **Existe** como moneda (tile `o`, bloque `?`, `COINS_PER_LIFE = 100`) | Solo cambiar el dibujo a grano de cacao (`drawCoin` en `render/drawUtils.ts` y partícula `coin`) y los textos de la UI ("MONEDAS" → "CACAO"). |
+| **Granos de cacao** (monedas) | Puntos y moneda para bendiciones | **Existe** (tile `o`, bloque `?`, bolsa persistente) | `Session.coins` contiene el saldo del motor; `Wallet.cacao` lo guarda entre niveles. No se convierte automáticamente en vidas. El HUD muestra «CACAO». |
 | **Chile habanero** | Bolas de fuego | **Existe** (bloque `F`, `ItemKind` `'fire'`, `player.fire`) | Renombrar visualmente a «habanero» si se desea; lógica intacta. |
 | **Corazón de jade** | Vida extra | **Existe** como bloque `L` → `ItemKind` `'life'` (popup `1UP`) | Cambiar sprite en `drawItemSprite`. |
 | Escudo | Absorbe un golpe | **Existe** (bloque `M`, `'shield'`) | Mantener; puede representarse como un escudo de jade o chimalli. |
@@ -540,6 +540,18 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
 | Dibujo | SVG simplificado de la península (Chiapas/Tabasco, Campeche, Yucatán, Quintana Roo) con la vía; estaciones como botones accesibles (`<button>` con `aria-label`). |
 | Tren | El tren se coloca en la última estación desbloqueada (`isUnlocked`) y se anima hasta la siguiente al completar un nivel (transición CSS/SVG; respetar `prefers-reduced-motion`). |
 | Store | Añadir `'map'` a `Screen` en `appStore.ts` o reutilizar `'levels'`. La lógica de desbloqueo sigue en `store/progress.ts`. |
+
+### 5.8 Encuentros con Ek Chuah y bolsa de cacao
+
+- `LevelDef.offering?: OfferingConfig` activa el encuentro previo al nivel. `data/offerings.ts` contiene deidad, diálogos, precios y catálogo de bendiciones: fuego (30), escudo (20) y vida (50). Aparece en Tenosique (`1-3`) y antes de los cinco jefes actuales (`1-6`, `2-7`, `3-5`, `4-5`, `5-6`).
+- `OfferingScreen` es una pantalla React de ofertas accesibles por teclado y toque. `OfferingScene` presenta el mundo inmóvil; no llama a `World.update`, por lo que no corren tiempo, enemigos ni oxígeno. `render/offering.ts` dibuja altar, deidad y partículas en el canvas. Ek Chuah tiene la misma altura visible que el sprite de reposo de Temayin y ambos apoyan en el mismo suelo; el altar queda a un lado. El movimiento reducido congela el tiempo visual. Continuar o Escape permite empezar sin comprar; volver al mapa conserva las compras pendientes.
+- `store/wallet.ts` define `Wallet = { cacao, pending }`: saldo entero seguro no negativo y bendiciones pagadas por id de nivel. `sanitizeWallet` acepta guardados antiguos sin bolsa, descarta valores inválidos y conserva únicamente ofertas existentes, sin duplicados. Se guarda junto a progreso y ajustes bajo la misma clave `temayin:v3`; v2 sigue migrándose y conserva su clave original.
+- `buyBlessing` valida pantalla, oferta, fondos y existencias, descuenta y guarda atómicamente la bendición pendiente. Solo se compra una de cada tipo por encuentro. `continueOffering` consume las pendientes del nivel y entrega `Run.initialBlessings`; las de otros niveles se conservan. Cerrar el juego durante el encuentro no pierde lo pagado. Tras continuar, las bendiciones ya están consumidas: recargar la partida no las devuelve.
+- `Game` aplica `applyBlessings` una sola vez al mundo inicial. Fuego y escudo siguen las reglas de daño existentes; morir crea un jugador sin esas bendiciones. La vida extra se suma a la sesión y se arrastra al continuar. Reaparecer en un checkpoint no abre la tienda; reiniciar desde el menú sí abre un encuentro nuevo.
+- `GameScreen` entrega una copia de `Run.session` al motor. `HudState.coins` (ya incluido en `hudKey`) sincroniza el saldo mediante `syncCacao`, que ignora publicaciones de partidas antiguas y no sustituye `Run`. `Game.stop` publica el último HUD. Cada cambio de saldo se guarda, incluidos premios de jefes y robos/devoluciones de aluxes. Morir, perder todas las vidas o volver al mapa conserva el saldo. Rejugar permite reunir más cacao. `coinsCollected` sigue siendo local al mundo para calcular estrellas; compras y saldo anterior no lo inflan.
+- El selector muestra la bolsa, todos los textos visibles usan «cacao» y borrar progreso vacía saldo y pendientes. Un guardado anterior comienza con cero cacao porque no registraba saldos históricos.
+- La representación de Ek Chuah y el intercambio de poderes son ficción de la aventura. Su relación con cacao y comerciantes se documenta en el [boletín del INAH](https://www.inah.gob.mx/images/boletines/2024/753/Boletin%20753.pdf). El sprite final usa el estilo de caricatura de Temayin y Toh: `public/assets/personajes/ek-chuah-caricatura.webp`; PNG y prompt de `image_gen` en `imagenes/nuevos/personajes/ek-chuah-caricatura.*`.
+- Cobertura: `store/wallet.test.ts`, `store/offerings.test.ts`, `engine/blessings.test.ts`, `engine/Game.test.ts`, `engine/render/offering.test.ts` y `ui/screens/OfferingScreen.test.tsx`. `python imagenes/verify_offerings.py` revisa compras, doble clic, fondos insuficientes, recarga, poderes, checkpoint, fin de partida, resultados, seis encuentros, igualdad de altura visible, rotación y controles táctiles en Chromium. `verify_offering_routes.py` reutiliza los controladores de recorridos existentes con contacto protegido y daño al jefe asistido en ventanas válidas; en Tenosique prepara las posiciones de salida de los saltos y en Kaimán mantiene al jugador sobre un tronco durante el combate. Colisiones, oxígeno, checkpoint y meta siguen activos. Capturas e informes en `imagenes/verificacion/ofrendas/`; no evalúan dificultad ni puntería.
 
 ---
 

@@ -1,3 +1,4 @@
+import { EK_CHUAH_OFFERING } from '../../offerings';
 import type { LevelDef } from '../../../engine/level/types';
 import { coati, urchin } from '../helpers';
 
@@ -7,6 +8,7 @@ import { coati, urchin } from '../helpers';
  * (tubo, escalinatas) para que ninguno se cuele en la arena antes de cerrarse.
  */
 export const LEVEL_1_6: LevelDef = {
+  offering: EK_CHUAH_OFFERING,
   id: '1-6',
   name: 'Escárcega',
   hint: 'El chile también daña a Púas, salvo cuando rueda como bola.',

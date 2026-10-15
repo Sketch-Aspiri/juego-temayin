@@ -13,7 +13,7 @@ export function Hud({ hud }: HudProps) {
   return (
     <div className="hud" aria-live="off">
       <Stat label="PUNTOS" value={String(hud.score).padStart(6, '0')} />
-      <Stat label="MONEDAS" value={`× ${String(hud.coins).padStart(2, '0')}`} />
+      <Stat label="CACAO" value={`× ${String(hud.coins).padStart(2, '0')}`} />
       <Stat label="MUNDO" value={hud.levelId} />
       <Stat label="TIEMPO" value={String(hud.time)} warn={hud.time <= LOW_TIME} />
       {hud.oxygen !== null && <OxygenBar ratio={hud.oxygen} />}

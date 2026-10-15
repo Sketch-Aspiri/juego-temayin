@@ -11,6 +11,7 @@ import { SettingsScreen } from './ui/screens/SettingsScreen';
 import { TitleScreen } from './ui/screens/TitleScreen';
 import { IntroScreen } from './ui/screens/IntroScreen';
 import { HistoryScreen } from './ui/screens/HistoryScreen';
+import { OfferingScreen } from './ui/screens/OfferingScreen';
 
 export function App() {
   const screen = useAppStore((s) => s.screen);
@@ -53,6 +54,7 @@ export function App() {
       {screen === 'history' && <HistoryScreen />}
       {screen === 'levels' && <LevelSelect />}
       {screen === 'settings' && <SettingsScreen />}
+      {screen === 'offering' && <OfferingScreen />}
       {screen === 'game' && <GameScreen />}
     </AssetsContext.Provider>
   );

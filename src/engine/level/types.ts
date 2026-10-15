@@ -124,6 +124,8 @@ export interface BossConfig {
 }
 
 export interface LevelDef {
+  /** Encuentro opcional antes de empezar; sus precios y diálogos viven en src/data. */
+  readonly offering?: import('../blessings').OfferingConfig;
   /** Identificador único, p. ej. "1-2". */
   id: string;
   name: string;

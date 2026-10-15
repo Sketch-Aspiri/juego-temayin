@@ -1,20 +1,24 @@
 import { create } from 'zustand';
 import { INTRO_LEVEL_ID } from '../data/intro';
+import { BLESSINGS } from '../data/offerings';
 import { getLevel } from '../data/worlds';
+import type { BlessingId } from '../engine/blessings';
 import { START_LIVES } from '../engine/constants';
 import type { LevelResult } from '../engine/scoring';
 import type { Session } from '../engine/types';
 import { loadSaved, save } from './persistence';
 import { EMPTY_PROGRESS, isUnlocked, recordCompletion, type Progress } from './progress';
 import type { Settings } from './settings';
+import { EMPTY_WALLET, isCacao, type Wallet } from './wallet';
 
-export type Screen = 'loading' | 'title' | 'intro' | 'history' | 'levels' | 'game' | 'settings';
+export type Screen = 'loading' | 'title' | 'intro' | 'history' | 'levels' | 'offering' | 'game' | 'settings';
 
 /** Partida en curso: nivel + estado arrastrado. `attempt` fuerza a reiniciar el motor. */
 export interface Run {
   levelId: string;
   session: Session;
   attempt: number;
+  initialBlessings?: readonly BlessingId[];
 }
 
 interface AppState {
@@ -22,6 +26,11 @@ interface AppState {
   progress: Progress;
   settings: Settings;
   run: Run | null;
+  wallet: Wallet;
+  buyBlessing: (blessing: BlessingId) => boolean;
+  continueOffering: () => void;
+  /** Solo se aceptan publicaciones del motor de la partida vigente. */
+  syncCacao: (run: Run, cacao: number) => void;
   /** Nivel que empieza al terminar la cinemática (`null`: volver al título). */
   introNext: string | null;
   go: (screen: Screen) => void;
@@ -37,14 +46,14 @@ interface AppState {
   resetProgress: () => void;
 }
 
-const newSession = (): Session => ({ score: 0, coins: 0, lives: START_LIVES });
+const newSession = (coins: number): Session => ({ score: 0, coins, lives: START_LIVES });
 
 const saved = loadSaved();
 
 export const useAppStore = create<AppState>((set, get) => {
   const persist = (): void => {
-    const { progress, settings } = get();
-    save({ progress, settings });
+    const { progress, settings, wallet } = get();
+    save({ progress, settings, wallet });
   };
 
   return {
@@ -52,6 +61,7 @@ export const useAppStore = create<AppState>((set, get) => {
     progress: saved.progress,
     settings: saved.settings,
     run: null,
+    wallet: saved.wallet,
     introNext: null,
 
     go: (screen) => set({ screen }),
@@ -60,7 +70,38 @@ export const useAppStore = create<AppState>((set, get) => {
       if (!getLevel(levelId) || !isUnlocked(get().progress, levelId)) return;
       // La primera partida de la campaña empieza con la historia.
       if (levelId === INTRO_LEVEL_ID && !carry && !get().settings.introSeen) return get().playIntro(levelId);
-      set({ screen: 'game', run: { levelId, session: carry ? { ...carry } : newSession(), attempt: 0 } });
+      const coins = get().wallet.cacao;
+      const session = carry ? { ...carry, coins } : newSession(coins);
+      set({ screen: getLevel(levelId)?.offering ? 'offering' : 'game', run: { levelId, session, attempt: 0 } });
+    },
+
+    buyBlessing: (blessing) => {
+      const { run, screen, wallet } = get();
+      const offers = run && getLevel(run.levelId)?.offering?.offers;
+      if (!run || screen !== 'offering' || !offers?.includes(blessing)) return false;
+      const purchased = wallet.pending[run.levelId] ?? [];
+      const price = BLESSINGS[blessing].price;
+      if (purchased.includes(blessing) || wallet.cacao < price) return false;
+      set({ wallet: { cacao: wallet.cacao - price, pending: { ...wallet.pending, [run.levelId]: [...purchased, blessing] } } });
+      persist();
+      return true;
+    },
+
+    continueOffering: () => {
+      const { run, screen, wallet } = get();
+      if (!run || screen !== 'offering') return;
+      const initialBlessings = wallet.pending[run.levelId] ?? [];
+      const pending = { ...wallet.pending };
+      delete pending[run.levelId];
+      set({ screen: 'game', wallet: { ...wallet, pending },
+        run: { ...run, session: { ...run.session, coins: wallet.cacao }, initialBlessings } });
+      persist();
+    },
+
+    syncCacao: (run, cacao) => {
+      if (get().run !== run || !isCacao(cacao) || get().wallet.cacao === cacao) return;
+      set({ wallet: { ...get().wallet, cacao } });
+      persist();
     },
 
     playIntro: (next) => set({ screen: 'intro', introNext: next }),
@@ -76,7 +117,8 @@ export const useAppStore = create<AppState>((set, get) => {
     retryLevel: () => {
       const run = get().run;
       if (!run) return;
-      set({ run: { levelId: run.levelId, session: newSession(), attempt: run.attempt + 1 } });
+      set({ screen: getLevel(run.levelId)?.offering ? 'offering' : 'game',
+        run: { levelId: run.levelId, session: newSession(get().wallet.cacao), attempt: run.attempt + 1 } });
     },
 
     finishLevel: (result) => {
@@ -90,7 +132,7 @@ export const useAppStore = create<AppState>((set, get) => {
     },
 
     resetProgress: () => {
-      set({ progress: EMPTY_PROGRESS });
+      set({ progress: EMPTY_PROGRESS, wallet: EMPTY_WALLET, run: null });
       persist();
     },
   };

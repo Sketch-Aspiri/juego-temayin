@@ -31,6 +31,7 @@ import { drawBeachProps } from './beachProps';
 import { drawCannonTile, drawFragileTile } from './levelSprites';
 import { drawMayaTile, drawPaintedTerrain, drawRewardLight } from './mayaTiles';
 import { renderViewport } from './viewport';
+import { drawOffering } from './offering';
 
 const BUMP_HEIGHT = 10;
 const BUMP_TIME = 0.15;
@@ -117,7 +118,8 @@ export class Renderer {
     c.restore();
     this.lighting.draw(c, world);
     drawWeather(c, world, now);
-    if (this.canvas.width >= VW) drawTohHint(c, world);
+    drawOffering(c, world, now);
+    if (this.canvas.width >= VW && !world.offeringActive) drawTohHint(c, world);
     c.restore();
   }
 

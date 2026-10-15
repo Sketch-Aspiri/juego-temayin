@@ -58,7 +58,7 @@ export function LevelComplete({ result, levelName, hasNext, onNext, onRetry, onE
       <Stars value={result.stars} />
       <dl className="panel__stats">
         <div><dt>Puntos</dt><dd>{result.score}</dd></div>
-        <div><dt>Monedas</dt><dd>{Math.round(result.coinRatio * 100)}%</dd></div>
+        <div><dt>Cacao recogido</dt><dd>{Math.round(result.coinRatio * 100)}%</dd></div>
         <div><dt>Muertes</dt><dd>{result.deaths}</dd></div>
       </dl>
       {!hasNext && <p className="panel__sub">¡Temayin ha completado toda la aventura!</p>}

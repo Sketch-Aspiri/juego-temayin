@@ -16,7 +16,6 @@ export const PLAYER_START_TILE = 3;
 
 export const DEFAULT_LEVEL_TIME = 300;
 export const START_LIVES = 3;
-export const COINS_PER_LIFE = 100;
 /** Segundos entre la muerte y el reinicio / fin de partida. */
 export const DEATH_DELAY = 3;
 

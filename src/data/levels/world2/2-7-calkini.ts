@@ -1,3 +1,4 @@
+import { EK_CHUAH_OFFERING } from '../../offerings';
 import type { LevelDef } from '../../../engine/level/types';
 import { blueCrab, nauyaca } from '../helpers';
 import { waterBank } from '../waterBanks';
@@ -22,6 +23,7 @@ import { waterBank } from '../waterBanks';
  *   85-106   Bandera y templo.
  */
 export const LEVEL_2_7: LevelDef = {
+  offering: EK_CHUAH_OFFERING,
   id: '2-7',
   name: 'Calkiní',
   hint: 'Calkiní forma parte del Camino Real. ¡Pisa el lomo expuesto de Kaimán!',

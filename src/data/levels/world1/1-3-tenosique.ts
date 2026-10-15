@@ -1,3 +1,4 @@
+import { EK_CHUAH_OFFERING } from '../../offerings';
 import type { LevelDef } from '../../../engine/level/types';
 import { ants, coati, tarantula } from '../helpers';
 
@@ -20,6 +21,7 @@ import { ants, coati, tarantula } from '../helpers';
  * cerca de un borde, caerían solos antes de encontrarse con el jugador.
  */
 export const LEVEL_1_3: LevelDef = {
+  offering: EK_CHUAH_OFFERING,
   id: '1-3',
   name: 'Tenosique',
   hint: '¡Mira arriba: las tarántulas se descuelgan cuando pasas debajo!',

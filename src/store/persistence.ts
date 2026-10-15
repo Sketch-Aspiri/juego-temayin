@@ -1,3 +1,4 @@
+import { EMPTY_WALLET, sanitizeWallet, type Wallet } from './wallet';
 import { migrateV2Progress } from './migrations';
 import { EMPTY_PROGRESS, sanitizeProgress, type Progress } from './progress';
 import { DEFAULT_SETTINGS, sanitizeSettings, type Settings } from './settings';
@@ -8,17 +9,18 @@ export const STORAGE_KEY = 'temayin:v3';
 export const LEGACY_KEY = 'temayin:v2';
 
 export interface SavedState {
+  wallet: Wallet;
   progress: Progress;
   settings: Settings;
 }
 
-const emptyState = (): SavedState => ({ progress: EMPTY_PROGRESS, settings: DEFAULT_SETTINGS });
+const emptyState = (): SavedState => ({ progress: EMPTY_PROGRESS, settings: DEFAULT_SETTINGS, wallet: EMPTY_WALLET });
 
 /** Interpreta el JSON guardado; `migrate` transforma el progreso crudo antes de sanearlo. */
 function parseSaved(text: string, migrate: (raw: unknown) => unknown): SavedState {
   const data: unknown = JSON.parse(text);
   const obj = typeof data === 'object' && data !== null ? (data as Record<string, unknown>) : {};
-  return { progress: sanitizeProgress(migrate(obj.progress)), settings: sanitizeSettings(obj.settings) };
+  return { progress: sanitizeProgress(migrate(obj.progress)), settings: sanitizeSettings(obj.settings), wallet: sanitizeWallet(obj.wallet) };
 }
 
 export function loadSaved(): SavedState {

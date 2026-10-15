@@ -1,3 +1,4 @@
+import { applyBlessings, type BlessingId } from './blessings';
 import type { Assets } from './assets';
 import type { AudioEngine } from './audio';
 import { DEATH_DELAY, STEP } from './constants';
@@ -24,6 +25,7 @@ export interface GameOptions {
   /** Se muta durante la partida (puntos, monedas, vidas). */
   session: Session;
   callbacks: GameCallbacks;
+  initialBlessings?: readonly BlessingId[];
 }
 
 const MAX_FRAME_TIME = 0.1;
@@ -47,6 +49,7 @@ export class Game {
     this.renderer = new Renderer(opts.canvas, opts.assets);
     this.startScore = opts.session.score;
     this.world = this.spawn(false);
+    applyBlessings(this.world, opts.initialBlessings ?? []);
   }
 
   start(): void {
@@ -61,6 +64,7 @@ export class Game {
     this.running = false;
     cancelAnimationFrame(this.raf);
     this.opts.input.detach();
+    this.publishHud();
   }
 
   setPaused(paused: boolean): void {
