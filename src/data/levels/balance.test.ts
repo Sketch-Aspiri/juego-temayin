@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 import { AudioEngine } from '../../engine/audio';
-import { GROUND, ROWS, START_LIVES, STEP, T, VW } from '../../engine/constants';
+import { GROUND, PLAYER_H, ROWS, START_LIVES, STEP, T, VW } from '../../engine/constants';
 import { isAirborne, updateEnemies } from '../../engine/entities/enemies';
 import { NOTICE_RANGE } from '../../engine/entities/enemies/nauyaca';
-import { platformReach, type MoverSpec } from '../../engine/entities/platforms';
+import { platformReach, type MoverSpec, type PlatformSpec } from '../../engine/entities/platforms';
 import type { Enemy } from '../../engine/entities/types';
 import { Input } from '../../engine/input';
 import { buildLevel, type BuiltLevel } from '../../engine/level/build';
@@ -16,10 +16,10 @@ import { LEVEL_2_1 } from './world2/2-1-carrillo-puerto';
 import { LEVEL_2_4 } from './world2/2-4-petenes';
 
 /**
- * Equilibrio de los Mundos 1 y 2: reglas de justicia que no dependen del gusto,
+ * Equilibrio de los Mundos 1, 2 y 3: reglas de justicia que no dependen del gusto,
  * comprobadas con el motor real y sin DOM.
  */
-const BALANCED_WORLDS = 2;
+const BALANCED_WORLDS = 3;
 const BALANCED = WORLDS.filter((w) => w.number <= BALANCED_WORLDS).flatMap((w) => w.levels);
 
 /** Ritmos de avance del jugador (bloques/s): cauteloso, normal y rápido. */
@@ -164,10 +164,18 @@ function ambushesOf(lvl: BuiltLevel): string[] {
     .map((e) => `${e.id}@${e.tx},${e.ty}`);
 }
 
-/** Plataformas genéricas horizontales que cruzan un barranco. */
+/**
+ * Plataformas genéricas horizontales que cruzan un barranco: alguna columna de su recorrido
+ * es hoyo, aunque arranquen en tierra firme (como las vagonetas que se abordan en la orilla).
+ */
 function bridgesOf(lvl: BuiltLevel): MoverSpec[] {
   const { isPit } = terrainOf(lvl);
-  return lvl.platforms.filter((s): s is MoverSpec => s.kind === 'mover' && s.dy === 0 && isPit(s.x));
+  const crossesPit = (s: MoverSpec): boolean => {
+    const { x0, x1 } = platformReach(s);
+    for (let x = x0; x <= x1; x++) if (isPit(x)) return true;
+    return false;
+  };
+  return lvl.platforms.filter((s): s is MoverSpec => s.kind === 'mover' && s.dy === 0 && crossesPit(s));
 }
 
 /** Plataformas que se relevan con `s`: sus recorridos se solapan o se tocan. */
@@ -177,6 +185,31 @@ function relayPartners(s: MoverSpec, bridges: readonly MoverSpec[]): MoverSpec[]
     const q = platformReach(o);
     return o !== s && q.x0 <= r.x1 + 1 && q.x1 >= r.x0 - 1;
   });
+}
+
+/** Plataformas que ruedan sobre tierra (trenes, carretas, vagonetas); barcos y tortugas flotan. */
+const isLandPlatform = (s: PlatformSpec): boolean =>
+  s.kind === 'train' || (s.appearance !== 'boat' && s.appearance !== 'turtle');
+
+/**
+ * Bloques sólidos dentro de la silueta del jinete de una plataforma terrestre: las filas
+ * que ocupa un jugador de pie sobre ella, en todo su recorrido. Un bloque ahí arrastra
+ * o aplasta al jinete quieto y lo tira al barranco.
+ */
+function riderObstacles(lvl: BuiltLevel): string[] {
+  const { solid } = terrainOf(lvl);
+  const found: string[] = [];
+  for (const s of lvl.platforms.filter(isLandPlatform)) {
+    const dy = s.kind === 'mover' ? s.dy : 0;
+    const minY = s.y + Math.min(0, dy);
+    const maxY = s.y + Math.max(0, dy);
+    const { x0, x1 } = platformReach(s);
+    const top = Math.floor((minY * T - PLAYER_H) / T);
+    for (let x = x0; x <= x1; x++) {
+      for (let y = top; y <= maxY - 1; y++) if (solid(x, y)) found.push(`plataforma ${s.x}: bloque en ${x},${y}`);
+    }
+  }
+  return found;
 }
 
 /** Al reaparecer: primera sombra por delante sin un bloque `F` al alcance antes de ella (o `null`). */
@@ -218,6 +251,10 @@ describe.each(BALANCED.map((l) => [l.id, l] as const))('equilibrio del nivel %s'
   // Al reaparecer se pierde el chile y las sombras solo se disuelven con fuego.
   it.runIf(hasShades)('si quedan sombras tras el punto de control, hay chile al alcance al reaparecer', () => {
     expect(withSeed(SEEDS[0], () => shadeWithoutFire(def))).toBeNull();
+  });
+
+  it.runIf(lvl.platforms.some(isLandPlatform))('la silueta del jinete de una plataforma móvil terrestre está libre', () => {
+    expect(riderObstacles(lvl)).toEqual([]);
   });
 
   it.runIf(bridgesOf(lvl).length > 0)('las plataformas de un mismo barranco comparten ritmo y miden al menos 3 bloques', () => {

@@ -5,9 +5,10 @@ import { GROUND, START_LIVES, STEP, T } from '../../constants';
 import { type MovingPlatform, updatePlatforms } from '../../entities/platforms';
 import { Input } from '../../input';
 import { overlap } from '../../physics';
+import { makeRng } from '../../rng';
 import { World } from '../../World';
 import { waveRect } from './attacks';
-import { makeRng, mudRect, propaguleRect } from './hazards';
+import { mudRect, propaguleRect } from './hazards';
 import { Kaiman, type KaimanState } from './index';
 import * as K from './tuning';
 

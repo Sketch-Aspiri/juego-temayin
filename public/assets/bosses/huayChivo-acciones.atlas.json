@@ -1,0 +1,74 @@
+{
+  "image": "huayChivo-acciones.webp",
+  "width": 1774,
+  "height": 887,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "paw",
+      "x": 6,
+      "y": 74,
+      "width": 459,
+      "height": 331,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "crouch",
+      "x": 467,
+      "y": 87,
+      "width": 447,
+      "height": 323,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "leap",
+      "x": 914,
+      "y": 18,
+      "width": 395,
+      "height": 321,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "land",
+      "x": 1320,
+      "y": 103,
+      "width": 448,
+      "height": 303,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "rear",
+      "x": 52,
+      "y": 421,
+      "width": 397,
+      "height": 438,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "call",
+      "x": 477,
+      "y": 410,
+      "width": 447,
+      "height": 458,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "hurt",
+      "x": 924,
+      "y": 467,
+      "width": 368,
+      "height": 392,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "nightfall",
+      "x": 1337,
+      "y": 451,
+      "width": 410,
+      "height": 408,
+      "alphaThreshold": 8
+    }
+  ],
+  "qa": "PNG original intacto; recortes alfa >= 8; WebP RGBA idéntico píxel a píxel."
+}

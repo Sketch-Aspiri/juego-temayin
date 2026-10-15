@@ -1,16 +1,15 @@
 import { GROUND, T, TAU, VW } from '../constants';
 import type { BossId } from '../types';
 import type { World } from '../World';
+import { drawAtrium } from './arenas/atrium';
 import type { Ctx } from './drawUtils';
 import { drawScenerySprite } from './scenerySprites';
 
 const FLOOR = GROUND * T;
-const ARCH_RADIUS = 60;
 const TREE_HEIGHT = 350;
 const REED_SPACING = 34;
 const FIREFLIES = 18;
 const LAIR_WIDTH_RATIO = 0.9;
-const ARCADE_WIDTH_RATIO = 0.9;
 const MANGROVE_WIDTH = 240;
 const CEIBA_WIDTH = 400;
 const VINE_WIDTH = 64;
@@ -153,33 +152,6 @@ function drawSwamp(c: Ctx, width: number, now: number, world: World): void {
   drawHerons(c, width, now, world);
   const config = world.def.boss;
   if (config) drawLilyPads(c, width, now, world, config.arena[0] * T);
-}
-
-function drawAtrium(c: Ctx, width: number): void {
-  // El zócalo tapa el margen transparente bajo los vanos y asienta la arcada sobre el pavimento.
-  c.fillStyle = '#493c2e';
-  c.fillRect(width * (1 - ARCADE_WIDTH_RATIO) / 2, FLOOR - T, width * ARCADE_WIDTH_RATIO, T);
-  if (drawScenerySprite(c, 'arcade', width / 2, FLOOR, width * ARCADE_WIDTH_RATIO)) return;
-  const top = FLOOR - 240;
-  c.fillStyle = '#b78425'; c.fillRect(0, top - 45, width, 45);
-  c.fillStyle = '#ffe6a0'; c.fillRect(0, top - 50, width, 8);
-  const wall = c.createLinearGradient(0, top, 0, FLOOR);
-  wall.addColorStop(0, '#ffe18a'); wall.addColorStop(1, '#dca82c');
-  c.fillStyle = wall; c.fillRect(0, top, width, 240);
-  for (const fraction of [0.18, 0.5, 0.82]) {
-    const x = width * fraction;
-    const shade = c.createLinearGradient(x - ARCH_RADIUS, 0, x + ARCH_RADIUS, 0);
-    shade.addColorStop(0, '#7d5738'); shade.addColorStop(0.5, '#463e36'); shade.addColorStop(1, '#7d5738');
-    c.fillStyle = shade;
-    c.beginPath(); c.moveTo(x - ARCH_RADIUS, FLOOR);
-    c.lineTo(x - ARCH_RADIUS, top + ARCH_RADIUS);
-    c.arc(x, top + ARCH_RADIUS, ARCH_RADIUS, Math.PI, 0);
-    c.lineTo(x + ARCH_RADIUS, FLOOR); c.fill();
-    c.strokeStyle = '#fff0bb'; c.lineWidth = 10; c.stroke();
-    c.fillStyle = '#f7d47d';
-    for (const side of [-1, 1]) c.fillRect(x + side * (ARCH_RADIUS + 9) - 8, top + ARCH_RADIUS, 16, FLOOR - top - ARCH_RADIUS);
-  }
-  c.fillStyle = '#fae7b6'; c.fillRect(0, FLOOR - 14, width, 14);
 }
 
 function drawNightClearing(c: Ctx, width: number, now: number): void {

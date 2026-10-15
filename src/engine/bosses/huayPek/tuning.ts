@@ -72,6 +72,8 @@ export const SCORE_KILL = 5000;
 /** Opacidad máxima de la niebla de la fase 2 y radio (px) del claro que deja el jugador. */
 export const FOG_ALPHA = 0.78;
 export const FOG_LIGHT_RADIUS = 170;
+/** Radio (px) de la luz de los ojos encendidos: delatan la ventana de daño en la niebla. */
+export const EYE_LIGHT_RADIUS = 80;
 /** Niebla ligera de ambiente en la fase 1 (solo a ras de suelo). */
 export const FOG_AMBIENT = 0.22;
 

@@ -25,6 +25,8 @@ INSTRUMENT = """async () => {
       if(window.qa.drive&&this.phase==='play')window.qa.control(this);
       original.call(this,dt);
       if(this.checkpointReached)window.qa.metrics.checkpoint=true;
+      // Tres fases del Huay Chivo: la noche cerrada (etapa 3) debe alcanzarse en 3-5.
+      if(this.boss&&this.boss.stage>=3)window.qa.metrics.stage3=true;
       window.qa.metrics.farthest=Math.max(window.qa.metrics.farthest||0,this.player.x/40);
       if(this.phase==='dying'||this.phase==='done')break;
     }
@@ -55,6 +57,9 @@ INSTRUMENT = """async () => {
       if(dx>20)input.press('right');if(dx< -20)input.press('left');
       if(p.onGround&&Math.abs(dx)<190)jump=true;
       if(b.st==='charge'&&p.onGround)jump=true;
+      // Salta el pisotón del jefe y sus ondas de choque cuando se acercan.
+      const nearWave=(b.waves||[]).some(v=>v.delay<=0&&Math.abs(v.x-(p.x+p.w/2))<90);
+      if((b.st==='leap'||nearWave)&&p.onGround)jump=true;
       if(b.hittable&&p.fire&&Math.abs(dx)<450)input.press('fire');
       else input.release('fire');
     }else input.release('left');
@@ -99,3 +104,4 @@ with sync_playwright() as p:
 assert not errors, errors
 assert len(reports) == 5 and all(r['phase'] == 'done' and r.get('checkpoint') for r in reports), reports
 assert reports[-1]['bossHp'] == 0, reports[-1]
+assert reports[-1].get('stage3'), reports[-1]

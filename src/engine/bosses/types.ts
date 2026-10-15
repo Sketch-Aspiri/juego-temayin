@@ -1,5 +1,6 @@
 import type { Assets } from '../assets';
 import type { BossConfig } from '../level/types';
+import type { LightSource } from '../render/lighting';
 import type { BossId, Rect } from '../types';
 import type { World } from '../World';
 
@@ -19,6 +20,11 @@ export interface Boss extends Rect {
   readonly hittable: boolean;
   /** Etapa actual de la pelea (1 = inicial) para que el decorado reaccione; opcional. */
   readonly stage?: number;
+  /**
+   * Añade a `out` las luces propias del jefe (ojos, ataques brillantes) cuando el nivel
+   * está a oscuras; opcional. Escribe en la lista recibida para no crear arrays por paso.
+   */
+  lights?(out: LightSource[]): void;
   update(world: World, dt: number): void;
   onFireball(world: World): void;
   draw(ctx: CanvasRenderingContext2D, assets: Assets, camX: number): void;

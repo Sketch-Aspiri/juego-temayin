@@ -7,26 +7,44 @@ export interface LightSource { readonly x: number; readonly y: number; readonly 
 const FIRE_RADIUS = 85;
 const TORCH_RADIUS = 110;
 const CRYSTAL_RADIUS = 55;
-const BOSS_EYE_RADIUS = 80;
+
+type MutableLight = { x: number; y: number; radius: number };
+/** El renderer reutiliza lista y objetos; las consultas públicas conservan resultados independientes. */
+export class LightBuffer {
+  readonly sources: LightSource[] = [];
+  private readonly pool: MutableLight[] = [];
+  private used = 0;
+  reset(): void { this.sources.length = 0; this.used = 0; }
+  add(x: number, y: number, radius: number): void {
+    let light = this.pool[this.used];
+    if (!light) { light = { x, y, radius }; this.pool.push(light); }
+    light.x = x; light.y = y; light.radius = radius;
+    this.used++;
+    this.sources.push(light);
+  }
+}
 
 /** Coordenadas del mundo, consultables sin DOM por enemigos y pruebas. */
-export function lightSources(world: World): readonly LightSource[] {
+export function lightSources(world: World, buffer?: LightBuffer): readonly LightSource[] {
+  const work = buffer ?? new LightBuffer();
+  work.reset();
   const dark = world.darkness;
-  if (!dark) return [];
+  if (!dark) return work.sources;
   const p = world.player;
-  const result: LightSource[] = [{ x: p.x + p.w / 2, y: p.y + p.h / 2, radius: dark.radius }];
-  for (const f of world.fireballs) if (!f.gone) result.push({ x: f.x, y: f.y, radius: FIRE_RADIUS });
-  for (const t of world.level.lights) result.push(t);
-  const boss = world.boss;
-  // Los ojos encendidos señalan la ventana de daño, incluso fuera de la luz del jugador.
-  if (boss?.id === 'huayPek' && boss.hittable) {
-    result.push({ x: boss.x + boss.w / 2, y: boss.y + boss.h / 2, radius: BOSS_EYE_RADIUS });
-  }
+  const result = work.sources;
+  work.add(p.x + p.w / 2, p.y + p.h / 2, dark.radius);
+  for (const f of world.fireballs) if (!f.gone) work.add(f.x, f.y, FIRE_RADIUS);
+  for (const t of world.torches) if (t.lit) result.push(t);
+  // Cada jefe decide qué luces aporta (p. ej. ojos que delatan su ventana de daño).
+  const bossStart = result.length;
+  world.boss?.lights?.(result);
+  // Solo el renderer consume referencias temporales; una consulta pública conserva su instantánea.
+  if (!buffer) for (let i = bossStart; i < result.length; i++) result[i] = { ...result[i] };
   if (world.def.theme === 'cave') {
     const left = Math.max(0, Math.floor(world.camX / T));
     const right = Math.min(world.width, left + VW / T + 2);
     for (let y = 0; y < world.grid.length; y++) for (let x = left; x < right; x++) {
-      if (world.grid[y][x] === 'X') result.push({ x: (x + 0.5) * T, y: (y + 0.5) * T, radius: CRYSTAL_RADIUS });
+      if (world.grid[y][x] === 'X') work.add((x + 0.5) * T, (y + 0.5) * T, CRYSTAL_RADIUS);
     }
   }
   return result;
@@ -37,6 +55,7 @@ export const createTorch = (x: number, y: number): LightSource =>
 
 /** Máscara reutilizada; los halos radiales se almacenan una vez por radio. */
 export class Lighting {
+  private readonly sources = new LightBuffer();
   private mask: HTMLCanvasElement | null = null;
   private halos = new Map<number, HTMLCanvasElement>();
 
@@ -53,7 +72,7 @@ export class Lighting {
     c.fillStyle = `rgba(0,3,12,${dark.alpha})`;
     c.fillRect(0, 0, VW, VH);
     c.globalCompositeOperation = 'destination-out';
-    for (const l of world.lightSources()) {
+    for (const l of lightSources(world, this.sources)) {
       const halo = this.halo(l.radius);
       c.drawImage(halo, l.x - world.camX - l.radius, l.y - l.radius);
     }

@@ -4,6 +4,7 @@ import { makeParticle } from '../../entities/particles';
 import { createPlatform } from '../../entities/platforms';
 import type { BossConfig } from '../../level/types';
 import { moveX, moveY, overlap, type SolidFn } from '../../physics';
+import { makeRng } from '../../rng';
 import type { World } from '../../World';
 import { closeArena, entranceColumn, openExit, rewardBurst } from '../arena';
 import type { Boss } from '../types';
@@ -11,7 +12,7 @@ import { emergeX, splash, stepWaves, surfaceY, tailWaves, type TailWave } from '
 import { type Attack, chooseAttack } from './choose';
 import { drawKaiman } from './draw';
 import { arenaSurface, floodArena, risingSurface } from './flood';
-import { dropPropagules, makeRng, type MudBall, type Propagule, spitMud, stepMud, stepPropagules } from './hazards';
+import { dropPropagules, type MudBall, type Propagule, spitMud, stepMud, stepPropagules } from './hazards';
 import * as K from './tuning';
 
 export type KaimanState =

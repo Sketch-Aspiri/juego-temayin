@@ -29,8 +29,8 @@ export const BOSS_PRESENTATIONS: Readonly<Record<BossId, BossPresentation>> = {
   },
   huayChivo: {
     image: 'bosses/huayChivo.webp', frame: [42, 64, 427, 466],
-    hint: 'Esquiva la embestida. ¡Písalo cuando choque y vea estrellas!',
-    arena: 'Atrio amarillo de Izamal', color: '#ffe185',
+    hint: 'Los ojos señalan el arco real. Reenciende antorchas con fuego. ¡Písalo cuando vea estrellas!',
+    arena: 'Atrio de Izamal', color: '#ffe185',
   },
   huayPek: {
     image: 'bosses/huayPek.webp', frame: [11, 122, 485, 385],

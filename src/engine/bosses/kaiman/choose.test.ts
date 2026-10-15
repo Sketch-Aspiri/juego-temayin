@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { type Attack, chooseAttack, PHASE_ATTACKS } from './choose';
-import { makeRng, propaguleColumns, spitMud } from './hazards';
+import { makeRng } from '../../rng';
+import { propaguleColumns, spitMud } from './hazards';
 import { MAX_ATTACKS_WITHOUT_DIVE, PROPAGULE_GAP, SPIT_BALLS } from './tuning';
 
 describe('elección de ataques del Kaimán', () => {

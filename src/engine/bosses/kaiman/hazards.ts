@@ -39,18 +39,6 @@ export interface Propagule {
   readonly floor: number;
 }
 
-/** Pseudoaleatorio determinista (mulberry32): las pruebas y repeticiones son reproducibles. */
-export function makeRng(seed: number): () => number {
-  let a = seed >>> 0;
-  return () => {
-    a = (a + 0x6d2b79f5) >>> 0;
-    let t = a;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
 /**
  * Bolas de lodo desde la boca (`x`, `y`) hacia `targetX`: cada una cae a una fracción
  * distinta de la distancia (antes, encima y detrás del jugador) con arcos diferentes.

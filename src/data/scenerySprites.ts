@@ -9,6 +9,7 @@ export interface ScenerySprite {
 
 export const SCENERY_SPRITES = {
   arcade: { file: 'escenarios/arcada-izamal.webp', frame: [24, 105, 1488, 775], anchor: [0.5, 1] },
+  arcadeNight: { file: 'escenarios/arcada-izamal-noche.webp', frame: [21, 102, 1497, 781], anchor: [0.5, 1] },
   lair: { file: 'escenarios/guarida-puas.webp', frame: [19, 111, 1504, 775], anchor: [0.5, 1] },
   torch: { file: 'complementos/utileria.webp', frame: [1191, 346, 249, 332], anchor: [185 / 249, 90 / 332] },
   ceiba: { file: 'complementos/vegetacion.webp', frame: [9, 7, 619, 507], anchor: [0.5, 1] },

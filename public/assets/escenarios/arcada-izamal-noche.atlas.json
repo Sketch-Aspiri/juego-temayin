@@ -1,0 +1,18 @@
+{
+  "image": "arcada-izamal-noche.webp",
+  "width": 1536,
+  "height": 1024,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "arcadeNight",
+      "x": 21,
+      "y": 102,
+      "width": 1497,
+      "height": 781,
+      "alphaThreshold": 8
+    }
+  ],
+  "qa": "PNG original intacto; recortes alfa >= 8; WebP RGBA idéntico píxel a píxel."
+}

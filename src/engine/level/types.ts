@@ -11,7 +11,7 @@ import type { Darkness } from '../render/lighting';
  * con salto; `torch` ilumina. Todas las coordenadas y largos están en bloques.
  *  ['hammock', x, y, largo]                 hamaca trampolín horizontal
  *  ['rope', x, y, largo]                    ancla del columpio y longitud de cuerda
- *  ['torch', x, y]                          luz fija de antorcha
+ *  ['torch', x, y]                          antorcha encendida; el viento del jefe la apaga y el fuego la reenciende
  *  ['truck', x, y, largo, dx, periodo]       vagoneta de henequén, plataforma móvil
  *                                           horizontal con período en segundos
  *

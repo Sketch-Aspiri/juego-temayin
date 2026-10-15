@@ -4,6 +4,7 @@ import type { World } from '../World';
 import { ENEMIES, isTangible } from './enemies/registry';
 import { makeParticle } from './particles';
 import type { Fireball } from './types';
+import { igniteTorch } from './torches';
 
 function explode(world: World, f: Fireball): void {
   f.gone = true;
@@ -35,6 +36,7 @@ export function updateFireballs(world: World, dt: number): void {
       f.gone = true;
       continue;
     }
+    if (igniteTorch(world, f)) continue;
     if (Math.random() < 0.5) {
       world.particles.push(makeParticle('spark', f.x, f.y, { vy: -20, t: 0.8, col: '#ff9a2a' }));
     }

@@ -3,6 +3,7 @@ import { GROUND, T } from '../../constants';
 import { makeParticle } from '../../entities/particles';
 import type { BossConfig } from '../../level/types';
 import { moveX, moveY, overlap, type SolidFn } from '../../physics';
+import type { LightSource } from '../../render/lighting';
 import type { World } from '../../World';
 import { closeArena, entranceColumn, openExit, rewardBurst } from '../arena';
 import type { Boss } from '../types';
@@ -95,6 +96,11 @@ export class HuayPek implements Boss {
   }
   get eyesLit(): boolean {
     return EYES_LIT.has(this.st);
+  }
+  /** Los ojos encendidos alumbran incluso fuera de la luz del jugador. */
+  lights(out: LightSource[]): void {
+    if (!this.eyesLit) return;
+    out.push({ x: this.x + this.w / 2, y: this.y + this.h / 2, radius: K.EYE_LIGHT_RADIUS });
   }
   /** Bordes de la arena en px. */
   get left(): number {

@@ -3,13 +3,14 @@ import { getLevel, nextLevelId, WORLDS } from '../data/worlds';
 import { isUnlocked, sanitizeProgress } from '../store/progress';
 import { AudioEngine } from './audio';
 import { HuayChivo } from './bosses/huayChivo';
-import { GROUND, STEP, T } from './constants';
+import { GROUND, STEP, T, VW } from './constants';
 import { createEnemy, updateEnemies } from './entities/enemies';
 import { SCORPION_ALERT_SPEED } from './entities/enemies/scorpion';
 import { updatePlayer } from './entities/player';
 import { ropeTip } from './entities/ropes';
 import { Input } from './input';
 import type { Op } from './level/types';
+import { THEMES } from './render/themes';
 import { World } from './World';
 
 const audio = new AudioEngine();
@@ -129,7 +130,7 @@ describe('Enemigos y luces de las grutas', () => {
     const world = campaign('3-1');
     world.fireballs.push({ x: 500, y: 300, vx: 0, vy: 0, t: 0, gone: false });
     const lights = world.lightSources();
-    expect(lights.some(l => l.x === world.player.x + world.player.w / 2 && l.radius === 165)).toBe(true);
+    expect(lights.some(l => l.x === world.player.x + world.player.w / 2 && l.radius === world.def.darkness?.radius)).toBe(true);
     expect(lights.some(l => l.x === 500 && l.radius > 0)).toBe(true);
     expect(lights.length).toBeGreaterThan(world.level.lights.length + 1);
   });
@@ -144,21 +145,24 @@ describe('Huay Chivo', () => {
     return [world, boss];
   };
   const waitForWeakness = (world: World, boss: HuayChivo): void => {
-    for (let i = 0; i < 2000 && !boss.hittable; i++) world.update(STEP);
+    for (let i = 0; i < 7200 && !boss.hittable; i++) world.update(STEP);
     expect(boss.hittable).toBe(true);
   };
-  it('cierra la arena, resiste fuera de la ventana y puede vencerse en sus dos fases', () => {
+  it('cierra la arena, resiste fuera de la ventana y puede vencerse en sus tres fases', () => {
     const [world, boss] = fight();
     boss.onFireball(world); expect(boss.hp).toBe(boss.maxHp);
     for (let hit = 0; hit < boss.maxHp; hit++) {
       waitForWeakness(world, boss);
       expect(world.solid(62, 0)).toBe(true);
-      boss.onFireball(world);
-      expect(boss.hp).toBe(boss.maxHp - hit - 1);
+      // La noche cae a 5 PV (tras 3 golpes) y se cierra a 2 PV (tras 6).
+      if (hit === 3) { expect(boss.stage).toBe(2); expect(world.darkness).not.toBeNull(); }
+      if (hit === 6) expect(boss.stage).toBe(3);
+      // Dos bolas de fuego por PV y solo un PV por ventana.
+      boss.onFireball(world); expect(boss.hp).toBe(boss.maxHp - hit);
       boss.onFireball(world); expect(boss.hp).toBe(boss.maxHp - hit - 1);
-      if (hit === 2) { expect(boss.phase2).toBe(true); expect(world.darkness).not.toBeNull(); }
+      boss.onFireball(world); boss.onFireball(world); expect(boss.hp).toBe(boss.maxHp - hit - 1);
     }
-    run(world, 2);
+    run(world, 2.5);
     expect(boss.hp).toBe(0); expect(boss.lockCamera).toBe(false);
     expect(world.solid(86, 0)).toBe(false); expect(world.darkness).toBeNull();
   });
@@ -169,5 +173,84 @@ describe('Huay Chivo', () => {
     boss.update(world, STEP);
     expect(boss.hp).toBe(boss.maxHp - 1);
     expect(world.player.vy).toBeLessThan(0);
+  });
+
+  it('devuelve victoria con entradas guionizadas y pisotones reales sin encender antorchas', () => {
+    const world = campaign('3-5', true);
+    const boss = world.boss as HuayChivo;
+    let stage = 1;
+    for (let t = 0; t < 360 && world.phase !== 'done' && world.phase !== 'dying'; t += STEP) {
+      driveIzamal(world, boss);
+      world.update(STEP);
+      stage = Math.max(stage, boss.stage);
+    }
+    expect(boss.hp).toBe(0);
+    expect(stage).toBe(3);
+    expect(world.phase).toBe('done');
+    expect(world.solid(86, 0)).toBe(false);
+    expect(world.torches.every(torch => !torch.lit)).toBe(true);
+    expect(world.darkness).toBeNull();
+  });
+});
+
+/** Contacto protegido; movimiento, saltos, colisiones y daño al jefe son reales. */
+function driveIzamal(world: World, boss: HuayChivo): void {
+  const p = world.player, input = world.input;
+  p.inv = 1;
+  input.press('run');
+  input.release('left'); input.release('right');
+  let jump = false;
+  if (boss.lockCamera && boss.hp > 0) {
+    const dx = boss.x + boss.w / 2 - (p.x + p.w / 2);
+    if (Math.abs(dx) > 20) input.press(dx > 0 ? 'right' : 'left');
+    jump = p.onGround && (Math.abs(dx) < 190 || boss.st === 'charge' || boss.st === 'leap');
+  } else {
+    input.press('right');
+    const front = Math.floor((p.x + p.w + 60) / T);
+    jump = p.onGround && world.solid(front, Math.floor((p.y + p.h - 3) / T));
+  }
+  if (jump && !input.held.jump) input.press('jump');
+  else if (p.vy >= 0 || (!jump && p.onGround)) input.release('jump');
+}
+
+describe('Mundo 3: defectos de las mecánicas en los niveles', () => {
+  it.each([0, 1])('un jinete quieto en la vagoneta %i de Mérida no acaba en el barranco empujado por un descanso', (i) => {
+    const world = campaign('3-2');
+    const truck = world.platforms[i];
+    const p = world.player;
+    world.enemies = [];
+    world.camX = Math.max(0, truck.x - 0.4 * VW);
+    world.update(STEP);
+    p.x = truck.x + T; p.y = truck.y - p.h; p.vy = 0; p.vx = 0;
+    truck.rider = true;
+    // Un ciclo completo de ida y vuelta sin tocar nada.
+    const period = truck.spec.kind === 'mover' ? truck.spec.period : 0;
+    for (let t = 0; t < period && world.phase === 'play'; t += STEP) world.update(STEP);
+    expect(world.phase).toBe('play');
+  });
+
+  it('Maxcanú ilumina cada estalactita mientras tiembla sobre el jugador', () => {
+    const world = campaign('3-1');
+    const p = world.player;
+    const unlit: string[] = [];
+    for (const spawn of world.level.enemies.filter(e => e.id === 'stalactite')) {
+      const e = createEnemy(spawn);
+      world.enemies = [e];
+      // Posición más favorable: el jugador justo debajo, en el suelo.
+      p.x = e.x + e.w / 2 - p.w / 2; p.y = GROUND * T - p.h; p.inv = 10;
+      world.camX = Math.max(0, p.x - 0.4 * VW);
+      updateEnemies(world, STEP);
+      expect(e.state).toBe(1);
+      const cx = e.x + e.w / 2, cy = e.y + e.h / 2;
+      if (!world.lightSources().some(l => Math.hypot(l.x - cx, l.y - cy) < l.radius)) unlit.push(`${spawn.tx},${spawn.ty}`);
+    }
+    expect(unlit).toEqual([]);
+  });
+
+  it.each(['3-1', '3-2', '3-3', '3-4'])('%s no pinta agua decorativa sobre hoyos secos que matan', (id) => {
+    const world = campaign(id);
+    const hasPits = world.grid[GROUND].some(t => t === ' ');
+    const paintsWater = !!THEMES[world.def.theme].water && world.level.water.length === 0 && world.def.decorativeWater !== false;
+    expect(hasPits && paintsWater).toBe(false);
   });
 });

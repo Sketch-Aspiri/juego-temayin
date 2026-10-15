@@ -1,3 +1,4 @@
+import { pickWeighted } from '../shared/pickWeighted';
 import { type KaimanPhase, MAX_ATTACKS_WITHOUT_DIVE, NEAR_TILES } from './tuning';
 
 /**
@@ -36,12 +37,5 @@ export interface ChooseInput {
 export function chooseAttack(input: ChooseInput, rng: () => number): Attack {
   if (input.sinceDive >= MAX_ATTACKS_WITHOUT_DIVE && input.last !== 'dive') return 'dive';
   const table = input.distTiles < NEAR_TILES ? NEAR_WEIGHT : FAR_WEIGHT;
-  const options = PHASE_ATTACKS[input.phase].filter((a) => a !== input.last);
-  const total = options.reduce((s, a) => s + table[a], 0);
-  let r = rng() * total;
-  for (const a of options) {
-    r -= table[a];
-    if (r < 0) return a;
-  }
-  return options[options.length - 1];
+  return pickWeighted(PHASE_ATTACKS[input.phase], table, input.last, rng);
 }

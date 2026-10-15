@@ -31,6 +31,7 @@ with sync_playwright() as p:
           qa.metrics.farthest=Math.max(qa.metrics.farthest||0,this.player.x/40);
           qa.metrics.minOxygen=Math.min(qa.metrics.minOxygen??10,this.player.oxygen);
           if(this.boss?.phase2)qa.metrics.phase2=true;
+          if((this.boss?.stage??1)>=3)qa.metrics.phase3=true;
           if(this.boss?.intro&&!qa.captured){qa.hold=true;break;}
           if(this.phase==='dying'||this.phase==='done')break;
         }
@@ -73,3 +74,5 @@ with sync_playwright() as p:
 (out/'resultados.json').write_text(json.dumps({'mode':'Entrada directa a las arenas, protección contra daño y fuego asistido en ventanas válidas; no evalúa dificultad ni puntería.', 'reports':reports,'errors':errors},ensure_ascii=False,indent=2),encoding='utf-8')
 assert not errors,errors
 assert all(r['hp']==0 and r['phase']=='done' and r['exitOpen'] for r in reports),reports
+# Huay Chivo pelea en tres fases: debe llegar a la noche cerrada.
+assert all(r.get('phase3') for r in reports if r['boss']=='huayChivo'),reports

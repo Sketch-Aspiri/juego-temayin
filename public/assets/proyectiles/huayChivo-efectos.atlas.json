@@ -1,0 +1,66 @@
+{
+  "image": "huayChivo-efectos.webp",
+  "width": 1536,
+  "height": 1024,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "smoke0",
+      "x": 80,
+      "y": 179,
+      "width": 335,
+      "height": 375,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "smoke1",
+      "x": 528,
+      "y": 52,
+      "width": 408,
+      "height": 509,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "smoke2",
+      "x": 976,
+      "y": 40,
+      "width": 527,
+      "height": 527,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "wave",
+      "x": 33,
+      "y": 672,
+      "width": 669,
+      "height": 270,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "stucco",
+      "x": 792,
+      "y": 688,
+      "width": 133,
+      "height": 188,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "torchOff",
+      "x": 1037,
+      "y": 627,
+      "width": 253,
+      "height": 356,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "torchOn",
+      "x": 1290,
+      "y": 550,
+      "width": 211,
+      "height": 431,
+      "alphaThreshold": 8
+    }
+  ],
+  "qa": "PNG original intacto; recortes alfa >= 8; WebP RGBA idéntico píxel a píxel."
+}

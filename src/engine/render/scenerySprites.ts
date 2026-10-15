@@ -2,6 +2,7 @@ import { SCENERY_SPRITES, type ScenerySpriteId } from '../../data/scenerySprites
 import { T, TAU, VW } from '../constants';
 import type { World } from '../World';
 import { bakedFrame } from './artCache';
+import { drawAtriumTorch } from './chivoEffects';
 import type { Ctx } from './drawUtils';
 
 const TORCH_WIDTH = 42;
@@ -20,18 +21,23 @@ export function drawScenerySprite(c: Ctx, id: ScenerySpriteId, x: number, y: num
 
 /** La llama queda exactamente sobre la fuente de luz usada por la máscara y las sombras. */
 export function drawTorches(c: Ctx, world: World, now: number): void {
-  for (const light of world.level.lights) {
+  for (const light of world.torches) {
     const x = light.x - world.camX;
     if (x < -TORCH_WIDTH || x > VW + TORCH_WIDTH) continue;
     c.save();
     const pulse = Math.sin(now / FLICKER_PERIOD + light.x);
-    const glow = c.createRadialGradient(x, light.y, 0, x, light.y, TORCH_GLOW_RADIUS);
-    glow.addColorStop(0, `rgba(255,199,77,${0.25 + pulse * 0.06})`);
-    glow.addColorStop(1, 'rgba(255,133,28,0)');
-    c.fillStyle = glow; c.beginPath(); c.arc(x, light.y, TORCH_GLOW_RADIUS, 0, TAU); c.fill();
-    if (!drawScenerySprite(c, 'torch', x, light.y, TORCH_WIDTH)) {
+    if (light.lit) {
+      c.fillStyle = `rgba(255,199,77,${0.13 + pulse * 0.03})`;
+      c.beginPath(); c.arc(x, light.y, TORCH_GLOW_RADIUS, 0, TAU); c.fill();
+    }
+    const atrium = world.def.boss?.id === 'huayChivo';
+    const painted = atrium ? drawAtriumTorch(c, light.lit, x, light.y)
+      : light.lit && drawScenerySprite(c, 'torch', x, light.y, TORCH_WIDTH);
+    if (!painted) {
       c.fillStyle = '#835b35'; c.fillRect(x - 4, light.y, 8, 24);
-      c.fillStyle = '#ffcd5c'; c.beginPath(); c.ellipse(x, light.y, 6, 12 + pulse, 0, 0, TAU); c.fill();
+      if (light.lit) {
+        c.fillStyle = '#ffcd5c'; c.beginPath(); c.ellipse(x, light.y, 6, 12 + pulse, 0, 0, TAU); c.fill();
+      }
     }
     c.restore();
   }

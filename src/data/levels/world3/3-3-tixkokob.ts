@@ -16,6 +16,6 @@ export const LEVEL_3_3: LevelDef = {
     ['coins', 111, 4, 4], ['pit', 119, 123], ['plat', 120, 10, 2],
     ['row', 130, 8, 'B?MB'], ['hammock', 137, 12, 3],
     ['plat', 142, 7, 3], ['coins', 142, 5, 3], ['flag', 150], ['temple', 155],
-    ...coati(30, 64, 96, 127),
+    ...coati(30, 74, 96, 132),
   ],
 };

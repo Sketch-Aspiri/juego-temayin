@@ -1,5 +1,6 @@
 import type { AudioEngine } from './audio';
 import { createRope, type Rope } from './entities/ropes';
+import type { Torch } from './entities/torches';
 import { lightSources, type Darkness, type LightSource } from './render/lighting';
 import { createBoss, type Boss } from './bosses';
 import {
@@ -55,6 +56,7 @@ const FIREWORK_COLORS = ['#ffd23f', '#ff5e5b', '#3fb34a', '#4fc3f7', '#fff'];
 export class World {
   readonly def: LevelDef;
   readonly ropes: Rope[];
+  readonly torches: Torch[];
   darkness: Darkness | null;
   readonly level: BuiltLevel;
   readonly grid: string[][];
@@ -106,6 +108,7 @@ export class World {
     this.audio = init.audio;
     this.level = buildLevel(init.def);
     this.ropes = this.level.ropes.map(createRope);
+    this.torches = this.level.lights.map(light => ({ ...light, lit: true }));
     this.darkness = init.def.darkness ?? null;
     this.grid = this.level.grid;
     this.width = this.level.width;
