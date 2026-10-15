@@ -5,6 +5,9 @@ import { isUnlocked, totalStars } from '../../store/progress';
 import { Stars } from '../components/Stars';
 import '../offering.css';
 
+/** La campaña completa son 7 tramos del Tren Maya (AGENTS.md §4.3). */
+const TOTAL_WORLDS = 7;
+
 interface LevelCardProps {
   level: LevelDef;
 }
@@ -51,6 +54,11 @@ export function LevelSelect() {
             </div>
           </section>
         ))}
+        {WORLDS.length < TOTAL_WORLDS && (
+          <p className="world world--soon">
+            {WORLDS.length === TOTAL_WORLDS - 1 ? 'Falta 1 mundo' : `Faltan ${TOTAL_WORLDS - WORLDS.length} mundos`} · Próximamente
+          </p>
+        )}
       </div>
     </main>
   );

@@ -100,29 +100,6 @@ button {
   padding: 0.7em 2.4em;
 }
 
-/* ---------- Carga ---------- */
-.loading {
-  height: 100%;
-  display: grid;
-  place-content: center;
-  justify-items: center;
-  gap: 1rem;
-  color: var(--ink-dim);
-}
-.loading__spinner {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 5px solid rgba(255, 255, 255, 0.15);
-  border-top-color: var(--gold);
-  animation: spin 0.9s linear infinite;
-}
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* ---------- Título ---------- */
 body:has(.title) { touch-action: pan-y; }
 .title {
@@ -352,6 +329,16 @@ kbd {
 }
 .world + .world {
   margin-top: 2rem;
+}
+.world--soon {
+  margin-bottom: 0;
+  padding: 1rem;
+  border: 2px dashed var(--ink-dim);
+  border-radius: var(--radius);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-dim);
 }
 .world__title {
   margin: 0 0 0.8rem;
