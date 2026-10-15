@@ -1,0 +1,177 @@
+{
+  "mode": "Carga real reteniendo un recurso solo en QA; sin cambios de tiempos en producción.",
+  "views": [
+    {
+      "view": "escritorio",
+      "motion": "no-preference",
+      "titleReached": true,
+      "touchScroll": 0,
+      "cycle": {
+        "distance": 899.959,
+        "tile": 900
+      },
+      "viewport": [
+        1280,
+        800
+      ],
+      "train": [
+        286.980224609375,
+        328.357666015625,
+        720.19384765625,
+        143.32742309570312
+      ],
+      "status": [
+        190,
+        554.6875,
+        900,
+        68.5
+      ],
+      "overflow": false,
+      "animations": 6,
+      "transform": "matrix(0.999999, -0.00136641, 0.00136641, 0.999999, 0, -0.978621)",
+      "text": "Preparando tu aventura…\n\nLa selva te espera. ¡Todos a bordo!",
+      "sprite": "url(\"http://127.0.0.1:5197/assets/complementos/tren.webp\")"
+    },
+    {
+      "view": "vertical",
+      "motion": "no-preference",
+      "titleReached": true,
+      "touchScroll": 0,
+      "cycle": null,
+      "viewport": [
+        390,
+        844
+      ],
+      "train": [
+        18.236095428466797,
+        391.4810485839844,
+        366.72186279296875,
+        73.11953735351562
+      ],
+      "status": [
+        20,
+        539.390625,
+        350,
+        58.5
+      ],
+      "overflow": false,
+      "animations": 6,
+      "transform": "matrix(0.999998, -0.00177559, 0.00177559, 0.999998, 0, -1.27167)",
+      "text": "Preparando tu aventura…\n\nLa selva te espera. ¡Todos a bordo!",
+      "sprite": "url(\"http://127.0.0.1:5197/assets/complementos/tren.webp\")"
+    },
+    {
+      "view": "horizontal",
+      "motion": "no-preference",
+      "titleReached": true,
+      "touchScroll": 0,
+      "cycle": null,
+      "viewport": [
+        667,
+        375
+      ],
+      "train": [
+        111.62358856201172,
+        104.44945526123047,
+        460.16778564453125,
+        91.7899398803711
+      ],
+      "status": [
+        20,
+        245.890625,
+        627,
+        50.5
+      ],
+      "overflow": false,
+      "animations": 6,
+      "transform": "matrix(0.999998, -0.00185347, 0.00185347, 0.999998, 0, -1.32745)",
+      "text": "Preparando tu aventura…\n\nLa selva te espera. ¡Todos a bordo!",
+      "sprite": "url(\"http://127.0.0.1:5197/assets/complementos/tren.webp\")"
+    },
+    {
+      "view": "estrecho",
+      "motion": "no-preference",
+      "titleReached": true,
+      "touchScroll": 0,
+      "cycle": null,
+      "viewport": [
+        320,
+        568
+      ],
+      "train": [
+        15.0254545211792,
+        266.6158752441406,
+        300.89678955078125,
+        59.976226806640625
+      ],
+      "status": [
+        20,
+        401.390625,
+        280,
+        58.5
+      ],
+      "overflow": false,
+      "animations": 6,
+      "transform": "matrix(0.999999, -0.0016874, 0.0016874, 0.999999, 0, -1.20851)",
+      "text": "Preparando tu aventura…\n\nLa selva te espera. ¡Todos a bordo!",
+      "sprite": "url(\"http://127.0.0.1:5197/assets/complementos/tren.webp\")"
+    },
+    {
+      "view": "bajo",
+      "motion": "no-preference",
+      "titleReached": true,
+      "touchScroll": 34,
+      "cycle": null,
+      "viewport": [
+        568,
+        320
+      ],
+      "train": [
+        90.01383209228516,
+        73.62115478515625,
+        396.05511474609375,
+        78.56039428710938
+      ],
+      "status": [
+        20,
+        201.296875,
+        528,
+        50.5
+      ],
+      "overflow": false,
+      "animations": 6,
+      "transform": "matrix(1, -0.000704965, 0.000704965, 1, 0, -0.504894)",
+      "text": "Preparando tu aventura…\n\nLa selva te espera. ¡Todos a bordo!",
+      "sprite": "url(\"http://127.0.0.1:5197/assets/complementos/tren.webp\")"
+    },
+    {
+      "view": "vertical",
+      "motion": "reduce",
+      "titleReached": true,
+      "touchScroll": 0,
+      "cycle": null,
+      "viewport": [
+        390,
+        844
+      ],
+      "train": [
+        11.6875,
+        393.078125,
+        366.59375,
+        72.46875
+      ],
+      "status": [
+        20,
+        539.390625,
+        350,
+        58.5
+      ],
+      "overflow": false,
+      "animations": 0,
+      "transform": "none",
+      "text": "Preparando tu aventura…\n\nLa selva te espera. ¡Todos a bordo!",
+      "sprite": "url(\"http://127.0.0.1:5197/assets/complementos/tren.webp\")"
+    }
+  ],
+  "errors": []
+}

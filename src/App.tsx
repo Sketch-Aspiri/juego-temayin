@@ -12,6 +12,7 @@ import { TitleScreen } from './ui/screens/TitleScreen';
 import { IntroScreen } from './ui/screens/IntroScreen';
 import { HistoryScreen } from './ui/screens/HistoryScreen';
 import { OfferingScreen } from './ui/screens/OfferingScreen';
+import { LoadingScreen } from './ui/screens/LoadingScreen';
 
 export function App() {
   const screen = useAppStore((s) => s.screen);
@@ -39,12 +40,7 @@ export function App() {
   }, [settings.muted, settings.volume]);
 
   if (!assets || screen === 'loading') {
-    return (
-      <div className="loading" role="status">
-        <div className="loading__spinner" />
-        <p>Cargando la selva…</p>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   return (
