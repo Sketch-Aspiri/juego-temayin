@@ -174,3 +174,11 @@ body:has(.loading-screen) { touch-action: pan-y; }
   .loading-screen *, .loading-screen *::after { animation: none; }
   .loading-screen__route i::after { display: none; }
 }
+
+/* Cubre el nivel mientras se cargan enemigos y decorados. */
+.level-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #0d1f14;
+}

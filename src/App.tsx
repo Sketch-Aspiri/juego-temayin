@@ -14,6 +14,9 @@ import { HistoryScreen } from './ui/screens/HistoryScreen';
 import { OfferingScreen } from './ui/screens/OfferingScreen';
 import { LoadingScreen } from './ui/screens/LoadingScreen';
 
+/** Duración mínima de la pantalla de carga al abrir el juego. */
+const STARTUP_LOADING_MS = 5000;
+
 export function App() {
   const screen = useAppStore((s) => s.screen);
   const settings = useAppStore((s) => s.settings);
@@ -21,7 +24,9 @@ export function App() {
 
   useEffect(() => {
     let cancelled = false;
-    void loadAssets().then((a) => {
+    // La pantalla de carga se mantiene un mínimo para que pueda apreciarse.
+    const minimumShown = new Promise<void>((resolve) => setTimeout(resolve, STARTUP_LOADING_MS));
+    void Promise.all([loadAssets(), minimumShown]).then(([a]) => {
       if (cancelled) return;
       setAssets(a);
       warmArt();

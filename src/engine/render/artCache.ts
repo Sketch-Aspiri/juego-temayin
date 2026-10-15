@@ -101,6 +101,22 @@ export function warmArt(files: readonly string[] = PAINTED_ART): void {
   for (const file of files) lazyImage(file);
 }
 
+/**
+ * Resuelve cuando todo el arte indicado terminó de cargar (los fallos también
+ * cuentan: el dibujo procedural de respaldo cubre las imágenes que no llegan).
+ */
+export function artReady(files: readonly string[] = PAINTED_ART): Promise<void> {
+  const waits = files.map((file) => {
+    const img = lazyImage(file) ?? images.get(file);
+    if (!img || isReady(img)) return Promise.resolve();
+    return new Promise<void>((resolve) => {
+      img.addEventListener('load', () => resolve(), { once: true });
+      img.addEventListener('error', () => resolve(), { once: true });
+    });
+  });
+  return Promise.all(waits).then(() => undefined);
+}
+
 export function makeCanvas(w: number, h: number): HTMLCanvasElement {
   const canvas = document.createElement('canvas');
   canvas.width = Math.max(1, Math.ceil(w));

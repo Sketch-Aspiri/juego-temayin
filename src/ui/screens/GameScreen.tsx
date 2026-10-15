@@ -16,6 +16,11 @@ import { TouchControls } from '../components/TouchControls';
 import { PORTRAIT_VIEW_WIDTH } from '../../engine/render/viewport';
 import { usePortrait } from '../usePortrait';
 import { CinematicPlayer } from '../components/CinematicPlayer';
+import { LoadingScreen } from './LoadingScreen';
+import { artReady } from '../../engine/render/artCache';
+
+/** Tiempo mínimo de la pantalla de carga antes de cada nivel, para que no parpadee. */
+const LEVEL_LOADING_MIN_MS = 900;
 
 type Outcome = { kind: 'complete'; result: LevelResult } | { kind: 'gameover'; score: number };
 
@@ -31,6 +36,7 @@ export function GameScreen() {
   const [paused, setPaused] = useState(false);
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [cinematic, setCinematic] = useState<CinematicDef | null>(null);
+  const [loading, setLoading] = useState(true);
   const finishCinematic = useCallback(() => setCinematic(null), []);
 
   // Crea y destruye el motor cada vez que empieza una partida (nivel o reintento).
@@ -42,33 +48,44 @@ export function GameScreen() {
     setOutcome(null);
     setCinematic(null);
     setPaused(false);
-    const game = new Game({
-      canvas,
-      assets,
-      audio,
-      input,
-      level,
-      // La simulación recibe su propia copia; publicar el cacao no sustituye ni muta Run.
-      session: { ...run.session },
-      initialBlessings: run.initialBlessings,
-      callbacks: {
-        onHud: (state) => {
-          useAppStore.getState().syncCacao(run, state.coins);
-          setHud(state);
+    setLoading(true);
+    let cancelled = false;
+    let game: Game | null = null;
+    const minimumShown = new Promise<void>((resolve) => setTimeout(resolve, LEVEL_LOADING_MIN_MS));
+    // El nivel arranca cuando enemigos, jefes y decorados ya están cargados.
+    void Promise.all([artReady(), minimumShown]).then(() => {
+      if (cancelled) return;
+      setLoading(false);
+      game = new Game({
+        canvas,
+        assets,
+        audio,
+        input,
+        level,
+        // La simulación recibe su propia copia; publicar el cacao no sustituye ni muta Run.
+        session: { ...run.session },
+        initialBlessings: run.initialBlessings,
+        callbacks: {
+          onHud: (state) => {
+            useAppStore.getState().syncCacao(run, state.coins);
+            setHud(state);
+          },
+          onComplete: (result) => {
+            useAppStore.getState().syncCacao(run, result.session.coins);
+            finishLevel(result);
+            setOutcome({ kind: 'complete', result });
+            setCinematic(cinematicAfterLevel(result.levelId) ?? null);
+          },
+          onGameOver: (score) => setOutcome({ kind: 'gameover', score }),
         },
-        onComplete: (result) => {
-          useAppStore.getState().syncCacao(run, result.session.coins);
-          finishLevel(result);
-          setOutcome({ kind: 'complete', result });
-          setCinematic(cinematicAfterLevel(result.levelId) ?? null);
-        },
-        onGameOver: (score) => setOutcome({ kind: 'gameover', score }),
-      },
+      });
+
+      gameRef.current = game;
+      game.start();
     });
-    gameRef.current = game;
-    game.start();
     return () => {
-      game.stop();
+      cancelled = true;
+      game?.stop();
       gameRef.current = null;
     };
   }, [run, assets, finishLevel]);
@@ -114,6 +131,7 @@ export function GameScreen() {
 
   return (
     <>
+      {loading && <div className="level-loading"><LoadingScreen /></div>}
       <div className={`game${portrait ? ' game--portrait' : ''}`} inert={cinematic !== null} aria-hidden={cinematic !== null}>
         {portrait && <div className="game__status">{status}</div>}
         <div className="game__field">
