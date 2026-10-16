@@ -2,6 +2,7 @@ import { GROUND, T, TAU, VW } from '../constants';
 import type { BossId } from '../types';
 import type { World } from '../World';
 import { drawAtrium } from './arenas/atrium';
+import { drawAkumal } from './arenas/akumal';
 import type { Ctx } from './drawUtils';
 import { drawScenerySprite } from './scenerySprites';
 
@@ -182,20 +183,6 @@ export const BOSS_ARENA_SCENERY: Readonly<Record<BossId, ArenaDraw>> = {
   puas: drawLair, kaiman: drawSwamp, huayChivo: drawAtrium, huayPek: drawNightClearing,
   sargazo: drawAkumal,
 };
-
-function drawAkumal(c: Ctx, width: number, now: number): void {
-  c.fillStyle = 'rgba(60,197,205,.22)'; c.fillRect(width / 2, 7 * T, width / 2, FLOOR - 7 * T);
-  c.strokeStyle = '#e4b573'; c.lineWidth = 8;
-  for (const x of [T, width - T]) {
-    c.beginPath(); c.moveTo(x, FLOOR); c.bezierCurveTo(x - 40, FLOOR - 50, x + 25, FLOOR - 100, x - 10, FLOOR - 135); c.stroke();
-  }
-  c.strokeStyle = 'rgba(180,255,250,.55)'; c.lineWidth = 2;
-  for (let i = 0; i < 12; i++) {
-    const x = width / 2 + (i + 1) * width / 26;
-    const y = FLOOR - ((now / 30 + i * 37) % 180);
-    c.beginPath(); c.arc(x, y, 3 + i % 3, 0, TAU); c.stroke();
-  }
-}
 
 export function drawBossArena(c: Ctx, world: World, now: number): void {
   const config = world.def.boss;

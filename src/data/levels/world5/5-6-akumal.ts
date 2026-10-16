@@ -6,7 +6,7 @@ import { waterBank } from '../waterBanks';
 export const LEVEL_5_6: LevelDef = {
   offering: EK_CHUAH_OFFERING,
   id: '5-6', name: 'Akumal', width: 135, theme: 'reef', time: 420, checkpoint: 68,
-  hint: 'Las tortugas son aliadas: puedes apoyarte en su caparazón y nunca reciben daño. Esquiva las algas y golpea el núcleo del Capitán cuando se abra. ¡Cuidemos el mar!',
+  hint: 'Nada junto a las tortugas para respirar. Libera a la que esté enredada y sigue su pulso: ¡toca el núcleo abierto! Saltar cerca de una aliada te impulsa.',
   boss: { id: 'sargazo', x: 90, arena: [78, 100] },
   ops: [
     ['row', 9, 8, 'MSF'], ['coins', 16, 10, 5],
@@ -15,14 +15,14 @@ export const LEVEL_5_6: LevelDef = {
     ['bubbles', 28, 13], ['bubbles', 40, 13], ['bubbles', 52, 13],
     ['coins', 30, 8, 4], ['coins', 45, 8, 4], ['row', 60, 8, 'S?M'],
     // Punto de control seco: los poderes se recuperan antes de cada intento.
-    ['row', 70, 8, 'MFS'], ['coins', 74, 10, 3],
-    // Suelo firme para el sargazo; media arena bajo el agua y media al aire libre.
-    ['water', 89, 100, 7], ['bubbles', 90, 11], ['bubbles', 98, 11],
-    ['turtle', 89, 9, 3, 2, 0.5, 5], ['turtle', 96, 9, 3, 0, 0.5, 6],
-    ['plat', 81, 9, 3], ['coins', 81, 8, 3],
+    ['row', 69, 8, 'MFS'], ['coins', 74, 2, 3],
+    // Toda la arena es agua abierta; las únicas ayudas son aliadas móviles y respiraderos.
+    ['water', 78, 100, 3], ['bubbles', 83, 11], ['bubbles', 96, 11],
+    ['turtle', 81, 8, 2, 3, -0.5, 6], ['turtle', 87, 6, 2, 3, 0.5, 7],
+    ['turtle', 94, 9, 2, 3, -0.5, 5.5],
     ['wall', 101], ['flag', 113], ['temple', 118],
     ...blueCrab(20, 63), ...jellyfish([48, 10]),
     ...waterBank(23, 7, 1), ...waterBank(57, 7, -1),
-    ...waterBank(88, 7, 1), ...waterBank(101, 7, -1),
+    ...waterBank(77, 3, 1), ...waterBank(101, 3, -1),
   ],
 };

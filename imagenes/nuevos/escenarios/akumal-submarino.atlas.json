@@ -1,0 +1,18 @@
+{
+  "width": 1536,
+  "height": 1024,
+  "image": "akumal-submarino.webp",
+  "alpha": false,
+  "frames": [
+    {
+      "state": "arena",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1024,
+      "alphaThreshold": 8
+    }
+  ],
+  "generator": "image_gen integrado",
+  "qa": "PNG intacto; alfa >= 8; WebP idéntico píxel a píxel."
+}

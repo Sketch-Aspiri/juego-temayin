@@ -1,0 +1,74 @@
+{
+  "width": 1774,
+  "height": 887,
+  "image": "sargazo-acciones.webp",
+  "alpha": true,
+  "frames": [
+    {
+      "state": "swim",
+      "x": 7,
+      "y": 104,
+      "width": 483,
+      "height": 250,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "surge",
+      "x": 460,
+      "y": 80,
+      "width": 440,
+      "height": 321,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "whirlpool",
+      "x": 870,
+      "y": 27,
+      "width": 434,
+      "height": 398,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "net",
+      "x": 1290,
+      "y": 66,
+      "width": 483,
+      "height": 346,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "core",
+      "x": 20,
+      "y": 469,
+      "width": 440,
+      "height": 379,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "hurt",
+      "x": 455,
+      "y": 474,
+      "width": 440,
+      "height": 373,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "rage",
+      "x": 892,
+      "y": 417,
+      "width": 428,
+      "height": 436,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "dead",
+      "x": 1295,
+      "y": 621,
+      "width": 469,
+      "height": 228,
+      "alphaThreshold": 8
+    }
+  ],
+  "generator": "image_gen integrado",
+  "qa": "PNG intacto; alfa >= 8; WebP idéntico píxel a píxel."
+}

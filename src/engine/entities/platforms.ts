@@ -59,6 +59,8 @@ export interface MovingPlatform extends Rect {
   rider: boolean;
   /** Tortuga protegida que se sumerge durante un ataque; vuelve sin recibir daño. */
   submerged?: boolean;
+  /** Poses de una tortuga aliada del encuentro; no cambian su colisión ni su salud. */
+  turtleState?: 'swim' | 'net' | 'air' | 'boost';
 }
 
 /** Bloques de ancho de cada vagón. */

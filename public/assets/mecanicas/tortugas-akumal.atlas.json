@@ -1,0 +1,74 @@
+{
+  "width": 1774,
+  "height": 887,
+  "image": "tortugas-akumal.webp",
+  "alpha": true,
+  "frames": [
+    {
+      "state": "swim",
+      "x": 19,
+      "y": 164,
+      "width": 451,
+      "height": 240,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "net",
+      "x": 455,
+      "y": 105,
+      "width": 419,
+      "height": 327,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "air",
+      "x": 887,
+      "y": 57,
+      "width": 448,
+      "height": 384,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "boost",
+      "x": 1300,
+      "y": 57,
+      "width": 464,
+      "height": 393,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "whirlpool",
+      "x": 51,
+      "y": 468,
+      "width": 411,
+      "height": 397,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "seed",
+      "x": 530,
+      "y": 545,
+      "width": 264,
+      "height": 257,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "netLoop",
+      "x": 840,
+      "y": 493,
+      "width": 521,
+      "height": 352,
+      "alphaThreshold": 8
+    },
+    {
+      "state": "pulse",
+      "x": 1401,
+      "y": 520,
+      "width": 314,
+      "height": 304,
+      "alphaThreshold": 8
+    }
+  ],
+  "generator": "image_gen integrado",
+  "qa": "PNG intacto; alfa >= 8; WebP idéntico píxel a píxel."
+}

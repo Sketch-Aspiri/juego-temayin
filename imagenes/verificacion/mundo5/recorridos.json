@@ -77,17 +77,18 @@
     },
     {
       "id": "5-6",
-      "mode": "contacto protegido; oxígeno y colisiones activos; jefe con daño asistido en ventanas válidas, sin evaluar puntería",
+      "mode": "contacto protegido; oxígeno y colisiones activos; rescates y daño al jefe por entradas reales",
       "phase": "done",
       "x": 112.55,
       "y": 414,
       "lives": 3,
       "bossHp": 0,
+      "rescues": 12,
       "exitOpen": true,
       "farthest": 112.55,
-      "layer": 3,
-      "minOxygen": 10,
-      "t": 41.51666666666495,
+      "layer": 4,
+      "minOxygen": 8.291666666666764,
+      "t": 146.02500000003153,
       "swam": true,
       "checkpoint": true
     }

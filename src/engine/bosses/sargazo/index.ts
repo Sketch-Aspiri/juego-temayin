@@ -1,165 +1,172 @@
 import type { Assets } from '../../assets';
-import { GROUND, T } from '../../constants';
+import { T } from '../../constants';
 import type { BossConfig } from '../../level/types';
 import { overlap } from '../../physics';
+import { makeRng } from '../../rng';
+import type { Rect } from '../../types';
 import type { World } from '../../World';
 import { closeArena, entranceColumn, openExit, rewardBurst } from '../arena';
 import type { Boss } from '../types';
-import { coverFloor, stepAlgae, throwAlgae, type AlgaeBall } from './attacks';
+import { chooseAttack, type SeaAttack } from './choose';
+import { clamp, salvo, startHazard, stepShots, stepTides, stepVortices, type SeaShot, type SeaTide, type SeaVortex } from './hazards';
 import { drawSargazo } from './draw';
+import { TurtleTeam } from './turtles';
+import * as K from './tuning';
 
 export type SargazoState = 'sleep' | 'intro' | 'idle' | 'warn' | 'attack' | 'exposed' | 'hurt' | 'shed' | 'dead' | 'gone';
-type Attack = 'throw' | 'wave' | 'dive';
-const PATTERN: readonly Attack[] = ['throw', 'wave', 'dive'];
-const HP = 6;
-const WIDTH = 110;
-const HEIGHT = 115;
-const CAM_PAN = 1200;
-const INTRO_TIME = 2.4;
-const IDLE_TIME = 1.1;
-const WARN_TIME = 1;
-const ATTACK_TIME = 1.3;
-const EXPOSED_TIME = 3.2;
-const HURT_TIME = 0.7;
-const SHED_TIME = 1.7;
-const DEAD_TIME = 2;
-const STOMP_MARGIN = 32;
-const STOMP_BOUNCE = 620;
-const FIRE_HITS = 2;
-const WAVE_SPEED = 260;
-const WAVE_WIDTH = 36;
-const WAVE_HEIGHT = 42;
-const HIT_SCORE = 500;
-const DEFEAT_SCORE = 5000;
 
-/** Tres capas de algas; el núcleo solo recibe daño al abrirse tras cada ataque. */
+/** Combate submarino: rescatar aliadas rompe el escudo y permite tocar el núcleo. */
 export class Sargazo implements Boss {
   readonly id = 'sargazo';
   readonly name = 'CAPITÁN SARGAZO';
-  readonly maxHp = HP;
-  hp = HP;
+  readonly maxHp = K.HP;
+  hp = K.HP;
   x: number;
-  y = GROUND * T - HEIGHT;
-  w = WIDTH;
-  h = HEIGHT;
+  y = K.START_Y;
+  w = K.WIDTH;
+  h = K.HEIGHT;
+  face: 1 | -1 = -1;
   st: SargazoState = 'sleep';
   t = 0;
   clock = 0;
-  layer = 1;
-  attack: Attack = 'throw';
-  balls: AlgaeBall[] = [];
-  waveX: number | null = null;
-  private cycle = 0;
+  phase: K.SeaPhase = 1;
+  attack: SeaAttack = 'salvo';
+  targetX = 0;
+  targetY = K.START_Y;
+  targetTurtle = 0;
+  readonly team = new TurtleTeam();
+  readonly shots: SeaShot[] = [];
+  readonly tides: SeaTide[] = [];
+  readonly vortices: SeaVortex[] = [];
+  readonly arena: readonly [number, number];
+  private last: SeaAttack | null = null;
+  private sinceRescue = 0;
   private fireHits = 0;
-  private readonly a0: number;
-  private readonly a1: number;
+  private volleyAt = 0;
+  private readonly rng = makeRng(K.RNG_SEED);
 
-  constructor(cfg: BossConfig) { this.x = cfg.x * T; [this.a0, this.a1] = cfg.arena; }
+  constructor(cfg: BossConfig) { this.x = cfg.x * T; this.arena = cfg.arena; }
+  get left(): number { return this.arena[0] * T; }
+  get right(): number { return (this.arena[1] + 1) * T; }
+  get stage(): number { return this.phase; }
+  get layer(): number { return this.phase; }
+  get turtles() { return this.team.allies; }
+  get rescues(): number { return this.team.rescues; }
   get lockCamera(): boolean { return this.st !== 'sleep' && this.st !== 'gone'; }
   get hudVisible(): boolean { return this.lockCamera; }
   get intro(): boolean { return this.st === 'intro'; }
   get hittable(): boolean { return this.st === 'exposed'; }
+  get warningTime(): number { return this.attack === 'tide' ? K.TIDE_WARN : K.byPhase(K.WARN, this.phase); }
+  providesAir(body: Rect): boolean { return this.lockCamera && this.team.providesAir(body); }
   private set(st: SargazoState): void { this.st = st; this.t = 0; }
 
   update(world: World, dt: number): void {
     if (this.st === 'gone' || world.phase !== 'play') return;
     this.t += dt; this.clock += dt;
-    if (this.st === 'sleep') {
-      if (world.player.x <= (this.a0 + 1) * T) return;
-      closeArena(world, this.a0); this.set('intro'); world.audio.play('roar'); return;
-    }
-    world.camX = Math.min(entranceColumn(this.a0) * T, world.camX + CAM_PAN * dt);
-    this.balls = stepAlgae(world, this.balls, dt, this.a0, this.a1);
-    this.stepWave(world, dt);
-    this.runState(world);
+    this.team.bind(world, this.left, this.right);
+    if (this.st === 'sleep') return this.wake(world);
+    world.camX = Math.min(entranceColumn(this.arena[0]) * T, world.camX + K.CAM_PAN * dt);
+    stepShots(world, this.shots, dt, this.left, this.right);
+    stepTides(world, this.tides, dt, this.left, this.right);
+    stepVortices(world, this.vortices, this.phase, dt);
+    if (this.team.step(world, this, dt) && this.hp > 0) this.expose(world);
+    this.runState(world, dt);
     this.contact(world);
   }
 
-  private runState(world: World): void {
+  private wake(world: World): void {
+    if (world.player.x <= (this.arena[0] + 1) * T) return;
+    closeArena(world, this.arena[0]);
+    this.set('intro'); world.audio.play('roar');
+  }
+
+  private runState(world: World, dt: number): void {
     switch (this.st) {
-      case 'intro': if (this.t > INTRO_TIME) this.set('idle'); break;
-      case 'idle':
-        if (this.t > IDLE_TIME) {
-          this.attack = PATTERN[this.cycle++ % PATTERN.length];
-          this.set('warn'); world.audio.play('warn');
-        }
-        break;
-      case 'warn': if (this.t > WARN_TIME) this.startAttack(world); break;
-      case 'attack':
-        if (this.t > ATTACK_TIME) { this.restoreTurtles(world); this.set('exposed'); }
-        break;
-      case 'exposed': if (this.t > EXPOSED_TIME) this.set('idle'); break;
-      case 'hurt': if (this.t > HURT_TIME) this.set('idle'); break;
-      case 'shed': if (this.t > SHED_TIME) this.set('idle'); break;
-      case 'dead': if (this.t > DEAD_TIME) this.finish(world); break;
+      case 'intro': if (this.t >= K.INTRO_TIME) this.set('idle'); break;
+      case 'idle': if (this.t >= K.byPhase(K.IDLE, this.phase)) this.prepare(world); break;
+      case 'warn': if (this.t >= this.warningTime) this.startAttack(world); break;
+      case 'attack': this.attackStep(world, dt); break;
+      case 'exposed': if (this.t >= K.byPhase(K.EXPOSED, this.phase)) this.set('idle'); break;
+      case 'hurt': if (this.t >= K.HURT_TIME) this.set('idle'); break;
+      case 'shed': if (this.t >= K.SHED_TIME) this.set('idle'); break;
+      case 'dead': if (this.t >= K.DEAD_TIME) this.finish(world); break;
     }
+  }
+
+  private prepare(world: World): void {
+    const p = world.player;
+    this.attack = chooseAttack(this.phase, this.last, this.sinceRescue, Math.abs(p.x - this.x), this.rng);
+    this.last = this.attack;
+    this.targetX = clamp(p.x + p.w / 2, this.left + K.VORTEX_RADIUS, this.right - K.VORTEX_RADIUS);
+    this.targetY = clamp(p.y + p.h / 2, K.WARNING_Y_MIN, K.WARNING_Y_MAX);
+    this.targetTurtle = this.team.target(this);
+    this.face = this.targetX < this.x + this.w / 2 ? -1 : 1;
+    this.set('warn'); world.audio.play('warn');
   }
 
   private startAttack(world: World): void {
     this.set('attack');
-    if (this.attack === 'throw') {
-      this.balls.push(...throwAlgae(this.x + this.w / 2, this.y + 20, world.player.x, this.layer));
-    } else if (this.attack === 'wave') {
-      this.waveX = (this.a1 + 1) * T;
-    } else {
-      // Las tortugas se refugian bajo el agua, nunca se convierten en enemigos.
-      for (const m of world.platforms) {
-        if (m.spec.kind === 'mover' && m.spec.appearance === 'turtle' && m.spec.x >= this.a0 && !m.rider) m.submerged = true;
-      }
-      coverFloor(world, world.player.x, this.a0, this.a1);
-    }
-    world.audio.play('roar');
+    startHazard(this, world);
+    this.volleyAt = K.byPhase(K.NET_VOLLEY, this.phase);
+    this.sinceRescue = this.attack === 'net' ? 0 : this.sinceRescue + 1;
   }
 
-  private stepWave(world: World, dt: number): void {
-    if (this.waveX === null) return;
-    this.waveX -= WAVE_SPEED * dt;
-    coverFloor(world, this.waveX, this.a0, this.a1);
-    const wave = { x: this.waveX, y: GROUND * T - WAVE_HEIGHT, w: WAVE_WIDTH, h: WAVE_HEIGHT };
-    if (overlap(world.player, wave)) world.hurt();
-    if (this.waveX < this.a0 * T) this.waveX = null;
+  private attackStep(world: World, dt: number): void {
+    if (this.attack === 'net') {
+      if (this.t >= this.volleyAt && !this.team.pulse) {
+        const p = world.player;
+        this.targetX = p.x + p.w / 2; this.targetY = p.y + p.h / 2;
+        salvo(this, 1, K.SEED_WARN);
+        this.volleyAt += K.byPhase(K.NET_VOLLEY, this.phase);
+        world.audio.play('warn');
+      }
+      return;
+    }
+    if (this.attack === 'surge') this.x = clamp(this.x + this.face * K.byPhase(K.DASH_SPEED, this.phase) * dt, this.left, this.right - this.w);
+    if (this.t >= K.byPhase(K.ATTACK_TIME, this.phase)) this.set('idle');
+  }
+
+  private expose(world: World): void {
+    this.clearHazards(); this.fireHits = 0;
+    this.set('exposed'); world.audio.play('bump');
   }
 
   private contact(world: World): void {
     const p = world.player;
     if (!overlap(p, this)) return;
-    if (this.hittable && p.vy > 0 && p.y + p.h - this.y < STOMP_MARGIN) {
-      p.vy = -STOMP_BOUNCE; this.damage(world); return;
-    }
-    if (this.st === 'idle' || this.st === 'warn' || this.st === 'attack') world.hurt();
+    if (this.hittable) {
+      p.vx = (p.x < this.x ? -1 : 1) * K.CONTACT_PUSH;
+      p.vy = -K.CONTACT_LIFT;
+      this.damage(world);
+    } else if (this.st === 'attack' && this.attack === 'surge') world.hurt();
   }
 
   onFireball(world: World): void {
     if (!this.hittable) return;
-    if (++this.fireHits < FIRE_HITS) { world.audio.play('stomp'); return; }
-    this.fireHits = 0; this.damage(world);
+    if (++this.fireHits < K.FIRE_HITS) { world.audio.play('stomp'); return; }
+    this.damage(world);
   }
 
   private damage(world: World): void {
     this.hp--; this.fireHits = 0;
-    world.addScore(HIT_SCORE, this.x + this.w / 2, this.y); world.audio.play('stomp');
-    world.shake = 0.35;
+    this.clearHazards(); this.team.restore();
+    world.addScore(K.HIT_SCORE, this.x + this.w / 2, this.y); world.audio.play('stomp');
+    world.shake = K.HIT_SHAKE;
     if (this.hp <= 0) {
-      this.balls = []; this.waveX = null; this.restoreTurtles(world); this.set('dead');
-      world.addScore(DEFEAT_SCORE, this.x, this.y);
-    } else if (this.hp % 2 === 0) {
-      this.layer++; this.balls = []; this.waveX = null;
-      this.clearAlgae(world); this.restoreTurtles(world); this.set('shed');
-      world.popups.push({ x: this.x, y: this.y - 30, t: 0, txt: '¡Una capa menos!' });
+      this.set('dead'); world.addScore(K.DEFEAT_SCORE, this.x, this.y); return;
+    }
+    const next = K.phaseFor(this.hp);
+    if (next > this.phase) {
+      this.phase = next; this.set('shed'); world.audio.play('roar');
+      world.popups.push({ x: this.x, y: this.y - 30, t: 0, txt: 'FASE ' + next });
     } else this.set('hurt');
   }
 
-  private restoreTurtles(world: World): void {
-    for (const m of world.platforms) if (m.spec.kind === 'mover' && m.spec.appearance === 'turtle') m.submerged = false;
-  }
-
-  private clearAlgae(world: World): void {
-    world.slowZones = world.slowZones.filter(z => z.kind !== 'sargassum' || z.x1 < this.a0 || z.x0 > this.a1);
-  }
+  private clearHazards(): void { this.shots.length = 0; this.tides.length = 0; this.vortices.length = 0; }
 
   private finish(world: World): void {
-    this.clearAlgae(world); this.set('gone');
-    rewardBurst(world, this); openExit(world, this.a1); world.audio.play('flag');
+    this.clearHazards(); this.team.restore(); this.set('gone');
+    rewardBurst(world, this); openExit(world, this.arena[1]); world.audio.play('flag');
     world.popups.push({ x: this.x, y: this.y - 50, t: 0, txt: '¡Tortugas a salvo! Cuidemos el mar.' });
   }
 

@@ -1,5 +1,6 @@
 import { EK_CHUAH } from '../../data/offerings';
 import { CHIVO_ART_FILES } from '../../data/huayChivoArt';
+import { SARGAZO_ART_FILES } from '../../data/sargazoArt';
 import { assetUrl, isReady } from '../assets';
 import { GAMEPLAY_SPRITES } from '../../data/gameplaySprites';
 import { NEW_GAMEPLAY_SPRITES } from '../../data/newGameplaySprites';
@@ -44,6 +45,7 @@ export function lazyImage(file: string): HTMLImageElement | null {
 export const PAINTED_ART: readonly string[] = [
   EK_CHUAH.file,
   ...CHIVO_ART_FILES,
+  ...SARGAZO_ART_FILES,
   ...Object.values(MAYA_TILE_SPRITES).map(sprite => sprite.file),
   ...new Set(Object.values(TERRAIN_SPRITES).map(sprite => sprite.file)),
   ...new Set(Object.values(NEW_GAMEPLAY_SPRITES).map(sprite => sprite.file)),

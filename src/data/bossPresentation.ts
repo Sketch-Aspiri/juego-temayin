@@ -15,7 +15,7 @@ interface BossPresentation {
 export const BOSS_PRESENTATIONS: Readonly<Record<BossId, BossPresentation>> = {
   sargazo: {
     image: 'bosses/sargazo.webp', frame: [15, 69, 499, 447],
-    hint: '¡Salta la ola de algas! Pisa el núcleo o usa fuego cuando se abra.',
+    hint: '¡Libera a las tortugas! Su pulso abre el núcleo: tócalo nadando. Cerca de ellas recuperas aire.',
     arena: 'Bahía de Akumal', color: '#8af9ea',
   },
   puas: {

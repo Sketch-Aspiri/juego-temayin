@@ -2,6 +2,7 @@ import { TAU } from '../constants';
 import type { MovingPlatform } from '../entities/platforms';
 import type { Ctx } from './drawUtils';
 import { drawGameplaySprite } from './gameplaySprites';
+import { drawAkumalTurtle } from './sargazoSprites';
 
 const SUBMERGED_OFFSET = 55;
 const TURTLE_SUPPORT_WIDTH = 320;
@@ -14,7 +15,7 @@ export function drawCoastalPlatform(c: Ctx, m: MovingPlatform, camX: number): vo
   const y = m.y + (m.submerged ? SUBMERGED_OFFSET : 0);
   c.save(); c.translate(m.x - camX, y);
   if (m.submerged) c.globalAlpha = 0.55;
-  const painted = turtle
+  const painted = turtle && m.turtleState ? drawAkumalTurtle(c, m) : turtle
     ? drawGameplaySprite(c, 'turtle', 0, 0, m.w * TURTLE_SOURCE_WIDTH / TURTLE_SUPPORT_WIDTH, TURTLE_DRAW_HEIGHT)
     : drawGameplaySprite(c, 'boat', 0, 0, m.w);
   if (!painted) {

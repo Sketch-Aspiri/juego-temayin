@@ -3,7 +3,6 @@ import { getLevel, nextLevelId } from '../data/worlds';
 import { isUnlocked, sanitizeProgress } from '../store/progress';
 import { AudioEngine } from './audio';
 import { Sargazo } from './bosses/sargazo';
-import { coverFloor, stepAlgae, throwAlgae } from './bosses/sargazo/attacks';
 import { GROUND, OXYGEN_MAX, STEP, T } from './constants';
 import { updateBalls } from './entities/ball';
 import { carryRider, landOnPlatforms, updatePlatforms } from './entities/platforms';
@@ -84,69 +83,15 @@ describe('Capitán Sargazo', () => {
     stepBoss(w, 3); expect(w.camX).toBe(77 * T);
   });
 
-  it('avisa, lanza algas y abre una ventana real para pisarlo', () => {
-    const w = make(), b = boss(w); w.player.x = 80 * T;
-    b.update(w, STEP); stepBoss(w, 4);
-    expect(b.st).toBe('warn'); expect(b.hittable).toBe(false);
-    stepBoss(w, 1); expect(b.st).toBe('attack'); expect(b.balls.length).toBeGreaterThan(0);
-    stepBoss(w, 1.4); expect(b.hittable).toBe(true);
-    w.player.x = b.x; w.player.y = b.y - w.player.h + 5; w.player.vy = 100;
-    b.update(w, STEP); expect(b.hp).toBe(5); expect(w.player.vy).toBeLessThan(0);
-  });
-
-  it('solo recibe fuego con el núcleo expuesto y pierde tres capas hasta abrir la meta', () => {
-    const w = make(), b = boss(w);
-    b.onFireball(w); expect(b.hp).toBe(6);
-    for (let hp = 6; hp > 0; hp--) {
-      b.st = 'exposed'; b.onFireball(w); expect(b.hp).toBe(hp);
-      b.onFireball(w); expect(b.hp).toBe(hp - 1);
-      if (hp === 5 || hp === 3) expect(b.st).toBe('shed');
-    }
-    expect(b.layer).toBe(3); expect(b.st).toBe('dead');
-    stepBoss(w, 2.1);
-    expect(b.st).toBe('gone'); expect(b.lockCamera).toBe(false);
-    expect(w.solid(101, 0)).toBe(false); expect(w.hudState(0).boss).toBeNull();
-    expect(w.popups.some(p => p.txt.includes('Cuidemos el mar'))).toBe(true);
-  });
-
-  it('la ola se salta, hiere en el suelo y deja sargazo quemable', () => {
-    const w = make(), b = boss(w); b.st = 'attack'; b.waveX = 84 * T;
-    w.player.x = 84 * T; w.player.y = 7 * T;
-    b.update(w, STEP); expect(w.phase).toBe('play');
-    expect(w.slowZones.some(z => z.kind === 'sargassum')).toBe(true);
-    w.player.y = GROUND * T - w.player.h; b.waveX = w.player.x;
-    b.update(w, STEP); expect(w.phase).toBe('dying');
-  });
-
   it('resuelve impactos reales de fuego y pelota únicamente con el núcleo abierto', () => {
     const w = make(), b = boss(w); w.enemies = []; w.camX = 77 * T;
     const fire = (): void => {
       w.fireballs = [{ x: b.x + b.w / 2, y: b.y + b.h / 2, vx: 0, vy: 0, t: 0, gone: false }];
       updateFireballs(w, STEP);
     };
-    b.st = 'idle'; fire(); expect(b.hp).toBe(6);
-    b.st = 'exposed'; fire(); expect(b.hp).toBe(6);
+    b.st = 'idle'; fire(); expect(b.hp).toBe(12);
+    b.st = 'exposed'; fire(); expect(b.hp).toBe(12);
     w.balls = [{ x: b.x + 20, y: b.y + 20, w: 20, h: 20, vx: 0, vy: 0, onGround: false, bounces: 0, t: 0, spin: 0, gone: false }];
-    updateBalls(w, STEP); expect(b.hp).toBe(5); expect(b.hittable).toBe(false);
-  });
-
-  it('refugia las tortugas y las devuelve al abrir el núcleo y al derrotarlo', () => {
-    const w = make(), b = boss(w); b.st = 'warn'; b.attack = 'dive'; b.t = 1.1;
-    b.update(w, STEP);
-    const turtles = w.platforms.filter(m => m.spec.x >= 78);
-    expect(turtles.every(m => m.submerged)).toBe(true);
-    stepBoss(w, 1.4); expect(turtles.every(m => !m.submerged)).toBe(true);
-    coverFloor(w, b.x, 78, 100); b.hp = 1; b.st = 'exposed';
-    b.onFireball(w); b.onFireball(w); stepBoss(w, 2.1);
-    expect(w.slowZones).toHaveLength(0); expect(turtles.every(m => !m.submerged)).toBe(true);
-  });
-
-  it('las bolas de algas siguen parábolas y frenan sin quitar vidas', () => {
-    const w = make(); w.player.x = 82 * T; w.player.y = 10 * T;
-    const balls = throwAlgae(90 * T, 9 * T, w.player.x, 3);
-    expect(balls).toHaveLength(3); expect(balls.every(b => b.vx < 0)).toBe(true);
-    const collision = [{ x: w.player.x + 10, y: w.player.y + 10, vx: 0, vy: 0, t: 0 }];
-    expect(stepAlgae(w, collision, STEP, 78, 100)).toHaveLength(0);
-    expect(w.phase).toBe('play'); expect(w.slowZones.length).toBeGreaterThan(0);
+    updateBalls(w, STEP); expect(b.hp).toBe(11); expect(b.hittable).toBe(false);
   });
 });

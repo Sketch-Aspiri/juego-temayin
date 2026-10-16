@@ -25,6 +25,8 @@ export interface Boss extends Rect {
    * está a oscuras; opcional. Escribe en la lista recibida para no crear arrays por paso.
    */
   lights?(out: LightSource[]): void;
+  /** Ayuda respirable dinámica de un aliado; se consulta antes de consumir el oxígeno. */
+  providesAir?(body: Rect): boolean;
   update(world: World, dt: number): void;
   onFireball(world: World): void;
   draw(ctx: CanvasRenderingContext2D, assets: Assets, camX: number): void;

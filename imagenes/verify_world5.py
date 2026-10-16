@@ -1,8 +1,9 @@
-"""Recorre Mundo 5 en Chromium; contacto protegido y daño al jefe asistido solo con núcleo expuesto."""
+"""Recorre Mundo 5 en Chromium; contacto protegido, rescates y daño al jefe mediante nado real."""
 import json
 import sys
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+from verify_sargazo_visuals import CONTROL
 
 out = Path(__file__).resolve().parent / 'verificacion' / 'mundo5'
 out.mkdir(parents=True, exist_ok=True)
@@ -19,6 +20,7 @@ with sync_playwright() as p:
       const {World}=await import(loaded('/src/engine/World.ts'));
       const {useAppStore}=await import(loaded('/src/store/appStore.ts'));
       const {ALL_LEVELS}=await import(loaded('/src/data/worlds.ts'));
+      while(useAppStore.getState().screen==='loading')await new Promise(r=>setTimeout(r,100));
       useAppStore.setState({progress:{levels:Object.fromEntries(ALL_LEVELS.map(l=>[l.id,{bestScore:0,stars:1,completions:1}]))},settings:{...useAppStore.getState().settings,muted:true,introSeen:true}});
       window.qa={world:null,store:useAppStore,drive:false,hold:false,captured:false,coreCaptured:false,metrics:{}};
       const original=World.prototype.update;
@@ -44,8 +46,7 @@ with sync_playwright() as p:
         // Solo se protege el daño por contacto; el oxígeno y las colisiones siguen activos.
         p.inv=1;
         if(w.boss?.lockCamera&&w.boss.hp>0){
-          input.release('right');input.release('left');input.release('jump');
-          if(w.boss.hittable)w.boss.onFireball(w);
+          qa.sargazoControl(w);
           return;
         }
         input.press('run');input.press('right');input.release('left');
@@ -86,9 +87,10 @@ with sync_playwright() as p:
         }
       };
     }""")
+    page.evaluate('control=>qa.sargazoControl=eval("("+control+")")', CONTROL)
     selected = sys.argv[1:] or ['5-1', '5-2', '5-3', '5-4', '5-5', '5-6']
     for level in selected:
-        page.evaluate('id=>{qa.hold=false;qa.captured=false;qa.coreCaptured=false;qa.drive=false;qa.metrics={};qa.air=null;qa.store.getState().startLevel(id)}', level)
+        page.evaluate('id=>{qa.hold=false;qa.captured=false;qa.coreCaptured=false;qa.drive=false;qa.metrics={};qa.air=null;qa.store.getState().startLevel(id);if(qa.store.getState().screen==="offering")qa.store.getState().continueOffering()}', level)
         page.wait_for_function('id=>qa.world?.def.id===id', arg=level)
         page.wait_for_timeout(300)
         page.screenshot(path=str(out / f'{level}-inicio.png'))
@@ -118,19 +120,23 @@ with sync_playwright() as p:
         except Exception:
             pass
         page.evaluate('qa.drive=false')
-        report = page.evaluate("()=>({id:qa.world.def.id,mode:'contacto protegido; oxígeno y colisiones activos; jefe con daño asistido en ventanas válidas, sin evaluar puntería',phase:qa.world.phase,x:qa.world.player.x/40,y:qa.world.player.y,lives:qa.world.session.lives,bossHp:qa.world.boss?.hp,exitOpen:qa.world.def.boss?!qa.world.grid.slice(0,12).some(r=>r[qa.world.def.boss.arena[1]+1]==='X'):null,...qa.metrics})")
+        report = page.evaluate("()=>({id:qa.world.def.id,mode:'contacto protegido; oxígeno y colisiones activos; rescates y daño al jefe por entradas reales',phase:qa.world.phase,x:qa.world.player.x/40,y:qa.world.player.y,lives:qa.world.session.lives,bossHp:qa.world.boss?.hp,rescues:qa.world.boss?.rescues,exitOpen:qa.world.def.boss?!qa.world.grid.slice(0,12).some(r=>r[qa.world.def.boss.arena[1]+1]==='X'):null,...qa.metrics})")
         reports.append(report)
         page.screenshot(path=str(out / f'{level}-recorrido.png'))
         print(json.dumps(report), flush=True)
         page.evaluate("qa.store.getState().go('levels')")
         page.wait_for_timeout(100)
     browser.close()
-(out / 'recorridos.json').write_text(json.dumps({'levels': reports, 'errors': errors}, ensure_ascii=False, indent=2), encoding='utf-8')
+report_file = out / 'recorridos.json'
+previous = json.loads(report_file.read_text(encoding='utf-8')) if report_file.exists() else {'levels': []}
+current_ids = {r['id'] for r in reports}
+retained = [r for r in previous['levels'] if r['id'] not in current_ids]
+report_file.write_text(json.dumps({'levels': sorted(retained + reports, key=lambda r: r['id']), 'errors': errors}, ensure_ascii=False, indent=2), encoding='utf-8')
 assert not errors, errors
 assert all(r['phase'] == 'done' and r.get('checkpoint') for r in reports), reports
 for report in reports:
     if report['id'] in ['5-2', '5-4']:
         assert report.get('swam'), report
     if report['id'] == '5-6':
-        assert report['bossHp'] == 0 and report['exitOpen'] and report['layer'] == 3, report
+        assert report['bossHp'] == 0 and report['exitOpen'] and report['layer'] == 4 and report['rescues'] >= 12, report
 

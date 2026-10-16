@@ -1,0 +1,112 @@
+{
+  "mode": "Inicio en checkpoint; contacto protegido; sin poderes ni daño asistido; entradas reales de nado, rescates y oxígeno activos.",
+  "route": {
+    "phase": "done",
+    "hp": 0,
+    "state": "gone",
+    "x": 112.55,
+    "y": 414,
+    "fire": false,
+    "ball": false,
+    "exitOpen": true,
+    "turtlesSafe": true,
+    "updateMs": 164.8000000193715,
+    "steps": 17590,
+    "t": 146.58333333336435,
+    "checkpoint": true,
+    "stage": 4,
+    "rescues": 12,
+    "minOxygen": 8.350000000000094,
+    "states": [
+      "sleep",
+      "intro",
+      "idle",
+      "warn",
+      "attack",
+      "exposed",
+      "hurt",
+      "shed",
+      "dead",
+      "gone"
+    ],
+    "attacks": [
+      "tide",
+      "salvo",
+      "net",
+      "surge",
+      "whirlpool",
+      "rain"
+    ]
+  },
+  "mobile": [
+    {
+      "width": 844,
+      "height": 390,
+      "overflow": false,
+      "buttons": [
+        "Pausa",
+        "Correr",
+        "Izquierda",
+        "Derecha",
+        "Fuego",
+        "Saltar"
+      ]
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "buttons": [
+        "Pausa",
+        "Correr",
+        "Izquierda",
+        "Derecha",
+        "Fuego",
+        "Saltar"
+      ]
+    }
+  ],
+  "scenes": [
+    "fase1-salvo-warn.png",
+    "fase1-salvo-attack.png",
+    "fase1-tide-warn.png",
+    "fase1-tide-attack.png",
+    "fase1-net-warn.png",
+    "fase1-net-attack.png",
+    "fase2-salvo-warn.png",
+    "fase2-salvo-attack.png",
+    "fase2-tide-warn.png",
+    "fase2-tide-attack.png",
+    "fase2-net-warn.png",
+    "fase2-net-attack.png",
+    "fase2-surge-warn.png",
+    "fase2-surge-attack.png",
+    "fase2-whirlpool-warn.png",
+    "fase2-whirlpool-attack.png",
+    "fase3-salvo-warn.png",
+    "fase3-salvo-attack.png",
+    "fase3-tide-warn.png",
+    "fase3-tide-attack.png",
+    "fase3-net-warn.png",
+    "fase3-net-attack.png",
+    "fase3-surge-warn.png",
+    "fase3-surge-attack.png",
+    "fase3-whirlpool-warn.png",
+    "fase3-whirlpool-attack.png",
+    "fase3-rain-warn.png",
+    "fase3-rain-attack.png",
+    "fase4-salvo-warn.png",
+    "fase4-salvo-attack.png",
+    "fase4-tide-warn.png",
+    "fase4-tide-attack.png",
+    "fase4-net-warn.png",
+    "fase4-net-attack.png",
+    "fase4-surge-warn.png",
+    "fase4-surge-attack.png",
+    "fase4-whirlpool-warn.png",
+    "fase4-whirlpool-attack.png",
+    "fase4-rain-warn.png",
+    "fase4-rain-attack.png"
+  ],
+  "errors": []
+}

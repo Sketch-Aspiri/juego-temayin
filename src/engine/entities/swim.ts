@@ -111,7 +111,7 @@ function inBubbles(world: World, r: Rect): boolean {
 export function updateOxygen(world: World, dt: number): void {
   const p = world.player;
   const under = headUnderwater(world.level.water, p);
-  if (!under || inBubbles(world, p)) {
+  if (!under || inBubbles(world, p) || world.boss?.providesAir?.(p)) {
     p.oxygen = Math.min(OXYGEN_MAX, p.oxygen + OXYGEN_REFILL_RATE * dt);
     return;
   }
