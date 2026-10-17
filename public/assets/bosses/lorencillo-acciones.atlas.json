@@ -1,0 +1,16 @@
+{
+  "image": "lorencillo-acciones.png",
+  "width": 1774,
+  "height": 887,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "completo",
+      "x": 0,
+      "y": 0,
+      "width": 1774,
+      "height": 887
+    }
+  ]
+}

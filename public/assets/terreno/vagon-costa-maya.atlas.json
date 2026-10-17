@@ -1,0 +1,16 @@
+{
+  "image": "vagon-costa-maya.png",
+  "width": 1254,
+  "height": 1254,
+  "alpha": false,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "completo",
+      "x": 0,
+      "y": 0,
+      "width": 1254,
+      "height": 1254
+    }
+  ]
+}
