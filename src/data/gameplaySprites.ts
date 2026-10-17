@@ -10,6 +10,7 @@ export interface GameplaySprite {
 
 const MECHANICS = 'mecanicas/mecanicas.webp';
 const PROPS = 'complementos/utileria.webp';
+const EFFECTS = 'mecanicas/efectos.webp';
 const PLAYER = 'personajes/jugador-mecanicas.webp';
 
 /** Recortes del arte existente que faltaba conectar a las mecánicas jugables. */
@@ -31,6 +32,12 @@ export const GAMEPLAY_SPRITES = {
   // Se excluyen la cuerda superior y la pelota ya en vuelo para evitar duplicarlas.
   hanging: { file: PLAYER, frame: [105, 548, 264, 410], anchor: [155 / 264, 60 / 410] },
   swinging: { file: PLAYER, frame: [555, 571, 400, 375], anchor: [168 / 400, 49 / 375] },
+  stromatolite: { file: MECHANICS, frame: [1077, 725, 444, 266], anchor: [0, 0] },
+  // Cuadros «luz 1-4» del atlas de efectos: parpadeo de las luciérnagas (op `firefly`).
+  firefly1: { file: EFFECTS, frame: [74, 839, 219, 173], anchor: [0.5, 0.5] },
+  firefly2: { file: EFFECTS, frame: [400, 758, 279, 267], anchor: [0.5, 0.5] },
+  firefly3: { file: EFFECTS, frame: [753, 734, 307, 292], anchor: [0.5, 0.5] },
+  firefly4: { file: EFFECTS, frame: [1134, 774, 251, 248], anchor: [0.5, 0.5] },
   throwing: { file: PLAYER, frame: [1025, 600, 386, 365], anchor: [0.5, 1] },
 } as const satisfies Readonly<Record<string, GameplaySprite>>;
 

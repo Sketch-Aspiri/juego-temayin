@@ -32,6 +32,12 @@ export const BOSS_PRESENTATIONS: Readonly<Record<BossId, BossPresentation>> = {
     hint: 'Los ojos señalan el arco real. Reenciende antorchas con fuego. ¡Písalo cuando vea estrellas!',
     arena: 'Atrio de Izamal', color: '#ffe185',
   },
+  lorencillo: {
+    image: 'bosses/lorencillo.webp', frame: [45, 90, 457, 420],
+    hint: 'Salta la estocada y pisa la espalda expuesta. A media vida encadena dos: ¡espera la segunda! Evita las marcas de cañón, también en las cofas.',
+    // TODO(cultura): Lorencillo en Chetumal es ficción; el ataque histórico fue en Campeche en 1685.
+    arena: 'Bahía de Chetumal', color: '#7fd0e0',
+  },
   huayPek: {
     image: 'bosses/huayPek.webp', frame: [11, 122, 485, 385],
     hint: '¡Salta sobre los ladridos y golpéalo cuando brillen sus ojos!',

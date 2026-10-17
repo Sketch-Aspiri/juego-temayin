@@ -45,6 +45,23 @@ import type { Darkness } from '../render/lighting';
  *                                           una columna de burbujas sube hasta la
  *                                           superficie y recarga el oxígeno al tocarla
  *
+ * Viento y térmicas (Mundo 6, ver `entities/wind.ts`). No tocan la cuadrícula: van a
+ * `BuiltLevel.winds`. Solo empujan a quien NO nada; la parte vertical solo actúa en el aire
+ * (una térmica con vy < 0 alarga el salto y frena la caída). |vx| ≤ WIND_MAX_VX bloques/s.
+ *  ['wind', x0, x1, y0, y1, vx, vy]         rectángulo de bloques x0..x1 × y0..y1 (inclusive);
+ *                                           vx, vy en bloques/s (positivo = derecha / abajo)
+ *
+ * Luciérnagas (Mundo 6, ver `render/fireflies.ts`): luz fija pequeña en el bloque (x, y),
+ * que va a `BuiltLevel.fireflies`. Solo alumbra (y se cuenta en `lightSources`) si el nivel
+ * tiene `darkness`; sin oscuridad es solo decoración.
+ *  ['firefly', x, y]
+ *
+ * Estromatolitos (Mundo 6 · Bacalar, ver `entities/stromatolites.ts`): seres vivos milenarios,
+ * no se pisan. Escribe bloques sólidos `E` y un tramo en `BuiltLevel.stromatolites`. Quien se
+ * apoya en un tramo más de STROMATOLITE_GRACE s lo daña una vez (-STROMATOLITE_PENALTY puntos,
+ * nunca bajo 0, sin quitar vida). Van sobre suelo o lecho, lejos de checkpoint, meta y orillas.
+ *  ['stromatolite', x, y, largo]
+ *
  * Escombro que se derrumba (Mundo 2, ver `entities/crumble.ts`). Escribe bloques
  * sólidos `D` en la cuadrícula y un tramo en `BuiltLevel.crumbles`.
  *  ['crumble', x, y, largo]                 `largo` bloques de escombro desde (x, y): al
@@ -109,6 +126,9 @@ export type Op =
   | readonly ['water', number, number, number]
   | readonly ['current', number, number, number, number, number, number]
   | readonly ['bubbles', number, number]
+  | readonly ['stromatolite', number, number, number]
+  | readonly ['firefly', number, number]
+  | readonly ['wind', number, number, number, number, number, number]
   | readonly ['crumble', number, number, number]
   | readonly ['cannon', number, number, 1 | -1]
   | readonly ['train', number, number, number, number, number]
@@ -143,6 +163,12 @@ export interface LevelDef {
   darkness?: Darkness;
   /** Consejo de Toh mostrado al entrar, en español. */
   hint?: string;
+  /**
+   * Cámara automática (bloques/s): la pantalla avanza al menos a esta velocidad, p. ej. el
+   * techo del tren en marcha. Se detiene al final del nivel, con el jefe y en la meta; si el
+   * borde izquierdo empuja al jugador contra un bloque sólido, muere aplastado.
+   */
+  autoScroll?: number;
   /** Lluvia escénica: no altera la física ni el progreso. */
   weather?: 'rain';
   ops: readonly Op[];

@@ -2,6 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { ALL_LEVELS } from '../../data/worlds';
 import { BOSS_PRESENTATIONS } from '../../data/bossPresentation';
+import { PAINTED_ART } from '../../engine/render/artCache';
 import { AudioEngine } from '../../engine/audio';
 import { T } from '../../engine/constants';
 import { hudKey } from '../../engine/hud';
@@ -50,5 +51,18 @@ describe('Presentación de jefes', () => {
     expect(markup).toContain('clip-path="url(#boss-portrait-kaiman)"');
     expect(markup).toContain('clip-rule="evenodd"');
     expect(markup).toContain('M522 243h10v28h-10z');
+  });
+
+  it('anuncia a Lorencillo con su retrato, consejo y la Bahía de Chetumal', () => {
+    const presentation = BOSS_PRESENTATIONS.lorencillo;
+    const markup = renderToStaticMarkup(<BossBanner boss={{ id: 'lorencillo', name: 'LORENCILLO', hp: 8, maxHp: 8, intro: true }} />);
+    expect(markup).toContain('bosses/lorencillo.webp');
+    expect(markup).toContain('viewBox="45 90 457 420"');
+    expect(markup).toContain(presentation.hint);
+    expect(markup).toContain('Bahía de Chetumal');
+  });
+
+  it('registra el arte de Lorencillo para precarga', () => {
+    expect(PAINTED_ART).toContain(BOSS_PRESENTATIONS.lorencillo.image);
   });
 });

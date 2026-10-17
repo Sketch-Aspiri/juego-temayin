@@ -36,7 +36,7 @@ export type EnemyId =
   | 'axolotl'
   | 'lionfish'
   | 'jellyfish';
-export type BossId = 'puas' | 'kaiman' | 'huayChivo' | 'huayPek' | 'sargazo';
+export type BossId = 'puas' | 'kaiman' | 'huayChivo' | 'huayPek' | 'sargazo' | 'lorencillo';
 export type ThemeId =
   | 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque'
   // Mundo 2 · Golfo de Campeche (AGENTS.md §4.7)
@@ -50,7 +50,12 @@ export type ThemeId =
   | 'xibalba'
   // Mundo 4 · selva de noche (4-5 Nuevo Xcán)
   | 'jungleNight'
-  | 'reef';
+  | 'reef'
+  // Mundo 6 · Costa Maya y Bacalar (AGENTS.md §4.7)
+  | 'cliff'
+  | 'lagoon'
+  | 'bay'
+  | 'jungleTrain';
 
 /** Estado de una partida que se arrastra de un nivel al siguiente. */
 export interface Session {

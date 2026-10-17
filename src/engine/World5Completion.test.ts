@@ -33,7 +33,7 @@ describe('Mundo 5 completo', () => {
     const p = sanitizeProgress({ levels: { '5-3': record } });
     expect(p.levels['5-3']).toEqual(record); expect(isUnlocked(p, '5-4')).toBe(true);
     expect(nextLevelId('5-3')).toBe('5-4'); expect(nextLevelId('5-4')).toBe('5-5');
-    expect(nextLevelId('5-5')).toBe('5-6'); expect(nextLevelId('5-6')).toBeNull();
+    expect(nextLevelId('5-5')).toBe('5-6'); expect(nextLevelId('5-6')).toBe('6-1');
   });
 
   it.each(['5-3', '5-4', '5-5', '5-6'])('%s tiene checkpoint seco y consejo de Toh', id => {

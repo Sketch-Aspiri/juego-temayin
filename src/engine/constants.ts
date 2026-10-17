@@ -61,3 +61,13 @@ export const SLOW_ZONE_SPEED_FACTOR = 0.5;
 export const SLOW_ZONE_JUMP_FACTOR = 0.72;
 /** Columnas de sargazo que quema una bola de fuego a cada lado de la columna donde cae. */
 export const SARGASSUM_BURN_RADIUS = 1;
+
+// ---------- Viento y térmicas (Mundo 6, op `wind`) ----------
+/** Velocidad horizontal máxima del viento (bloques/s): por encima, correr contra él sería imposible. */
+export const WIND_MAX_VX = 3;
+
+// ---------- Estromatolitos de Bacalar (Mundo 6, op `stromatolite`) ----------
+/** Segundos de pies sobre un estromatolito antes de dañarlo: un roce o un aterrizaje de paso no cuenta. */
+export const STROMATOLITE_GRACE = 0.25;
+/** Puntos que cuesta dañar un tramo (nunca baja de 0 ni quita vida). */
+export const STROMATOLITE_PENALTY = 500;

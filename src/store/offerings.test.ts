@@ -19,8 +19,8 @@ describe('Encuentros y compras', () => {
   });
   afterEach(() => vi.unstubAllGlobals());
 
-  it('abre el encuentro solo en los seis niveles configurados', () => {
-    expect(ALL_LEVELS.filter(l => l.offering).map(l => l.id)).toEqual(['1-3', '1-6', '2-7', '3-5', '4-5', '5-6']);
+  it('abre el encuentro solo en los siete niveles configurados', () => {
+    expect(ALL_LEVELS.filter(l => l.offering).map(l => l.id)).toEqual(['1-3', '1-6', '2-7', '3-5', '4-5', '5-6', '6-6']);
     store.getState().startLevel('1-3');
     expect(store.getState().screen).toBe('offering');
     store.getState().startLevel('1-2');

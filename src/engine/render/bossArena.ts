@@ -3,6 +3,7 @@ import type { BossId } from '../types';
 import type { World } from '../World';
 import { drawAtrium } from './arenas/atrium';
 import { drawAkumal } from './arenas/akumal';
+import { drawShip } from './arenas/ship';
 import type { Ctx } from './drawUtils';
 import { drawScenerySprite } from './scenerySprites';
 
@@ -181,7 +182,7 @@ function drawNightClearing(c: Ctx, width: number, now: number): void {
 /** Decorado propio por jefe, anclado a su arena, detrás de todos los bloques y entidades. */
 export const BOSS_ARENA_SCENERY: Readonly<Record<BossId, ArenaDraw>> = {
   puas: drawLair, kaiman: drawSwamp, huayChivo: drawAtrium, huayPek: drawNightClearing,
-  sargazo: drawAkumal,
+  sargazo: drawAkumal, lorencillo: drawShip,
 };
 
 export function drawBossArena(c: Ctx, world: World, now: number): void {

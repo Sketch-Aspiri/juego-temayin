@@ -51,4 +51,19 @@ describe('Encuadre vertical sin cambios a la simulación', () => {
     const w = world(); w.phase = phase;
     expect(renderViewport(w, PORTRAIT_VIEW_WIDTH).scale).toBe(PORTRAIT_VIEW_WIDTH / VW);
   });
+
+  it('con cámara automática mantiene visible al jugador pegado al borde izquierdo', () => {
+    // Organizar: nivel con autoScroll y el jugador empujado por el borde
+    const audio = new AudioEngine(); audio.muted = true;
+    const def = { id: 'prueba-auto', name: 'Prueba', width: 120, theme: 'jungleTrain', autoScroll: 4, ops: [['flag', 110]] } as const;
+    const w = new World({ def: { ...def, ops: [...def.ops] }, audio, input: new Input(), session: { score: 0, coins: 0, lives: 3 } });
+    w.camX = 500; w.player.x = 500;
+    // Actuar
+    const view = renderViewport(w, PORTRAIT_VIEW_WIDTH);
+    const screenX = w.player.x - w.camX - view.offsetX;
+    // Comprobar
+    expect(view.offsetX).toBe(0);
+    expect(screenX).toBeGreaterThanOrEqual(0);
+    expect(screenX + w.player.w).toBeLessThanOrEqual(PORTRAIT_VIEW_WIDTH);
+  });
 });

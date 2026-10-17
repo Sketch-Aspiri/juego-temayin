@@ -1,6 +1,7 @@
 import { EK_CHUAH } from '../../data/offerings';
 import { CHIVO_ART_FILES } from '../../data/huayChivoArt';
 import { SARGAZO_ART_FILES } from '../../data/sargazoArt';
+import { WORLD6_ART_FILES } from '../../data/world6Art';
 import { assetUrl, isReady } from '../assets';
 import { GAMEPLAY_SPRITES } from '../../data/gameplaySprites';
 import { NEW_GAMEPLAY_SPRITES } from '../../data/newGameplaySprites';
@@ -46,11 +47,13 @@ export const PAINTED_ART: readonly string[] = [
   EK_CHUAH.file,
   ...CHIVO_ART_FILES,
   ...SARGAZO_ART_FILES,
+  ...WORLD6_ART_FILES,
   ...Object.values(MAYA_TILE_SPRITES).map(sprite => sprite.file),
   ...new Set(Object.values(TERRAIN_SPRITES).map(sprite => sprite.file)),
   ...new Set(Object.values(NEW_GAMEPLAY_SPRITES).map(sprite => sprite.file)),
   ...new Set(Object.values(GAMEPLAY_SPRITES).map(sprite => sprite.file)),
   'bosses/sargazo.webp',
+  'bosses/lorencillo.webp',
   'escenarios/arcada-izamal.webp',
   'escenarios/guarida-puas.webp',
   'complementos/utileria.webp',
@@ -64,6 +67,8 @@ export const PAINTED_ART: readonly string[] = [
   'backgrounds/cave.webp',
   'backgrounds/beach.webp',
   'backgrounds/reef.webp',
+  'backgrounds/cliff.webp',
+  'backgrounds/lagoon.webp',
   'enemies/lionfish.webp',
   'enemies/jellyfish.webp',
   'backgrounds/hacienda.webp',

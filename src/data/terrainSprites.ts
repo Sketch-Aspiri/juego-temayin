@@ -1,5 +1,6 @@
 import type { GameplaySprite } from './gameplaySprites';
 import type { TexId } from '../engine/render/textures';
+import { COAST_TILES_FILE } from './world6Art';
 
 export interface TerrainSprite extends GameplaySprite {
   readonly base: string;
@@ -18,6 +19,10 @@ export const MUD_TERRAIN_SPRITES = {
 
 /** El suelo nuevo de pantano convive con el terreno pintado del atlas histórico. */
 export const TERRAIN_SPRITES: Readonly<Partial<Record<TexId, TerrainSprite>>> = {
+  trainRoof: { file: COAST_TILES_FILE, frame: [0, 0, 313, 223], anchor: [0, 0], columns: 4, base: '#859ba0' },
+  trainSide: { file: COAST_TILES_FILE, frame: [0, 223, 313, 395], anchor: [0, 0], columns: 4, base: '#145b50' },
+  shipDeck: { file: COAST_TILES_FILE, frame: [0, 618, 313, 254], anchor: [0, 0], columns: 4, base: '#6b4027' },
+  shipHull: { file: COAST_TILES_FILE, frame: [0, 872, 313, 382], anchor: [0, 0], columns: 4, base: '#57321e' },
   ...MUD_TERRAIN_SPRITES,
   grass: { file: FILE, frame: [42, 22, 300, 283], anchor: [0, 0], isolated: true, base: '#80542d' },
   dirt: { file: FILE, frame: [368, 52, 269, 252], anchor: [0, 0], isolated: true, base: '#80542d' },

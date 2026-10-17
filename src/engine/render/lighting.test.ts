@@ -6,7 +6,9 @@ import { HuayPek } from '../bosses/huayPek';
 import { Input } from '../input';
 import { World } from '../World';
 import type { LightSource } from './lighting';
-import { LightBuffer, lightSources } from './lighting';
+import { FIREFLY_RADIUS, LightBuffer, lightSources } from './lighting';
+import type { LevelDef } from '../level/types';
+import { T } from '../constants';
 import { HuayChivo } from '../bosses/huayChivo';
 
 const audio = new AudioEngine();
@@ -79,5 +81,33 @@ describe('fuentes de luz de los jefes', () => {
     expect(calm).not.toContainEqual(eyes);
     expect(lit).toContainEqual(eyes);
     expect(lit).toHaveLength(calm.length + 1);
+  });
+});
+
+describe('luciérnagas', () => {
+  const fireflyWorld = (darkness?: { radius: number; alpha: number }): World => {
+    const def: LevelDef = {
+      id: 'prueba-luciernagas', name: 'Prueba', width: 60, theme: 'jungleTrain', darkness,
+      ops: [['firefly', 20, 8], ['firefly', 24, 6], ['flag', 55]],
+    };
+    return new World({ def, input: new Input(), audio, session: { score: 0, coins: 0, lives: 3 } });
+  };
+
+  it('la op firefly llena BuiltLevel.fireflies centrada en el bloque', () => {
+    const world = fireflyWorld();
+    expect(world.level.fireflies).toEqual([
+      { x: 20.5 * T, y: 8.5 * T, radius: FIREFLY_RADIUS },
+      { x: 24.5 * T, y: 6.5 * T, radius: FIREFLY_RADIUS },
+    ]);
+  });
+
+  it('aporta luz solo si el nivel tiene oscuridad', () => {
+    // Organizar / Actuar
+    const dark = fireflyWorld({ radius: 170, alpha: 0.8 }).lightSources();
+    const lit = fireflyWorld().lightSources();
+    // Comprobar
+    expect(dark).toContainEqual({ x: 20.5 * T, y: 8.5 * T, radius: FIREFLY_RADIUS });
+    expect(dark).toHaveLength(3); // jugador + 2 luciérnagas
+    expect(lit).toHaveLength(0);
   });
 });

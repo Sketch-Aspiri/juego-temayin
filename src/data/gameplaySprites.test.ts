@@ -4,6 +4,7 @@ import { NEW_GAMEPLAY_SPRITES } from './newGameplaySprites';
 import { MAYA_TILE_SPRITES } from './mayaTileSprites';
 import { MUD_TERRAIN_SPRITES, TERRAIN_SPRITES } from './terrainSprites';
 import { PAINTED_ART } from '../engine/render/artCache';
+import { COAST_TILES_FILE } from './world6Art';
 
 interface Atlas { readonly width: number; readonly height: number; readonly alpha: boolean }
 const atlases = import.meta.glob<Atlas>('../../public/assets/**/*.atlas.json', { eager: true, import: 'default' });
@@ -17,7 +18,7 @@ describe('Cobertura del arte jugable', () => {
     expect(runtimeImages[runtime]).toBeDefined();
     const atlas = atlases[runtime.replace('.webp', '.atlas.json')];
     const [x, y, w, h] = sprite.frame;
-    expect(atlas.alpha).toBe(sprite.file !== MUD_TERRAIN_SPRITES.mud.file);
+    expect(atlas.alpha).toBe(![MUD_TERRAIN_SPRITES.mud.file, COAST_TILES_FILE].includes(sprite.file));
     expect(x).toBeGreaterThanOrEqual(0);
     expect(y).toBeGreaterThanOrEqual(0);
     expect(w).toBeGreaterThan(0);
@@ -35,5 +36,12 @@ describe('Cobertura del arte jugable', () => {
       expect(sourceImages[path]).toBeDefined();
       expect(prompts[path.replace('.png', '.prompt.txt')]).toMatch(/stylized-concept|precise-object-edit/);
     }
+  });
+
+  it.each([1, 2, 3, 4] as const)('la luciérnaga %i usa el cuadro «luz» homónimo del atlas de efectos', (n) => {
+    const atlas = atlases['../../public/assets/mecanicas/efectos.atlas.json'] as unknown as { frames: readonly { state: string; x: number; y: number; width: number; height: number }[] };
+    const f = atlas.frames.find((fr) => fr.state === `luz ${n}`);
+    expect(f).toBeDefined();
+    expect(GAMEPLAY_SPRITES[`firefly${n}` as const].frame).toEqual([f?.x, f?.y, f?.width, f?.height]);
   });
 });

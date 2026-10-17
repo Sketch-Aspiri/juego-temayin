@@ -4,6 +4,7 @@ import { moveX, moveY } from '../physics';
 import type { World } from '../World';
 import { bounceHammocks } from './hammocks';
 import { updateRopes } from './ropes';
+import { windDrift } from './wind';
 import { throwBall } from './ball';
 import { clampSeabed, currentDrift, isSwimming, swimStep, trySurfaceLeap, updateOxygen } from './swim';
 import type { Player } from './types';
@@ -119,7 +120,10 @@ function jumpStep(world: World, dt: number): void {
 /** Aplica velocidad + corriente contra la cuadrícula, el borde de la cámara y el fondo del agua. */
 function moveAndCollide(world: World, dt: number): void {
   const p = world.player;
-  const [driftX, driftY] = currentDrift(world, p, dt);
+  const [currentX, currentY] = currentDrift(world, p, dt);
+  const [windX, windY] = windDrift(world, p, dt);
+  const driftX = currentX + windX;
+  const driftY = currentY + windY;
   const wasGround = p.onGround;
   if (moveX(p, p.vx * dt + driftX, world.solidAt)) p.vx = 0;
   if (p.x < world.camX) {

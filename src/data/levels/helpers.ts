@@ -41,3 +41,6 @@ export const axolotls = spawnAt('axolotl');
 /** Fauna del arrecife: pares [x, fila] bajo el agua. */
 export const lionfish = spawnAt('lionfish');
 export const jellyfish = spawnAt('jellyfish');
+/** Luciérnagas (luz fija pequeña, solo alumbra con `darkness`): pares [x, fila]. */
+export const fireflies = (...pairs: Array<readonly [number, number]>): Op[] =>
+  pairs.map(([x, y]) => ['firefly', x, y] as const);

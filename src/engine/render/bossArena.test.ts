@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { getLevel } from '../../data/worlds';
 import { AudioEngine } from '../audio';
 import { HuayChivo } from '../bosses/huayChivo';
+import { Lorencillo } from '../bosses/lorencillo';
+import { TEST_LEVEL } from '../bosses/lorencillo/lorencillo.fixture';
 import { T } from '../constants';
 import { Input } from '../input';
 import { World } from '../World';
@@ -90,5 +92,52 @@ describe('Atrio de Izamal según la etapa del Huay Chivo', () => {
     expect(dawn).toContain('fillStyle=rgba(255,232,174,.3)');
     expect(dawn).not.toContain('fillStyle=#f4f0d8');
     expect(dawn).not.toContain('createLinearGradient');
+  });
+});
+
+describe('Cubierta del barco según la etapa de Lorencillo', () => {
+  function ship(): { world: World; boss: Lorencillo } {
+    const world = new World({ def: TEST_LEVEL, input: new Input(), audio, session: { score: 0, coins: 0, lives: 3 } });
+    const boss = world.boss;
+    if (!(boss instanceof Lorencillo)) throw new Error('el jefe debe ser Lorencillo');
+    world.camX = 29 * T;
+    return { world, boss };
+  }
+
+  it.each([
+    ['con el atlas', image],
+    ['con el respaldo procedural', null],
+  ] as const)('el horizonte cambia en la fase 2 %s, sin gradientes ni mutar el mundo', (_label, art) => {
+    // Organizar
+    mock.frame.mockReturnValue(art);
+    const { world, boss } = ship();
+    const grid = JSON.stringify(world.grid);
+    const logs: string[] = [];
+    // Actuar
+    for (const phase of [1, 2] as const) {
+      boss.phase = phase;
+      const before = JSON.stringify(boss);
+      const { c, log } = recorder();
+      drawBossArena(c, world, 1000);
+      logs.push(log.join('|'));
+      expect(JSON.stringify(boss)).toBe(before);
+    }
+    // Comprobar
+    expect(logs[0]).not.toBe(logs[1]);
+    for (const log of logs) {
+      expect(log).not.toContain('createLinearGradient');
+      expect(log).not.toContain('createRadialGradient');
+    }
+    expect(JSON.stringify(world.grid)).toBe(grid);
+  });
+
+  it('con el atlas dibuja barriles y cañones de utilería', () => {
+    mock.frame.mockReturnValue(image);
+    const { world } = ship();
+    const { c } = recorder();
+    drawBossArena(c, world, 1000);
+    const files = mock.frame.mock.calls.map((call) => call[0]);
+    expect(files).toContain('complementos/utileria.webp');
+    expect(mock.frame.mock.calls.length).toBeGreaterThanOrEqual(4);
   });
 });

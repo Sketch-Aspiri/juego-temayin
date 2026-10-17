@@ -9,6 +9,7 @@ import { drawCannonballs, drawCannonFx } from './cannons';
 import { GROUND, ROWS, T, TAU, VH, VW } from '../constants';
 import type { World } from '../World';
 import { CRUMBLE_TILE } from '../entities/crumble';
+import { STROMATOLITE_TILE } from '../entities/stromatolites';
 import { crumbleShakeAt, drawFallingCrumbles } from './crumble';
 import type { Ctx } from './drawUtils';
 import { drawEnemySprite } from './enemies';
@@ -24,7 +25,7 @@ import {
   drawQuills,
 } from './sprites';
 import { createTextures, FIXED_TEXTURE, type Textures } from './textures';
-import { THEMES, type ThemeDef } from './themes';
+import { sceneryCam, THEMES, type ThemeDef } from './themes';
 import { drawSnorkelItem, drawWaterLayer } from './water';
 import type { ThemeId } from '../types';
 import { drawBeachProps } from './beachProps';
@@ -32,6 +33,9 @@ import { drawCannonTile, drawFragileTile } from './levelSprites';
 import { drawMayaTile, drawPaintedTerrain, drawRewardLight } from './mayaTiles';
 import { renderViewport } from './viewport';
 import { drawOffering } from './offering';
+import { drawWind } from './wind';
+import { drawFireflies } from './fireflies';
+import { drawStromatolites } from './stromatolites';
 
 const BUMP_HEIGHT = 10;
 const BUMP_TIME = 0.15;
@@ -71,7 +75,7 @@ export class Renderer {
       c.arc(VW - 140, 90, 70, 0, TAU);
       c.fill();
     }
-    theme.scenery(c, cam, now);
+    theme.scenery(c, sceneryCam(theme, cam, now), now);
     if (theme.tint) {
       c.fillStyle = theme.tint;
       c.fillRect(0, 0, VW, VH);
@@ -98,6 +102,7 @@ export class Renderer {
     drawCheckpoint(c, world, now);
     drawHoops(c, world.hoops, world.camX, now);
     this.drawTiles(world, theme, now, arenaPlatforms);
+    drawStromatolites(c, world);
     drawBeachProps(c, world);
     drawArenaPlatforms(c, arenaPlatforms, world.camX);
     drawFallingCrumbles(c, world.crumbles, world.camX, this.textures.rubble);
@@ -113,10 +118,12 @@ export class Renderer {
     drawPlayerSprite(c, this.assets, world.player, world.camX, world.phase === 'dying', world.phaseT, now);
     drawFireballs(c, world.fireballs, world.camX);
     drawBalls(c, world.balls, world.camX);
+    drawWind(c, world, now);
     drawWaterLayer(c, world, theme.water, now);
     drawParticles(c, world.particles, world.popups, world.camX);
     c.restore();
     this.lighting.draw(c, world);
+    drawFireflies(c, world, now); // brillan por encima de la oscuridad
     drawWeather(c, world, now);
     drawOffering(c, world, now);
     if (this.canvas.width >= VW && !world.offeringActive) drawTohHint(c, world);
@@ -162,7 +169,7 @@ export class Renderer {
     for (let ty = 0; ty < ROWS; ty++) {
       for (let tx = x0; tx <= x1; tx++) {
         const t = world.grid[ty][tx];
-        if (t === ' ') continue;
+        if (t === ' ' || t === STROMATOLITE_TILE) continue; // los estromatolitos los pinta drawStromatolites
         if (t === 'X' && arenaPlatforms.some(p => ty === p.ty && tx >= p.tx && tx < p.tx + p.length)) continue;
         const sx = Math.round(tx * T - world.camX);
         let sy = ty * T;

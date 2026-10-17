@@ -28,11 +28,18 @@ import { LEVEL_5_3 } from './levels/world5/5-3-playa-del-carmen';
 import { LEVEL_5_4 } from './levels/world5/5-4-xcaret';
 import { LEVEL_5_5 } from './levels/world5/5-5-puerto-aventuras';
 import { LEVEL_5_6 } from './levels/world5/5-6-akumal';
+import { LEVEL_6_1 } from './levels/world6/6-1-tulum';
+import { LEVEL_6_2 } from './levels/world6/6-2-tulum-aeropuerto';
+import { LEVEL_6_3 } from './levels/world6/6-3-felipe-carrillo-puerto';
+import { LEVEL_6_4 } from './levels/world6/6-4-limones';
+import { LEVEL_6_5 } from './levels/world6/6-5-bacalar';
+import { LEVEL_6_6 } from './levels/world6/6-6-chetumal';
 
 /**
  * Campaña del Tren Maya (AGENTS.md §4.3). Un archivo por nivel en
  * `data/levels/world<N>/<id>-<estación>.ts`. Solo se registran mundos con niveles
- * (la prueba exige `levels.length > 0`); los mundos 6 y 7 llegarán después.
+ * (la prueba exige `levels.length > 0`). El Mundo 6 registra 6-1 a 6-6 (Chetumal, con el jefe
+ * Lorencillo, lo cierra); el Mundo 7 llegará después.
  * El orden del array define el desbloqueo lineal y `nextLevelId`.
  */
 export const WORLDS: readonly WorldDef[] = [
@@ -54,6 +61,10 @@ export const WORLDS: readonly WorldDef[] = [
   },
   { id: 'cenotes-xibalba', number: 4, name: 'Cenotes y Xibalbá', levels: [LEVEL_4_1, LEVEL_4_2, LEVEL_4_3, LEVEL_4_4, LEVEL_4_5] },
   { id: 'riviera-maya', number: 5, name: 'Riviera Maya', levels: [LEVEL_5_1, LEVEL_5_2, LEVEL_5_3, LEVEL_5_4, LEVEL_5_5, LEVEL_5_6] },
+  {
+    id: 'costa-maya-bacalar', number: 6, name: 'Costa Maya y Bacalar',
+    levels: [LEVEL_6_1, LEVEL_6_2, LEVEL_6_3, LEVEL_6_4, LEVEL_6_5, LEVEL_6_6],
+  },
 ];
 
 export const ALL_LEVELS: readonly LevelDef[] = WORLDS.flatMap((w) => w.levels);

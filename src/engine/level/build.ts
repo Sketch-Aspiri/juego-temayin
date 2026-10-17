@@ -1,11 +1,12 @@
 import { GROUND, ROWS, T } from '../constants';
 import { createHammock, type Hammock } from '../entities/hammocks';
 import type { RopeDef } from '../entities/ropes';
-import { createTorch, type LightSource } from '../render/lighting';
+import { createFirefly, createTorch, type LightSource } from '../render/lighting';
 import type { PlatformSpec } from '../entities/platforms';
 import type { EnemyId } from '../types';
 import type { CannonSpec } from '../entities/cannons';
 import { CRUMBLE_TILE, type CrumbleSpan } from '../entities/crumble';
+import { STROMATOLITE_TILE } from '../entities/stromatolites';
 import { HOOP_COINS, type HoopSpec } from '../entities/hoops';
 import type { SlowZone } from './slowZones';
 import type { LevelDef } from './types';
@@ -45,6 +46,12 @@ export interface BuiltLevel {
   hoops: readonly HoopSpec[];
   /** Cañones de baluarte que disparan (op `cannon`); sus bloques ya están en `grid`. */
   cannons: readonly CannonSpec[];
+  /** Viento y térmicas (op `wind`); misma forma que las corrientes pero actúan en el aire. */
+  winds: readonly CurrentZone[];
+  /** Luciérnagas (op `firefly`): luces fijas de radio pequeño, activas solo con `darkness`. */
+  fireflies: readonly LightSource[];
+  /** Tramos de estromatolito (op `stromatolite`); sus bloques `E` ya están en `grid`. */
+  stromatolites: readonly CrumbleSpan[];
 }
 
 /** Convierte la definición declarativa de un nivel en una cuadrícula de bloques. */
@@ -73,6 +80,9 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   const platforms: PlatformSpec[] = [];
   const hoops: HoopSpec[] = [];
   const cannons: CannonSpec[] = [];
+  const winds: CurrentZone[] = [];
+  const fireflies: LightSource[] = [];
+  const stromatolites: CrumbleSpan[] = [];
   let flagX = W - 10;
   let templeX = W - 5;
 
@@ -136,6 +146,16 @@ export function buildLevel(def: LevelDef): BuiltLevel {
         currents.push({ x0, x1, y0, y1, vx, vy });
         break;
       }
+      case 'stromatolite':
+        for (let i = 0; i < op[3]; i++) set(op[1] + i, op[2], STROMATOLITE_TILE);
+        stromatolites.push({ x: op[1], y: op[2], len: op[3] });
+        break;
+      case 'firefly': fireflies.push(createFirefly(op[1], op[2])); break;
+      case 'wind': {
+        const [, x0, x1, y0, y1, vx, vy] = op;
+        winds.push({ x0, x1, y0, y1, vx, vy });
+        break;
+      }
       case 'bubbles':
         bubbles.push({ x: op[1], y: op[2] });
         break;
@@ -178,5 +198,5 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   for (const row of grid) for (const c of row) if (c === 'o' || c === '?') totalCoins++;
   totalCoins += hoops.length * HOOP_COINS; // cacao que suelta cada aro al encestar
 
-  return { grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles, crumbles, platforms, hammocks, ropes, lights, hoops, slowZones, cannons };
+  return { grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles, crumbles, platforms, hammocks, ropes, lights, hoops, slowZones, cannons, winds, fireflies, stromatolites };
 }

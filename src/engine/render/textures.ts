@@ -4,6 +4,7 @@ import { createMayaTextures } from './mayaTextures';
 import { createRuinsTextures, type RuinsTexId } from './ruinsTextures';
 import { createGulfTextures, type GulfTexId } from './gulfTextures';
 import { createHaciendaTextures } from './haciendaTextures';
+import { createTrainTextures, type TrainTexId, type ShipTexId } from './trainTextures';
 import { createXibalbaTextures, type XibalbaTexId } from './xibalbaTextures';
 
 export type TexId =
@@ -13,7 +14,8 @@ export type TexId =
   | RuinsTexId
   | GulfTexId
   | 'redEarth' | 'redEarthTop' | 'masonry'
-  | XibalbaTexId;
+  | XibalbaTexId
+  | TrainTexId | ShipTexId;
 
 export type Textures = Readonly<Record<TexId, HTMLCanvasElement>>;
 
@@ -179,5 +181,6 @@ export function createTextures(): Textures {
     ...createGulfTextures(),
     ...createHaciendaTextures(),
     ...createXibalbaTextures(),
+    ...createTrainTextures(),
   };
 }

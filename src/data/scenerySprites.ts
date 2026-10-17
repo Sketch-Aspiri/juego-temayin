@@ -15,6 +15,8 @@ export const SCENERY_SPRITES = {
   ceiba: { file: 'complementos/vegetacion.webp', frame: [9, 7, 619, 507], anchor: [0.5, 1] },
   mangrove: { file: 'complementos/vegetacion.webp', frame: [549, 527, 548, 484], anchor: [0.5, 1] },
   vines: { file: 'complementos/vegetacion.webp', frame: [1155, 527, 314, 486], anchor: [0.5, 0] },
+  barrel: { file: 'complementos/utileria.webp', frame: [558, 8, 295, 319], anchor: [0.5, 1] },
+  cannon: { file: 'complementos/utileria.webp', frame: [566, 386, 531, 304], anchor: [0.5, 1] },
   log: { file: 'mecanicas/mecanicas.webp', frame: [994, 154, 517, 149], anchor: [0, 0] },
 } as const satisfies Readonly<Record<string, ScenerySprite>>;
 

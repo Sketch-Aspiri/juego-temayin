@@ -20,6 +20,8 @@ export interface Boss extends Rect {
   readonly hittable: boolean;
   /** Etapa actual de la pelea (1 = inicial) para que el decorado reaccione; opcional. */
   readonly stage?: number;
+  /** Escora visible de la cubierta (-1 izquierda … 1 derecha) para el decorado; opcional. */
+  readonly lean?: number;
   /**
    * Añade a `out` las luces propias del jefe (ojos, ataques brillantes) cuando el nivel
    * está a oscuras; opcional. Escribe en la lista recibida para no crear arrays por paso.

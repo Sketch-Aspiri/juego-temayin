@@ -16,11 +16,13 @@ import { LEVEL_2_1 } from './world2/2-1-carrillo-puerto';
 import { LEVEL_2_4 } from './world2/2-4-petenes';
 
 /**
- * Equilibrio de los Mundos 1, 2 y 3: reglas de justicia que no dependen del gusto,
+ * Equilibrio de los Mundos 1, 2, 3 y 6: reglas de justicia que no dependen del gusto,
  * comprobadas con el motor real y sin DOM.
  */
-const BALANCED_WORLDS = 3;
-const BALANCED = WORLDS.filter((w) => w.number <= BALANCED_WORLDS).flatMap((w) => w.levels);
+const BALANCED_WORLDS: readonly number[] = [1, 2, 3, 6];
+// TODO(equilibrio): los Mundos 4 y 5 aún incumplen estas reglas (enemigos que caen al vacío, emboscadas en aterrizajes);
+// se incorporarán cuando se rediseñen sus niveles.
+const BALANCED = WORLDS.filter((w) => BALANCED_WORLDS.includes(w.number)).flatMap((w) => w.levels);
 
 /** Ritmos de avance del jugador (bloques/s): cauteloso, normal y rápido. */
 const PACES = [2.5, 4, 7] as const;

@@ -3,6 +3,7 @@ import type { WaterZone } from '../level/zones';
 import { makeCanvas } from './artCache';
 import type { Ctx } from './drawUtils';
 import type { WaterStyle } from './themes';
+import { STROMATOLITE_TILE } from '../entities/stromatolites';
 import { isSolidTile } from '../tiles';
 
 const WATER_ALPHA = 0.32;
@@ -80,7 +81,7 @@ function drawSpan(c: Ctx, span: WaterSpan, style: WaterStyle, camX: number, t: n
   const top = span.surface * T;
   const depth = c.createLinearGradient(0, top - WAVE_AMP, 0, top + DEPTH_BLEND);
   depth.addColorStop(0, 'transparent'); depth.addColorStop(1, style.fill);
-  c.globalAlpha = WATER_ALPHA;
+  c.globalAlpha = style.alpha ?? WATER_ALPHA;
   c.fillStyle = depth; c.fillRect(x0, top - WAVE_AMP, x1 - x0, VH - top + WAVE_AMP);
   drawSurface(c, x0, x1, top, style, camX, t);
   shoreMask(c, span, x0, x1);
@@ -102,13 +103,16 @@ export class WaterSurfaceRenderer {
   }
 }
 
+/** Los estromatolitos son sólidos pero viven bajo el agua: se pintan debajo y el agua los cubre. */
+export const blocksWater = (tile: string): boolean => isSolidTile(tile) && tile !== STROMATOLITE_TILE;
+
 /** El líquido ocupa huecos libres: no atraviesa roca, arena, muelles ni otros bloques sólidos. */
 function clearSolidTerrain(c: Ctx, grid: readonly (readonly string[])[], camX: number): void {
   const start = Math.max(0, Math.floor(camX / T));
   const end = Math.ceil((camX + VW) / T);
   for (let y = 0; y < grid.length; y++) {
     for (let x = start; x < Math.min(end, grid[y].length); x++) {
-      if (isSolidTile(grid[y][x])) c.clearRect(Math.round(x * T - camX), y * T, T, T);
+      if (blocksWater(grid[y][x])) c.clearRect(Math.round(x * T - camX), y * T, T, T);
     }
   }
 }

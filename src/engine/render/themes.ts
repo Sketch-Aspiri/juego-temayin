@@ -15,6 +15,8 @@ import { reefScenery } from './scenery/reef';
 export interface WaterStyle {
   fill: string;
   foam: string;
+  /** Opacidad del cuerpo del agua (por defecto `WATER_ALPHA` de waterSurface); más alta tapa el fondo pintado. */
+  alpha?: number;
 }
 
 export interface ThemeDef {
@@ -30,6 +32,17 @@ export interface ThemeDef {
   platform: TexId;
   /** Agua visible dentro de los hoyos. */
   water?: WaterStyle;
+  /** Desplazamiento continuo del fondo (px/s), p. ej. el paisaje que pasa junto a un tren en marcha. */
+  motion?: number;
+}
+
+const MS_PER_SECOND = 1000;
+/** Velocidad del paisaje junto al tren de 6-2 (px/s de cámara; el parallax lo atenúa). */
+const TRAIN_SCENERY_SPEED = 240;
+
+/** Cámara que recibe el escenario: la del mundo más el avance propio del tema (`motion`). Pura. */
+export function sceneryCam(theme: ThemeDef, cam: number, now: number): number {
+  return cam + (theme.motion ?? 0) * (now / MS_PER_SECOND);
 }
 
 // Fondos pintados (public/assets/backgrounds); el escenario procedural sirve de respaldo mientras cargan.
@@ -202,5 +215,33 @@ export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
     groundTop: 'grass',
     groundBody: 'dirt',
     platform: 'wood',
+  },
+  // Mundo 6 · Costa Maya y Bacalar (AGENTS.md §4.7).
+  cliff: {
+    id: 'cliff', sky: ['#38b6e8', '#d8f4ff'], sun: true,
+    scenery: paintedScenery('cliff.webp', beachScenery, { nearTop: 0.7 }),
+    groundTop: 'limestoneTop', groundBody: 'limestone', platform: 'carved',
+  },
+  lagoon: {
+    id: 'lagoon', sky: ['#4fc3ee', '#e4faff'], sun: true,
+    scenery: paintedScenery('lagoon.webp', beachScenery, { nearTop: 0.7 }),
+    groundTop: 'sandTop', groundBody: 'sand', platform: 'wood',
+    // Más opaca y algo más profunda que el mar pintado, para que la zona nadable se distinga.
+    water: { fill: '#0e86b4', foam: '#ffffff', alpha: 0.68 },
+  },
+  // Chetumal: bahía pintada al atardecer y tablones de cubierta y casco.
+  bay: {
+    id: 'bay', sky: ['#7a4fa0', '#ffb36b'], tint: 'rgba(255,140,70,.14)', sun: false,
+    scenery: paintedScenery('bay.webp', beachScenery, { nearTop: 0.7 }),
+    groundTop: 'shipDeck', groundBody: 'shipHull', platform: 'shipDeck',
+    // Canales del malecón: azul marino casi opaco, para que no parezcan arena del fondo.
+    water: { fill: '#14587f', foam: '#ffe7c8', alpha: 0.85 },
+  },
+  // 6-2: el paisaje corre junto al tren en marcha.
+  jungleTrain: {
+    id: 'jungleTrain', sky: ['#5ec8f5', '#bdeeff'], sun: true,
+    scenery: paintedScenery('jungle.webp', jungleScenery),
+    groundTop: 'trainRoof', groundBody: 'trainSide', platform: 'trainRoof',
+    motion: TRAIN_SCENERY_SPEED,
   },
 };

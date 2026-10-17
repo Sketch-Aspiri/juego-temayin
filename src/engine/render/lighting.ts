@@ -7,6 +7,8 @@ export interface LightSource { readonly x: number; readonly y: number; readonly 
 const FIRE_RADIUS = 85;
 const TORCH_RADIUS = 110;
 const CRYSTAL_RADIUS = 55;
+/** Radio de la luz de una luciérnaga: pequeña, menor que una antorcha. */
+export const FIREFLY_RADIUS = 70;
 
 type MutableLight = { x: number; y: number; radius: number };
 /** El renderer reutiliza lista y objetos; las consultas públicas conservan resultados independientes. */
@@ -35,6 +37,8 @@ export function lightSources(world: World, buffer?: LightBuffer): readonly Light
   work.add(p.x + p.w / 2, p.y + p.h / 2, dark.radius);
   for (const f of world.fireballs) if (!f.gone) work.add(f.x, f.y, FIRE_RADIUS);
   for (const t of world.torches) if (t.lit) result.push(t);
+  // Las luciérnagas (op `firefly`) solo alumbran si el nivel está a oscuras.
+  for (const f of world.level.fireflies) result.push(f);
   // Cada jefe decide qué luces aporta (p. ej. ojos que delatan su ventana de daño).
   const bossStart = result.length;
   world.boss?.lights?.(result);
@@ -49,6 +53,9 @@ export function lightSources(world: World, buffer?: LightBuffer): readonly Light
   }
   return result;
 }
+
+export const createFirefly = (x: number, y: number): LightSource =>
+  ({ x: (x + 0.5) * T, y: (y + 0.5) * T, radius: FIREFLY_RADIUS });
 
 export const createTorch = (x: number, y: number): LightSource =>
   ({ x: (x + 0.5) * T, y: (y + 0.5) * T, radius: TORCH_RADIUS });

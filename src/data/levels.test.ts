@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GOAL_VIEW_WIDTH, GROUND, ROWS, T } from '../engine/constants';
+import { GOAL_VIEW_WIDTH, GROUND, ROWS, T, WIND_MAX_VX } from '../engine/constants';
 import { isAirborne } from '../engine/entities/enemies';
 import { platformReach } from '../engine/entities/platforms';
 import { buildLevel } from '../engine/level/build';
@@ -9,6 +9,8 @@ import { ALL_LEVELS, nextLevelId, WORLDS } from './worlds';
 
 /** Salto en carrera: ~8 bloques de alcance horizontal; dejamos margen. */
 const MAX_PLAIN_PIT = 6;
+/** Un estromatolito debe quedar a más de estos bloques de un aterrizaje (orilla o borde de hoyo). */
+const MIN_LANDING_GAP = 2;
 
 describe('campaña', () => {
   it('los ids de nivel son únicos', () => {
@@ -30,6 +32,30 @@ describe.each(ALL_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, def) 
   it('tiene la cuadrícula con el tamaño correcto', () => {
     expect(lvl.grid).toHaveLength(ROWS);
     for (const row of lvl.grid) expect(row).toHaveLength(def.width);
+  });
+
+  it('el viento no supera WIND_MAX_VX y queda dentro del nivel', () => {
+    for (const w of lvl.winds) {
+      expect(Math.abs(w.vx)).toBeLessThanOrEqual(WIND_MAX_VX);
+      expect(w.x0).toBeGreaterThanOrEqual(0);
+      expect(w.x1).toBeLessThan(def.width);
+    }
+  });
+
+  // Estromatolitos (Bacalar): sobre suelo o lecho, lejos de inicio, checkpoint, meta y aterrizajes.
+  it('los estromatolitos están sobre suelo y lejos de checkpoint, meta y aterrizajes', () => {
+    const cp = def.checkpoint ?? Math.floor(def.width / 2);
+    const protectedCols = [3, cp, lvl.flagX, lvl.templeX];
+    const landings: number[] = [];
+    for (const o of def.ops) if (o[0] === 'pit' || o[0] === 'water') landings.push(o[1] - 1, o[2] + 1);
+    for (const s of lvl.stromatolites) {
+      for (let tx = s.x; tx < s.x + s.len; tx++) {
+        const supported = s.y === ROWS - 1 || solid(tx, s.y + 1);
+        expect(supported, `estromatolito ${tx},${s.y} sin suelo`).toBe(true);
+        expect(protectedCols, `estromatolito en columna protegida ${tx}`).not.toContain(tx);
+        for (const l of landings) expect(Math.abs(tx - l), `estromatolito ${tx} junto al aterrizaje ${l}`).toBeGreaterThan(MIN_LANDING_GAP);
+      }
+    }
   });
 
   it('la meta y el templo están dentro del nivel y con suelo bajo la bandera', () => {

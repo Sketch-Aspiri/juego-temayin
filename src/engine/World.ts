@@ -3,16 +3,15 @@ import { createRope, type Rope } from './entities/ropes';
 import type { Torch } from './entities/torches';
 import { lightSources, type Darkness, type LightSource } from './render/lighting';
 import { createBoss, type Boss } from './bosses';
+import { advanceCamera } from './camera';
+import { firework, reachFlag, updateFlag } from './goal';
 import {
   DEFAULT_LEVEL_TIME,
-  GOAL_PAN_RATE,
-  GOAL_VIEW_WIDTH,
   GROUND,
   OXYGEN_MAX,
   PLAYER_START_TILE,
   ROWS,
   T,
-  VW,
 } from './constants';
 import { updateBalls, type Ball } from './entities/ball';
 import { createCannons, updateCannons, type Cannon, type Cannonball } from './entities/cannons';
@@ -25,6 +24,7 @@ import { carryRider, createPlatform, landOnPlatforms, updatePlatforms, type Movi
 import { animatePlayer, createPlayer, updatePlayer } from './entities/player';
 import { updateFireballs, updateQuills } from './entities/projectiles';
 import { burnSargassum } from './entities/sargassum';
+import { createStromatolites, updateStromatolites, type Stromatolite } from './entities/stromatolites';
 import { confineSwimmers, swimmerPositions } from './entities/swim';
 import type { Enemy, Fireball, Item, Particle, Player, Popup, Quill } from './entities/types';
 import type { HudState } from './hud';
@@ -49,8 +49,6 @@ export interface WorldInit {
 }
 
 const BUMP_TIME = 0.15;
-const FLAG_SLIDE_SPEED = 320;
-const FIREWORK_COLORS = ['#ffd23f', '#ff5e5b', '#3fb34a', '#4fc3f7', '#fff'];
 
 /** Estado completo y reglas de un nivel en curso. No depende del DOM. */
 export class World {
@@ -82,6 +80,8 @@ export class World {
   cannonballs: Cannonball[] = [];
   /** Tramos de escombro que se derrumban (op `crumble`). */
   crumbles: Crumble[];
+  /** Estromatolitos de Bacalar: dañarlos resta puntos (op `stromatolite`). */
+  stromatolites: Stromatolite[];
   /** Plataformas móviles (vagones y plataformas genéricas, AGENTS.md §5.4). */
   platforms: MovingPlatform[];
   /** Resina y sargazo vigentes: el sargazo quemado desaparece (lista nueva, no se muta). */
@@ -118,6 +118,7 @@ export class World {
     this.crumbles = createCrumbles(this.level.crumbles);
     this.hoops = createHoops(this.level.hoops);
     this.cannons = createCannons(this.level.cannons);
+    this.stromatolites = createStromatolites(this.level.stromatolites);
     this.input.reset();
 
     const startTile = init.fromCheckpoint ? this.checkpointTile : PLAYER_START_TILE;
@@ -285,6 +286,7 @@ export class World {
     updatePlayer(this, dt);
     landOnPlatforms(this, prevFeet);
     updateCrumbles(this, dt);
+    updateStromatolites(this, dt);
     this.collectLooseCoins();
 
     if (p.y > ROWS * T + 40) return this.die();
@@ -306,10 +308,7 @@ export class World {
     animatePlayer(p, dt);
 
     // La cámara solo avanza (nunca retrocede) y queda fija durante la pelea con el jefe.
-    if (!this.boss?.lockCamera) {
-      const target = p.x + p.w / 2 - VW * 0.4;
-      this.camX = Math.max(this.camX, Math.min(target, this.width * T - VW));
-    }
+    advanceCamera(this, dt);
   }
 
   private collectLooseCoins(): void {
@@ -336,69 +335,11 @@ export class World {
     }
   }
 
-  private reachFlag(): void {
-    const p = this.player;
-    this.phase = 'flag';
-    this.phaseT = 0;
-    this.audio.play('flag');
-    const bonus = Math.max(100, Math.round(((GROUND * T - (p.y + p.h)) / (9 * T)) * 50) * 100);
-    this.addScore(bonus, p.x, p.y);
-    p.x = this.level.flagX * T + T / 2 - p.w - 2;
-    p.vx = 0;
-    p.vy = 0;
-    p.face = 1;
-  }
+  private reachFlag(): void { reachFlag(this); }
 
-  private updateFlag(dt: number): void {
-    this.panToGoal(dt);
-    const p = this.player;
-    const ground = GROUND * T;
-    const flagBottom = ground - 2 * T;
-    if (p.y + p.h < ground) {
-      p.y = Math.min(p.y + FLAG_SLIDE_SPEED * dt, ground - p.h);
-      p.anim = 'fall';
-      p.frame = 0;
-    } else if (this.flagY < flagBottom) {
-      p.anim = 'idle';
-      p.frame = 0;
-    }
-    if (this.flagY < flagBottom) this.flagY += FLAG_SLIDE_SPEED * dt;
+  private updateFlag(dt: number): void { updateFlag(this, dt); }
 
-    if (p.y + p.h >= ground && this.flagY >= flagBottom) {
-      p.anim = 'win';
-      p.frame = Math.floor(this.phaseT * 9) % 7;
-      if (Math.random() < dt * 4) this.firework();
-      // Bonus por el tiempo sobrante.
-      if (this.timeLeft > 0 && this.phaseT > 1) {
-        const n = Math.min(this.timeLeft, 3);
-        this.timeLeft -= n;
-        this.session.score += n * 50;
-        if (Math.floor(this.phaseT * 20) % 3 === 0) this.audio.play('tick');
-      }
-    }
-    if (this.phaseT > 6 && this.timeLeft <= 0) {
-      this.phase = 'done';
-      this.phaseT = 0;
-    }
-  }
-
-  /** Durante la meta, desliza la cámara (solo hacia delante) hasta encuadrar la pirámide completa. */
-  private panToGoal(dt: number): void {
-    const target = Math.min(this.level.templeX * T + GOAL_VIEW_WIDTH - VW, this.width * T - VW);
-    if (target > this.camX) this.camX += (target - this.camX) * Math.min(1, dt * GOAL_PAN_RATE);
-  }
-
-  firework(): void {
-    const x = this.camX + 200 + Math.random() * (VW - 400);
-    const y = 80 + Math.random() * 180;
-    const col = FIREWORK_COLORS[Math.floor(Math.random() * FIREWORK_COLORS.length)];
-    for (let i = 0; i < 26; i++) {
-      const a = (i / 26) * Math.PI * 2;
-      const s = 120 + Math.random() * 80;
-      this.particles.push(makeParticle('spark', x, y, { vx: Math.cos(a) * s, vy: Math.sin(a) * s, col }));
-    }
-    this.audio.play('firework');
-  }
+  firework(): void { firework(this); }
 
   // ---------- Estado para la interfaz ----------
 

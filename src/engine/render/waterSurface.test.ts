@@ -2,10 +2,17 @@ import { describe, expect, it } from 'vitest';
 import { ALL_LEVELS } from '../../data/worlds';
 import { buildLevel } from '../level/build';
 import { waterAt, type WaterZone } from '../level/zones';
-import { waterRenderSpans, WaterSurfaceRenderer } from './waterSurface';
+import { STROMATOLITE_TILE } from '../entities/stromatolites';
+import { blocksWater, waterRenderSpans, WaterSurfaceRenderer } from './waterSurface';
 import type { Ctx } from './drawUtils';
 
 describe('Transiciones visuales del agua', () => {
+  it('no recorta el agua sobre los estromatolitos (si no, dejan recuadros claros)', () => {
+    expect(blocksWater(STROMATOLITE_TILE)).toBe(false);
+    expect(blocksWater('G')).toBe(true);
+    expect(blocksWater(' ')).toBe(false);
+  });
+
   it('une zonas contiguas sin una segunda costura ni doble tinte', () => {
     expect(waterRenderSpans([{ x0: 2, x1: 5, surface: 7 }, { x0: 6, x1: 9, surface: 7 }]))
       .toEqual([{ x0: 2, x1: 9, surface: 7, fadeLeft: true, fadeRight: true }]);
