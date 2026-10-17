@@ -83,6 +83,8 @@ temayin_juego/
       World.ts                 Estado y reglas de un nivel (testeable sin DOM)
       World.test.ts
       Game.ts                  Bucle de tiempo fijo (STEP = 1/120), muertes, fin de nivel
+      camera.ts (+ .test)      followCamera, advanceCamera: cámara que solo avanza y `autoScroll` (Mundo 6)
+      goal.ts                  Secuencia de meta (bandera, bonus, fuegos artificiales)
       constants.ts             T=40, ROWS=14, GROUND=12, VW=960, VH=560, START_LIVES…
       types.ts                 Rect, Body, EnemyId, BossId, ThemeId, Session
       tiles.ts                 Leyenda de bloques, SOLID_TILES, ITEM_BLOCKS, ItemKind
@@ -99,6 +101,8 @@ temayin_juego/
         projectiles.ts         Bolas de fuego del jugador y púas del jefe
         ball.ts, hoops.ts      Pelota de pok ta pok (rebotes, golpes) y aros del juego de pelota (op `hoop`)
         cannons.ts             Cañones de baluarte que avisan y disparan balas rectas (op `cannon`)
+        wind.ts (+ .test)      Viento y térmicas (op `wind`): deriva del jugador que no nada
+        stromatolites.ts (+ .test) Estromatolitos de Bacalar (op `stromatolite`): penalizan puntos al pisarlos
         particles.ts           Partículas y popups
         types.ts               Player, Enemy, Item, Particle, Popup, Fireball, Quill
       bosses/
@@ -106,6 +110,7 @@ temayin_juego/
         index.ts               Registro FACTORIES: Record<BossId, BossFactory> y createBoss
         puas.ts, puasDraw.ts   Púas el puercoespín (máquina de estados + dibujo)
         kaiman/                Kaimán Moreleti: index (estados), attacks (olas), flood (crecida del agua), draw/drawBody, tuning
+        lorencillo/            Lorencillo (Mundo 6): index (estados), choose (ataques), hazards (cañonazos, cangrejos), tilt (cubierta), draw/drawHazards, tuning
         arena.ts               Cerrar arena, abrir muro de salida, premio
       level/
         types.ts               DSL: Op, BossConfig, LevelDef, WorldDef
@@ -127,6 +132,11 @@ temayin_juego/
         mayaTiles.ts           Cofres, sillares, columnas y terreno pintado
         mayaTextures.ts        Respaldos de piedra, jade y cacao
         levelSprites.ts        Cañones y tramos de losas frágiles
+        wind.ts                Rayas de viento y térmicas, dibujadas solo en las zonas visibles
+        fireflies.ts           Luciérnagas (op `firefly`): cuadros de `mecanicas/efectos.webp`
+        stromatolites.ts       Estromatolitos de Bacalar (cuadro del atlas de mecánicas, con grietas al dañarse)
+        trainTextures.ts       Chapa y costado del vagón (`trainRoof`, `trainSide`) del tema `jungleTrain`
+        arenas/                Decorados de arena: ship.ts (cubierta de Lorencillo), akumal.ts, atrium.ts
     data/                      CONTENIDO (aquí se añaden niveles y mundos)
       cinematics.ts            Catálogo, desbloqueos por nivel y precarga de cinemáticas
       puasVictory.ts           Cuatro escenas tras completar Escárcega
@@ -134,15 +144,17 @@ temayin_juego/
       newGameplaySprites.ts    Sprites nuevos (proyectiles, poses de Kaimán, ondas y toldo)
       mayaTileSprites.ts       Cinco sprites nuevos de cofres, sillares y columnas
       terrainSprites.ts        Recortes aislados del atlas de terreno existente
+      lorencilloArt.ts        Recortes de las seis poses de Lorencillo (`bosses/lorencillo.atlas.json`)
       worlds.ts                WORLDS, ALL_LEVELS, getLevel, nextLevelId
       levels.test.ts           Pruebas de coherencia de TODOS los niveles
       levels/
-        helpers.ts             Atajos coati(...), urchin(...), howler(...), bats([x, fila]...), barracudas([x, fila]...)
+        helpers.ts             Atajos coati(...), urchin(...), howler(...), bats([x, fila]...), barracudas([x, fila]...), fireflies([x, y]...)
         world1/                1-1-palenque.ts … 1-6-escarcega.ts (un archivo por nivel)
         world2/                2-1-carrillo-puerto.ts … 2-7-calkini.ts (jefe Kaimán)
         world3/                3-1-maxcanu.ts … 3-5-izamal.ts (jefe Huay Chivo)
         world4/                4-1-chichen-itza.ts … 4-5-nuevo-xcan.ts (jefe Huay Pek)
         world5/                5-1-cancun.ts … 5-6-akumal.ts (jefe Capitán Sargazo)
+        world6/                6-1-tulum.ts … 6-6-chetumal.ts (jefe Lorencillo); guía en README.md y pruebas en world6.test.ts
     store/                     Zustand + persistencia
       appStore.ts              useAppStore: screen, progress, settings, run, startLevel, finishLevel…
       progress.ts (+ .test)    Progress, LevelRecord, recordCompletion, isUnlocked, sanitizeProgress
@@ -221,7 +233,7 @@ data/worlds.ts (WORLDS) ──> store/appStore.ts (startLevel) ──> ui/screen
 | Jefe M3 | **Huay Chivo** | Brujo-cabra del folclor yucateco. | **Existe** (`bosses/huayChivo/`, `'huayChivo'`; nivel 3-5). |
 | Jefe M4 | **Huay Pek** | Perro espectral de la leyenda. | **Existe** (`bosses/huayPek/`, `'huayPek'`; nivel 4-5). |
 | Jefe M5 | **Capitán Sargazo** | Monstruo de sargazo; mensaje ecológico. | **Existe** (`bosses/sargazo/`, `'sargazo'`; nivel 5-6). |
-| Jefe M6 | **Lorencillo** | Pirata barracuda inspirado en el pirata histórico que atacó Campeche (1685). | Sprite `bosses/lorencillo.webp` existente; lógica y nivel del Mundo 6 pendientes. |
+| Jefe M6 | **Lorencillo** | Pirata barracuda inspirado en el pirata histórico que atacó Campeche (1685). | **Existe** (`bosses/lorencillo/`, `BossId` `'lorencillo'`; nivel 6-6). Dos fases, ocho acciones nuevas y revisión en Chromium; recorrido con contacto protegido y pisotones asistidos. |
 
 ### 4.3 Mundos y niveles
 
@@ -301,16 +313,16 @@ Temas: `beach` (existe), `reef` (existe), `cave`. Mar caribe turquesa, arrecife,
 
 #### Mundo 6 · Costa Maya y Bacalar (Tramo Tulum–Chetumal)
 
-Temas: `cliff` (nuevo), `lagoon` (nuevo), `jungle`, `fortress`. Acantilados, laguna de siete colores, frontera sur.
+Temas (todos existen en `ThemeId`): `cliff`, `lagoon`, `jungle`, `jungleNight`, `jungleTrain` y `bay` (arena de Chetumal). Acantilados, laguna de siete colores, frontera sur.
 
 | Id | Estación | Lugar real | Tema / ambiente | Tipo | Mecánica clave | Enemigos |
 |---|---|---|---|---|---|---|
-| 6-1 | Tulum | Ciudad amurallada sobre el acantilado frente al Caribe | `cliff` | ruinas / costa | Saltos verticales en el acantilado; viento | cangrejo azul, nauyaca, `urchin` |
-| 6-2 | Tulum Aeropuerto | Estación moderna en la selva | `jungle` | tren | Persecución sobre el techo del tren en marcha | vagones de truck, saraguato, `coati` |
+| 6-1 | Tulum | Ciudad amurallada sobre el acantilado frente al Caribe | `cliff` | ruinas / costa | Saltos verticales en el acantilado; térmicas (`wind`) y ráfagas de viento | cangrejo azul, nauyaca, `urchin` |
+| 6-2 | Tulum Aeropuerto | Estación moderna en la selva | `jungleTrain`, `autoScroll` 3 bloques/s | tren | Persecución sobre el techo del tren en marcha: la cámara avanza sola y quien se queda quieto ante una caja muere aplastado | saraguato, `coati`, `bat` |
 | 6-3 | Felipe Carrillo Puerto | Antigua Chan Santa Cruz, corazón de la zona maya | `jungle`, lluvia | jungla | Cenotes pequeños; árboles de ceiba | aluxes, Xtabay, hormigas arrieras |
-| 6-4 | Limones | Paradero en la selva del sur de Quintana Roo | `jungle`, noche | jungla | Oscuridad con luciérnagas como luz | tarántula, `bat`, nauyaca |
-| 6-5 | Bacalar | Laguna de los siete colores, estromatolitos, canal de los piratas | `lagoon` | acuático | Nado; **estromatolitos frágiles: no se pisan** (perder puntos o vida si se dañan) | barracuda, morena, `urchin` |
-| 6-6 | Chetumal | Capital de Quintana Roo, bahía de Chetumal | `fortress` (bahía) | jefe | Arena sobre un barco pirata | **Jefe: Lorencillo** (`'lorencillo'`) |
+| 6-4 | Limones | Paradero en la selva del sur de Quintana Roo | `jungleNight` + `darkness`, noche | jungla | Oscuridad con luciérnagas (`firefly`) como luz y marcas de peligro | tarántula, `bat`, nauyaca |
+| 6-5 | Bacalar | Laguna de los siete colores, estromatolitos, canal de los piratas | `lagoon` | acuático | Nado; **estromatolitos frágiles: no se pisan** (pisarlos más de 0,25 s resta 500 puntos; nunca quita vida) | barracuda, morena, `urchin`, `coati` |
+| 6-6 | Chetumal | Capital de Quintana Roo, bahía de Chetumal | `bay` | jefe | Barcas (`boat`) en dos canales; arena sobre la cubierta de un barco pirata | **Jefe: Lorencillo** (`'lorencillo'`) |
 
 #### Mundo 7 · Calakmul (Tramo Chetumal–Escárcega)
 
@@ -338,7 +350,7 @@ Todos implementan la interfaz `Boss` (`src/engine/bosses/types.ts`): `hp`, `maxH
 | **Huay Chivo** (M3) | Atrio de Izamal con arcos intactos y antorchas reencendibles | Embestida, teletransporte con ojos (señuelo sin ojos en fase 3), pisotón con ondas, fuegos fatuos y cornada corta | Solo `dazed`: pisotón o dos bolas de fuego = 1 PV; máximo uno por ventana | 3 (8 PV): anochece a 5 PV; noche cerrada a 2 PV y doble embestida | Premio de cacao y apertura del siguiente tramo; mejora de cuerda pendiente |
 | **Huay Pek** (M4) | Claro en la selva con niebla | Ladra ondas de choque que viajan por el suelo (saltarlas); desaparece en la niebla y reaparece detrás | Ojos brillantes: solo es golpeable cuando están encendidos | 2: la niebla cubre la arena y solo se ve con radio de luz | Pelota de pok ta pok |
 | **Capitán Sargazo** (M5) | Bahía de Akumal completamente acuática, sin bloques de refugio | Salvas dirigidas, cortinas con hueco, embestidas, remolinos, lluvia de semillas y enredos de tortugas | Rescatar una tortuga envía un pulso que abre el núcleo: tocarlo nadando o dos impactos de fuego/pelota = 1 PV; máximo uno por ventana | 4 (12 PV), transiciones a 9, 6 y 3 PV; ataques más rápidos y nuevos patrones | Premio y mensaje ecológico; las tortugas nunca reciben daño. Boleto pendiente |
-| **Lorencillo** (M6) | Cubierta de un barco pirata en la bahía de Chetumal | Estocadas con sable-aleta; cañonazos en arco; salta al mástil y lanza piratas cangrejo | Espalda tras una estocada fallida; cañones que se pueden devolver con la pelota | 2: el barco se inclina y la cubierta se mueve | Llave del tramo final |
+| **Lorencillo** (M6, existe) | Cubierta pintada con jarcias en la bahía de Chetumal (`render/arenas/ship.ts`); muro en 178 | Estocada con sable-aleta y aviso de 0,8/0,65 s; cañonazos en arco con marcas en cubierta o cofas (2/3); trepa al mástil y lanza hasta 2 cangrejos desde su altura real | Espalda expuesta tras la última estocada: pisotón o dos impactos de fuego/pelota en la misma apertura = 1 PV, máximo uno por ventana. La pelota no devuelve balas | 2 (8 PV): a 4 PV, rugido seguro (`rally`), doble estocada con un aviso por carrera, salva durante el mástil y cubierta inclinada | Premio (`rewardBurst`) y apertura del muro de salida |
 | **Camazotz** (M7, final) | Cima de la pirámide de Calakmul bajo el eclipse | Ver fases | Ver fases | **3** | Rescate de Temayina + epílogo |
 
 #### Camazotz, el jefe final (3 fases)
@@ -438,15 +450,17 @@ Los temas implementados figuran en `ThemeId` (`src/engine/types.ts`) y en `THEME
 | `river` | Nuevo | 1 | Cañón con paredes de roca | Roca + arena de río | Agua navegable (5.1), corrientes |
 | `swamp` | Nuevo | 1, 2 | Verde grisáceo, bruma | Lodo / madera | Agua poco profunda |
 | `ruins` / `ruinsDusk` | **Existe** | 2, 4, 7 | Cielo claro, pirámides al fondo | Piedra caliza tallada | Estucos rojos y glifos de fondo |
-| `fortress` | **Existe** (fosos secos, sin `water`) | 2, 6 | Golfo al fondo | Sillar de muralla / madera de barco | Baluartes, cañones |
+| `fortress` | **Existe** (fosos secos, sin `water`) | 2 | Golfo al fondo | Sillar de muralla / madera de barco | Baluartes, cañones |
 | `mangrove` | **Existe** | 2 | Cielo húmedo | Raíces de mangle | Agua salobre |
 | `hacienda` | **Existe** | 2, 3 | Atardecer cálido | Mampostería / tierra roja | Pencas de henequén, chimeneas |
 | `yellowCity` | **Existe** | 3 | Azul intenso | Muros amarillos y blancos | Arcos del convento |
 | `xibalba` | **Existe** | 4 | Negro y rojo | Roca volcánica / hueso | `LevelDef.darkness`, niebla |
 | `jungleNight` | **Existe** | 4 | Selva bajo velo azul | Hierba y piedra | Oscuridad parcial y arena de Huay Pek |
 | `reef` | **Existe** | 5 | Bajo el agua (azul profundo) | Coral / arena | Todo el nivel es agua (5.1) |
-| `cliff` | Nuevo | 6 | Caribe turquesa | Roca de acantilado | Viento |
-| `lagoon` | Nuevo | 6 | Degradado de los 7 azules de Bacalar | Arena blanca / estromatolitos | Agua clara |
+| `cliff` | **Existe** | 6 | Caribe turquesa | `limestoneTop` / `limestone` / `carved` | Viento (`wind`) |
+| `bay` | **Existe** | 6 (jefe 6-6) | Bahía pintada al atardecer | `shipDeck` / `shipHull` / `shipDeck`, agua de bahía | Jarcias pintadas y cubierta en `render/arenas/ship.ts`, con respaldo procedural |
+| `jungleTrain` | **Existe** | 6 (6-2) | Selva de día que corre junto al tren | `trainRoof` / `trainSide` / `trainRoof` | `motion` (`TRAIN_SCENERY_SPEED` = 240 en `themes.ts`) y `LevelDef.autoScroll` en el nivel |
+| `lagoon` | **Existe** | 6 | Degradado de los 7 azules de Bacalar | `sandTop` / `sand` / `wood`, agua clara | Agua navegable; estromatolitos (op `stromatolite`) |
 | `batCave` | Nuevo | 7 | Atardecer naranja → cueva | `rock` | `dark`, enjambres de fondo |
 | `deepJungle` | Nuevo | 7 | Noche estrellada | `grass` oscuro | `dark` |
 | `throne` | Nuevo | 7 | Eclipse (sol negro con corona) | Piedra de pirámide | `tint` rojo, `dark` en fase 2 |
@@ -508,7 +522,7 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
 | Dónde | `src/engine/entities/platforms.ts` (`MovingPlatform`, `createPlatform`, `updatePlatforms`). Nuevo array `world.platforms`. |
 | DSL | `['train', x, y, vagones, velocidad, recorrido]` (vagones de tren) y `['mover', x, y, largo, dx, dy, periodo]` (genérica). |
 | Colisión | `physics.ts` trabaja contra la cuadrícula (`SolidFn`). Las plataformas móviles se resuelven en un **paso aparte** después de `updatePlayer`: si el jugador cae sobre la parte superior, se le apoya (`onGround = true`) y se le arrastra con el desplazamiento de la plataforma. |
-| Cámara | En niveles de tren en marcha (6-2) la cámara puede seguir al tren; recordar que hoy la cámara solo avanza (`camX` nunca retrocede). |
+| Cámara | Resuelta con `LevelDef.autoScroll` (sección 5.12). `camX` sigue sin retroceder. |
 | Pruebas | El jugador sobre un vagón se desplaza con él; no atraviesa el vagón desde arriba. Ajustar `levels.test.ts` para considerar las plataformas móviles al validar hoyos anchos. |
 
 **Estado: implementado** (`entities/platforms.ts`, `render/platforms.ts`, pruebas en `entities/platforms.test.ts`). Plataformas de un solo sentido: se atraviesan desde abajo y por los lados (no hay que meter un vagón donde el jugador camina, mejor empezarlo sobre el hoyo). Vagón = `CAR_TILES` (5) bloques × 2 de alto; el tren para `TRAIN_STOP_TIME` (1,2 s) en cada extremo; el tiempo de cada plataforma corre desde que se acerca a la cámara. Como la cámara no retrocede, conviene que los recorridos hacia la izquierda sean ≤ 8 bloques. `levels.test.ts` acepta un hoyo ancho sin bloques si el recorrido (`platformReach`) de las plataformas deja tramos sin cubrir ≤ `MAX_PLAIN_PIT`.
@@ -541,9 +555,11 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
 | Tren | El tren se coloca en la última estación desbloqueada (`isUnlocked`) y se anima hasta la siguiente al completar un nivel (transición CSS/SVG; respetar `prefers-reduced-motion`). |
 | Store | Añadir `'map'` a `Screen` en `appStore.ts` o reutilizar `'levels'`. La lógica de desbloqueo sigue en `store/progress.ts`. |
 
+**Estado: pendiente.** `src/data/stations.ts` y `src/ui/screens/PeninsulaMap.tsx` no existen. El selector actual es `src/ui/screens/LevelSelect.tsx`, que lista los mundos registrados en `WORLDS` y marca como «Próximamente» los que no tienen niveles.
+
 ### 5.8 Encuentros con Ek Chuah y bolsa de cacao
 
-- `LevelDef.offering?: OfferingConfig` activa el encuentro previo al nivel. `data/offerings.ts` contiene deidad, diálogos, precios y catálogo de bendiciones: fuego (30), escudo (20) y vida (50). Aparece en Tenosique (`1-3`) y antes de los cinco jefes actuales (`1-6`, `2-7`, `3-5`, `4-5`, `5-6`).
+- `LevelDef.offering?: OfferingConfig` activa el encuentro previo al nivel. `data/offerings.ts` contiene deidad, diálogos, precios y catálogo de bendiciones: fuego (30), escudo (20) y vida (50). Aparece en Tenosique (`1-3`) y antes de los seis jefes actuales (`1-6`, `2-7`, `3-5`, `4-5`, `5-6`, `6-6`).
 - `OfferingScreen` es una pantalla React de ofertas accesibles por teclado y toque. `OfferingScene` presenta el mundo inmóvil; no llama a `World.update`, por lo que no corren tiempo, enemigos ni oxígeno. `render/offering.ts` dibuja altar, deidad y partículas en el canvas. Ek Chuah tiene la misma altura visible que el sprite de reposo de Temayin y ambos apoyan en el mismo suelo; el altar queda a un lado. El movimiento reducido congela el tiempo visual. Continuar o Escape permite empezar sin comprar; volver al mapa conserva las compras pendientes.
 - `store/wallet.ts` define `Wallet = { cacao, pending }`: saldo entero seguro no negativo y bendiciones pagadas por id de nivel. `sanitizeWallet` acepta guardados antiguos sin bolsa, descarta valores inválidos y conserva únicamente ofertas existentes, sin duplicados. Se guarda junto a progreso y ajustes bajo la misma clave `temayin:v3`; v2 sigue migrándose y conserva su clave original.
 - `buyBlessing` valida pantalla, oferta, fondos y existencias, descuenta y guarda atómicamente la bendición pendiente. Solo se compra una de cada tipo por encuentro. `continueOffering` consume las pendientes del nivel y entrega `Run.initialBlessings`; las de otros niveles se conservan. Cerrar el juego durante el encuentro no pierde lo pagado. Tras continuar, las bendiciones ya están consumidas: recargar la partida no las devuelve.
@@ -554,6 +570,43 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
 - Cobertura: `store/wallet.test.ts`, `store/offerings.test.ts`, `engine/blessings.test.ts`, `engine/Game.test.ts`, `engine/render/offering.test.ts` y `ui/screens/OfferingScreen.test.tsx`. `python imagenes/verify_offerings.py` revisa compras, doble clic, fondos insuficientes, recarga, poderes, checkpoint, fin de partida, resultados, seis encuentros, igualdad de altura visible, rotación y controles táctiles en Chromium. `verify_offering_routes.py` reutiliza los controladores de recorridos existentes con contacto protegido y daño al jefe asistido en ventanas válidas; en Tenosique prepara las posiciones de salida de los saltos y en Kaimán mantiene al jugador sobre un tronco durante el combate. Colisiones, oxígeno, checkpoint y meta siguen activos. Capturas e informes en `imagenes/verificacion/ofrendas/`; no evalúan dificultad ni puntería.
 
 ---
+
+### 5.9 Viento y térmicas (Mundo 6)
+
+| Aspecto | Detalle |
+|---|---|
+| Dónde | `src/engine/entities/wind.ts` (`windDrift`, llamada desde `entities/player.ts`); dibujo en `src/engine/render/wind.ts`. Zonas en `BuiltLevel.winds`. |
+| DSL | `['wind', x0, x1, y0, y1, vx, vy]`: rectángulo de bloques (inclusive); `vx`, `vy` en bloques/s. |
+| Efecto | Desplaza solo al jugador que no nada. `vx` actúa siempre; `vy` solo en el aire, así una térmica con `vy < 0` alarga el salto y no despega a quien está en el suelo. |
+| Límites | \|vx\| ≤ `WIND_MAX_VX` (3 bloques/s, `constants.ts`). Las ráfagas de 6-1 no superan 2 bloques/s. |
+| Pruebas | `entities/wind.test.ts`; `src/engine/World6.test.ts` (salto con y sin térmica en 6-1). |
+
+### 5.10 Luciérnagas (Mundo 6)
+
+| Aspecto | Detalle |
+|---|---|
+| Dónde | `src/engine/render/fireflies.ts` (cuadros `firefly1`-`firefly4` de `mecanicas/efectos.webp`); la luz la resuelve `src/engine/render/lighting.ts`. |
+| DSL | `['firefly', x, y]` en el bloque `(x, y)`; atajo `fireflies([x, y]...)` en `helpers.ts`. Va a `BuiltLevel.fireflies`. |
+| Efecto | Solo alumbran si el nivel tiene `darkness` (radio `FIREFLY_RADIUS` = 70 px). Sin oscuridad son decoración. |
+| Pruebas | `data/levels/world6/world6.test.ts`: una luciérnaga a 3 bloques o menos de cada borde de hoyo y de cada enemigo de 6-4. |
+
+### 5.11 Estromatolitos (Mundo 6)
+
+| Aspecto | Detalle |
+|---|---|
+| Dónde | `src/engine/entities/stromatolites.ts` (lógica); `src/engine/render/stromatolites.ts` (dibujo). Bloques sólidos `E` en la cuadrícula (`SOLID_TILES`). |
+| DSL | `['stromatolite', x, y, largo]`. Va a `BuiltLevel.stromatolites`. |
+| Efecto | Apoyarse más de `STROMATOLITE_GRACE` (0,25 s) lo daña una sola vez: −`STROMATOLITE_PENALTY` (500) puntos, sin bajar de 0 y sin quitar vida. Aviso visual y sonoro; el tramo dañado queda con velo. |
+| Pruebas | `entities/stromatolites.test.ts`; `src/engine/World6.test.ts` (cruce a nado de 6-5 sin dañar ningún tramo; pisar resta puntos y no vida); `data/levels/world6/world6.test.ts` (siempre hay suelo o lecho debajo). |
+
+### 5.12 Cámara automática (`autoScroll`)
+
+| Aspecto | Detalle |
+|---|---|
+| Dónde | `src/engine/camera.ts` (`advanceCamera`, `followCamera`). Campo `LevelDef.autoScroll` (bloques/s) en `engine/level/types.ts`. |
+| Efecto | La cámara avanza al menos a esa velocidad aunque el jugador se quede atrás, y lo arrastra por el borde izquierdo. Se detiene con la cámara bloqueada por un jefe y en el borde derecho del nivel. Si el arrastre empuja al jugador contra un bloque sólido, muere aplastado. |
+| Uso | 6-2 Tulum Aeropuerto, `autoScroll: 3`, con techos de vagón (`render/trainTextures.ts`). |
+| Pruebas | `camera.test.ts`; `src/engine/World6.test.ts` (ritmo del `autoScroll`, recorrido con checkpoint y meta, aplastamiento). |
 
 ## 6. Guía para añadir contenido
 
@@ -593,8 +646,13 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
    | `crumble` | `['crumble', x, y, largo]` | Escombro sólido (`D`) que tiembla al pisarlo, cae y reaparece a los 4 s si el hueco está libre (`entities/crumble.ts`). Nunca en la fila del suelo. |
    | `cannon` | `['cannon', x, y, dir]` | Cañón de baluarte de 2 bloques sólidos: culata `K` y boca `>` (dir 1) o `<` (dir -1). Se pisa como plataforma. Con la boca en pantalla dispara (`entities/cannons.ts`): espera 1 s al aparecer, la mecha chispea 0,7 s de aviso y sale una bala recta a 5,5 bloques/s, a la altura de su fila, hasta chocar con un bloque; recarga 2,7 s. La bala se salta o se pisa (rebote, +100); quien está de pie sobre un cañón de la misma fila queda por encima. Va a `BuiltLevel.cannons`. |
    | `hoop` | `['hoop', x, y]` | Aro de piedra del juego de pelota en el bloque (x, y), no sólido (`entities/hoops.ts`). Al pasar la pelota (bloque `P`) por su centro se enciende una vez: +2000 puntos y 5 granos de cacao (incluidos en `totalCoins`). Va a `BuiltLevel.hoops`. |
+   | `wind` | `['wind', x0, x1, y0, y1, vx, vy]` | Zona de viento o térmica en el rectángulo de bloques (inclusive), en bloques/s. Solo empuja a quien no nada; `vy` solo actúa en el aire (`entities/wind.ts`). Va a `BuiltLevel.winds`. |
+   | `firefly` | `['firefly', x, y]` | Luciérnaga en el bloque (x, y). Solo alumbra si el nivel tiene `darkness` (`render/fireflies.ts`). Va a `BuiltLevel.fireflies`. |
+   | `stromatolite` | `['stromatolite', x, y, largo]` | Tramo de estromatolito: bloques sólidos `E` sobre suelo o lecho. Apoyarse más de 0,25 s resta 500 puntos, sin quitar vida (`entities/stromatolites.ts`). Va a `BuiltLevel.stromatolites`. |
 
-   Atajos en `src/data/levels/helpers.ts`: `...coati(22, 32)`, `...urchin(26, 58)`, `...bats([20, 7], [48, 6])`. Añade un atajo por cada enemigo nuevo.
+   Campo de `LevelDef` (no es op): `autoScroll` (bloques/s) hace avanzar la cámara sola; ver 5.12. Las demás ops de agua, resina, hamacas, cuerdas, antorchas, vagonetas, barcas y tortugas están documentadas en `engine/level/types.ts`.
+
+   Atajos en `src/data/levels/helpers.ts`: `...coati(22, 32)`, `...urchin(26, 58)`, `...bats([20, 7], [48, 6])`, `...fireflies([29, 9])`. Añade un atajo por cada enemigo nuevo.
 4. Registra el nivel en el mundo correspondiente de `WORLDS` (`src/data/worlds.ts`). El orden del array define el desbloqueo lineal (`isUnlocked`) y `nextLevelId`.
 5. Ejecuta `npm test`: `levels.test.ts` valida cuadrícula, meta con suelo, inicio y checkpoint con suelo, hoyos cruzables, enemigos fuera de bloques y con suelo (salvo voladores), jefe con arena y muro, y que haya monedas (`totalCoins > 0`).
 6. Juega el nivel en `npm run dev` de principio a fin.
@@ -703,7 +761,7 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 | **4 · Mundo 3** | Yucatán de las haciendas | Oscuridad con radio de luz (`lighting.ts`), cuerdas de henequén (`ropes.ts`), hamacas trampolín, temas `hacienda`, `yellowCity`, `alux`, `wheel`, `truck`, `stalactite`, `scorpion`, jefe Huay Chivo. |
 | **5 · Mundo 4** | Cenotes y Xibalbá | Combinación oscuridad + agua, tema `xibalba`, `shade`, `axolotl`, `xtabay`, pelota de pok ta pok, jefe Huay Pek. Reubicar 2-1/2-2 si no se hizo en la fase 0. |
 | **6 · Mundo 5** | Riviera Maya | Zonas de sargazo, tema `reef`, `lionfish`, nivel submarino completo, jefe Capitán Sargazo. |
-| **7 · Mundo 6** | Costa Maya y Bacalar | Temas `cliff`, `lagoon`, nivel sobre el tren en marcha (6-2), estromatolitos protegidos, jefe Lorencillo. |
+| **7 · Mundo 6** | Costa Maya y Bacalar | Temas `cliff`, `lagoon`, `bay`, `jungleTrain`; tren en marcha (6-2, `autoScroll`); viento y térmicas; luciérnagas; estromatolitos; Lorencillo (8 PV, 2 fases). Arte completado y recorridos en Chromium hasta checkpoint y meta; combate con asistencia, sin medir dificultad humana (ver §10). |
 | **8 · Coleccionables** | Glifos y boletos | Ops `glyph`/`ticket`, `LevelRecord.glyphs`, `Progress.tickets`, niveles extra por mundo, saneamiento retrocompatible. (Puede adelantarse si conviene.) |
 | **9 · Final** | Calakmul, Camazotz y epílogo | Temas `batCave`, `deepJungle`, `throne`, niveles 7-1 a 7-3, jefe final de 3 fases, escena de rescate de Temayina, epílogo en tren (Centenario → Escárcega), créditos. |
 
@@ -776,7 +834,7 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 
 - `data/gameplaySprites.ts` registra los recortes y anclas de barcos, tortugas, palapas, cañones, losas frágiles, aros, cuerdas, troncos, resina, sargazo y poses de agarre, balanceo y lanzamiento. `data/newGameplaySprites.ts` registra siete imágenes nuevas de `image_gen`: púa, zapote, fuego fatuo, bola de sargazo, ola de agua, onda espectral y toldo. Los PNG originales y prompts están en `imagenes/nuevos/proyectiles/` y `imagenes/nuevos/complementos/toldo.*`; los WebP sin pérdidas y atlas se sirven desde `public/assets/`.
 - `render/gameplaySprites.ts` comparte caché de recorte y escalado, con respaldo procedural al faltar una imagen. El fuego usa los cuatro cuadros de `mecanicas/efectos.webp`; los ataques de Kaimán, Huay Chivo, Huay Pek y Sargazo usan los sprites pintados. Los cañones conservan sus dos bloques sólidos; las losas frágiles se recortan por tramo, conservando su temblor y caída. Barcos y tortugas mantienen su superficie de apoyo y la inmersión protegida.
-- Las poses de cuerda anclan las manos en el extremo del péndulo; el recorte de lanzamiento excluye la pelota ilustrada para evitar un segundo proyectil visual. La física, los ids de nivel, el HUD y la persistencia no cambian. El arte de los mundos 6 y 7 sigue disponible para sus futuras mecánicas, todavía pendientes.
+- Las poses de cuerda anclan las manos en el extremo del péndulo; el recorte de lanzamiento excluye la pelota ilustrada para evitar un segundo proyectil visual. La física, los ids de nivel, el HUD y la persistencia no cambian. El arte del Mundo 7 sigue disponible para sus futuras mecánicas, todavía pendientes.
 - Pruebas: `data/gameplaySprites.test.ts` verifica archivos, recortes, anclas, prompts y precarga; `render/gameplaySprites.test.ts` verifica posición, orientación, respaldo y ausencia de mutación. `python imagenes/verify_gameplay_sprites.py` revisa siete recursos y dieciséis escenas en Chromium, con capturas en `imagenes/verificacion/sprites-jugables/`. Las escenas de ataques se preparan para inspección visual; los recorridos y combates asistidos se verifican aparte con `verify_world3.py`, `verify_world4.py`, `verify_world5.py` y `verify_bosses.py`.
 
 ### Controles móviles
@@ -828,6 +886,23 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 - Capitán Sargazo (`bosses/sargazo/`) tiene doce PV y cuatro fases a 9, 6 y 3 PV. El selector determinista evita repeticiones y fuerza un rescate después de dos ataques normales. Fase 1: salvas y cortinas con hueco fijo; fase 2: añade embestida horizontal y remolino; fase 3: lluvia de semillas; fase 4: frenesí con mayor velocidad y cadencia. El enredo mantiene la presión con proyectiles avisados hasta el rescate; el pulso de la tortuga limpia los peligros y abre el núcleo durante 5–4,4 s. Tocarlo desde cualquier dirección nadando, o acertar dos veces con fuego/pelota, quita un PV como máximo por apertura. El recorrido se puede completar sin poderes. Arena 78–100 con agua desde fila 3, sin refugios sólidos interiores; checkpoint seco 68, respiraderos 83/96, salida 101 y tiempo 420 s. Al vencerlo libera las aliadas, abre el muro y muestra un mensaje ecológico. El boleto y los niveles extra siguen pendientes de la fase 8; no cambia el guardado.
 - `data/sargazoArt.ts` registra ocho poses nuevas del Capitán, cuatro de tortugas, cuatro efectos y el fondo submarino; los atlas se precargan en `PAINTED_ART`. `render/sargazoSprites.ts`, `render/arenas/akumal.ts` y `bosses/sargazo/drawHazards.ts` dibujan el encuentro con respaldo procedural. PNG y prompts originales están en `imagenes/nuevos/`; WebP sin pérdidas y atlas en `public/assets/`. `imagenes/import_sargazo_art.py` reproduce la exportación y verifica identidad de píxeles. `imagenes/verify_sargazo_visuals.py` verifica escenas, móvil táctil y victoria desde checkpoint con contacto protegido, aire real y sin daño asistido al jefe.
 - Cobertura: `src/engine/World5.test.ts`, `src/engine/World5Completion.test.ts` y las pruebas compartidas de coherencia; recorrido en Chromium: `imagenes/verify_world5.py` (contacto protegido, oxígeno y colisiones activos; daño al jefe asistido solo en ventanas válidas, sin evaluar dificultad ni puntería).
+
+### Estado implementado del Mundo 6
+
+- El Mundo 6 · Costa Maya y Bacalar (`costa-maya-bacalar`, número 6) registra 6-1 Tulum, 6-2 Tulum Aeropuerto, 6-3 Felipe Carrillo Puerto, 6-4 Limones, 6-5 Bacalar y 6-6 Chetumal, en ese orden, a continuación de Akumal (5-6). Guía de diseño y riesgos de frustración: `src/data/levels/world6/README.md`.
+- Mecánicas por nivel:
+  - **6-1 Tulum** (`cliff`): térmicas (`wind`, `vy = -6`) sobre la grieta 54-63, con una alternativa de tres losas; ráfagas horizontales de hasta 2 bloques/s; corazón de jade en la subida opcional. Punto de control en 108.
+  - **6-2 Tulum Aeropuerto** (`jungleTrain`): `autoScroll: 3`, techos de vagón (`trainRoof`, `trainSide`) con huecos de 2-3 bloques y cajas de ventilación de 1-2 bloques. Punto de control en 96.
+  - **6-3 Felipe Carrillo Puerto** (`jungle`, lluvia): tres cenotes con superficie en la fila 10 (`water`), ramas de ceiba y burbujas. Punto de control seco en 104.
+  - **6-4 Limones** (`jungleNight`): `darkness` de radio 190 y opacidad 0,82; luciérnagas junto a cada borde de hoyo y cada enemigo. Punto de control en 108.
+  - **6-5 Bacalar** (`lagoon`): lagunas de 37 y 31 bloques con superficie en las filas 10 y 9; estromatolitos (`stromatolite`) en el lecho. Punto de control en 112.
+  - **6-6 Chetumal** (`bay`): dos canales cruzados en barcas (`boat`), corriente (`current`) en 118-138, punto de control seco en 100 con bloques de chile y escudo cerca, arena de Lorencillo en 156-177 y muro en 178. Encuentro con Ek Chuah antes del jefe.
+- **Lorencillo** (`src/engine/bosses/lorencillo/`, `BossId` `'lorencillo'`): 8 PV (`LORENCILLO_HP`). A 4 PV, `rally` limpia peligros y anuncia la fase 2 durante 1,4 s. La segunda fase encadena dos estocadas a 560 px/s, cada una con aviso de 0,65 s, añade cañoneo durante el mástil y deriva de cubierta. Fase 1: una estocada a 460 px/s y aviso de 0,8 s. Estados: `sleep`, `intro`, `idle`, `advance`, `warn`, `lunge`, `exposed`, `cannon`, `mast`, `hurt`, `rally`, `dead`, `gone`. Solo `exposed` admite daño, durante 2,2/1,9 s: pisotón o dos impactos en la misma ventana, máximo un PV por apertura. Se reinicia el contador al caducar. El sable extendido tiene contacto propio. Los cañonazos marcan la superficie real de cubierta o cofa y mantienen un pasillo entre marcas incluso junto a las bordas. El mástil se alinea con el decorado y los cangrejos salen de su altura real, con impulso; máximo dos vivos. El selector no repite y fuerza estocada tras dos ataques sin apertura. Se pausa la deriva en apertura y recuperación. La muerte retira peligros, da premio y abre el muro.
+- Arte del Mundo 6: `data/world6Art.ts`, `data/lorencilloArt.ts` y `terrainSprites.ts` registran ocho acciones nuevas, bahía al atardecer, jarcias y dieciséis variantes de vagón/cubierta/casco. Se mantienen preparación y derrota del atlas histórico. Anclas en aletas, escala común, aislamiento de siluetas y respaldo procedural. Bala y humo reutilizan el arte existente. Originales y prompts de `image_gen` integrado: `imagenes/nuevos/jefes/lorencillo-acciones.*`, `escenarios/jarcia-lorencillo.*`, `escenarios/bahia-chetumal.*`, `terreno/vagon-costa-maya.*`. `imagenes/import_world6_art.py` verifica exportación WebP sin pérdidas píxel a píxel y genera metadatos. Cobertura: `data/world6Art.test.ts`, `bosses/lorencillo/difficulty.test.ts` y las pruebas existentes.
+- Equilibrio: `src/data/levels/balance.test.ts` aplica las reglas de equilibrio a los Mundos 1, 2, 3 y 6 (`BALANCED_WORLDS = [1, 2, 3, 6]`). Los Mundos 4 y 5 tienen pendiente un `TODO(equilibrio)` en ese mismo archivo.
+- Límites conocidos: la pelota no devuelve las balas de cañón de Lorencillo (no implementado). Quedan `TODO(cultura)` abiertos en 6-1, 6-3, 6-5 y 6-6, en `src/engine/entities/stromatolites.ts` y en `src/data/bossPresentation.ts`.
+- Pruebas: `src/data/levels/world6/world6.test.ts` (datos de los seis niveles), `src/engine/World6.test.ts` (recorrido guionizado de 6-2 a la velocidad del `autoScroll`; salto con y sin térmica en 6-1; cruce a nado de las lagunas de 6-5), `src/engine/entities/wind.test.ts`, `src/engine/entities/stromatolites.test.ts`, `src/engine/camera.test.ts`, `src/engine/render/themes.test.ts`, `src/engine/bosses/lorencillo/*.test.ts` (ataques, daño, fases, cubierta y victoria guionizada en 6-6 en `completion.test.ts`) y `src/ui/components/BossBanner.test.tsx` (presentación de Lorencillo).
+- Verificación: `imagenes/verify_world6.py` recorre los seis niveles hasta checkpoint y meta, con contacto protegido, oxígeno y colisiones activos y pisotones asistidos solo dentro de `exposed`. `imagenes/verify_lorencillo_visuals.py` captura veinte escenas preparadas de poses, fases y orientaciones, más móvil horizontal y vertical con cinco botones táctiles. Los recorridos no miden dificultad humana ni puntería. Evidencia y prompts en `imagenes/verificacion/mundo6/REVISION.md`; capturas e informes en esa carpeta y su subcarpeta `lorencillo/`.
 
 ### Ajustes del Mundo 2
 

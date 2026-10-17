@@ -1,0 +1,1620 @@
+{
+  "levels": [
+    {
+      "id": "6-1",
+      "mode": "contacto protegido; oxígeno y colisiones activos",
+      "phase": "done",
+      "x": 189.6,
+      "lives": 3,
+      "bossHp": null,
+      "farthest": 189.55,
+      "minOxygen": 10,
+      "t": 20.516666666666143,
+      "checkpoint": true,
+      "capturas": [
+        "viento-termica",
+        "viento-horizontal",
+        "checkpoint"
+      ]
+    },
+    {
+      "id": "6-2",
+      "mode": "contacto protegido; oxígeno y colisiones activos",
+      "phase": "done",
+      "x": 235.6,
+      "lives": 3,
+      "bossHp": null,
+      "farthest": 235.55,
+      "minOxygen": 10,
+      "t": 34.583333333332014,
+      "cam3": 854.7013888888871,
+      "cam12": 3194.70138888881,
+      "checkpoint": true,
+      "capturas": [
+        "fondo-movil-a",
+        "hueco-enganche",
+        "fondo-movil-b",
+        "checkpoint"
+      ]
+    },
+    {
+      "id": "6-3",
+      "mode": "contacto protegido; oxígeno y colisiones activos",
+      "phase": "done",
+      "x": 195.6,
+      "lives": 3,
+      "bossHp": null,
+      "farthest": 195.55,
+      "minOxygen": 9.991666666666667,
+      "t": 21.899999999999398,
+      "checkpoint": true,
+      "swam": true,
+      "capturas": [
+        "lluvia-inicio",
+        "cenote-1",
+        "cenote-2",
+        "cenote-3"
+      ]
+    },
+    {
+      "id": "6-4",
+      "mode": "contacto protegido; oxígeno y colisiones activos",
+      "phase": "done",
+      "x": 201.6,
+      "lives": 3,
+      "bossHp": null,
+      "farthest": 201.55,
+      "minOxygen": 10,
+      "t": 22.72499999999935,
+      "checkpoint": true,
+      "hopPlan": [
+        {
+          "off": 0,
+          "run": true,
+          "hold": 8
+        },
+        {
+          "off": 0,
+          "run": false,
+          "hold": 8
+        },
+        {
+          "off": 0,
+          "run": false,
+          "hold": 8
+        }
+      ],
+      "capturas": [
+        "oscuridad-inicio",
+        "luciernaga-borde",
+        "foso-largo",
+        "murcielagos"
+      ]
+    },
+    {
+      "id": "6-5",
+      "mode": "contacto protegido; oxígeno y colisiones activos",
+      "phase": "done",
+      "x": 193.6,
+      "lives": 3,
+      "bossHp": null,
+      "farthest": 193.55,
+      "minOxygen": 9.733333333333348,
+      "t": 21.949999999999395,
+      "swam": true,
+      "checkpoint": true,
+      "capturas": [
+        "laguna-A",
+        "laguna-A-cupulas-2",
+        "laguna-B-cupulas"
+      ]
+    },
+    {
+      "id": "6-6",
+      "mode": "contacto protegido; oxígeno y colisiones activos",
+      "phase": "done",
+      "x": 185.6,
+      "lives": 3,
+      "bossHp": 0,
+      "farthest": 185.55,
+      "minOxygen": 10,
+      "t": 91.27500000001871,
+      "canalRide": 4,
+      "checkpoint": true,
+      "swam": true,
+      "assisted": 8,
+      "tiltDrift": 121.18750000002274,
+      "exitOpen": true,
+      "capturas": [
+        "cangrejos",
+        "canal-1-barcas",
+        "canal-2-barcas",
+        "cartel-lorencillo",
+        "cangrejos-mastil",
+        "ventana-espalda",
+        "aviso-canonazos",
+        "fase2-aviso",
+        "fase2-inclinacion",
+        "muro-abierto",
+        "meta"
+      ]
+    }
+  ],
+  "extras": {
+    "salto6_1": {
+      "termica-caminar": [
+        {
+          "off": -20,
+          "vx": 260,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": -16,
+          "vx": 260,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": -12,
+          "vx": 260,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": -8,
+          "vx": 260,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": -4,
+          "vx": 260,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 0,
+          "vx": 260,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 4,
+          "vx": 260,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 8,
+          "vx": 260,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 12,
+          "vx": 260,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 16,
+          "vx": 260,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 20,
+          "vx": 260,
+          "landed": {
+            "x": 59.91,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 24,
+          "vx": 260,
+          "landed": {
+            "x": 59.86,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 28,
+          "vx": 260,
+          "landed": {
+            "x": 59.7,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 32,
+          "vx": 260,
+          "landed": {
+            "x": 59.53,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 36,
+          "vx": 260,
+          "landed": {
+            "x": 59.43,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 40,
+          "vx": 260,
+          "landed": {
+            "x": 59.26,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 44,
+          "vx": 260,
+          "landed": {
+            "x": 59.15,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 48,
+          "vx": 260,
+          "landed": {
+            "x": 59.05,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 52,
+          "vx": 260,
+          "landed": {
+            "x": 58.94,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 56,
+          "vx": 260,
+          "landed": {
+            "x": 58.78,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 60,
+          "vx": 260,
+          "landed": {
+            "x": 58.61,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 64,
+          "vx": 260,
+          "landed": {
+            "x": 58.5,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 68,
+          "vx": 260,
+          "landed": {
+            "x": 58.34,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 72,
+          "vx": 260,
+          "landed": {
+            "x": 58.18,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 76,
+          "vx": 260,
+          "landed": {
+            "x": 58.13,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 80,
+          "vx": 260,
+          "landed": {
+            "x": 58.02,
+            "y": 440
+          },
+          "phase": "play"
+        }
+      ],
+      "termica-correr": [
+        {
+          "off": -20,
+          "vx": 400,
+          "landed": {
+            "x": 64.48,
+            "y": 360
+          },
+          "phase": "play"
+        },
+        {
+          "off": -16,
+          "vx": 400,
+          "landed": {
+            "x": 64.4,
+            "y": 360
+          },
+          "phase": "play"
+        },
+        {
+          "off": -12,
+          "vx": 400,
+          "landed": {
+            "x": 64.31,
+            "y": 360
+          },
+          "phase": "play"
+        },
+        {
+          "off": -8,
+          "vx": 400,
+          "landed": {
+            "x": 64.15,
+            "y": 360
+          },
+          "phase": "play"
+        },
+        {
+          "off": -4,
+          "vx": 400,
+          "landed": {
+            "x": 64.06,
+            "y": 360
+          },
+          "phase": "play"
+        },
+        {
+          "off": 0,
+          "vx": 400,
+          "landed": {
+            "x": 63.98,
+            "y": 360
+          },
+          "phase": "play"
+        },
+        {
+          "off": 4,
+          "vx": 400,
+          "landed": {
+            "x": 63.9,
+            "y": 360
+          },
+          "phase": "play"
+        },
+        {
+          "off": 8,
+          "vx": 400,
+          "landed": {
+            "x": 63.81,
+            "y": 360
+          },
+          "phase": "play"
+        },
+        {
+          "off": 12,
+          "vx": 400,
+          "landed": {
+            "x": 63.65,
+            "y": 360
+          },
+          "phase": "play"
+        },
+        {
+          "off": 16,
+          "vx": 400,
+          "landed": {
+            "x": 63.56,
+            "y": 360
+          },
+          "phase": "play"
+        },
+        {
+          "off": 20,
+          "vx": 400,
+          "landed": {
+            "x": 63.4,
+            "y": 360
+          },
+          "phase": "play"
+        },
+        {
+          "off": 24,
+          "vx": 400,
+          "landed": {
+            "x": 63.31,
+            "y": 360
+          },
+          "phase": "play"
+        },
+        {
+          "off": 28,
+          "vx": 400,
+          "landed": {
+            "x": 63.23,
+            "y": 360
+          },
+          "phase": "play"
+        },
+        {
+          "off": 32,
+          "vx": 400,
+          "landed": {
+            "x": 63.12,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 36,
+          "vx": 400,
+          "landed": {
+            "x": 63.11,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 40,
+          "vx": 400,
+          "landed": {
+            "x": 63.11,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 44,
+          "vx": 400,
+          "landed": {
+            "x": 63.1,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 48,
+          "vx": 400,
+          "landed": {
+            "x": 63.06,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 52,
+          "vx": 400,
+          "landed": {
+            "x": 62.9,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 56,
+          "vx": 400,
+          "landed": {
+            "x": 62.73,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 60,
+          "vx": 400,
+          "landed": {
+            "x": 62.65,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 64,
+          "vx": 400,
+          "landed": {
+            "x": 62.56,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 68,
+          "vx": 400,
+          "landed": {
+            "x": 62.4,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 72,
+          "vx": 400,
+          "landed": {
+            "x": 62.23,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 76,
+          "vx": 394,
+          "landed": {
+            "x": 62.06,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 80,
+          "vx": 380,
+          "landed": {
+            "x": 61.98,
+            "y": 400
+          },
+          "phase": "play"
+        }
+      ],
+      "sin-termica-caminar": [
+        {
+          "off": -20,
+          "vx": 260,
+          "landed": {
+            "x": 59.43,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": -16,
+          "vx": 260,
+          "landed": {
+            "x": 59.32,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": -12,
+          "vx": 260,
+          "landed": {
+            "x": 59.21,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": -8,
+          "vx": 260,
+          "landed": {
+            "x": 59.1,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": -4,
+          "vx": 260,
+          "landed": {
+            "x": 59.05,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 0,
+          "vx": 260,
+          "landed": {
+            "x": 58.94,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 4,
+          "vx": 260,
+          "landed": {
+            "x": 58.83,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 8,
+          "vx": 260,
+          "landed": {
+            "x": 58.72,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 12,
+          "vx": 260,
+          "landed": {
+            "x": 58.61,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 16,
+          "vx": 260,
+          "landed": {
+            "x": 58.5,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 20,
+          "vx": 260,
+          "landed": {
+            "x": 58.4,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 24,
+          "vx": 260,
+          "landed": {
+            "x": 58.34,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 28,
+          "vx": 260,
+          "landed": {
+            "x": 58.23,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 32,
+          "vx": 260,
+          "landed": {
+            "x": 58.13,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 36,
+          "vx": 260,
+          "landed": {
+            "x": 58.02,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 40,
+          "vx": 260,
+          "landed": {
+            "x": 57.91,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 44,
+          "vx": 260,
+          "landed": {
+            "x": 57.8,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 48,
+          "vx": 260,
+          "landed": {
+            "x": 57.75,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 52,
+          "vx": 260,
+          "landed": {
+            "x": 57.64,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 56,
+          "vx": 260,
+          "landed": {
+            "x": 57.53,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 60,
+          "vx": 260,
+          "landed": {
+            "x": 57.42,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 64,
+          "vx": 260,
+          "landed": {
+            "x": 57.31,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 68,
+          "vx": 260,
+          "landed": {
+            "x": 57.2,
+            "y": 440
+          },
+          "phase": "play"
+        },
+        {
+          "off": 72,
+          "vx": 260,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 76,
+          "vx": 260,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 80,
+          "vx": 260,
+          "landed": {
+            "x": 56.93,
+            "y": 440
+          },
+          "phase": "play"
+        }
+      ],
+      "sin-termica-correr": [
+        {
+          "off": -20,
+          "vx": 400,
+          "landed": {
+            "x": 62.48,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": -16,
+          "vx": 400,
+          "landed": {
+            "x": 62.4,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": -12,
+          "vx": 400,
+          "landed": {
+            "x": 62.31,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": -8,
+          "vx": 400,
+          "landed": {
+            "x": 62.15,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": -4,
+          "vx": 400,
+          "landed": {
+            "x": 62.06,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 0,
+          "vx": 400,
+          "landed": {
+            "x": 61.98,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 4,
+          "vx": 400,
+          "landed": {
+            "x": 61.9,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 8,
+          "vx": 400,
+          "landed": {
+            "x": 61.81,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 12,
+          "vx": 400,
+          "landed": {
+            "x": 61.65,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 16,
+          "vx": 400,
+          "landed": {
+            "x": 61.56,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 20,
+          "vx": 400,
+          "landed": {
+            "x": 61.48,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 24,
+          "vx": 400,
+          "landed": {
+            "x": 61.4,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 28,
+          "vx": 400,
+          "landed": {
+            "x": 61.31,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 32,
+          "vx": 400,
+          "landed": {
+            "x": 61.15,
+            "y": 400
+          },
+          "phase": "play"
+        },
+        {
+          "off": 36,
+          "vx": 400,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 40,
+          "vx": 400,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 44,
+          "vx": 400,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 48,
+          "vx": 400,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 52,
+          "vx": 400,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 56,
+          "vx": 400,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 60,
+          "vx": 400,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 64,
+          "vx": 400,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 68,
+          "vx": 400,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 72,
+          "vx": 400,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 76,
+          "vx": 394,
+          "landed": null,
+          "phase": "dying"
+        },
+        {
+          "off": 80,
+          "vx": 380,
+          "landed": null,
+          "phase": "dying"
+        }
+      ]
+    },
+    "salto6_2_caja": {
+      "caminar-mantener": [
+        {
+          "d": 0.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 0.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 0.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 4,
+          "landedCol": 34.29,
+          "phase": "play",
+          "vxEnd": 260
+        }
+      ],
+      "caminar-toque": [
+        {
+          "d": 0.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 0.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 0.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 4,
+          "landedCol": 33.1,
+          "phase": "play",
+          "vxEnd": 260
+        }
+      ],
+      "correr-mantener": [
+        {
+          "d": 0.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 0.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 0.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 4,
+          "landedCol": 35.57,
+          "phase": "play",
+          "vxEnd": 400
+        }
+      ],
+      "correr-toque": [
+        {
+          "d": 0.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 0.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 0.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 1.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 2.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3.25,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3.5,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 3.75,
+          "landedCol": null,
+          "phase": "dying",
+          "vxEnd": 0
+        },
+        {
+          "d": 4,
+          "landedCol": 34.16,
+          "phase": "play",
+          "vxEnd": 400
+        }
+      ]
+    },
+    "barcas6_6": {
+      "canal1-desfase0.0s": {
+        "ok": false,
+        "t": 90,
+        "hops": 1,
+        "swamAt": null,
+        "x": 40.1,
+        "phase": "play"
+      },
+      "canal1-desfase0.5s": {
+        "ok": false,
+        "t": 90,
+        "hops": 2,
+        "swamAt": null,
+        "x": 40.7,
+        "phase": "play"
+      },
+      "canal1-desfase1.0s": {
+        "ok": false,
+        "t": 15.9,
+        "hops": 1,
+        "swamAt": 38.8,
+        "x": 63.1,
+        "phase": "dying"
+      },
+      "canal1-desfase1.5s": {
+        "ok": false,
+        "t": 15.9,
+        "hops": 1,
+        "swamAt": 38.8,
+        "x": 63.1,
+        "phase": "dying"
+      },
+      "canal1-desfase2.0s": {
+        "ok": false,
+        "t": 15.9,
+        "hops": 1,
+        "swamAt": 38.8,
+        "x": 63.1,
+        "phase": "dying"
+      },
+      "canal1-desfase2.5s": {
+        "ok": false,
+        "t": 15.9,
+        "hops": 1,
+        "swamAt": 38.8,
+        "x": 63.1,
+        "phase": "dying"
+      },
+      "canal1-desfase3.0s": {
+        "ok": false,
+        "t": 15.6,
+        "hops": 2,
+        "swamAt": 44,
+        "x": 63.1,
+        "phase": "dying"
+      },
+      "canal1-desfase3.5s": {
+        "ok": false,
+        "t": 90,
+        "hops": 1,
+        "swamAt": null,
+        "x": 44,
+        "phase": "play"
+      },
+      "canal1-desfase4.0s": {
+        "ok": false,
+        "t": 90,
+        "hops": 1,
+        "swamAt": null,
+        "x": 42.2,
+        "phase": "play"
+      },
+      "canal1-desfase4.5s": {
+        "ok": false,
+        "t": 90,
+        "hops": 1,
+        "swamAt": null,
+        "x": 40.7,
+        "phase": "play"
+      },
+      "canal2-desfase0.0s": {
+        "ok": false,
+        "t": 90,
+        "hops": 1,
+        "swamAt": null,
+        "x": 120.1,
+        "phase": "play"
+      },
+      "canal2-desfase0.5s": {
+        "ok": false,
+        "t": 90,
+        "hops": 1,
+        "swamAt": null,
+        "x": 120.6,
+        "phase": "play"
+      },
+      "canal2-desfase1.0s": {
+        "ok": false,
+        "t": 14.7,
+        "hops": 1,
+        "swamAt": 118.8,
+        "x": 141.1,
+        "phase": "dying"
+      },
+      "canal2-desfase1.5s": {
+        "ok": false,
+        "t": 14.7,
+        "hops": 1,
+        "swamAt": 118.8,
+        "x": 141.1,
+        "phase": "dying"
+      },
+      "canal2-desfase2.0s": {
+        "ok": false,
+        "t": 14.7,
+        "hops": 1,
+        "swamAt": 118.8,
+        "x": 141.1,
+        "phase": "dying"
+      },
+      "canal2-desfase2.5s": {
+        "ok": false,
+        "t": 14.7,
+        "hops": 1,
+        "swamAt": 118.8,
+        "x": 141.1,
+        "phase": "dying"
+      },
+      "canal2-desfase3.0s": {
+        "ok": false,
+        "t": 90,
+        "hops": 1,
+        "swamAt": null,
+        "x": 124.6,
+        "phase": "play"
+      },
+      "canal2-desfase3.5s": {
+        "ok": false,
+        "t": 90,
+        "hops": 1,
+        "swamAt": null,
+        "x": 123.4,
+        "phase": "play"
+      },
+      "canal2-desfase4.0s": {
+        "ok": false,
+        "t": 90,
+        "hops": 1,
+        "swamAt": null,
+        "x": 121.8,
+        "phase": "play"
+      },
+      "canal2-desfase4.5s": {
+        "ok": false,
+        "t": 90,
+        "hops": 1,
+        "swamAt": null,
+        "x": 120.6,
+        "phase": "play"
+      }
+    },
+    "estromatolito": {
+      "damaged": 1,
+      "score": 4500,
+      "lives": 3,
+      "phase": "play",
+      "popups550ms": [
+        "¡Cuidado, estromatolito vivo!"
+      ]
+    },
+    "vertical6_2": {
+      "id": "6-2",
+      "mode": "contacto protegido; oxígeno y colisiones activos",
+      "phase": "done",
+      "x": 235.6,
+      "lives": 3,
+      "bossHp": null,
+      "farthest": 235.55,
+      "minOxygen": 10,
+      "t": 34.558333333332016,
+      "cam3": 861.7013888888875,
+      "cam12": 3201.70138888881,
+      "checkpoint": true,
+      "capturas": [
+        "fondo-movil-a",
+        "hueco-enganche",
+        "fondo-movil-b",
+        "checkpoint"
+      ]
+    },
+    "selector": {
+      "titles": [
+        "Mundo 1 · Selva de Palenque",
+        "Mundo 2 · Golfo de Campeche",
+        "Mundo 3 · Yucatán de las haciendas",
+        "Mundo 4 · Cenotes y Xibalbá",
+        "Mundo 5 · Riviera Maya",
+        "Mundo 6 · Costa Maya y Bacalar"
+      ],
+      "tile61Disabled": false,
+      "tile62Disabled": true,
+      "tile66": "6-6ChetumalJEFE🔒",
+      "soon": "Falta 1 mundo · Próximamente",
+      "guardados": 29
+    }
+  },
+  "errors": []
+}

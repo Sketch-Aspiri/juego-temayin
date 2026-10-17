@@ -142,7 +142,7 @@ with sync_playwright() as p:
     page.wait_for_selector('.menu__wallet')
     assert '40' in page.locator('.menu__wallet').inner_text()
     screenshot(page, 'saldo-en-mapa')
-    for level in ['1-3', '1-6', '2-7', '3-5', '4-5', '5-6']:
+    for level in ['1-3', '1-6', '2-7', '3-5', '4-5', '5-6', '6-6']:
         page.evaluate('id=>qa.store.getState().startLevel(id)', level)
         page.wait_for_selector('.offering')
         screenshot(page, f'{level}-encuentro')
@@ -151,7 +151,7 @@ with sync_playwright() as p:
         assert page.evaluate('qa.world.timeLeft') > 0
         assert page.evaluate('qa.world.session.coins') == 40
         page.evaluate("qa.store.getState().go('levels')")
-    reports.append({'desktop': 'Compras, doble clic, recarga, poderes, checkpoint, fin de partida, resultado, saldo y seis encuentros correctos.'})
+    reports.append({'desktop': 'Compras, doble clic, recarga, poderes, checkpoint, fin de partida, resultado, saldo y siete encuentros correctos.'})
     context.close()
 
     context = browser.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
