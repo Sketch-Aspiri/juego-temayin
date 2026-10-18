@@ -43,6 +43,7 @@ export const LEVEL_2_2: LevelDef = {
     ['stairs', 38, 5, 1],
     ['col', 43, 5], ['col', 44, 5], ['col', 45, 5], ['col', 46, 5],
     ['coins', 43, 5, 4], ['row', 44, 3, '?'],
+    ['ticket', 45, 2], // Salto opcional por encima de la cima.
     ['stairs', 47, 5, -1],
     ['pit', 54, 61],
     ['crumble', 55, 10, 2], ['crumble', 58, 9, 2], ['coins', 55, 8, 5],

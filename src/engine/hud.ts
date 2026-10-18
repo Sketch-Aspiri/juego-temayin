@@ -25,6 +25,8 @@ export interface HudState {
   snorkel: boolean;
   /** Lleva la pelota de pok ta pok. */
   ball: boolean;
+  /** Boleto del mundo encontrado, incluso después de perder una vida. */
+  ticket: boolean;
   boss: BossHud | null;
   /** Se incrementa cada vez que el jugador (re)aparece; reinicia el cartel de nivel. */
   spawnId: number;
@@ -35,7 +37,7 @@ const OXYGEN_HUD_STEPS = 20;
 
 export const hudKey = (h: HudState): string =>
   [
-    h.score, h.coins, h.lives, h.time, h.levelId, h.shield ? 1 : 0, h.fire ? 1 : 0, h.spawnId,
+    h.score, h.coins, h.lives, h.time, h.levelId, h.shield ? 1 : 0, h.fire ? 1 : 0, h.spawnId, h.ticket ? 1 : 0,
     h.oxygen === null ? '-' : Math.round(h.oxygen * OXYGEN_HUD_STEPS), h.snorkel ? 1 : 0, h.ball ? 1 : 0,
     h.boss ? `${h.boss.id}/${h.boss.name}/${h.boss.hp}/${h.boss.maxHp}/${h.boss.intro ? 1 : 0}` : '-',
   ].join('|');

@@ -21,6 +21,7 @@ export const LEVEL_5_4: LevelDef = {
     ['pit', 18, 90], ['water', 18, 90, 5],
     ...floodedTunnel(28, 77, 5, [38, 54, 70]),
     ...tunnelRoof(28, 77, [38, 54, 70]),
+    ['ticket', 55, 3], // Bolsa de aire lateral a la ruta de cacao del fondo.
     ['current', 22, 43, 6, 13, 0.8, 0], ['current', 58, 77, 6, 13, -0.6, 0],
     ['bubbles', 22, 13], ['bubbles', 34, 13], ['bubbles', 46, 13],
     ['bubbles', 58, 13], ['bubbles', 70, 13], ['bubbles', 82, 13], ['bubbles', 89, 13],

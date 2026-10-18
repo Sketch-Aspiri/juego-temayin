@@ -26,7 +26,7 @@ describe('Bolsa persistente de cacao', () => {
   it('carga un guardado v3 anterior sin perder estrellas, récords ni ajustes', () => {
     const progress = { levels: { '1-3': { bestScore: 800, stars: 3, completions: 2 } } };
     storage.set(STORAGE_KEY, JSON.stringify({ progress, settings: DEFAULT_SETTINGS }));
-    expect(loadSaved()).toEqual({ progress, settings: DEFAULT_SETTINGS, wallet: EMPTY_WALLET });
+    expect(loadSaved()).toEqual({ progress: { ...progress, tickets: [] }, settings: DEFAULT_SETTINGS, wallet: EMPTY_WALLET });
   });
 
   it('guarda y recupera cacao y compras pendientes', () => {

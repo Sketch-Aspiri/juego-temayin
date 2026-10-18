@@ -45,6 +45,7 @@ export const LEVEL_1_3: LevelDef = {
     ['plat', 59, 3, 4], ['coins', 59, 2, 4],
     ['pit', 64, 69], ['plat', 65, 8, 3], ['coins', 65, 7, 3],
     ['plat', 65, 3, 3], ['coins', 65, 2, 3],
+    ['ticket', 66, 1], // Desvío por las ramas altas, antes del punto de control.
     ['plat', 71, 3, 4],
     ['plat', 78, 6, 4], ['row', 80, 2, 'L'],
     ['pit', 87, 91], ['coins', 87, 8, 5],

@@ -17,7 +17,7 @@ Después de dos ataques, el Capitán enreda una tortuga cercana a él. Permanece
 
 Las tortugas libres dan aire al nadar cerca; una brazada próxima recibe impulso. No tienen salud y nunca se dañan. Las advertencias fijan la zona del ataque y duran como mínimo 1,05 s; la cortina avisa durante 1,6 s. Sus semillas durante el rescate avisan otros 0,8 s antes de salir. Abrir el núcleo o golpearlo elimina peligros pendientes.
 
-El núcleo de plástico es una amenaza fantástica. Las tortugas se rescatan y el cierre invita a cuidar el mar. No se presenta el sargazo natural como basura; quemarlo es una mecánica de ficción. El boleto y los niveles extra siguen pendientes.
+El núcleo de plástico es una amenaza fantástica. Las tortugas se rescatan y el cierre invita a cuidar el mar. No se presenta el sargazo natural como basura; quemarlo es una mecánica de ficción. El boleto escondido en una bolsa de aire de Xcaret abre `5-extra`, La caleta de las tortugas: un desvío opcional de nado con aliadas protegidas, cacao y un corazón de jade. Se guarda al recogerlo, sin exigir terminar el nivel.
 
 ## Arte y verificación
 

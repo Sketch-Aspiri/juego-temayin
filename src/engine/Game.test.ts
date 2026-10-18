@@ -68,6 +68,17 @@ describe('Bendiciones durante la partida', () => {
     game.stop();
   });
 
+  it('conserva el boleto al morir y lo publica también al salir', () => {
+    const game = make(); game.start(); advance(0.1);
+    current.ticketCollected = true;
+    current.checkpointReached = true;
+    current.die(); advance(DEATH_DELAY + 0.2);
+    expect(current.ticketCollected).toBe(true);
+    expect(onHud).toHaveBeenLastCalledWith(expect.objectContaining({ ticket: true }));
+    game.stop();
+    expect(onHud).toHaveBeenLastCalledWith(expect.objectContaining({ ticket: true }));
+  });
+
   it('publica el último saldo al salir y lo conserva al perder todas las vidas', () => {
     const game = make(); game.start(); advance(0.1);
     current.session.coins = 173;

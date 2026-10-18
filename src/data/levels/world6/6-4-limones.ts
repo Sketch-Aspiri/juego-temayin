@@ -34,6 +34,7 @@ export const LEVEL_6_4: LevelDef = {
     // normal, caminando o corriendo; caminando se aterriza en la primera y corriendo en la segunda.
     ['plat', 142, 10, 3], ['plat', 146, 10, 3], ['coins', 142, 9, 3], ['coins', 146, 9, 3],
     ['row', 48, 8, 'B?B'], ['row', 70, 8, '?L?'], ['coins', 76, 9, 4],
+    ['ticket', 72, 4], ['firefly', 73, 4], // El brillo invita a subir sobre el cofre.
     // Punto de control.
     ['row', 100, 8, '?M?'], ['row', 112, 8, '?F?'],
     ['row', 128, 8, 'B?B'], ['coins', 134, 9, 4],

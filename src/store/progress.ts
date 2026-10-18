@@ -1,4 +1,4 @@
-import { ALL_LEVELS } from '../data/worlds';
+import { ALL_LEVELS, getWorldForLevel, PLAYABLE_LEVELS, WORLDS } from '../data/worlds';
 import type { LevelResult, Stars } from '../engine/scoring';
 
 export interface LevelRecord {
@@ -9,9 +9,18 @@ export interface LevelRecord {
 
 export interface Progress {
   levels: Readonly<Record<string, LevelRecord>>;
+  tickets: readonly string[];
 }
 
-export const EMPTY_PROGRESS: Progress = { levels: {} };
+export const EMPTY_PROGRESS: Progress = { levels: {}, tickets: [] };
+
+export const hasTicket = (progress: Progress, worldId: string): boolean => progress.tickets.includes(worldId);
+
+/** Idempotente e inmutable: el boleto se conserva incluso sin completar el nivel. */
+export function recordTicket(progress: Progress, worldId: string): Progress {
+  if (!WORLDS.some(w => w.id === worldId && w.bonus) || hasTicket(progress, worldId)) return progress;
+  return { ...progress, tickets: [...progress.tickets, worldId] };
+}
 
 /** Registra un nivel completado conservando los mejores resultados (sin mutar). */
 export function recordCompletion(progress: Progress, result: LevelResult): Progress {
@@ -21,7 +30,7 @@ export function recordCompletion(progress: Progress, result: LevelResult): Progr
     stars: Math.max(prev?.stars ?? 1, result.stars) as Stars,
     completions: (prev?.completions ?? 0) + 1,
   };
-  return { levels: { ...progress.levels, [result.levelId]: record } };
+  return { ...progress, levels: { ...progress.levels, [result.levelId]: record } };
 }
 
 /**
@@ -30,6 +39,8 @@ export function recordCompletion(progress: Progress, result: LevelResult): Progr
  * de niveles nuevos sin completar).
  */
 export function isUnlocked(progress: Progress, levelId: string): boolean {
+  const world = getWorldForLevel(levelId);
+  if (world?.bonus?.id === levelId) return hasTicket(progress, world.id);
   const i = ALL_LEVELS.findIndex((l) => l.id === levelId);
   if (i < 0) return false;
   if (i === 0 || !!progress.levels[levelId]) return true;
@@ -52,12 +63,16 @@ export function sanitizeProgress(raw: unknown): Progress {
   if (typeof raw !== 'object' || raw === null) return EMPTY_PROGRESS;
   const levels = (raw as { levels?: unknown }).levels;
   if (typeof levels !== 'object' || levels === null) return EMPTY_PROGRESS;
-  const valid = new Set(ALL_LEVELS.map((l) => l.id));
+  const valid = new Set(PLAYABLE_LEVELS.map((l) => l.id));
   const out: Record<string, LevelRecord> = {};
   for (const [id, rec] of Object.entries(levels)) {
     if (!valid.has(id) || typeof rec !== 'object' || rec === null) continue;
     const { bestScore, stars, completions } = rec as Record<string, unknown>;
     if (isCount(bestScore) && isStars(stars) && isCount(completions)) out[id] = { bestScore, stars, completions };
   }
-  return { levels: out };
+  const rawTickets = (raw as { tickets?: unknown }).tickets;
+  const worldIds = new Set(WORLDS.map(w => w.id));
+  const tickets = Array.isArray(rawTickets)
+    ? [...new Set(rawTickets.filter((id): id is string => typeof id === 'string' && worldIds.has(id)))] : [];
+  return { levels: out, tickets };
 }

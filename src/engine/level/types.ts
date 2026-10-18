@@ -25,6 +25,7 @@ import type { Darkness } from '../render/lighting';
  *  ['wall', x]                muro de arriba a abajo (arenas de jefe)
  *  ['flag', x] ['temple', x]  meta del nivel
  *  ['spawn', enemigo, x, y?]  enemigo (y por defecto: sobre el suelo)
+ *  ['ticket', x, y]           boleto oculto no sólido, uno por mundo; se recoge al tocarlo
  *
  * Zonas que frenan (AGENTS.md §5.5). No tocan la cuadrícula: van a `BuiltLevel.slowZones`
  * (ver `slowZones.ts`). Con los pies dentro, la velocidad máxima y el salto se reducen
@@ -103,6 +104,7 @@ import type { Darkness } from '../render/lighting';
  *                                           5 granos de cacao (incluidos en `totalCoins`)
  */
 export type Op =
+  | readonly ['ticket', number, number]
   | readonly ['boat' | 'turtle', number, number, number, number, number, number]
   // Vagoneta: ['truck', x, y, largo, recorridoHorizontal, periodoEnSegundos].
   | readonly ['truck', number, number, number, number, number]
@@ -179,4 +181,6 @@ export interface WorldDef {
   number: number;
   name: string;
   levels: readonly LevelDef[];
+  /** Nivel secreto opcional: requiere el boleto de este mundo y no altera la campaña. */
+  readonly bonus?: LevelDef;
 }

@@ -1,4 +1,5 @@
 import type { AudioEngine } from './audio';
+import { collectTicket } from './entities/tickets';
 import { createRope, type Rope } from './entities/ropes';
 import type { Torch } from './entities/torches';
 import { lightSources, type Darkness, type LightSource } from './render/lighting';
@@ -46,6 +47,7 @@ export interface WorldInit {
   audio: AudioEngine;
   /** Reaparecer en el punto de control. */
   fromCheckpoint?: boolean;
+  ticketCollected?: boolean;
 }
 
 const BUMP_TIME = 0.15;
@@ -94,6 +96,8 @@ export class World {
   flagY = 2 * T;
   checkpointReached: boolean;
   coinsCollected = 0;
+  /** Se conserva al reaparecer y se publica para guardar el desbloqueo de inmediato. */
+  ticketCollected: boolean;
   /** Presentación del encuentro: solo dibujo, sin avanzar la simulación. */
   offeringActive = false;
 
@@ -103,6 +107,7 @@ export class World {
 
   constructor(init: WorldInit) {
     this.def = init.def;
+    this.ticketCollected = init.ticketCollected ?? false;
     this.session = init.session;
     this.input = init.input;
     this.audio = init.audio;
@@ -288,6 +293,7 @@ export class World {
     updateCrumbles(this, dt);
     updateStromatolites(this, dt);
     this.collectLooseCoins();
+    collectTicket(this);
 
     if (p.y > ROWS * T + 40) return this.die();
     if (p.x > this.checkpointTile * T) this.checkpointReached = true;
@@ -365,6 +371,7 @@ export class World {
       oxygen: this.oxygenRatio(),
       snorkel: this.player.snorkel > 0,
       ball: this.player.ball,
+      ticket: this.ticketCollected,
       boss: b && b.hudVisible ? { id: b.id, name: b.name, hp: Math.max(0, b.hp), maxHp: b.maxHp, intro: b.intro } : null,
       spawnId,
     };

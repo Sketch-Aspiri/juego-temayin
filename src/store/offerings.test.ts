@@ -15,7 +15,7 @@ describe('Encuentros y compras', () => {
     vi.resetModules();
     store = (await import('./appStore')).useAppStore;
     const levels = Object.fromEntries(ALL_LEVELS.map(l => [l.id, { bestScore: 0, stars: 1 as const, completions: 1 }]));
-    store.setState({ progress: { levels }, settings: { ...DEFAULT_SETTINGS, introSeen: true }, wallet: { cacao: 130, pending: {} } });
+    store.setState({ progress: { levels, tickets: [] }, settings: { ...DEFAULT_SETTINGS, introSeen: true }, wallet: { cacao: 130, pending: {} } });
   });
   afterEach(() => vi.unstubAllGlobals());
 

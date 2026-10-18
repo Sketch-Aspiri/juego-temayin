@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 import { INTRO_LEVEL_ID } from '../data/intro';
 import { BLESSINGS } from '../data/offerings';
-import { getLevel } from '../data/worlds';
+import { getLevel, getWorldForLevel } from '../data/worlds';
 import { MAX_BLESSING_QUANTITY, type BlessingId } from '../engine/blessings';
 import { START_LIVES } from '../engine/constants';
 import type { LevelResult } from '../engine/scoring';
 import type { Session } from '../engine/types';
 import { loadSaved, save } from './persistence';
-import { EMPTY_PROGRESS, isUnlocked, recordCompletion, type Progress } from './progress';
+import { EMPTY_PROGRESS, isUnlocked, recordCompletion, recordTicket, type Progress } from './progress';
 import type { Settings } from './settings';
 import { EMPTY_WALLET, isCacao, type Wallet } from './wallet';
 
@@ -31,6 +31,7 @@ interface AppState {
   continueOffering: () => void;
   /** Solo se aceptan publicaciones del motor de la partida vigente. */
   syncCacao: (run: Run, cacao: number) => void;
+  syncTicket: (run: Run, collected: boolean) => void;
   /** Nivel que empieza al terminar la cinemática (`null`: volver al título). */
   introNext: string | null;
   go: (screen: Screen) => void;
@@ -104,6 +105,17 @@ export const useAppStore = create<AppState>((set, get) => {
     syncCacao: (run, cacao) => {
       if (get().run !== run || !isCacao(cacao) || get().wallet.cacao === cacao) return;
       set({ wallet: { ...get().wallet, cacao } });
+      persist();
+    },
+
+    syncTicket: (run, collected) => {
+      if (get().run !== run || !collected) return;
+      const world = getWorldForLevel(run.levelId);
+      // Solo un nivel con boleto puede originar el desbloqueo.
+      if (!world || !getLevel(run.levelId)?.ops.some(op => op[0] === 'ticket')) return;
+      const progress = recordTicket(get().progress, world.id);
+      if (progress === get().progress) return;
+      set({ progress });
       persist();
     },
 

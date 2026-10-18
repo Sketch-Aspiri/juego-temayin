@@ -11,6 +11,7 @@ export const LEVEL_3_3: LevelDef = {
     ['row', 10, 8, '?M?'], ['hammock', 19, 12, 3],
     ['plat', 24, 6, 5], ['coins', 24, 4, 5], ['spawn', 'alux', 34],
     ['hammock', 41, 12, 3], ['plat', 47, 6, 4], ['row', 48, 3, '?L?'],
+    ['ticket', 50, 1], // La hamaca permite explorar por encima del tejado.
     ['pit', 56, 60], ['hammock', 53, 12, 3], ['plat', 57, 9, 2], ['coins', 57, 7, 2],
     ['row', 66, 8, 'BFB'], ['spawn', 'alux', 71], ['coins', 76, 10, 5],
     ['hammock', 84, 12, 3], ['plat', 89, 6, 5], ['coins', 89, 4, 5],

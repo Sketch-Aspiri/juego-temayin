@@ -1,4 +1,10 @@
 import type { LevelDef, WorldDef } from '../engine/level/types';
+import { BONUS_1 } from './levels/world1/1-extra-dosel';
+import { BONUS_2 } from './levels/world2/2-extra-camara';
+import { BONUS_3 } from './levels/world3/3-extra-patio';
+import { BONUS_4 } from './levels/world4/4-extra-cenote';
+import { BONUS_5 } from './levels/world5/5-extra-caleta';
+import { BONUS_6 } from './levels/world6/6-extra-vagon';
 import { LEVEL_1_1 } from './levels/world1/1-1-palenque';
 import { LEVEL_1_2 } from './levels/world1/1-2-boca-del-cerro';
 import { LEVEL_1_3 } from './levels/world1/1-3-tenosique';
@@ -47,29 +53,38 @@ export const WORLDS: readonly WorldDef[] = [
     id: 'selva-palenque',
     number: 1,
     name: 'Selva de Palenque',
+    bonus: BONUS_1,
     levels: [LEVEL_1_1, LEVEL_1_2, LEVEL_1_3, LEVEL_1_4, LEVEL_1_5, LEVEL_1_6],
   },
   {
     id: 'golfo-campeche',
     number: 2,
     name: 'Golfo de Campeche',
+    bonus: BONUS_2,
     levels: [LEVEL_2_1, LEVEL_2_2, LEVEL_2_3, LEVEL_2_4, LEVEL_2_5, LEVEL_2_6, LEVEL_2_7],
   },
   {
     id: 'yucatan-haciendas', number: 3, name: 'Yucatán de las haciendas',
+    bonus: BONUS_3,
     levels: [LEVEL_3_1, LEVEL_3_2, LEVEL_3_3, LEVEL_3_4, LEVEL_3_5],
   },
-  { id: 'cenotes-xibalba', number: 4, name: 'Cenotes y Xibalbá', levels: [LEVEL_4_1, LEVEL_4_2, LEVEL_4_3, LEVEL_4_4, LEVEL_4_5] },
-  { id: 'riviera-maya', number: 5, name: 'Riviera Maya', levels: [LEVEL_5_1, LEVEL_5_2, LEVEL_5_3, LEVEL_5_4, LEVEL_5_5, LEVEL_5_6] },
+  { id: 'cenotes-xibalba', number: 4, name: 'Cenotes y Xibalbá', bonus: BONUS_4, levels: [LEVEL_4_1, LEVEL_4_2, LEVEL_4_3, LEVEL_4_4, LEVEL_4_5] },
+  { id: 'riviera-maya', number: 5, name: 'Riviera Maya', bonus: BONUS_5, levels: [LEVEL_5_1, LEVEL_5_2, LEVEL_5_3, LEVEL_5_4, LEVEL_5_5, LEVEL_5_6] },
   {
     id: 'costa-maya-bacalar', number: 6, name: 'Costa Maya y Bacalar',
+    bonus: BONUS_6,
     levels: [LEVEL_6_1, LEVEL_6_2, LEVEL_6_3, LEVEL_6_4, LEVEL_6_5, LEVEL_6_6],
   },
 ];
 
 export const ALL_LEVELS: readonly LevelDef[] = WORLDS.flatMap((w) => w.levels);
 
-export const getLevel = (id: string): LevelDef | undefined => ALL_LEVELS.find((l) => l.id === id);
+export const BONUS_LEVELS: readonly LevelDef[] = WORLDS.flatMap(w => w.bonus ? [w.bonus] : []);
+/** Incluye los desvíos para búsqueda y validación; ALL_LEVELS conserva el orden publicado. */
+export const PLAYABLE_LEVELS: readonly LevelDef[] = [...ALL_LEVELS, ...BONUS_LEVELS];
+export const getLevel = (id: string): LevelDef | undefined => PLAYABLE_LEVELS.find(l => l.id === id);
+export const getWorldForLevel = (id: string): WorldDef | undefined =>
+  WORLDS.find(w => w.bonus?.id === id || w.levels.some(l => l.id === id));
 
 export function nextLevelId(id: string): string | null {
   const i = ALL_LEVELS.findIndex((l) => l.id === id);

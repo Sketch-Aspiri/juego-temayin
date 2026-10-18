@@ -19,11 +19,11 @@ describe('Cinemáticas desbloqueadas por progreso', () => {
   it.each(ALL_CINEMATICS.filter(cinematic => cinematic.afterLevel))('$title solo se desbloquea con su propia victoria guardada', cinematic => {
     const levelId = cinematic.afterLevel!;
     const otherId = levelId === '1-6' ? '2-7' : '1-6';
-    const progress: Progress = { levels: { [levelId]: record } };
+    const progress: Progress = { ...EMPTY_PROGRESS, levels: { [levelId]: record } };
     const before = structuredClone(progress);
     expect(isCinematicUnlocked(EMPTY_PROGRESS, cinematic)).toBe(false);
-    expect(isCinematicUnlocked({ levels: { [otherId]: record } }, cinematic)).toBe(false);
-    expect(isCinematicUnlocked({ levels: { [levelId]: { ...record, completions: 0 } } }, cinematic)).toBe(false);
+    expect(isCinematicUnlocked({ ...EMPTY_PROGRESS, levels: { [otherId]: record } }, cinematic)).toBe(false);
+    expect(isCinematicUnlocked({ ...EMPTY_PROGRESS, levels: { [levelId]: { ...record, completions: 0 } } }, cinematic)).toBe(false);
     expect(isCinematicUnlocked(progress, cinematic)).toBe(true);
     expect(progress).toEqual(before);
   });
@@ -40,8 +40,8 @@ describe('Cinemáticas desbloqueadas por progreso', () => {
   it('ofrece el prólogo desde el principio y exige completar Escárcega', () => {
     expect(isCinematicUnlocked(EMPTY_PROGRESS, CINEMATICS.intro)).toBe(true);
     expect(isCinematicUnlocked(EMPTY_PROGRESS, victory)).toBe(false);
-    expect(isCinematicUnlocked({ levels: { '1-5': record } }, victory)).toBe(false);
-    expect(isCinematicUnlocked({ levels: { '1-6': { ...record, completions: 0 } } }, victory)).toBe(false);
+    expect(isCinematicUnlocked({ ...EMPTY_PROGRESS, levels: { '1-5': record } }, victory)).toBe(false);
+    expect(isCinematicUnlocked({ ...EMPTY_PROGRESS, levels: { '1-6': { ...record, completions: 0 } } }, victory)).toBe(false);
     expect(isCinematicUnlocked(recordCompletion(EMPTY_PROGRESS, result), victory)).toBe(true);
   });
 
@@ -58,7 +58,7 @@ describe('Cinemáticas desbloqueadas por progreso', () => {
   });
 
   it('consultar el archivo no concede estrellas ni registra otra finalización', () => {
-    const progress: Progress = { levels: { '1-6': record } };
+    const progress: Progress = { ...EMPTY_PROGRESS, levels: { '1-6': record } };
     const before = structuredClone(progress);
     for (let i = 0; i < 3; i++) expect(isCinematicUnlocked(progress, victory)).toBe(true);
     expect(progress).toEqual(before);
@@ -67,7 +67,7 @@ describe('Cinemáticas desbloqueadas por progreso', () => {
   it('al borrar el progreso vuelve a bloquear la victoria y conserva el prólogo', () => {
     const before = useAppStore.getState();
     try {
-      useAppStore.setState({ progress: { levels: { '1-6': record } } });
+      useAppStore.setState({ progress: { ...EMPTY_PROGRESS, levels: { '1-6': record } } });
       useAppStore.getState().resetProgress();
       expect(isCinematicUnlocked(useAppStore.getState().progress, victory)).toBe(false);
       expect(isCinematicUnlocked(useAppStore.getState().progress, CINEMATICS.intro)).toBe(true);

@@ -46,12 +46,13 @@ interface LevelCompleteProps {
   result: LevelResult;
   levelName: string;
   hasNext: boolean;
+  isBonus?: boolean;
   onNext: () => void;
   onRetry: () => void;
   onExit: () => void;
 }
 
-export function LevelComplete({ result, levelName, hasNext, onNext, onRetry, onExit }: LevelCompleteProps) {
+export function LevelComplete({ result, levelName, hasNext, isBonus, onNext, onRetry, onExit }: LevelCompleteProps) {
   return (
     <Panel title="¡NIVEL COMPLETADO!" tone="win">
       <p className="panel__sub">{result.levelId} · {levelName}</p>
@@ -61,11 +62,11 @@ export function LevelComplete({ result, levelName, hasNext, onNext, onRetry, onE
         <div><dt>Cacao recogido</dt><dd>{Math.round(result.coinRatio * 100)}%</dd></div>
         <div><dt>Muertes</dt><dd>{result.deaths}</dd></div>
       </dl>
-      {!hasNext && <p className="panel__sub">¡Temayin ha completado toda la aventura!</p>}
+      {!hasNext && <p className="panel__sub">{isBonus ? '¡Has completado el nivel secreto! Vuelve al mapa para seguir tu aventura.' : '¡Temayin ha completado toda la aventura!'}</p>}
       <div className="panel__actions">
         {hasNext && <button type="button" className="btn btn--primary" onClick={onNext}>Siguiente nivel</button>}
         <button type="button" className={hasNext ? 'btn' : 'btn btn--primary'} onClick={onRetry}>Repetir nivel</button>
-        <button type="button" className="btn btn--ghost" onClick={onExit}>Elegir nivel</button>
+        <button type="button" className="btn btn--ghost" onClick={onExit}>{isBonus ? 'Volver al mapa' : 'Elegir nivel'}</button>
       </div>
     </Panel>
   );

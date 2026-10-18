@@ -57,6 +57,8 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 
 ## Contenido actual
 
+- **Boletos del Tren Maya y niveles secretos:** hay un boleto oculto en uno de los niveles de cada mundo jugable. Encontrarlo abre su desvío en el selector y se guarda al instante, aunque mueras, salgas o recargues. Son seis secretos: El dosel del jaguar, La cámara de jade, El patio de las hamacas, El cenote de luz, La caleta de las tortugas y El vagón del tesoro. Tienen cacao, corazones de jade, checkpoint y meta; conservan estrellas y récord propio sin alterar la ruta principal. Los guardados anteriores mantienen sus récords y comienzan sin boletos. El Mundo 7 y su secreto llegarán con Calakmul. Revisión: `python imagenes/verify_tickets.py`; capturas e informe en `imagenes/.temp/boletos/`.
+
 - **Portada de Hanal Pixán:** Temayin alebrije frente a una selva nocturna de Palenque con ofrenda, flores, velas y Tren Maya iluminado al fondo. Menú de jade y ámbar, ayuda de controles desplegable y encuadres para escritorio y móvil; las luciérnagas y el personaje respetan movimiento reducido. Originales, prompt y exportación en [la guía del arte](imagenes/nuevos/portada-hanal-pixan/README.md); capturas y comprobaciones en [la revisión visual](imagenes/verificacion/portada-hanal-pixan/REVISION.md).
 
 - Pantalla de carga con el sprite del tren animado sobre vías y selva en movimiento, adaptable a móvil y respetuosa con movimiento reducido. La aventura comienza al terminar la carga real.

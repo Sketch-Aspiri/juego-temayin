@@ -1,5 +1,7 @@
 import { assetUrl } from '../../engine/assets';
 import type { HudState } from '../../engine/hud';
+import { TicketIcon } from './TicketIcon';
+import '../tickets.css';
 
 const LOW_TIME = 30;
 /** Fracción de oxígeno por debajo de la cual la barra avisa en rojo. */
@@ -23,6 +25,7 @@ export function Hud({ hud }: HudProps) {
           {hud.fire && <span title="Chile de fuego" aria-label="Fuego activo">🌶️</span>}
           {hud.snorkel && <span title="Snorkel" aria-label="Snorkel activo">🤿</span>}
           {hud.ball && <span title="Pelota de pok ta pok" aria-label="Pelota de pok ta pok">⚫</span>}
+          {hud.ticket && <span role="img" title="Boleto del Tren Maya · Nivel secreto disponible" aria-label="Boleto del Tren Maya encontrado"><TicketIcon /></span>}
         </div>
         <span
           className="life-icon"

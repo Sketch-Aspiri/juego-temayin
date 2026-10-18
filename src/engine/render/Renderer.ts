@@ -36,6 +36,7 @@ import { drawOffering } from './offering';
 import { drawWind } from './wind';
 import { drawFireflies } from './fireflies';
 import { drawStromatolites } from './stromatolites';
+import { drawTickets } from './tickets';
 
 const BUMP_HEIGHT = 10;
 const BUMP_TIME = 0.15;
@@ -120,6 +121,7 @@ export class Renderer {
     drawBalls(c, world.balls, world.camX);
     drawWind(c, world, now);
     drawWaterLayer(c, world, theme.water, now);
+    drawTickets(c, world, now);
     drawParticles(c, world.particles, world.popups, world.camX);
     c.restore();
     this.lighting.draw(c, world);

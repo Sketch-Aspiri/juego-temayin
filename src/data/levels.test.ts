@@ -5,7 +5,7 @@ import { platformReach } from '../engine/entities/platforms';
 import { buildLevel } from '../engine/level/build';
 import { waterAt, waterColumn } from '../engine/level/zones';
 import { isSolidTile } from '../engine/tiles';
-import { ALL_LEVELS, nextLevelId, WORLDS } from './worlds';
+import { ALL_LEVELS, nextLevelId, PLAYABLE_LEVELS, WORLDS } from './worlds';
 
 /** Salto en carrera: ~8 bloques de alcance horizontal; dejamos margen. */
 const MAX_PLAIN_PIT = 6;
@@ -14,7 +14,7 @@ const MIN_LANDING_GAP = 2;
 
 describe('campaña', () => {
   it('los ids de nivel son únicos', () => {
-    const ids = ALL_LEVELS.map((l) => l.id);
+    const ids = PLAYABLE_LEVELS.map((l) => l.id);
     expect(new Set(ids).size).toBe(ids.length);
   });
 
@@ -25,7 +25,7 @@ describe('campaña', () => {
   });
 });
 
-describe.each(ALL_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, def) => {
+describe.each(PLAYABLE_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, def) => {
   const lvl = buildLevel(def);
   const solid = (x: number, y: number): boolean => y >= 0 && y < ROWS && x >= 0 && x < lvl.width && isSolidTile(lvl.grid[y][x]);
 

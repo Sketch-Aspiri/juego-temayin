@@ -33,7 +33,7 @@ Resume la arquitectura real, las convenciones, la **biblia del juego** (historia
 3. **React solo se usa para menús, HUD, pausa, progreso y ajustes** (`src/ui/`, `src/store/`). El juego en sí se simula y dibuja en un `<canvas>` desde el motor.
 4. **El motor habla con React solo a través de `HudState`** (`src/engine/hud.ts`), que se publica únicamente cuando cambia su `hudKey`. Si añades un dato al HUD, añádelo también a `hudKey` o la interfaz no se enterará.
 5. **`npm run build` y `npm test` deben pasar** antes de dar cualquier tarea por terminada.
-6. **Todo nivel nuevo debe pasar las pruebas de coherencia** de `src/data/levels.test.ts` (hoyos cruzables, enemigos sobre suelo, meta con suelo, jefe con arena y muro…). Esas pruebas recorren `ALL_LEVELS` automáticamente: basta con registrar el nivel en `WORLDS` para que se validen.
+6. **Todo nivel nuevo debe pasar las pruebas de coherencia** de `src/data/levels.test.ts` (hoyos cruzables, enemigos sobre suelo, meta con suelo, jefe con arena y muro…). Las pruebas recorren `PLAYABLE_LEVELS`: registra cada nivel principal o secreto en `WORLDS.levels` o `WORLDS.bonus`.
 7. **El contenido vive en `src/data/`**, no en el motor. El motor define *qué se puede hacer* (DSL, registros); los datos definen *qué hay* en cada nivel.
 8. **Nunca romper el progreso guardado** de los jugadores (ver [sección 7](#7-migración-del-contenido-actual)).
 
@@ -428,7 +428,7 @@ Estado: **Existe** = id en `EnemyId` y en `ENEMIES`; **Nuevo** = id propuesto. L
 | **Pelota de pok ta pok** | Proyectil que rebota en paredes y suelo; activa aros | **Existe** | Bloque `P`, `ItemKind` `'ball'`, `player.ball` (se pierde al morir), `world.balls`, `entities/ball.ts`, dibujo en `render/ball.ts` (cuadro `ball` del atlas de objetos). La tecla de disparo lanza la pelota con **prioridad sobre el chile**: máx. `BALL_MAX_ACTIVE` = 1 en el aire; con ella volando, la tecla lanza fuego. Rebota `BALL_MAX_BOUNCES` = 5 veces (bote desde el suelo ≈ 3,4 bloques: alcanza aros en la fila 8; la fila 7 pide lanzar saltando). Derriba enemigos salvo `shade` (solo luz/fuego) y daña al jefe vulnerable. |
 | **Cuerda de henequén** | Gancho / columpio | Nuevo | Depende de 5.6. Puede ser habilidad permanente tras el jefe del M3 en lugar de objeto. |
 | **Glifos mayas** (coleccionable) | 3 ocultos por nivel | Nuevo | Ver abajo. |
-| **Boleto del Tren Maya** (coleccionable) | 1 oculto por mundo; desbloquea un nivel extra | Nuevo | Ver abajo. |
+| **Boleto del Tren Maya** (coleccionable) | 1 oculto por mundo; desbloquea un nivel extra | **Existe** en los seis mundos jugables | Op `ticket`, guardado inmediato y nivel `bonus`. Ver abajo. |
 
 **Glifos integrados con las estrellas.** Hoy `computeStars(coinRatio, deaths)` (`src/engine/scoring.ts`) da 1 estrella por completar y 2–3 según monedas sin morir. Propuesta:
 - Añadir `glyphs: number` (0–3) a `LevelResult` y a `LevelRecord` (`store/progress.ts`), conservando el máximo como con `bestScore`.
@@ -436,9 +436,26 @@ Estado: **Existe** = id en `EnemyId` y en `ENEMIES`; **Nuevo** = id propuesto. L
 - `sanitizeProgress` debe aceptar registros antiguos **sin** `glyphs` (valor 0 por defecto); nunca descartarlos.
 - Nueva op del DSL `['glyph', x, y]` y tile no sólido (p. ej. `g`) recogido como las monedas sueltas en `World.collectLooseCoins`.
 
-**Boletos y niveles extra.**
+**Boletos y niveles extra (implementados).**
 - Op `['ticket', x, y]` (uno por mundo) y campo `tickets: readonly string[]` (ids de mundo) en `Progress`.
-- Campo opcional `bonus?: LevelDef` en `WorldDef`. Los niveles extra **no** forman parte de la cadena lineal `ALL_LEVELS` (para no alterar `isUnlocked` ni `nextLevelId`); se desbloquean con `hasTicket(progress, worldId)`. Deben pasar igualmente las pruebas de coherencia: ampliar `levels.test.ts` para recorrer `ALL_LEVELS` + extras.
+- Campo opcional `bonus?: LevelDef` en `WorldDef`. Los niveles extra **no** forman parte de la cadena lineal `ALL_LEVELS` (para no alterar `isUnlocked` ni `nextLevelId`); se desbloquean con `hasTicket(progress, worldId)`. `BONUS_LEVELS` enumera los secretos y `PLAYABLE_LEVELS` reúne campaña y secretos para búsqueda, saneamiento y pruebas de coherencia. `nextLevelId` devuelve `null` para un secreto; al terminar se vuelve al selector sin anunciar el fin de la aventura.
+
+- `entities/tickets.ts` resuelve contacto sin DOM; `render/tickets.ts` reutiliza el cuadro `ticket` de `objetos/objetos.webp` con respaldo procedural. No suma cacao ni cambia estrellas. `HudState.ticket` participa en `hudKey`; `Game` lo conserva al reaparecer.
+- `GameScreen` entrega al motor el boleto ya guardado. `syncTicket(run, collected)` deriva el mundo del nivel anfitrión, ignora partidas antiguas y guarda inmediatamente, sin esperar la bandera. Morir, perder todas las vidas, salir y recargar conservan el boleto; borrar progreso lo elimina.
+- `sanitizeProgress` acepta v2 migrada y v3 sin `tickets` (lista vacía), filtra ids de mundo desconocidos y duplicados y conserva récords de secretos. `recordCompletion` conserva los boletos. No se renumeran niveles ni se cambia `temayin:v3`.
+- El selector oculta el nombre del destino hasta encontrar el boleto y muestra una tarjeta por mundo; los secretos son desvíos de fantasía con cacao y corazones de jade, sin jefe obligatorio.
+
+| Mundo | Boleto escondido (nivel, columna/fila) | Nivel secreto | Mecánica |
+|---|---|---|---|
+| 1 | Tenosique (`1-3`, 66/1) | `1-extra` · El dosel del jaguar | Ramas y plataformas altas |
+| 2 | Edzná (`2-2`, 45/2) | `2-extra` · La cámara de jade | Escombro que se derrumba |
+| 3 | Tixkokob (`3-3`, 50/1) | `3-extra` · El patio de las hamacas | Rebotes sobre tejados |
+| 4 | Valladolid (`4-3`, 51/4) | `4-extra` · El cenote de luz | Nado, luces y burbujas |
+| 5 | Xcaret (`5-4`, 55/3) | `5-extra` · La caleta de las tortugas | Nado y tortugas protegidas |
+| 6 | Limones (`6-4`, 72/4) | `6-extra` · El vagón del tesoro | Cajas y saltos sobre el tren |
+
+- Cada secreto vive en su archivo `data/levels/worldN/N-extra-*.ts`, con checkpoint y meta. El Mundo 7 sigue pendiente: al incorporarlo se debe añadir su boleto y `WorldDef.bonus`.
+- Cobertura: `data/bonus.test.ts`, `data/levels.test.ts`, `engine/entities/tickets.test.ts`, `engine/Game.test.ts`, `store/tickets.test.ts` y `ui/screens/LevelSelect.test.tsx`. `python imagenes/verify_tickets.py` revisa seis recogidas desde plataformas/agua preparadas, persistencia tras muerte y recarga, acceso por los botones reales y seis recorridos completos desde inicio a checkpoint y meta con colisiones y oxígeno activos. Los niveles anfitriones se preparan con protección de contacto; no se mide dificultad humana. Capturas e informe en `imagenes/.temp/boletos/`.
 
 ### 4.7 Temas visuales (`ThemeId`)
 
@@ -724,7 +741,7 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
 - **Hecho:** la reubicación de 7.1 y la migración de 7.3 ya están aplicadas (clave `'temayin:v3'`, `store/migrations.ts`, `isUnlocked` con récord propio). Lo que sigue describe la v2 como referencia.
 - `src/store/persistence.ts` guardaba `{ progress, settings }` en `localStorage` bajo la clave **`'temayin:v2'`**.
 - `Progress = { levels: Record<levelId, LevelRecord> }` (`src/store/progress.ts`); `LevelRecord = { bestScore, stars, completions }`.
-- `sanitizeProgress` **descarta cualquier id que no exista en `ALL_LEVELS`**. Si se cambia el id de un nivel sin migrar, el récord del jugador se pierde en silencio en la siguiente carga y se sobreescribe al guardar.
+- `sanitizeProgress` **descarta cualquier id que no exista en `PLAYABLE_LEVELS`** (campaña y secretos). Si se cambia el id de un nivel sin migrar, el récord del jugador se pierde en silencio en la siguiente carga y se sobreescribe al guardar.
 - `isUnlocked(progress, id)` desbloquea un nivel solo si **el nivel inmediatamente anterior en `ALL_LEVELS`** está completado. Insertar niveles nuevos delante de otros ya completados vuelve a bloquear el avance del jugador.
 - Los ids antiguos chocan con los nuevos: `'1-3'` pasa de «Guarida de Púas» a «Tenosique», `'2-1'`/`'2-2'` pasan a Carrillo Puerto/Edzná. **Por eso no basta con un mapa de ids aplicado en cada carga**: hay que distinguir datos viejos de nuevos.
 
@@ -767,7 +784,7 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 | **5 · Mundo 4** | Cenotes y Xibalbá | Combinación oscuridad + agua, tema `xibalba`, `shade`, `axolotl`, `xtabay`, pelota de pok ta pok, jefe Huay Pek. Reubicar 2-1/2-2 si no se hizo en la fase 0. |
 | **6 · Mundo 5** | Riviera Maya | Zonas de sargazo, tema `reef`, `lionfish`, nivel submarino completo, jefe Capitán Sargazo. |
 | **7 · Mundo 6** | Costa Maya y Bacalar | Temas `cliff`, `lagoon`, `bay`, `jungleTrain`; tren en marcha (6-2, `autoScroll`); viento y térmicas; luciérnagas; estromatolitos; Lorencillo (8 PV, 2 fases). Arte completado y recorridos en Chromium hasta checkpoint y meta; combate con asistencia, sin medir dificultad humana (ver §10). |
-| **8 · Coleccionables** | Glifos y boletos | Ops `glyph`/`ticket`, `LevelRecord.glyphs`, `Progress.tickets`, niveles extra por mundo, saneamiento retrocompatible. (Puede adelantarse si conviene.) |
+| **8 · Coleccionables** | Glifos y boletos | Boletos implementados: op `ticket`, `Progress.tickets`, seis secretos y saneamiento retrocompatible. Pendientes: glifos y boleto/secreto del futuro Mundo 7. |
 | **9 · Final** | Calakmul, Camazotz y epílogo | Temas `batCave`, `deepJungle`, `throne`, niveles 7-1 a 7-3, jefe final de 3 fases, escena de rescate de Temayina, epílogo en tren (Centenario → Escárcega), créditos. |
 
 ---
@@ -899,7 +916,7 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 - Playa del Carmen conserva su id y sus obstáculos principales; incorpora agua navegable, sargazo quemable, pasarelas y checkpoint seco en la columna 94.
 - Xcaret combina oscuridad, antorchas, corrientes, túneles con bolsas de aire y burbujas separadas por un máximo de doce bloques. Los ajolotes fantasma siguen siendo criaturas de fantasía.
 - Puerto Aventuras incorpora `['boat', x, y, largo, dx, dy, periodo]`. Akumal incorpora `['turtle', x, y, largo, dx, dy, periodo]`. Ambas ops reutilizan la física de `mover`; las tortugas son plataformas protegidas, sin salud ni contacto dañino. Las tres aliadas dentro de la arena de Akumal tienen poses de nado, enredo, aire e impulso (`MovingPlatform.turtleState`). Permanecer 0,6 s cerca de una enredada o darle dos disparos de fuego deshace el enredo; los proyectiles nunca dañan a las tortugas. Las libres recargan aire en un radio de 82 px y dan un impulso al dar una brazada cerca. `Boss.providesAir` es una consulta opcional que se resuelve antes de consumir el último oxígeno.
-- Capitán Sargazo (`bosses/sargazo/`) tiene doce PV y cuatro fases a 9, 6 y 3 PV. El selector determinista evita repeticiones y fuerza un rescate después de dos ataques normales. Fase 1: salvas y cortinas con hueco fijo; fase 2: añade embestida horizontal y remolino; fase 3: lluvia de semillas; fase 4: frenesí con mayor velocidad y cadencia. El enredo mantiene la presión con proyectiles avisados hasta el rescate; el pulso de la tortuga limpia los peligros y abre el núcleo durante 5–4,4 s. Tocarlo desde cualquier dirección nadando, o acertar dos veces con fuego/pelota, quita un PV como máximo por apertura. El recorrido se puede completar sin poderes. Arena 78–100 con agua desde fila 3, sin refugios sólidos interiores; checkpoint seco 68, respiraderos 83/96, salida 101 y tiempo 420 s. Al vencerlo libera las aliadas, abre el muro y muestra un mensaje ecológico. El boleto y los niveles extra siguen pendientes de la fase 8; no cambia el guardado.
+- Capitán Sargazo (`bosses/sargazo/`) tiene doce PV y cuatro fases a 9, 6 y 3 PV. El selector determinista evita repeticiones y fuerza un rescate después de dos ataques normales. Fase 1: salvas y cortinas con hueco fijo; fase 2: añade embestida horizontal y remolino; fase 3: lluvia de semillas; fase 4: frenesí con mayor velocidad y cadencia. El enredo mantiene la presión con proyectiles avisados hasta el rescate; el pulso de la tortuga limpia los peligros y abre el núcleo durante 5–4,4 s. Tocarlo desde cualquier dirección nadando, o acertar dos veces con fuego/pelota, quita un PV como máximo por apertura. El recorrido se puede completar sin poderes. Arena 78–100 con agua desde fila 3, sin refugios sólidos interiores; checkpoint seco 68, respiraderos 83/96, salida 101 y tiempo 420 s. Al vencerlo libera las aliadas, abre el muro y muestra un mensaje ecológico. El boleto de este mundo está en una bolsa de aire de Xcaret y abre la caleta secreta de las tortugas; se guarda en `Progress.tickets` bajo la misma clave v3.
 - `data/sargazoArt.ts` registra ocho poses nuevas del Capitán, cuatro de tortugas, cuatro efectos y el fondo submarino; los atlas se precargan en `PAINTED_ART`. `render/sargazoSprites.ts`, `render/arenas/akumal.ts` y `bosses/sargazo/drawHazards.ts` dibujan el encuentro con respaldo procedural. PNG y prompts originales están en `imagenes/nuevos/`; WebP sin pérdidas y atlas en `public/assets/`. `imagenes/import_sargazo_art.py` reproduce la exportación y verifica identidad de píxeles. `imagenes/verify_sargazo_visuals.py` verifica escenas, móvil táctil y victoria desde checkpoint con contacto protegido, aire real y sin daño asistido al jefe.
 - Cobertura: `src/engine/World5.test.ts`, `src/engine/World5Completion.test.ts` y las pruebas compartidas de coherencia; recorrido en Chromium: `imagenes/verify_world5.py` (contacto protegido, oxígeno y colisiones activos; daño al jefe asistido solo en ventanas válidas, sin evaluar dificultad ni puntería).
 

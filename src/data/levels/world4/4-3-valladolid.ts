@@ -23,6 +23,7 @@ export const LEVEL_4_3: LevelDef = {
     ...rockBlock(39, 1, 2, 4), ...floodedTunnel(40, 79, 5, [50, 66]),
     ['coins', 43, 9, 4], ['coins', 54, 10, 4], ['coins', 70, 9, 4],
     ['bubbles', 58, 11], ['current', 40, 48, 6, 11, 1, 0],
+    ['ticket', 51, 4], // Dentro de una bolsa de aire: hay que subir a explorarla.
     ...mesa(83, 4, 7), ['coins', 83, 6, 4], ['torch', 85, 5],
     // Isla seca: punto de control y nuevo snorkel al reaparecer.
     ['row', 91, 8, '?F?'], ['row', 102, 8, '?S?'],

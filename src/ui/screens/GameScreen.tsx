@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { getLevel, nextLevelId } from '../../data/worlds';
+import { getLevel, getWorldForLevel, nextLevelId } from '../../data/worlds';
+import { hasTicket } from '../../store/progress';
 import { cinematicAfterLevel, type CinematicDef } from '../../data/cinematics';
 import { audio } from '../../engine/audio';
 import { Game } from '../../engine/Game';
@@ -66,9 +67,11 @@ export function GameScreen() {
         // La simulación recibe su propia copia; publicar el cacao no sustituye ni muta Run.
         session: { ...run.session },
         initialBlessings: run.initialBlessings,
+        ticketCollected: hasTicket(useAppStore.getState().progress, getWorldForLevel(level.id)?.id ?? ''),
         callbacks: {
           onHud: (state) => {
             useAppStore.getState().syncCacao(run, state.coins);
+            useAppStore.getState().syncTicket(run, state.ticket);
             setHud(state);
           },
           onComplete: (result) => {
@@ -122,6 +125,7 @@ export function GameScreen() {
   const level = getLevel(run.levelId);
   if (!level) return null;
   const nextId = nextLevelId(level.id);
+  const isBonus = getWorldForLevel(level.id)?.bonus?.id === level.id;
 
   const goNext = (result: LevelResult): void => {
     if (nextId) startLevel(nextId, result.session);
@@ -145,7 +149,7 @@ export function GameScreen() {
               <>
                 {hud.boss && <BossBanner boss={hud.boss} />}
                 <div className="level-card" key={hud.spawnId} aria-hidden="true" style={hud.boss ? { visibility: 'hidden' } : undefined}>
-                  <span className="level-card__world">MUNDO {level.id}</span>
+                  <span className="level-card__world">{isBonus ? 'NIVEL SECRETO' : `MUNDO ${level.id}`}</span>
                   <span className="level-card__name">{level.name}</span>
                 </div>
               </>
@@ -166,6 +170,7 @@ export function GameScreen() {
             result={outcome.result}
             levelName={level.name}
             hasNext={!!nextId}
+            isBonus={isBonus}
             onNext={() => goNext(outcome.result)}
             onRetry={retryLevel}
             onExit={() => go('levels')}

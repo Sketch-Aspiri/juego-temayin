@@ -26,6 +26,7 @@ export interface GameOptions {
   session: Session;
   callbacks: GameCallbacks;
   initialBlessings?: readonly BlessingId[];
+  ticketCollected?: boolean;
 }
 
 const MAX_FRAME_TIME = 0.1;
@@ -48,7 +49,7 @@ export class Game {
   constructor(private readonly opts: GameOptions) {
     this.renderer = new Renderer(opts.canvas, opts.assets);
     this.startScore = opts.session.score;
-    this.world = this.spawn(false);
+    this.world = this.spawn(false, opts.ticketCollected ?? false);
     applyBlessings(this.world, opts.initialBlessings ?? []);
   }
 
@@ -77,7 +78,7 @@ export class Game {
     this.last = performance.now();
   }
 
-  private spawn(fromCheckpoint: boolean): World {
+  private spawn(fromCheckpoint: boolean, ticketCollected: boolean): World {
     this.spawnId++;
     return new World({
       def: this.opts.level,
@@ -85,6 +86,7 @@ export class Game {
       input: this.opts.input,
       audio: this.opts.audio,
       fromCheckpoint,
+      ticketCollected,
     });
   }
 
@@ -120,7 +122,7 @@ export class Game {
       callbacks.onGameOver(session.score);
       return;
     }
-    this.world = this.spawn(this.world.checkpointReached);
+    this.world = this.spawn(this.world.checkpointReached, this.world.ticketCollected);
   }
 
   private handleComplete(): void {
