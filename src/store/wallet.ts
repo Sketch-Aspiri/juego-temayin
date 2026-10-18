@@ -1,4 +1,5 @@
 import { getLevel } from '../data/worlds';
+import { BLESSINGS } from '../data/offerings';
 import type { BlessingId } from '../engine/blessings';
 
 /** Las bendiciones pagadas esperan al jugador hasta que entre en su nivel. */
@@ -20,8 +21,12 @@ export function sanitizeWallet(raw: unknown): Wallet {
     for (const [id, values] of Object.entries(pending)) {
       const offers = getLevel(id)?.offering?.offers;
       if (!offers || !Array.isArray(values)) continue;
-      const valid = offers.filter(blessing => values.includes(blessing));
-      if (valid.length) clean[id] = [...new Set(valid)];
+      const valid: BlessingId[] = [];
+      for (const value of values) {
+        const blessing = offers.find(offer => offer === value);
+        if (blessing && (BLESSINGS[blessing].repeatable || !valid.includes(blessing))) valid.push(blessing);
+      }
+      if (valid.length) clean[id] = valid;
     }
   }
   return { cacao: isCacao(cacao) ? cacao : 0, pending: clean };

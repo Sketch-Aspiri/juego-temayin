@@ -1,3 +1,4 @@
+import { EK_CHUAH_OFFERING } from '../../offerings';
 import type { LevelDef } from '../../../engine/level/types';
 import { bats } from '../helpers';
 
@@ -17,6 +18,7 @@ import { bats } from '../helpers';
  *   177-249 tramo final: huecos de 3 bloques, bandera y templo
  */
 export const LEVEL_6_2: LevelDef = {
+  offering: EK_CHUAH_OFFERING,
   id: '6-2',
   name: 'Tulum Aeropuerto',
   width: 250,

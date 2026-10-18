@@ -1,5 +1,6 @@
 import type { ItemKind } from '../tiles';
-import { bakedFrame, type Frame } from './artCache';
+import { bakedFrame } from './artCache';
+import { OBJECTS_FILE, OBJECT_FRAMES, type ObjectId } from '../../data/objectSprites';
 import { TAU } from '../constants';
 import { drawChili, drawCoin, drawLife, drawShield, type Ctx } from './drawUtils';
 
@@ -7,21 +8,7 @@ import { drawChili, drawCoin, drawLife, drawShield, type Ctx } from './drawUtils
  * Objetos pintados del atlas `objetos/objetos.webp` (1254×1254, 3×3).
  * Los rectángulos se midieron por cajas de alfa de cada pieza (alfa > 64).
  */
-export const OBJECTS_FILE = 'objetos/objetos.webp';
-
-export const OBJECT_FRAMES = {
-  cacao: [56, 84, 316, 300],
-  chile: [492, 40, 276, 368],
-  jadeHeart: [884, 88, 340, 300],
-  shield: [28, 444, 372, 376],
-  snorkel: [432, 448, 404, 372],
-  ball: [900, 480, 320, 324],
-  rope: [28, 868, 392, 340],
-  glyph: [492, 864, 272, 336],
-  ticket: [836, 920, 392, 264],
-} as const satisfies Readonly<Record<string, Frame>>;
-
-export type ObjectId = keyof typeof OBJECT_FRAMES;
+export { OBJECTS_FILE, OBJECT_FRAMES, type ObjectId } from '../../data/objectSprites';
 
 /** Altura en pantalla de los objetos que salen de los bloques. */
 const ITEM_HEIGHT = 34;

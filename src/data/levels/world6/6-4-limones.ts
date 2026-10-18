@@ -1,3 +1,4 @@
+import { EK_CHUAH_OFFERING } from '../../offerings';
 import type { LevelDef } from '../../../engine/level/types';
 import { bats, fireflies, nauyaca, tarantula } from '../helpers';
 
@@ -16,6 +17,7 @@ import { bats, fireflies, nauyaca, tarantula } from '../helpers';
  *   150-209 murciélagos entre luciérnagas, último foso, bandera y templo
  */
 export const LEVEL_6_4: LevelDef = {
+  offering: EK_CHUAH_OFFERING,
   id: '6-4',
   name: 'Limones',
   width: 216,

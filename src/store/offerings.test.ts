@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { ALL_LEVELS } from '../data/worlds';
+import { ALL_LEVELS, WORLDS } from '../data/worlds';
 import type { useAppStore as AppStore } from './appStore';
 import { loadSaved } from './persistence';
 import { DEFAULT_SETTINGS } from './settings';
@@ -19,12 +19,17 @@ describe('Encuentros y compras', () => {
   });
   afterEach(() => vi.unstubAllGlobals());
 
-  it('abre el encuentro solo en los siete niveles configurados', () => {
-    expect(ALL_LEVELS.filter(l => l.offering).map(l => l.id)).toEqual(['1-3', '1-6', '2-7', '3-5', '4-5', '5-6', '6-6']);
-    store.getState().startLevel('1-3');
-    expect(store.getState().screen).toBe('offering');
-    store.getState().startLevel('1-2');
-    expect(store.getState().screen).toBe('game');
+  it('abre de dos a tres encuentros por mundo, incluido el jefe, y respeta los demás niveles', () => {
+    for (const world of WORLDS) {
+      const encounters = world.levels.filter(level => level.offering);
+      expect(encounters.length).toBeGreaterThanOrEqual(2);
+      expect(encounters.length).toBeLessThanOrEqual(3);
+      expect(world.levels.at(-1)?.offering).toBeDefined();
+    }
+    for (const level of ALL_LEVELS) {
+      store.getState().startLevel(level.id);
+      expect(store.getState().screen).toBe(level.offering ? 'offering' : 'game');
+    }
   });
 
   it('cobra una sola vez, guarda la compra y evita dobles pulsaciones', () => {
@@ -41,6 +46,41 @@ describe('Encuentros y compras', () => {
     store.getState().startLevel('1-3');
     expect(store.getState().buyBlessing('shield')).toBe(false);
     expect(store.getState().wallet.cacao).toBe(19);
+  });
+
+  it('compra varias vidas juntas y permite repetir sin gastar más del saldo', () => {
+    store.setState({ wallet: { cacao: 250, pending: {} } });
+    store.getState().startLevel('1-3');
+    expect(store.getState().buyBlessing('life', 3)).toBe(true);
+    expect(store.getState().wallet.cacao).toBe(100);
+    expect(store.getState().buyBlessing('life')).toBe(true);
+    expect(store.getState().buyBlessing('life', 2)).toBe(false);
+    expect(store.getState().wallet.cacao).toBe(50);
+    expect(store.getState().buyBlessing('life')).toBe(true);
+    expect(store.getState().buyBlessing('life')).toBe(false);
+    expect(loadSaved().wallet).toEqual({ cacao: 0, pending: { '1-3': Array(5).fill('life') } });
+    store.getState().go('levels');
+    store.getState().startLevel('1-3');
+    store.getState().continueOffering();
+    expect(store.getState().run?.initialBlessings).toEqual(Array(5).fill('life'));
+    expect(store.getState().wallet.pending).toEqual({});
+    store.getState().retryLevel();
+    store.getState().continueOffering();
+    expect(store.getState().run?.initialBlessings).toEqual([]);
+  });
+
+  it.each([0, -1, 1.5, NaN, Infinity, 100, Number.MAX_SAFE_INTEGER])('rechaza cantidades inválidas: %s', quantity => {
+    store.getState().startLevel('1-3');
+    const wallet = store.getState().wallet;
+    expect(store.getState().buyBlessing('life', quantity)).toBe(false);
+    expect(store.getState().wallet).toBe(wallet);
+  });
+
+  it('mantiene fuego y escudo limitados a una unidad por encuentro', () => {
+    store.getState().startLevel('1-3');
+    expect(store.getState().buyBlessing('fire', 2)).toBe(false);
+    expect(store.getState().buyBlessing('shield', 2)).toBe(false);
+    expect(store.getState().wallet.cacao).toBe(130);
   });
 
   it('entrega las tres compras al continuar y no vuelve a entregarlas al reiniciar', () => {

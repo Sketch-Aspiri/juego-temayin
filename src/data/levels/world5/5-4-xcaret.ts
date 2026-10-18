@@ -1,3 +1,4 @@
+import { EK_CHUAH_OFFERING } from '../../offerings';
 import type { LevelDef, Op } from '../../../engine/level/types';
 import { cavernCeiling, floodedTunnel } from '../caves';
 import { axolotls, bats, morays } from '../helpers';
@@ -11,6 +12,7 @@ function tunnelRoof(x0: number, x1: number, pockets: readonly number[]): Op[] {
 }
 
 export const LEVEL_5_4: LevelDef = {
+  offering: EK_CHUAH_OFFERING,
   id: '5-4', name: 'Xcaret', width: 205, theme: 'cave', time: 360, checkpoint: 98,
   darkness: { radius: 220, alpha: 0.78 },
   hint: 'Sigue las antorchas por el río subterráneo. Las burbujas y las bolsas de aire te permiten respirar; nada contra las corrientes con calma.',

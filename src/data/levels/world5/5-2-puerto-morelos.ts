@@ -1,8 +1,10 @@
+import { EK_CHUAH_OFFERING } from '../../offerings';
 import type { LevelDef } from '../../../engine/level/types';
 import { jellyfish, lionfish, morays } from '../helpers';
 import { waterBank } from '../waterBanks';
 
 export const LEVEL_5_2: LevelDef = {
+  offering: EK_CHUAH_OFFERING,
   id: '5-2', name: 'Puerto Morelos', width: 205, theme: 'reef',
   checkpoint: 98, time: 360,
   hint: 'Usa el snorkel de caracol y detente en las burbujas para recuperar oxígeno. ¡Cuidemos el arrecife del pez león invasor!',

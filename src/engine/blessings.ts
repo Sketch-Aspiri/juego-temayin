@@ -1,6 +1,7 @@
 import type { World } from './World';
 
 export type BlessingId = 'fire' | 'shield' | 'life';
+export const MAX_BLESSING_QUANTITY = 99;
 
 export interface OfferingConfig {
   readonly deity: 'ekChuah';
@@ -9,7 +10,7 @@ export interface OfferingConfig {
 
 /** Se entregan una sola vez al entrar: las reapariciones usan las reglas normales. */
 export function applyBlessings(world: World, blessings: readonly BlessingId[]): void {
-  for (const blessing of new Set(blessings)) {
+  for (const blessing of blessings) {
     if (blessing === 'life') world.session.lives++;
     else world.player[blessing] = true;
   }

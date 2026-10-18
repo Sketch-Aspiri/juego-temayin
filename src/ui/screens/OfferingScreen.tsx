@@ -8,6 +8,8 @@ import { OfferingScene } from '../../engine/OfferingScene';
 import { PORTRAIT_VIEW_WIDTH } from '../../engine/render/viewport';
 import { useAppStore } from '../../store/appStore';
 import { useAssets } from '../assetsContext';
+import { BlessingCard } from '../components/BlessingCard';
+export { BlessingCard } from '../components/BlessingCard';
 import '../offering.css';
 
 function OfferingStage({ level }: { level: LevelDef }) {
@@ -29,27 +31,6 @@ function OfferingStage({ level }: { level: LevelDef }) {
   </div>;
 }
 
-interface BlessingCardProps {
-  id: BlessingId;
-  balance: number;
-  purchased: boolean;
-  onBuy: (id: BlessingId) => void;
-}
-
-export function BlessingCard({ id, balance, purchased, onBuy }: BlessingCardProps) {
-  const blessing = BLESSINGS[id];
-  const affordable = balance >= blessing.price;
-  return <article className={`blessing blessing--${id}${purchased ? ' blessing--bought' : ''}`}>
-    <span className="blessing__symbol" aria-hidden="true">{blessing.symbol}</span>
-    <div className="blessing__text"><h2>{blessing.name}</h2><p>{blessing.description}</p></div>
-    <button type="button" disabled={purchased || !affordable} onClick={() => onBuy(id)}
-      aria-label={purchased ? `${blessing.name}: recibida` : `Comprar ${blessing.name} por ${blessing.price} cacao${affordable ? '' : ': cacao insuficiente'}`}>
-      {purchased ? '✓ Recibida' : <><strong>{blessing.price}</strong><span>cacao</span></>}
-    </button>
-    {!affordable && !purchased && <span className="blessing__shortage">Te faltan {blessing.price - balance} cacao</span>}
-  </article>;
-}
-
 export function OfferingScreen() {
   const run = useAppStore(s => s.run);
   const wallet = useAppStore(s => s.wallet);
@@ -67,8 +48,10 @@ export function OfferingScreen() {
   const level = run && getLevel(run.levelId);
   if (!level?.offering) return null;
   const purchased = wallet.pending[level.id] ?? [];
-  const buy = (id: BlessingId): void => {
-    if (buyBlessing(id)) setMessage(`${BLESSINGS[id].name} recibida. La llevarás al comenzar el nivel.`);
+  const buy = (id: BlessingId, quantity: number): void => {
+    if (buyBlessing(id, quantity)) setMessage(id === 'life'
+      ? `${quantity === 1 ? 'Vida extra recibida' : `${quantity} vidas extra recibidas`}. Puedes seguir comprando; las llevarás al comenzar el nivel.`
+      : `${BLESSINGS[id].name} recibida. La llevarás al comenzar el nivel.`);
   };
   return <main className="offering" aria-labelledby="offering-title">
     <div className="offering__layout">
@@ -80,7 +63,7 @@ export function OfferingScreen() {
         </header>
         <p className="offering__greeting">«{EK_CHUAH.greeting}»</p>
         <div className="offering__offers">{level.offering.offers.map(id =>
-          <BlessingCard key={id} id={id} balance={wallet.cacao} purchased={purchased.includes(id)} onBuy={buy} />)}</div>
+          <BlessingCard key={id} id={id} balance={wallet.cacao} purchased={purchased.filter(item => item === id).length} onBuy={buy} />)}</div>
         <p className="offering__message" role="status">{message}</p>
         <p className="offering__note">{EK_CHUAH.note}</p>
         <button type="button" className="btn btn--primary offering__continue" onClick={continueOffering}>Continuar la aventura <span aria-hidden="true">→</span></button>

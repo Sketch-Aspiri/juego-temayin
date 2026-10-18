@@ -10,12 +10,12 @@ import { World } from './World';
 const make = () => new World({ def: getLevel('1-3')!, input: new Input(), audio: new AudioEngine(), session: { coins: 250, score: 0, lives: START_LIVES } });
 
 describe('Bendiciones iniciales', () => {
-  it('aplica fuego, escudo y una vida sin alterar el cacao ni la puntuación', () => {
+  it('aplica fuego, escudo y todas las vidas pagadas sin alterar cacao ni puntuación', () => {
     const world = make();
     applyBlessings(world, ['fire', 'shield', 'life', 'life']);
     expect(world.player.fire).toBe(true);
     expect(world.player.shield).toBe(true);
-    expect(world.session).toEqual({ coins: 250, score: 0, lives: START_LIVES + 1 });
+    expect(world.session).toEqual({ coins: 250, score: 0, lives: START_LIVES + 2 });
     expect(world.coinsCollected).toBe(0);
   });
 

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { INTRO_LEVEL_ID } from '../data/intro';
 import { BLESSINGS } from '../data/offerings';
 import { getLevel } from '../data/worlds';
-import type { BlessingId } from '../engine/blessings';
+import { MAX_BLESSING_QUANTITY, type BlessingId } from '../engine/blessings';
 import { START_LIVES } from '../engine/constants';
 import type { LevelResult } from '../engine/scoring';
 import type { Session } from '../engine/types';
@@ -27,7 +27,7 @@ interface AppState {
   settings: Settings;
   run: Run | null;
   wallet: Wallet;
-  buyBlessing: (blessing: BlessingId) => boolean;
+  buyBlessing: (blessing: BlessingId, quantity?: number) => boolean;
   continueOffering: () => void;
   /** Solo se aceptan publicaciones del motor de la partida vigente. */
   syncCacao: (run: Run, cacao: number) => void;
@@ -75,14 +75,17 @@ export const useAppStore = create<AppState>((set, get) => {
       set({ screen: getLevel(levelId)?.offering ? 'offering' : 'game', run: { levelId, session, attempt: 0 } });
     },
 
-    buyBlessing: (blessing) => {
+    buyBlessing: (blessing, quantity = 1) => {
       const { run, screen, wallet } = get();
       const offers = run && getLevel(run.levelId)?.offering?.offers;
       if (!run || screen !== 'offering' || !offers?.includes(blessing)) return false;
+      if (!Number.isSafeInteger(quantity) || quantity < 1 || quantity > MAX_BLESSING_QUANTITY) return false;
       const purchased = wallet.pending[run.levelId] ?? [];
-      const price = BLESSINGS[blessing].price;
-      if (purchased.includes(blessing) || wallet.cacao < price) return false;
-      set({ wallet: { cacao: wallet.cacao - price, pending: { ...wallet.pending, [run.levelId]: [...purchased, blessing] } } });
+      const { price, repeatable } = BLESSINGS[blessing];
+      if ((!repeatable && (purchased.includes(blessing) || quantity !== 1)) || wallet.cacao < price * quantity) return false;
+      const additions = Array.from({ length: quantity }, () => blessing);
+      set({ wallet: { cacao: wallet.cacao - price * quantity,
+        pending: { ...wallet.pending, [run.levelId]: [...purchased, ...additions] } } });
       persist();
       return true;
     },

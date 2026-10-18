@@ -30,9 +30,16 @@ describe('Bolsa persistente de cacao', () => {
   });
 
   it('guarda y recupera cacao y compras pendientes', () => {
-    const state = { ...loadSaved(), wallet: { cacao: 120, pending: { '1-3': ['fire', 'life'] as const } } };
+    const state = { ...loadSaved(), wallet: { cacao: 120, pending: { '1-3': ['fire', 'life', 'life', 'life'] as const } } };
     save(state);
     expect(loadSaved()).toEqual(state);
+  });
+
+  it('conserva cada vida pagada y elimina duplicados de los poderes sin mutar el guardado', () => {
+    const raw = { cacao: 0, pending: { '1-3': ['life', 'shield', 'life', 'fire', 'shield', 'life', 'fire', null] } };
+    const before = structuredClone(raw);
+    expect(sanitizeWallet(raw).pending['1-3']).toEqual(['life', 'shield', 'life', 'fire', 'life']);
+    expect(raw).toEqual(before);
   });
 
   it('migra v2 conservando el progreso y empezando con la bolsa vacía', () => {

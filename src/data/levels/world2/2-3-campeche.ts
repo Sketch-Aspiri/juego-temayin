@@ -1,3 +1,4 @@
+import { EK_CHUAH_OFFERING } from '../../offerings';
 import { GROUND } from '../../../engine/constants';
 import type { LevelDef, Op } from '../../../engine/level/types';
 import { blueCrab, pirateCrab } from '../helpers';
@@ -37,6 +38,7 @@ const RAMPART_TOP = 7;
  *   166-223 Puerta de Mar y malecón: poza del mar, escalinata, bandera y templo.
  */
 export const LEVEL_2_3: LevelDef = {
+  offering: EK_CHUAH_OFFERING,
   id: '2-3',
   name: 'San Francisco de Campeche',
   hint: '¡Salta de cañón en cañón y esquiva sus balas: también puedes pisarlas!',

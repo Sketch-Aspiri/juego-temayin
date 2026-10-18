@@ -1,8 +1,10 @@
+import { EK_CHUAH_OFFERING } from '../../offerings';
 import type { LevelDef } from '../../../engine/level/types';
 import { coati } from '../helpers';
 
 /** Hamacas trampolín de Tixkokob: la ruta alta ofrece cacao y la baja permite practicar. */
 export const LEVEL_3_3: LevelDef = {
+  offering: EK_CHUAH_OFFERING,
   id: '3-3', name: 'Tixkokob', width: 166, theme: 'hacienda', time: 330, checkpoint: 80,
   hint: 'Cae sobre una hamaca para rebotar alto. Busca el cacao entre los tejados.',
   ops: [

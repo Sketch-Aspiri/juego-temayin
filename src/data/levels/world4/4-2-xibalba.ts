@@ -1,3 +1,4 @@
+import { EK_CHUAH_OFFERING } from '../../offerings';
 import type { LevelDef } from '../../../engine/level/types';
 import { cavernCeiling, floodedTunnel, mesa, rockBlock } from '../caves';
 import { axolotls, bats, shades } from '../helpers';
@@ -32,6 +33,7 @@ const CEILING_ROWS = 2;
  * 159-226    Ascenso hacia la salida: escaleras, poza, hoyo con losa, bandera y templo.
  */
 export const LEVEL_4_2: LevelDef = {
+  offering: EK_CHUAH_OFFERING,
   id: '4-2',
   name: 'Xibalbá',
   hint: 'El fuego ilumina y disuelve las sombras. ¡Busca aire en las cuevas inundadas!',

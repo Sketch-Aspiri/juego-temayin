@@ -1,3 +1,4 @@
+import { EK_CHUAH_OFFERING } from '../../offerings';
 import type { LevelDef, Op } from '../../../engine/level/types';
 import { barracudas, nauyaca, urchin } from '../helpers';
 import { waterBank } from '../waterBanks';
@@ -56,6 +57,7 @@ const rockWall = (x: number, y1: number): Op[] =>
  * 161-199    Recta final hasta la bandera y el templo.
  */
 export const LEVEL_1_5: LevelDef = {
+  offering: EK_CHUAH_OFFERING,
   id: '1-5',
   name: 'Candelaria',
   hint: 'Los rápidos te arrastran: en el túnel, respira en las bolsas de aire.',

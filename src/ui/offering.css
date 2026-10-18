@@ -22,10 +22,14 @@ body:has(.offering) { touch-action: pan-y; }
 .offering__wallet strong { font-family: 'Lilita One', cursive; font-size: 29px; color: #ffe17a; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; max-width: 140px; }
 .offering__greeting { font-family: 'Bree Serif', serif; line-height: 1.55; color: #e2e8ce; margin: 18px 0 23px; font-size: 16px; }
 .offering__offers { display: grid; gap: 10px; }
-.blessing { position: relative; display: grid; grid-template-columns: 44px 1fr 78px; align-items: center; gap: 12px; background: linear-gradient(110deg, #284f3b, #19372a); border: 1px solid #629c7466; border-radius: 15px; padding: 14px; box-shadow: 0 3px 0 #081e16; }
-.blessing__symbol { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 13px; background: #112e22; color: #77d9ac; font-size: 33px; }
-.blessing--fire .blessing__symbol { color: #ffbb62; }
-.blessing--life .blessing__symbol { color: #9be4a9; font-size: 27px; }
+.blessing { position: relative; display: grid; grid-template-columns: 60px minmax(0, 1fr) 78px; align-items: center; gap: 12px; background: linear-gradient(110deg, #284f3b, #19372a); border: 1px solid #629c7466; border-radius: 15px; padding: 14px; box-shadow: 0 3px 0 #081e16; }
+.blessing__symbol { width: 60px; height: 64px; display: grid; place-items: center; border-radius: 13px; background: #112e22; }
+.blessing__sprite { height: 48px; max-width: 52px; filter: drop-shadow(0 3px 3px #0007); }
+.blessing__quantity { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 10px; margin-top: 10px; color: #e2e8ce; font-size: 11px; }
+.blessing__quantity select { min-height: 44px; max-width: 100%; padding: 8px 12px; border: 1px solid #81b791; border-radius: 9px; background: #112e22; color: #fff0bd; font: inherit; font-size: 14px; color-scheme: dark; cursor: pointer; }
+.blessing__quantity select:disabled { opacity: .65; cursor: default; }
+.blessing .blessing__received { margin-top: 8px; color: #bbefcb; }
+.blessing :is(button, select):focus-visible { outline: 3px solid #fff0bd; outline-offset: 3px; }
 .blessing h2 { font-family: 'Bree Serif', serif; font-weight: 400; font-size: 18px; margin: 0 0 4px; color: #fff0bd; }
 .blessing p { font-size: 12px; line-height: 1.45; color: #c7d6c3; margin: 0; }
 .blessing button { display: grid; place-content: center; min-height: 52px; padding: 7px; border: 1px solid #e7c679; border-radius: 11px; background: #ffe17a; color: #3c2c16; cursor: pointer; font-size: 11px; }
@@ -52,8 +56,9 @@ body:has(.offering) { touch-action: pan-y; }
   .offering__panel { padding: 5px 2px; }
   .offering h1 { font-size: 38px; }
   .offering__greeting { margin: 12px 0 16px; font-size: 14px; }
-  .blessing { padding: 12px 10px; gap: 9px; grid-template-columns: 38px 1fr 73px; }
-  .blessing__symbol { width: 38px; height: 42px; }
+  .blessing { padding: 12px 10px; gap: 9px; grid-template-columns: 48px minmax(0, 1fr) 73px; }
+  .blessing__symbol { width: 48px; height: 54px; }
+  .blessing__sprite { height: 40px; max-width: 44px; }
   .blessing h2 { font-size: 16px; }
   .blessing p { font-size: 11px; }
   .menu__treasures { font-size: 10px; }

@@ -1,3 +1,4 @@
+import { EK_CHUAH_OFFERING } from '../../offerings';
 import type { LevelDef } from '../../../engine/level/types';
 import { coati, wheel } from '../helpers';
 
@@ -31,6 +32,7 @@ const CART_RELAY_PERIOD = 3.5;
  * mirar el suelo y caerían solos al vacío antes de encontrarse con el jugador.
  */
 export const LEVEL_2_5: LevelDef = {
+  offering: EK_CHUAH_OFFERING,
   id: '2-5',
   name: 'Tenabo',
   hint: '¡Cruza los barrancos en las carretas y esquiva las ruedas!',
