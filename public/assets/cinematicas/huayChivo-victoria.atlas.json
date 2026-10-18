@@ -1,0 +1,27 @@
+{
+  "image": "huayChivo-victoria.webp",
+  "width": 1983,
+  "height": 793,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "defeated",
+      "frame": [
+        64,
+        102,
+        724,
+        649
+      ]
+    },
+    {
+      "state": "farewell",
+      "frame": [
+        1069,
+        31,
+        889,
+        733
+      ]
+    }
+  ]
+}

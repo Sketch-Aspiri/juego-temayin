@@ -1,0 +1,27 @@
+{
+  "image": "lorencillo-victoria.webp",
+  "width": 1774,
+  "height": 887,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "defeated",
+      "frame": [
+        49,
+        215,
+        819,
+        597
+      ]
+    },
+    {
+      "state": "farewell",
+      "frame": [
+        986,
+        77,
+        750,
+        741
+      ]
+    }
+  ]
+}

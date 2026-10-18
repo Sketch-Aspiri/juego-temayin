@@ -1,10 +1,36 @@
 import { describe, expect, it } from 'vitest';
 import { ALL_CINEMATICS, CINEMATIC_FILES, CINEMATICS, cinematicAfterLevel } from './cinematics';
-import { getLevel } from './worlds';
+import { ALL_LEVELS, getLevel } from './worlds';
+import { BOSS_VICTORY_SPRITES, TEMAYIN_CINEMATIC_POSES } from './bossVictoryArt';
+import type { SpriteRef } from './intro';
 
 const PUBLIC_FILES = new Set(Object.keys(import.meta.glob('../../public/assets/**/*.webp')));
 
 describe('Catálogo ampliable de cinemáticas', () => {
+  it('cada jefe jugable tiene exactamente un capítulo de cuatro escenas tras su nivel', () => {
+    for (const level of ALL_LEVELS) {
+      const chapters = ALL_CINEMATICS.filter(cinematic => cinematic.afterLevel === level.id);
+      expect(chapters.length, level.id).toBe(level.boss ? 1 : 0);
+      if (!level.boss) continue;
+      expect(chapters[0].id).toBe(`${level.boss.id}-victory`);
+      expect(chapters[0].scenes).toHaveLength(4);
+    }
+  });
+
+  it('utiliza y precarga las diez poses nuevas de jefes y las seis de Temayin', () => {
+    const sprites: readonly SpriteRef[] = [...Object.values(BOSS_VICTORY_SPRITES).flatMap(poses => Object.values(poses)),
+      ...Object.values(TEMAYIN_CINEMATIC_POSES)];
+    expect(sprites).toHaveLength(16);
+    const actors = ALL_CINEMATICS.flatMap(cinematic => cinematic.scenes.flatMap(scene => scene.actors));
+    for (const sprite of sprites) {
+      expect(actors.some(actor => actor.sprite === sprite), `${sprite.file}: ${sprite.frame}`).toBe(true);
+      expect(CINEMATIC_FILES).toContain(sprite.file);
+      expect(sprite.frame.every(value => Number.isFinite(value) && value >= 0)).toBe(true);
+      expect(sprite.frame[2]).toBeGreaterThan(0);
+      expect(sprite.frame[3]).toBeGreaterThan(0);
+    }
+  });
+
   it('registra el prólogo y la victoria del primer jefe sin duplicar desbloqueos', () => {
     expect(CINEMATICS.intro.afterLevel).toBeUndefined();
     expect(cinematicAfterLevel('1-6')).toBe(CINEMATICS['puas-victory']);

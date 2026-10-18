@@ -1,0 +1,18 @@
+{
+  "reports": [
+    {
+      "case": "arte",
+      "poses": 16,
+      "lossless": true,
+      "alphaPreserved": true
+    },
+    {
+      "case": "guardado-v2",
+      "puasScenes": 4,
+      "newChaptersLocked": 5,
+      "savedProgressUnchanged": true
+    }
+  ],
+  "errors": [],
+  "mode": "Escenas y finales preparados; no evalúa combates ni dificultad."
+}

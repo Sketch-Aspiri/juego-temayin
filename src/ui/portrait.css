@@ -179,3 +179,29 @@
   .intro-actor--carried { animation: none !important; }
   .intro-train__cars { animation: none !important; left: 0; }
 }
+
+/* En teléfonos apaisados, la narración deja visibles las poses completas. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .intro-stage--chapter {
+    width: min(100vw, 1200px);
+    height: 100dvh;
+    aspect-ratio: auto;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    background: #10241a;
+  }
+  .intro-stage--chapter .intro-scene { position: relative; min-height: 0; overflow: hidden; }
+  .intro-stage--chapter .intro-caption {
+    position: relative;
+    inset: auto;
+    transform: none;
+    width: calc(100% - 24px);
+    justify-self: center;
+    margin: 8px 12px max(8px, env(safe-area-inset-bottom));
+    padding: 10px 12px 8px;
+  }
+  .intro-stage--chapter .intro-caption__text { font-size: 14px; line-height: 1.35; }
+  .intro-stage--chapter .intro-caption__speaker { font-size: 12px; top: -10px; }
+  .intro-stage--chapter .intro-caption__footer { min-height: 32px; margin-top: 4px; }
+  .intro-stage--chapter .intro-caption .btn { min-height: 32px; padding: 6px 12px; font-size: 12px; }
+}

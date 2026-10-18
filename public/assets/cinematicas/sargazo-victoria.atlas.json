@@ -1,0 +1,27 @@
+{
+  "image": "sargazo-victoria.webp",
+  "width": 1774,
+  "height": 887,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "defeated",
+      "frame": [
+        60,
+        220,
+        890,
+        613
+      ]
+    },
+    {
+      "state": "farewell",
+      "frame": [
+        1028,
+        50,
+        674,
+        786
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "image": "temayin-viaje.webp",
+  "width": 2172,
+  "height": 724,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "swim",
+      "frame": [
+        27,
+        18,
+        1087,
+        642
+      ]
+    },
+    {
+      "state": "seated",
+      "frame": [
+        1391,
+        0,
+        689,
+        714
+      ]
+    }
+  ]
+}

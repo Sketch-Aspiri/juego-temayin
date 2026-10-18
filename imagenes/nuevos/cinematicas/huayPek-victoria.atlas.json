@@ -1,0 +1,27 @@
+{
+  "image": "huayPek-victoria.webp",
+  "width": 1774,
+  "height": 887,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "defeated",
+      "frame": [
+        42,
+        343,
+        817,
+        460
+      ]
+    },
+    {
+      "state": "farewell",
+      "frame": [
+        993,
+        104,
+        761,
+        694
+      ]
+    }
+  ]
+}

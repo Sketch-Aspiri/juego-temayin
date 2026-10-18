@@ -1,0 +1,27 @@
+{
+  "image": "temayin-aventura.webp",
+  "width": 1774,
+  "height": 887,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "listen",
+      "frame": [
+        34,
+        88,
+        706,
+        779
+      ]
+    },
+    {
+      "state": "journey",
+      "frame": [
+        905,
+        14,
+        827,
+        856
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "image": "kaiman-victoria.webp",
+  "width": 1983,
+  "height": 793,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "defeated",
+      "frame": [
+        110,
+        285,
+        874,
+        418
+      ]
+    },
+    {
+      "state": "farewell",
+      "frame": [
+        1177,
+        131,
+        714,
+        566
+      ]
+    }
+  ]
+}

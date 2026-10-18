@@ -1,7 +1,14 @@
 import { INTRO_FILES, INTRO_SCENES, SPRITES, type IntroScene, type SpriteRef } from './intro';
 import { PUAS_VICTORY_SCENES } from './puasVictory';
+import { BOSS_VICTORY_SPRITES, CINEMATIC_DECK_BACKGROUND } from './bossVictoryArt';
+import { KAIMAN_VICTORY_SCENES } from './cinematics/kaimanVictory';
+import { HUAY_CHIVO_VICTORY_SCENES } from './cinematics/huayChivoVictory';
+import { HUAY_PEK_VICTORY_SCENES } from './cinematics/huayPekVictory';
+import { SARGAZO_VICTORY_SCENES } from './cinematics/sargazoVictory';
+import { LORENCILLO_VICTORY_SCENES } from './cinematics/lorencilloVictory';
 
-export type CinematicId = 'intro' | 'puas-victory';
+export type CinematicId = 'intro' | 'puas-victory' | 'kaiman-victory' | 'huayChivo-victory'
+  | 'huayPek-victory' | 'sargazo-victory' | 'lorencillo-victory';
 
 export interface CinematicDef {
   readonly id: CinematicId;
@@ -27,6 +34,36 @@ export const CINEMATICS: Readonly<Record<CinematicId, CinematicDef>> = {
     description: 'La victoria sobre Púas abre un nuevo camino para Temayin y Toh.',
     cover: { background: 'backgrounds/lair.webp', actor: SPRITES.alegre },
     scenes: PUAS_VICTORY_SCENES, afterLevel: '1-6',
+  },
+  'kaiman-victory': {
+    id: 'kaiman-victory', chapter: 'Capítulo 2 · Calkiní', title: 'El pantano vuelve a la calma',
+    description: 'Tras las olas de Kaimán, el tren pone rumbo a las haciendas de Yucatán.',
+    cover: { background: 'backgrounds/swamp.webp', actor: BOSS_VICTORY_SPRITES.kaiman.farewell },
+    scenes: KAIMAN_VICTORY_SCENES, afterLevel: '2-7',
+  },
+  'huayChivo-victory': {
+    id: 'huayChivo-victory', chapter: 'Capítulo 3 · Izamal', title: 'Amanece en la ciudad amarilla',
+    description: 'Los engaños de Huay Chivo se desvanecen y el camino a los cenotes queda abierto.',
+    cover: { background: 'backgrounds/yellowCity.webp', actor: BOSS_VICTORY_SPRITES.huayChivo.farewell },
+    scenes: HUAY_CHIVO_VICTORY_SCENES, afterLevel: '3-5',
+  },
+  'huayPek-victory': {
+    id: 'huayPek-victory', chapter: 'Capítulo 4 · Nuevo Xcán', title: 'Más allá de la niebla',
+    description: 'Huay Pek descansa y una brisa del Caribe anuncia la siguiente aventura.',
+    cover: { background: 'backgrounds/deepJungle.webp', actor: BOSS_VICTORY_SPRITES.huayPek.farewell },
+    scenes: HUAY_PEK_VICTORY_SCENES, afterLevel: '4-5',
+  },
+  'sargazo-victory': {
+    id: 'sargazo-victory', chapter: 'Capítulo 5 · Akumal', title: 'Un mar para volver',
+    description: 'Las tortugas recuperan su hogar y Temayin continúa por la Costa Maya.',
+    cover: { background: 'backgrounds/reef.webp', actor: BOSS_VICTORY_SPRITES.sargazo.farewell },
+    scenes: SARGAZO_VICTORY_SCENES, afterLevel: '5-6',
+  },
+  'lorencillo-victory': {
+    id: 'lorencillo-victory', chapter: 'Capítulo 6 · Chetumal', title: 'La última ruta hacia el eclipse',
+    description: 'Lorencillo cede el paso. Al otro lado de la selva, Camazotz aguarda.',
+    cover: { background: CINEMATIC_DECK_BACKGROUND, actor: BOSS_VICTORY_SPRITES.lorencillo.farewell },
+    scenes: LORENCILLO_VICTORY_SCENES, afterLevel: '6-6',
   },
 };
 

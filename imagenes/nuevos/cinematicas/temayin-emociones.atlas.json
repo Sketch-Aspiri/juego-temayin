@@ -1,0 +1,27 @@
+{
+  "image": "temayin-emociones.webp",
+  "width": 1774,
+  "height": 887,
+  "alpha": true,
+  "generator": "image_gen integrado",
+  "frames": [
+    {
+      "state": "celebrate",
+      "frame": [
+        53,
+        5,
+        731,
+        882
+      ]
+    },
+    {
+      "state": "grateful",
+      "frame": [
+        1010,
+        0,
+        733,
+        887
+      ]
+    }
+  ]
+}
