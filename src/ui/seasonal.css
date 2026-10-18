@@ -1,0 +1,23 @@
+.seasonal {
+  position: relative; isolation: isolate; overflow: hidden;
+  min-height: 290px; margin-bottom: 32px; border: 1px solid #c39b59;
+  border-radius: 20px; background: #092f32; box-shadow: 0 14px 40px #0005;
+}
+.seasonal__backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: .65; }
+.seasonal::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #082c30 8%, #082c30e8 43%, #082c3033 100%); }
+.seasonal__copy { width: 64%; padding: 30px 36px; }
+.seasonal__eyebrow { margin: 0 0 6px; color: #ffd88b; font-size: .8rem; text-transform: uppercase; letter-spacing: .14em; font-weight: bold; }
+.seasonal h3 { margin: 0; font: clamp(2.3rem, 5vw, 3.4rem)/1.1 'Lilita One', sans-serif; color: #ffda83; text-shadow: 0 3px #703c1f; }
+.seasonal__copy > p:not(.seasonal__eyebrow) { color: #fff0cc; max-width: 450px; line-height: 1.6; margin: 12px 0 18px; }
+.seasonal .btn { min-height: 48px; }
+.seasonal__jaguar { position: absolute; height: 110%; width: 36%; right: 1%; bottom: -12%; object-fit: contain; object-position: bottom; filter: drop-shadow(0 7px 15px #001d26); pointer-events: none; }
+.seasonal__record { display: flex; align-items: center; gap: 12px; color: #fff0cc; margin-top: 12px; }
+.hud .life-icon--seasonal { background-size: contain; background-position: center; background-repeat: no-repeat; }
+@media (max-width: 600px) {
+  .seasonal { min-height: 340px; }
+  .seasonal__copy { width: 100%; padding: 24px 20px; }
+  .seasonal__copy > p:not(.seasonal__eyebrow) { width: 72%; font-size: .9rem; }
+  .seasonal__jaguar { width: 34%; height: 60%; right: -3%; bottom: 0; }
+  .seasonal .btn { position: relative; max-width: 85%; }
+  .seasonal::before { background: linear-gradient(90deg, #082c30f5 5%, #082c30cc 55%, #082c3066); }
+}

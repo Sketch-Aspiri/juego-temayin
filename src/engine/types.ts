@@ -38,6 +38,7 @@ export type EnemyId =
   | 'jellyfish';
 export type BossId = 'puas' | 'kaiman' | 'huayChivo' | 'huayPek' | 'sargazo' | 'lorencillo';
 export type ThemeId =
+  | 'hanalPixan'
   | 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque'
   // Mundo 2 · Golfo de Campeche (AGENTS.md §4.7)
   | 'ruins'

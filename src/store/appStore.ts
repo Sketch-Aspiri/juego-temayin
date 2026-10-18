@@ -34,11 +34,12 @@ interface AppState {
   syncTicket: (run: Run, collected: boolean) => void;
   /** Nivel que empieza al terminar la cinemática (`null`: volver al título). */
   introNext: string | null;
+  introCarry: Session | null;
   go: (screen: Screen) => void;
   /** Empieza un nivel; `carry` arrastra puntos/vidas del nivel anterior. */
   startLevel: (levelId: string, carry?: Session) => void;
   /** Reproduce la cinemática; al terminar va a `next` o al título. */
-  playIntro: (next: string | null) => void;
+  playIntro: (next: string | null, carry?: Session) => void;
   /** Marca la cinemática como vista y continúa. */
   finishIntro: () => void;
   retryLevel: () => void;
@@ -64,6 +65,7 @@ export const useAppStore = create<AppState>((set, get) => {
     run: null,
     wallet: saved.wallet,
     introNext: null,
+    introCarry: null,
 
     go: (screen) => set({ screen }),
 
@@ -119,13 +121,14 @@ export const useAppStore = create<AppState>((set, get) => {
       persist();
     },
 
-    playIntro: (next) => set({ screen: 'intro', introNext: next }),
+    playIntro: (next, carry) => set({ screen: 'intro', introNext: next, introCarry: carry ? { ...carry } : null }),
 
     finishIntro: () => {
       const next = get().introNext;
-      set({ settings: { ...get().settings, introSeen: true }, introNext: null });
+      const carry = get().introCarry;
+      set({ settings: { ...get().settings, introSeen: true }, introNext: null, introCarry: null });
       persist();
-      if (next) get().startLevel(next);
+      if (next) get().startLevel(next, carry ?? undefined);
       else set({ screen: 'title' });
     },
 

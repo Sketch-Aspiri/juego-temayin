@@ -1,4 +1,5 @@
 import type { LevelDef, WorldDef } from '../engine/level/types';
+import { HANAL_PIXAN_LEVEL } from './levels/seasonal/hanal-pixan';
 import { BONUS_1 } from './levels/world1/1-extra-dosel';
 import { BONUS_2 } from './levels/world2/2-extra-camara';
 import { BONUS_3 } from './levels/world3/3-extra-patio';
@@ -80,13 +81,17 @@ export const WORLDS: readonly WorldDef[] = [
 export const ALL_LEVELS: readonly LevelDef[] = WORLDS.flatMap((w) => w.levels);
 
 export const BONUS_LEVELS: readonly LevelDef[] = WORLDS.flatMap(w => w.bonus ? [w.bonus] : []);
+/** Especiales de acceso libre, mostrados antes de la campaña sin cambiar sus desbloqueos. */
+export const SEASONAL_LEVELS: readonly LevelDef[] = [HANAL_PIXAN_LEVEL];
+export const isSeasonalLevel = (id: string): boolean => SEASONAL_LEVELS.some(level => level.id === id);
 /** Incluye los desvíos para búsqueda y validación; ALL_LEVELS conserva el orden publicado. */
-export const PLAYABLE_LEVELS: readonly LevelDef[] = [...ALL_LEVELS, ...BONUS_LEVELS];
+export const PLAYABLE_LEVELS: readonly LevelDef[] = [...SEASONAL_LEVELS, ...ALL_LEVELS, ...BONUS_LEVELS];
 export const getLevel = (id: string): LevelDef | undefined => PLAYABLE_LEVELS.find(l => l.id === id);
 export const getWorldForLevel = (id: string): WorldDef | undefined =>
   WORLDS.find(w => w.bonus?.id === id || w.levels.some(l => l.id === id));
 
 export function nextLevelId(id: string): string | null {
+  if (isSeasonalLevel(id)) return ALL_LEVELS[0]?.id ?? null;
   const i = ALL_LEVELS.findIndex((l) => l.id === id);
   return i >= 0 && i + 1 < ALL_LEVELS.length ? ALL_LEVELS[i + 1].id : null;
 }

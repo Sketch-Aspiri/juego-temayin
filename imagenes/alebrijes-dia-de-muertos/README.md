@@ -2,6 +2,8 @@
 
 Colección de 34 ilustraciones individuales PNG con fondo transparente, generadas con `image_gen` integrado. Una interpretación fantástica y festiva del reparto visual del juego: colores vivos, pintura floral, puntos, patrones geométricos y detalles de cempasúchil y calavera. Es una colección de arte conceptual; no incluye animaciones ni integración automática en el juego.
 
+El especial jugable **Hanal Pixán** integra ocho de estas ilustraciones (Temayin, Temayina, Toh, coatí, murciélago, alux, hormiga y luciérnaga), con movimientos de canvas y una cinemática de tres escenas. `../import_hanal_pixan_art.mjs` exporta WebP sin pérdidas y verifica sus píxeles; no modifica estos originales ni genera poses nuevas. Recursos publicados: `public/assets/temporada/hanal-pixan/`.
+
 Incluye Temayin, Temayina, Toh, Ek Chuah, los siete jefes (también Camazotz), los veinte tipos de enemigos, una tortuga de Akumal, una luciérnaga y la vagoneta de truck. Los elementos mecánicos se incluyen como complementos para completar el catálogo visual.
 
 Las figuras de leyenda se adaptan con respeto y tono familiar. Esta fusión artística contemporánea no pretende ser una reconstrucción histórica o religiosa.

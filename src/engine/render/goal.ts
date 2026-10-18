@@ -3,6 +3,8 @@ import type { World } from '../World';
 import { bakedFrame, type Frame } from './artCache';
 import type { Ctx } from './drawUtils';
 import { TOH_FILE, TOH_POSES, type TohPoseId } from '../../data/tohSprites';
+import { HANAL_PIXAN_SPRITES } from '../../data/hanalPixanArt';
+import { drawHanalSprite } from './hanalPixan';
 
 /**
  * Meta (asta + banderín), pirámide final y punto de control con Toh, usando el
@@ -185,6 +187,7 @@ export function drawCheckpoint(c: Ctx, world: World, now: number): void {
   } else {
     drawPostFallback(c, sx, spot.y);
   }
+  if (world.def.theme === 'hanalPixan' && drawHanalSprite(c, HANAL_PIXAN_SPRITES.toh, sx, tipY, 65, !world.checkpointReached)) return;
   if (world.checkpointReached) return drawToh(c, 'point', sx, tipY, false);
   const pose = TOH_IDLE[Math.floor(now / TOH_IDLE_STEP_MS) % TOH_IDLE.length];
   drawToh(c, pose, sx, tipY, true);

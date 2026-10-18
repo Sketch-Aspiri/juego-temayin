@@ -3,6 +3,8 @@ import type { World } from '../World';
 import type { GameplaySpriteId } from '../../data/gameplaySprites';
 import { hash, type Ctx } from './drawUtils';
 import { drawGameplaySprite } from './gameplaySprites';
+import { HANAL_PIXAN_SPRITES } from '../../data/hanalPixanArt';
+import { drawHanalSprite } from './hanalPixan';
 
 /**
  * Luciérnagas (op `firefly`): cuadros «luz 1-4» de `mecanicas/efectos.webp` que parpadean
@@ -29,6 +31,7 @@ export function drawFireflies(c: Ctx, world: World, now: number): void {
     const x = sx + Math.sin(t * BOB_RATE + seed) * BOB_X;
     const y = f.y + Math.cos(t * BOB_RATE * 0.8 + seed) * BOB_Y;
     const phase = Math.floor(t * BLINK_RATE + hash(seed) * FRAMES.length);
+    if (world.def.theme === 'hanalPixan' && drawHanalSprite(c, HANAL_PIXAN_SPRITES.firefly, x, y + SPRITE_W / 2, SPRITE_W)) continue;
     if (drawGameplaySprite(c, FRAMES[phase % FRAMES.length], x, y, SPRITE_W)) continue;
     c.fillStyle = 'rgba(255, 244, 150, 0.35)';
     c.beginPath();

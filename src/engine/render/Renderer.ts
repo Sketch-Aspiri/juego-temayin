@@ -37,6 +37,7 @@ import { drawWind } from './wind';
 import { drawFireflies } from './fireflies';
 import { drawStromatolites } from './stromatolites';
 import { drawTickets } from './tickets';
+import { drawHanalDecorations, drawHanalEnemy, drawHanalPlayer } from './hanalPixan';
 
 const BUMP_HEIGHT = 10;
 const BUMP_TIME = 0.15;
@@ -103,6 +104,7 @@ export class Renderer {
     drawCheckpoint(c, world, now);
     drawHoops(c, world.hoops, world.camX, now);
     this.drawTiles(world, theme, now, arenaPlatforms);
+    drawHanalDecorations(c, world, now);
     drawStromatolites(c, world);
     drawBeachProps(c, world);
     drawArenaPlatforms(c, arenaPlatforms, world.camX);
@@ -111,14 +113,7 @@ export class Renderer {
     drawCannonFx(c, world.cannons, world.camX, now);
     drawHaciendaProps(c, world, now);
     drawSlowZones(c, world.slowZones, world.camX, now);
-    for (const it of world.items) if (!drawSnorkelItem(c, it, world.camX, now)) drawItemSprite(c, it, world.camX, now);
-    for (const e of world.enemies) if (e.alive && e.active) drawEnemySprite(c, this.assets, e, world.camX);
-    world.boss?.draw(c, this.assets, world.camX);
-    drawQuills(c, world.quills, world.camX);
-    drawCannonballs(c, world.cannonballs, world.camX);
-    drawPlayerSprite(c, this.assets, world.player, world.camX, world.phase === 'dying', world.phaseT, now);
-    drawFireballs(c, world.fireballs, world.camX);
-    drawBalls(c, world.balls, world.camX);
+    this.drawActors(world, now);
     drawWind(c, world, now);
     drawWaterLayer(c, world, theme.water, now);
     drawTickets(c, world, now);
@@ -130,6 +125,25 @@ export class Renderer {
     drawOffering(c, world, now);
     if (this.canvas.width >= VW && !world.offeringActive) drawTohHint(c, world);
     c.restore();
+  }
+
+  /** El tema cambia las ilustraciones; las entidades mantienen sus reglas físicas. */
+  private drawActors(world: World, now: number): void {
+    const c = this.ctx;
+    for (const it of world.items) if (!drawSnorkelItem(c, it, world.camX, now)) drawItemSprite(c, it, world.camX, now);
+    for (const e of world.enemies) {
+      if (!e.alive || !e.active) continue;
+      if (world.def.theme === 'hanalPixan' && drawHanalEnemy(c, e, world.camX)) continue;
+      drawEnemySprite(c, this.assets, e, world.camX);
+    }
+    world.boss?.draw(c, this.assets, world.camX);
+    drawQuills(c, world.quills, world.camX);
+    drawCannonballs(c, world.cannonballs, world.camX);
+    if (world.def.theme !== 'hanalPixan' || !drawHanalPlayer(c, world, now)) {
+      drawPlayerSprite(c, this.assets, world.player, world.camX, world.phase === 'dying', world.phaseT, now);
+    }
+    drawFireballs(c, world.fireballs, world.camX);
+    drawBalls(c, world.balls, world.camX);
   }
 
   /** El recorte cambia solo el dibujo: enemigos, saltos y cámara física siguen siendo los mismos. */

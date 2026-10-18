@@ -1,4 +1,4 @@
-import { ALL_LEVELS, getWorldForLevel, PLAYABLE_LEVELS, WORLDS } from '../data/worlds';
+import { ALL_LEVELS, getWorldForLevel, isSeasonalLevel, PLAYABLE_LEVELS, WORLDS } from '../data/worlds';
 import type { LevelResult, Stars } from '../engine/scoring';
 
 export interface LevelRecord {
@@ -39,6 +39,7 @@ export function recordCompletion(progress: Progress, result: LevelResult): Progr
  * de niveles nuevos sin completar).
  */
 export function isUnlocked(progress: Progress, levelId: string): boolean {
+  if (isSeasonalLevel(levelId)) return true;
   const world = getWorldForLevel(levelId);
   if (world?.bonus?.id === levelId) return hasTicket(progress, world.id);
   const i = ALL_LEVELS.findIndex((l) => l.id === levelId);

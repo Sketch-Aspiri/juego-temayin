@@ -11,6 +11,7 @@ import { haciendaScenery } from './scenery/hacienda';
 import { xibalbaScenery } from './scenery/xibalba';
 import type { TexId } from './textures';
 import { reefScenery } from './scenery/reef';
+import { hanalPixanScenery } from './hanalPixan';
 
 export interface WaterStyle {
   fill: string;
@@ -57,6 +58,10 @@ const caveArt = paintedScenery('cave.webp', caveScenery, { nearTop: 0.7 });
  * y registrarlo aquí.
  */
 export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
+  hanalPixan: {
+    id: 'hanalPixan', sky: ['#092e32', '#184c49'], sun: false,
+    scenery: hanalPixanScenery, groundTop: 'grass', groundBody: 'dirt', platform: 'carved',
+  },
   reef: {
     id: 'reef', sky: ['#075578', '#51c4c3'], sun: false,
     scenery: paintedScenery('reef.webp', reefScenery, { nearTop: 0.75 }),

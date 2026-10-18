@@ -6,9 +6,12 @@ import { HUAY_CHIVO_VICTORY_SCENES } from './cinematics/huayChivoVictory';
 import { HUAY_PEK_VICTORY_SCENES } from './cinematics/huayPekVictory';
 import { SARGAZO_VICTORY_SCENES } from './cinematics/sargazoVictory';
 import { LORENCILLO_VICTORY_SCENES } from './cinematics/lorencilloVictory';
+import { HANAL_PIXAN_SCENES } from './cinematics/hanalPixan';
+import { HANAL_PIXAN_BACKGROUND, HANAL_PIXAN_SPRITES } from './hanalPixanArt';
+import { HANAL_PIXAN_LEVEL } from './levels/seasonal/hanal-pixan';
 
 export type CinematicId = 'intro' | 'puas-victory' | 'kaiman-victory' | 'huayChivo-victory'
-  | 'huayPek-victory' | 'sargazo-victory' | 'lorencillo-victory';
+  | 'huayPek-victory' | 'sargazo-victory' | 'lorencillo-victory' | 'hanal-pixan';
 
 export interface CinematicDef {
   readonly id: CinematicId;
@@ -19,10 +22,18 @@ export interface CinematicDef {
   readonly scenes: readonly IntroScene[];
   /** Se desbloquea y reproduce al completar este nivel; sin él está siempre disponible. */
   readonly afterLevel?: string;
+  /** Se presenta antes de cada visita al especial, sin marcar el prólogo como visto. */
+  readonly beforeLevel?: string;
 }
 
 /** Orden narrativo del menú. Añadir una entrada conecta también desbloqueo y reproducción. */
 export const CINEMATICS: Readonly<Record<CinematicId, CinematicDef>> = {
+  'hanal-pixan': {
+    id: 'hanal-pixan', chapter: 'Especial de temporada', title: 'Hanal Pixán',
+    description: 'Un sendero de luz, memoria y alebrijes antes de partir de Palenque.',
+    cover: { background: HANAL_PIXAN_BACKGROUND, actor: HANAL_PIXAN_SPRITES.temayin },
+    scenes: HANAL_PIXAN_SCENES, beforeLevel: HANAL_PIXAN_LEVEL.id,
+  },
   intro: {
     id: 'intro', chapter: 'Prólogo', title: 'El eclipse de Camazotz',
     description: 'Un Sol de Jade, una promesa y el comienzo de la aventura.',
@@ -68,6 +79,10 @@ export const CINEMATICS: Readonly<Record<CinematicId, CinematicDef>> = {
 };
 
 export const ALL_CINEMATICS: readonly CinematicDef[] = Object.values(CINEMATICS);
+
+export function cinematicBeforeLevel(levelId: string): CinematicDef | undefined {
+  return ALL_CINEMATICS.find(cinematic => cinematic.beforeLevel === levelId);
+}
 
 export function cinematicAfterLevel(levelId: string): CinematicDef | undefined {
   return ALL_CINEMATICS.find(cinematic => cinematic.afterLevel === levelId);

@@ -1,0 +1,134 @@
+[
+  {
+    "phase": "play",
+    "x": 6.935763888888891,
+    "checkpoint": false,
+    "time": 300
+  },
+  {
+    "phase": "play",
+    "x": 11.935763888888863,
+    "checkpoint": false,
+    "time": 300
+  },
+  {
+    "phase": "play",
+    "x": 16.935763888888907,
+    "checkpoint": false,
+    "time": 299
+  },
+  {
+    "phase": "play",
+    "x": 18.128645833333334,
+    "checkpoint": false,
+    "time": 299
+  },
+  {
+    "phase": "play",
+    "x": 21.739930555555578,
+    "checkpoint": false,
+    "time": 298
+  },
+  {
+    "phase": "play",
+    "x": 26.739930555555596,
+    "checkpoint": false,
+    "time": 298
+  },
+  {
+    "phase": "play",
+    "x": 31.739930555555482,
+    "checkpoint": false,
+    "time": 297
+  },
+  {
+    "phase": "play",
+    "x": 36.73993055555537,
+    "checkpoint": false,
+    "time": 297
+  },
+  {
+    "phase": "play",
+    "x": 41.739930555555254,
+    "checkpoint": false,
+    "time": 296
+  },
+  {
+    "phase": "play",
+    "x": 46.73993055555514,
+    "checkpoint": false,
+    "time": 296
+  },
+  {
+    "phase": "play",
+    "x": 51.73993055555506,
+    "checkpoint": false,
+    "time": 295
+  },
+  {
+    "phase": "play",
+    "x": 56.73993055555529,
+    "checkpoint": true,
+    "time": 295
+  },
+  {
+    "phase": "play",
+    "x": 61.73993055555552,
+    "checkpoint": true,
+    "time": 294
+  },
+  {
+    "phase": "play",
+    "x": 66.73993055555574,
+    "checkpoint": true,
+    "time": 294
+  },
+  {
+    "phase": "play",
+    "x": 71.73993055555597,
+    "checkpoint": true,
+    "time": 293
+  },
+  {
+    "phase": "play",
+    "x": 76.7399305555562,
+    "checkpoint": true,
+    "time": 293
+  },
+  {
+    "phase": "play",
+    "x": 81.73993055555643,
+    "checkpoint": true,
+    "time": 292
+  },
+  {
+    "phase": "play",
+    "x": 86.73993055555665,
+    "checkpoint": true,
+    "time": 292
+  },
+  {
+    "phase": "play",
+    "x": 91.73993055555688,
+    "checkpoint": true,
+    "time": 291
+  },
+  {
+    "phase": "play",
+    "x": 96.73993055555711,
+    "checkpoint": true,
+    "time": 291
+  },
+  {
+    "phase": "play",
+    "x": 101.73993055555734,
+    "checkpoint": true,
+    "time": 290
+  },
+  {
+    "phase": "flag",
+    "x": 102.55,
+    "checkpoint": true,
+    "time": 290
+  }
+]

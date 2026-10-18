@@ -1,4 +1,5 @@
 import { assetUrl } from '../../engine/assets';
+import { isSeasonalLevel } from '../../data/worlds';
 import type { HudState } from '../../engine/hud';
 import { TicketIcon } from './TicketIcon';
 import '../tickets.css';
@@ -12,11 +13,12 @@ interface HudProps {
 }
 
 export function Hud({ hud }: HudProps) {
+  const seasonal = isSeasonalLevel(hud.levelId);
   return (
     <div className="hud" aria-live="off">
       <Stat label="PUNTOS" value={String(hud.score).padStart(6, '0')} />
       <Stat label="CACAO" value={`× ${String(hud.coins).padStart(2, '0')}`} />
-      <Stat label="MUNDO" value={hud.levelId} />
+      <Stat label={seasonal ? 'ESPECIAL' : 'MUNDO'} value={seasonal ? 'Hanal Pixán' : hud.levelId} />
       <Stat label="TIEMPO" value={String(hud.time)} warn={hud.time <= LOW_TIME} />
       {hud.oxygen !== null && <OxygenBar ratio={hud.oxygen} />}
       <div className="hud__lives">
@@ -28,8 +30,8 @@ export function Hud({ hud }: HudProps) {
           {hud.ticket && <span role="img" title="Boleto del Tren Maya · Nivel secreto disponible" aria-label="Boleto del Tren Maya encontrado"><TicketIcon /></span>}
         </div>
         <span
-          className="life-icon"
-          style={{ backgroundImage: `url(${assetUrl('guepardo.webp')})` }}
+          className={`life-icon${seasonal ? ' life-icon--seasonal' : ''}`}
+          style={{ backgroundImage: `url(${assetUrl(seasonal ? 'portada/temayin-alebrije.webp' : 'guepardo.webp')})` }}
           role="img"
           aria-label="Vidas"
         />

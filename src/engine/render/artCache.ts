@@ -1,4 +1,5 @@
 import { EK_CHUAH } from '../../data/offerings';
+import { HANAL_PIXAN_ART_FILES } from '../../data/hanalPixanArt';
 import { CHIVO_ART_FILES } from '../../data/huayChivoArt';
 import { SARGAZO_ART_FILES } from '../../data/sargazoArt';
 import { WORLD6_ART_FILES } from '../../data/world6Art';
@@ -44,6 +45,7 @@ export function lazyImage(file: string): HTMLImageElement | null {
  * arrancar, para que fondos, meta y objetos ya estén listos al entrar al nivel.
  */
 export const PAINTED_ART: readonly string[] = [
+  ...HANAL_PIXAN_ART_FILES,
   EK_CHUAH.file,
   ...CHIVO_ART_FILES,
   ...SARGAZO_ART_FILES,

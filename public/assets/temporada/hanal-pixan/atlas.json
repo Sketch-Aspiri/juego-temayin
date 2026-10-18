@@ -1,0 +1,90 @@
+{
+  "temayin": {
+    "file": "temporada/hanal-pixan/temayin.webp",
+    "sheetW": 1254,
+    "sheetH": 1254,
+    "frame": [
+      108,
+      3,
+      1027,
+      1251
+    ]
+  },
+  "temayina": {
+    "file": "temporada/hanal-pixan/temayina.webp",
+    "sheetW": 1254,
+    "sheetH": 1254,
+    "frame": [
+      135,
+      7,
+      916,
+      1236
+    ]
+  },
+  "toh": {
+    "file": "temporada/hanal-pixan/toh.webp",
+    "sheetW": 1254,
+    "sheetH": 1254,
+    "frame": [
+      18,
+      9,
+      1235,
+      1227
+    ]
+  },
+  "coati": {
+    "file": "temporada/hanal-pixan/coati.webp",
+    "sheetW": 1254,
+    "sheetH": 1254,
+    "frame": [
+      79,
+      11,
+      1166,
+      1229
+    ]
+  },
+  "murcielago": {
+    "file": "temporada/hanal-pixan/murcielago.webp",
+    "sheetW": 1254,
+    "sheetH": 1254,
+    "frame": [
+      16,
+      191,
+      1229,
+      796
+    ]
+  },
+  "alux": {
+    "file": "temporada/hanal-pixan/alux.webp",
+    "sheetW": 1254,
+    "sheetH": 1254,
+    "frame": [
+      122,
+      38,
+      1081,
+      1181
+    ]
+  },
+  "hormiga-arriera": {
+    "file": "temporada/hanal-pixan/hormiga-arriera.webp",
+    "sheetW": 1254,
+    "sheetH": 1254,
+    "frame": [
+      18,
+      162,
+      1221,
+      891
+    ]
+  },
+  "luciernaga": {
+    "file": "temporada/hanal-pixan/luciernaga.webp",
+    "sheetW": 1254,
+    "sheetH": 1254,
+    "frame": [
+      34,
+      33,
+      1201,
+      1164
+    ]
+  }
+}

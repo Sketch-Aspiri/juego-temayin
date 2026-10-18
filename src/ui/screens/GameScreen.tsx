@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { getLevel, getWorldForLevel, nextLevelId } from '../../data/worlds';
+import { getLevel, getWorldForLevel, isSeasonalLevel, nextLevelId } from '../../data/worlds';
 import { hasTicket } from '../../store/progress';
-import { cinematicAfterLevel, type CinematicDef } from '../../data/cinematics';
+import { cinematicAfterLevel, cinematicBeforeLevel, type CinematicDef } from '../../data/cinematics';
 import { audio } from '../../engine/audio';
 import { Game } from '../../engine/Game';
 import type { HudState } from '../../engine/hud';
@@ -9,7 +9,7 @@ import { input } from '../../engine/input';
 import { actionForKey } from '../../engine/controls';
 import { VH, VW } from '../../engine/constants';
 import type { LevelResult } from '../../engine/scoring';
-import { useAppStore } from '../../store/appStore';
+import { useAppStore, type Run } from '../../store/appStore';
 import { useAssets } from '../assetsContext';
 import { BossBanner } from '../components/BossBanner';
 import { Hud } from '../components/Hud';
@@ -39,13 +39,19 @@ export function GameScreen() {
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [cinematic, setCinematic] = useState<CinematicDef | null>(null);
   const [loading, setLoading] = useState(true);
-  const finishCinematic = useCallback(() => setCinematic(null), []);
+  const [openingDone, setOpeningDone] = useState<Run | null>(null);
+  const opening = run && openingDone !== run ? cinematicBeforeLevel(run.levelId) : undefined;
+  const activeCinematic = opening ?? cinematic;
+  const finishCinematic = useCallback(() => {
+    if (opening && run) setOpeningDone(run);
+    else setCinematic(null);
+  }, [opening, run]);
 
   // Crea y destruye el motor cada vez que empieza una partida (nivel o reintento).
   useEffect(() => {
     const level = run && getLevel(run.levelId);
     const canvas = canvasRef.current;
-    if (!run || !level || !canvas) return;
+    if (!run || !level || !canvas || opening) return;
     setHud(null);
     setOutcome(null);
     setCinematic(null);
@@ -92,11 +98,11 @@ export function GameScreen() {
       game?.stop();
       gameRef.current = null;
     };
-  }, [run, assets, finishLevel]);
+  }, [run, assets, finishLevel, opening]);
 
   useEffect(() => {
-    gameRef.current?.setPaused(paused || cinematic !== null);
-  }, [paused, cinematic]);
+    gameRef.current?.setPaused(paused || !!activeCinematic);
+  }, [paused, activeCinematic]);
 
   const togglePause = useCallback(() => {
     if (!outcome) setPaused((p) => !p);
@@ -104,7 +110,7 @@ export function GameScreen() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent): void => {
-      if (cinematic || e.repeat || e.ctrlKey || e.altKey || e.metaKey || e.isComposing) return;
+      if (activeCinematic || e.repeat || e.ctrlKey || e.altKey || e.metaKey || e.isComposing) return;
       const settings = useAppStore.getState().settings;
       const action = actionForKey(e.code, settings.keyBindings);
       if (action === 'pause') { e.preventDefault(); togglePause(); }
@@ -119,7 +125,7 @@ export function GameScreen() {
       window.removeEventListener('keydown', onKey);
       document.removeEventListener('visibilitychange', onHidden);
     };
-  }, [togglePause, updateSettings, outcome, cinematic]);
+  }, [togglePause, updateSettings, outcome, activeCinematic]);
 
   if (!run) return null;
   const level = getLevel(run.levelId);
@@ -128,7 +134,10 @@ export function GameScreen() {
   const isBonus = getWorldForLevel(level.id)?.bonus?.id === level.id;
 
   const goNext = (result: LevelResult): void => {
-    if (nextId) startLevel(nextId, result.session);
+    if (!nextId) return;
+    const state = useAppStore.getState();
+    if (isSeasonalLevel(level.id) && !state.settings.introSeen) state.playIntro(nextId, result.session);
+    else startLevel(nextId, result.session);
   };
 
   const status = <>
@@ -138,8 +147,8 @@ export function GameScreen() {
 
   return (
     <>
-      {loading && <div className="level-loading"><LoadingScreen /></div>}
-      <div className={`game${portrait ? ' game--portrait' : ''}`} inert={cinematic !== null} aria-hidden={cinematic !== null}>
+      {loading && !opening && <div className="level-loading"><LoadingScreen /></div>}
+      <div className={`game${portrait ? ' game--portrait' : ''}`} inert={!!activeCinematic} aria-hidden={!!activeCinematic}>
         {portrait && <div className="game__status">{status}</div>}
         <div className="game__field">
           <div className="stage">
@@ -149,7 +158,7 @@ export function GameScreen() {
               <>
                 {hud.boss && <BossBanner boss={hud.boss} />}
                 <div className="level-card" key={hud.spawnId} aria-hidden="true" style={hud.boss ? { visibility: 'hidden' } : undefined}>
-                  <span className="level-card__world">{isBonus ? 'NIVEL SECRETO' : `MUNDO ${level.id}`}</span>
+                  <span className="level-card__world">{isSeasonalLevel(level.id) ? 'ESPECIAL DE TEMPORADA' : isBonus ? 'NIVEL SECRETO' : `MUNDO ${level.id}`}</span>
                   <span className="level-card__name">{level.name}</span>
                 </div>
               </>
@@ -171,6 +180,7 @@ export function GameScreen() {
             levelName={level.name}
             hasNext={!!nextId}
             isBonus={isBonus}
+            isSeasonal={isSeasonalLevel(level.id)}
             onNext={() => goNext(outcome.result)}
             onRetry={retryLevel}
             onExit={() => go('levels')}
@@ -179,8 +189,9 @@ export function GameScreen() {
         {outcome?.kind === 'gameover' && <GameOver score={outcome.score} onRetry={retryLevel} onExit={() => go('levels')} />}
         {!paused && !outcome && <TouchControls mode={touchMode} />}
       </div>
-      {cinematic && <div className="cinematic-overlay">
-        <CinematicPlayer key={cinematic.id} cinematic={cinematic} onFinish={finishCinematic} finishLabel="Ver resultados" />
+      {activeCinematic && <div className="cinematic-overlay">
+        <CinematicPlayer key={`${run.attempt}-${activeCinematic.id}`} cinematic={activeCinematic} onFinish={finishCinematic}
+          finishLabel={opening ? '¡Jugar Hanal Pixán!' : 'Ver resultados'} />
       </div>}
     </>
   );

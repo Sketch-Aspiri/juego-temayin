@@ -5,6 +5,7 @@ import { isUnlocked, totalStars } from '../../store/progress';
 import type { LevelRecord } from '../../store/progress';
 import { Stars } from '../components/Stars';
 import { TicketIcon } from '../components/TicketIcon';
+import { SeasonalLevelCard } from '../components/SeasonalLevelCard';
 import '../tickets.css';
 import '../offering.css';
 
@@ -60,6 +61,7 @@ export function LevelSelect() {
         <div className="menu__treasures"><span className="menu__stars">★ {stars}</span><span className="menu__wallet">CACAO · {cacao}</span></div>
       </header>
       <div className="menu__body">
+        <SeasonalLevelCard />
         <p className="ticket-guide">Hay un boleto del Tren Maya escondido en cada mundo. Encuéntralo para abrir su nivel secreto.</p>
         {WORLDS.map((w) => (
           <section key={w.id} className="world">
