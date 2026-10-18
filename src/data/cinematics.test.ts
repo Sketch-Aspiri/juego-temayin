@@ -1,12 +1,25 @@
 import { describe, expect, it } from 'vitest';
 import { ALL_CINEMATICS, CINEMATIC_FILES, CINEMATICS, cinematicAfterLevel } from './cinematics';
 import { ALL_LEVELS, getLevel } from './worlds';
-import { BOSS_VICTORY_SPRITES, TEMAYIN_CINEMATIC_POSES } from './bossVictoryArt';
+import { BOSS_VICTORY_SPRITES, CINEMATIC_TRAIN_BACKGROUND, TEMAYIN_CINEMATIC_POSES } from './bossVictoryArt';
+import { PUAS_COVER } from './puasVictory';
 import type { SpriteRef } from './intro';
 
 const PUBLIC_FILES = new Set(Object.keys(import.meta.glob('../../public/assets/**/*.webp')));
 
 describe('Catálogo ampliable de cinemáticas', () => {
+  it('presenta a Púas en la portada del primer mundo', () => {
+    expect(CINEMATICS['puas-victory'].cover.actor).toBe(PUAS_COVER);
+    expect(CINEMATIC_FILES).toContain(PUAS_COVER.file);
+  });
+
+  it('despide el primer mundo con Temayin sentado dentro del tren', () => {
+    const departure = CINEMATICS['puas-victory'].scenes.at(-1)!;
+    expect(departure.background).toBe(CINEMATIC_TRAIN_BACKGROUND);
+    expect(departure.actors.some(actor => actor.sprite === TEMAYIN_CINEMATIC_POSES.seated)).toBe(true);
+    expect(departure.effects).not.toContain('train');
+  });
+
   it('cada jefe jugable tiene exactamente un capítulo de cuatro escenas tras su nivel', () => {
     for (const level of ALL_LEVELS) {
       const chapters = ALL_CINEMATICS.filter(cinematic => cinematic.afterLevel === level.id);

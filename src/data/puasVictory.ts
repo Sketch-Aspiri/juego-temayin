@@ -1,4 +1,9 @@
 import { SPRITES, type IntroScene, type SpriteRef } from './intro';
+import { CINEMATIC_TRAIN_BACKGROUND, TEMAYIN_CINEMATIC_POSES } from './bossVictoryArt';
+
+export const PUAS_COVER: SpriteRef = {
+  file: 'jefe_grande.webp', sheetW: 1354, sheetH: 1161, frame: [0, 0, 1354, 1161],
+};
 
 /** Púas vencido: el último cuadro de la hoja que utiliza el combate. */
 export const PUAS_DEFEATED: SpriteRef = {
@@ -33,12 +38,12 @@ export const PUAS_VICTORY_SCENES: readonly IntroScene[] = [
     effects: [],
   },
   {
-    id: 'rumbo-a-campeche', background: 'backgrounds/jungle.webp', tone: 'dawn',
-    text: 'El silbato del Tren Maya anunció la partida. Con Toh a su lado, Temayin dejó Escárcega y emprendió el viaje hacia el Golfo de Campeche.',
+    id: 'rumbo-a-campeche', background: CINEMATIC_TRAIN_BACKGROUND, tone: 'dawn',
+    text: 'El silbato del Tren Maya anunció la partida. Sentado dentro del vagón y con Toh a su lado, Temayin dejó Escárcega y emprendió el viaje hacia el Golfo de Campeche.',
     actors: [
-      { sprite: SPRITES.alegre, x: 25, bottom: 32, height: 48, anim: 'still', portrait: { x: 30, bottom: 31, height: 45 } },
-      { sprite: SPRITES.tohFly, x: 67, bottom: 55, height: 22, flip: true, anim: 'float', portrait: { x: 74, bottom: 61, height: 20 } },
+      { sprite: TEMAYIN_CINEMATIC_POSES.seated, x: 32, bottom: 29, height: 47, anim: 'still', portrait: { x: 33, bottom: 15, height: 44 } },
+      { sprite: SPRITES.tohFly, x: 70, bottom: 58, height: 20, flip: true, anim: 'float', portrait: { x: 77, bottom: 66, height: 19 } },
     ],
-    effects: ['train'],
+    effects: [],
   },
 ];

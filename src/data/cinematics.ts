@@ -1,5 +1,5 @@
 import { INTRO_FILES, INTRO_SCENES, SPRITES, type IntroScene, type SpriteRef } from './intro';
-import { PUAS_VICTORY_SCENES } from './puasVictory';
+import { PUAS_COVER, PUAS_VICTORY_SCENES } from './puasVictory';
 import { BOSS_VICTORY_SPRITES, CINEMATIC_DECK_BACKGROUND } from './bossVictoryArt';
 import { KAIMAN_VICTORY_SCENES } from './cinematics/kaimanVictory';
 import { HUAY_CHIVO_VICTORY_SCENES } from './cinematics/huayChivoVictory';
@@ -32,7 +32,7 @@ export const CINEMATICS: Readonly<Record<CinematicId, CinematicDef>> = {
   'puas-victory': {
     id: 'puas-victory', chapter: 'Capítulo 1 · Escárcega', title: 'El primer tramo libre',
     description: 'La victoria sobre Púas abre un nuevo camino para Temayin y Toh.',
-    cover: { background: 'backgrounds/lair.webp', actor: SPRITES.alegre },
+    cover: { background: 'backgrounds/lair.webp', actor: PUAS_COVER },
     scenes: PUAS_VICTORY_SCENES, afterLevel: '1-6',
   },
   'kaiman-victory': {
