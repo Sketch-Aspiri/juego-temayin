@@ -10,6 +10,7 @@ import { loadSaved, save } from './persistence';
 import { EMPTY_PROGRESS, isUnlocked, recordCompletion, recordTicket, type Progress } from './progress';
 import type { Settings } from './settings';
 import { EMPTY_WALLET, isCacao, type Wallet } from './wallet';
+import { rewardBlessings } from './rewards';
 
 export type Screen = 'loading' | 'title' | 'intro' | 'history' | 'levels' | 'offering' | 'game' | 'settings';
 
@@ -75,7 +76,8 @@ export const useAppStore = create<AppState>((set, get) => {
       if (levelId === INTRO_LEVEL_ID && !carry && !get().settings.introSeen) return get().playIntro(levelId);
       const coins = get().wallet.cacao;
       const session = carry ? { ...carry, coins } : newSession(coins);
-      set({ screen: getLevel(levelId)?.offering ? 'offering' : 'game', run: { levelId, session, attempt: 0 } });
+      const initialBlessings = rewardBlessings(get().progress, levelId);
+      set({ screen: getLevel(levelId)?.offering ? 'offering' : 'game', run: { levelId, session, attempt: 0, initialBlessings } });
     },
 
     buyBlessing: (blessing, quantity = 1) => {
@@ -84,6 +86,7 @@ export const useAppStore = create<AppState>((set, get) => {
       if (!run || screen !== 'offering' || !offers?.includes(blessing)) return false;
       if (!Number.isSafeInteger(quantity) || quantity < 1 || quantity > MAX_BLESSING_QUANTITY) return false;
       const purchased = wallet.pending[run.levelId] ?? [];
+      if (run.initialBlessings?.includes(blessing) && !BLESSINGS[blessing].repeatable) return false;
       const { price, repeatable } = BLESSINGS[blessing];
       if ((!repeatable && (purchased.includes(blessing) || quantity !== 1)) || wallet.cacao < price * quantity) return false;
       const additions = Array.from({ length: quantity }, () => blessing);
@@ -96,7 +99,9 @@ export const useAppStore = create<AppState>((set, get) => {
     continueOffering: () => {
       const { run, screen, wallet } = get();
       if (!run || screen !== 'offering') return;
-      const initialBlessings = wallet.pending[run.levelId] ?? [];
+      const purchased = wallet.pending[run.levelId] ?? [];
+      const rewards = rewardBlessings(get().progress, run.levelId) ?? [];
+      const initialBlessings = [...rewards, ...purchased.filter(id => id === 'life' || !rewards.includes(id))];
       const pending = { ...wallet.pending };
       delete pending[run.levelId];
       set({ screen: 'game', wallet: { ...wallet, pending },
@@ -136,7 +141,8 @@ export const useAppStore = create<AppState>((set, get) => {
       const run = get().run;
       if (!run) return;
       set({ screen: getLevel(run.levelId)?.offering ? 'offering' : 'game',
-        run: { levelId: run.levelId, session: newSession(get().wallet.cacao), attempt: run.attempt + 1 } });
+        run: { levelId: run.levelId, session: newSession(get().wallet.cacao), attempt: run.attempt + 1,
+          initialBlessings: rewardBlessings(get().progress, run.levelId) } });
     },
 
     finishLevel: (result) => {

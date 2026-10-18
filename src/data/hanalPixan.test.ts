@@ -11,18 +11,21 @@ import { buildLevel } from '../engine/level/build';
 describe('Especial de temporada Hanal Pixán', () => {
   it('amplía el paseo con retos variados y premios opcionales sin exigirlos para salir', () => {
     const built = buildLevel(level);
-    expect(level.width).toBeGreaterThanOrEqual(3 * 116);
-    expect(level.time).toBeGreaterThanOrEqual(450);
+    expect(level.width).toBeGreaterThanOrEqual(600);
+    expect(level.time).toBeGreaterThanOrEqual(600);
     expect(level.checkpoint).toBeGreaterThan(level.width * 0.4);
     expect(level.checkpoint).toBeLessThan(level.width * 0.6);
-    expect(built.hammocks.length).toBeGreaterThanOrEqual(2);
-    expect(built.ropes.length).toBeGreaterThan(0);
+    expect(built.hammocks.length).toBeGreaterThanOrEqual(4);
+    expect(built.ropes.length).toBeGreaterThanOrEqual(3);
     expect(built.platforms.some(p => p.kind === 'train')).toBe(true);
     expect(built.water).toHaveLength(1);
     expect(built.bubbles.length).toBeGreaterThanOrEqual(3);
     expect(built.hoops).toHaveLength(2);
     expect(level.boss).toBeUndefined();
     expect(built.totalCoins).toBeGreaterThan(100);
+    expect(built.crumbles.length).toBeGreaterThanOrEqual(8);
+    expect(built.flagX).toBeGreaterThanOrEqual(580);
+    expect(built.winds.length).toBeGreaterThan(0);
   });
 
   it('precarga las dieciséis poses completas y mantiene sus anclas dentro de la hoja', () => {

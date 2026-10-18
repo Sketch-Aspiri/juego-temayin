@@ -5,7 +5,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent
-OUTPUT = ROOT / "verificacion" / "hanal-pixan-ampliado"
+OUTPUT = ROOT / "verificacion" / "hanal-pixan-santuario"
 OUTPUT.mkdir(parents=True, exist_ok=True)
 errors, reports = [], []
 
@@ -73,10 +73,12 @@ with sync_playwright() as pw:
     page.locator("#qa-motion").screenshot(path=str(OUTPUT / "movimientos-16-ambos-lados.png"))
     page.evaluate("document.querySelector('#qa-motion').remove()")
 
-    markers = iter([(48, "hamacas"), (116, "columpio"), (157, "tren"), (180, "checkpoint"),
-                    (212, "cenote"), (250, "pelota"), (322, "puentes"), (345, "meta")])
+    markers = iter([(8, "jardin"), (48, "hamacas"), (116, "columpio"), (157, "tren"),
+                    (212, "cenote"), (250, "pelota"), (288, "checkpoint"), (322, "puentes"),
+                    (355, "viento"), (385, "columpios-gemelos"), (442, "convoy"),
+                    (490, "hamaca-final"), (539, "prueba-final"), (580, "meta")])
     target = next(markers, None)
-    for _ in range(240):
+    for _ in range(360):
         state = page.evaluate("qa.advance(.5)")
         reports.append(state)
         if target and state["x"] >= target[0]:
@@ -95,6 +97,28 @@ with sync_playwright() as pw:
     page.wait_for_timeout(500)
     page.screenshot(path=str(OUTPUT / "resultados.png"))
     assert page.evaluate("qa.store.getState().progress.levels['especial-hanal-pixan'].completions") == 1
+    assert page.get_by_role("heading", name="Amuleto de luz", exact=True).count() == 1
+    page.get_by_role("button", name="Continuar a Palenque", exact=True).click()
+    page.wait_for_function("qa.world?.def.id === '1-1'")
+    assert page.evaluate("qa.world.player.shield")
+    page.wait_for_timeout(150)
+    page.screenshot(path=str(OUTPUT / "amuleto-en-palenque.png"))
+
+    # Una recarga conserva el amuleto porque está respaldado por el récord completado.
+    page.reload()
+    page.wait_for_load_state("networkidle")
+    persisted = page.evaluate("JSON.parse(localStorage.getItem('temayin:v3')).progress.levels['especial-hanal-pixan']")
+    assert persisted["completions"] == 1
+    page.evaluate("""async () => {
+      const loaded = path => performance.getEntriesByType('resource').filter(e => new URL(e.name).pathname === path).at(-1)?.name || path;
+      const {World} = await import(loaded('/src/engine/World.ts'));
+      const {useAppStore} = await import(loaded('/src/store/appStore.ts'));
+      window.qa = {store: useAppStore, world: null};
+      World.prototype.update = function() { qa.world = this; };
+      qa.store.getState().startLevel('1-1');
+    }""")
+    page.wait_for_function("qa.world?.def.id === '1-1'")
+    assert page.evaluate("qa.world.player.shield")
 
     # Comprueba el regreso al especial y la presentación del mando y HUD al girar.
     for width, height in [(390, 844), (844, 390)]:
@@ -113,6 +137,7 @@ with sync_playwright() as pw:
 
 (OUTPUT / "informe.json").write_text(json.dumps({"errores": errors, "recorrido": reports,
     "poses": 16, "orientacionesPorPose": 2, "contactoProtegido": True,
+    "amuletoEnPalenqueYTrasRecarga": True,
     "colisionesSaltosOxigenoReales": True}, ensure_ascii=False, indent=2), encoding="utf-8")
 assert not errors, errors
 print("Verificados: 16 poses, dos orientaciones, recorrido completo, checkpoint, meta, guardado y dos formatos moviles.")

@@ -1,6 +1,8 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import type { LevelResult } from '../../engine/scoring';
 import { Stars } from './Stars';
+import { HANAL_REWARD } from '../../data/hanalReward';
+import { HanalReward } from './HanalReward';
 
 interface PanelProps {
   title: string;
@@ -63,6 +65,7 @@ export function LevelComplete({ result, levelName, hasNext, isBonus, isSeasonal,
         <div><dt>Cacao recogido</dt><dd>{Math.round(result.coinRatio * 100)}%</dd></div>
         <div><dt>Muertes</dt><dd>{result.deaths}</dd></div>
       </dl>
+      {result.levelId === HANAL_REWARD.levelId && <HanalReward />}
       {!hasNext && <p className="panel__sub">{isBonus ? '¡Has completado el nivel secreto! Vuelve al mapa para seguir tu aventura.' : '¡Temayin ha completado toda la aventura!'}</p>}
       <div className="panel__actions">
         {hasNext && <button type="button" className="btn btn--primary" onClick={onNext}>{isSeasonal ? 'Continuar a Palenque' : 'Siguiente nivel'}</button>}

@@ -1,0 +1,15 @@
+.hanal-reward {
+  display: flex; align-items: center; gap: 16px; text-align: left;
+  padding: 16px; margin: 16px 0; border: 1px solid #b49657;
+  border-radius: 12px; background: linear-gradient(130deg, #153f38, #102b2c);
+}
+.hanal-reward__icon { width: 64px; flex: 0 0 64px; filter: drop-shadow(0 0 9px #e6bb5325); }
+.hanal-reward h3 { color: #ffda83; font-size: 1.35rem; margin: 2px 0 6px; }
+.hanal-reward p { color: #fff0cc; margin: 0 0 6px; font-size: .9rem; line-height: 1.4; }
+.hanal-reward .hanal-reward__eyebrow { font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: #a5d8bf; }
+.hanal-reward small { display: block; color: #bbd0c4; font-size: .73rem; line-height: 1.4; }
+.seasonal__reward { border-left: 2px solid #dab56a; padding-left: 12px; }
+@media (max-width: 480px) {
+  .hanal-reward { gap: 10px; padding: 12px; }
+  .hanal-reward__icon { width: 44px; flex-basis: 44px; }
+}

@@ -21,7 +21,7 @@ export const HANAL_PIXAN_SCENES: readonly IntroScene[] = [
   },
   {
     id: 'hanal-camino', background, tone: 'dusk', speaker: 'Toh',
-    text: 'Sigue el cacao entre las flores, salta sobre los traviesos alebrijes y busca mi luz a mitad del sendero. ¡Al llegar a la meta podrás continuar hacia Palenque!',
+    text: 'Los puentes ceden y el viento pone a prueba tus saltos. Busca mi luz a mitad del sendero. Al completar la meta ganarás el Amuleto de luz: ¡un escudo al empezar cada nivel de tu aventura!',
     actors: [
       { sprite: art.temayin, x: 28, bottom: 8, height: 62, anim: 'enter-left', portrait: { x: 26, bottom: 8, height: 44 } },
       { sprite: art.coati, x: 72, bottom: 8, height: 43, anim: 'enter-right', portrait: { x: 74, bottom: 8, height: 34 } },

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { BLESSINGS, EK_CHUAH } from '../../data/offerings';
+import { HANAL_REWARD } from '../../data/hanalReward';
 import { getLevel } from '../../data/worlds';
 import type { BlessingId } from '../../engine/blessings';
 import { VH } from '../../engine/constants';
@@ -46,8 +47,8 @@ export function OfferingScreen() {
     return () => window.removeEventListener('keydown', onKey);
   }, [continueOffering]);
   const level = run && getLevel(run.levelId);
-  if (!level?.offering) return null;
-  const purchased = wallet.pending[level.id] ?? [];
+  if (!run || !level?.offering) return null;
+  const purchased = [...(run.initialBlessings ?? []), ...(wallet.pending[level.id] ?? [])];
   const buy = (id: BlessingId, quantity: number): void => {
     if (buyBlessing(id, quantity)) setMessage(id === 'life'
       ? `${quantity === 1 ? 'Vida extra recibida' : `${quantity} vidas extra recibidas`}. Puedes seguir comprando; las llevarás al comenzar el nivel.`
@@ -62,6 +63,7 @@ export function OfferingScreen() {
           <div className="offering__wallet" aria-label={`Bolsa: ${wallet.cacao} cacao`}><span>Tu bolsa</span><strong>{wallet.cacao}</strong><span>cacao</span></div>
         </header>
         <p className="offering__greeting">«{EK_CHUAH.greeting}»</p>
+        {run.initialBlessings?.includes('shield') && <p className="offering__note">{HANAL_REWARD.name}: tu escudo inicial ya está incluido.</p>}
         <div className="offering__offers">{level.offering.offers.map(id =>
           <BlessingCard key={id} id={id} balance={wallet.cacao} purchased={purchased.filter(item => item === id).length} onBuy={buy} />)}</div>
         <p className="offering__message" role="status">{message}</p>

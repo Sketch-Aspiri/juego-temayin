@@ -60,7 +60,7 @@ const caveArt = paintedScenery('cave.webp', caveScenery, { nearTop: 0.7 });
 export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
   hanalPixan: {
     id: 'hanalPixan', sky: ['#092e32', '#184c49'], sun: false,
-    scenery: hanalPixanScenery, groundTop: 'grass', groundBody: 'dirt', platform: 'carved',
+    scenery: hanalPixanScenery, groundTop: 'mudTop', groundBody: 'mud', platform: 'stone',
   },
   reef: {
     id: 'reef', sky: ['#075578', '#51c4c3'], sun: false,

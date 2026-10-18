@@ -1,4 +1,4 @@
-import { GROUND, T } from '../constants';
+import { T } from '../constants';
 import { waterAt } from '../level/zones';
 import type { World } from '../World';
 
@@ -20,8 +20,10 @@ export function driveHanalRoute(w: World): void {
     jump = p.y > water.surface * T - SHORE_CLEARANCE && p.vy >= 0;
   } else if (p.onGround || p.coyote > 0) {
     const front = p.x + p.w;
+    const floor = Math.round((p.y + p.h) / T);
     for (let x = Math.floor(front / T); x <= Math.floor((front + LOOKAHEAD) / T); x++) {
-      if (!w.solid(x, GROUND) || w.solid(x, Math.floor((p.y + p.h - 3) / T))) jump = true;
+      const platform = w.platforms.some(m => x * T >= m.x && x * T < m.x + m.w && Math.abs(m.y - (p.y + p.h)) < T / 2);
+      if ((!w.solid(x, floor) && !platform) || w.solid(x, Math.floor((p.y + p.h - 3) / T))) jump = true;
     }
   }
   if (jump && !input.held.jump) input.press('jump');

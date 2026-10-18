@@ -1,4 +1,5 @@
 import { HANAL_PIXAN_LEVEL } from '../../data/levels/seasonal/hanal-pixan';
+import { HANAL_REWARD } from '../../data/hanalReward';
 import { assetUrl } from '../../engine/assets';
 import { useAppStore } from '../../store/appStore';
 import { Stars } from './Stars';
@@ -13,7 +14,8 @@ export function SeasonalLevelCard() {
     <div className="seasonal__copy">
       <p className="seasonal__eyebrow">Nivel especial de temporada</p>
       <h3 id="seasonal-title">Hanal Pixán</h3>
-      <p>Un gran paseo de luz y memoria: hamacas, columpios, tren, cenote y juego de pelota. Temayin alebrije tiene movimientos propios.</p>
+      <p>Un largo desafío entre flores y luces: columpios gemelos, corrientes, trenes y puentes que se desmoronan. ¡Llega al santuario final!</p>
+      <p className="seasonal__reward"><strong>{record?.completions ? '✓ Amuleto de luz obtenido' : 'Recompensa: Amuleto de luz'}</strong><br />{HANAL_REWARD.description}</p>
       <button type="button" className="btn btn--primary" onClick={() => startLevel(HANAL_PIXAN_LEVEL.id)}>Jugar Hanal Pixán <span aria-hidden="true">→</span></button>
       {record && <div className="seasonal__record"><Stars value={record.stars} /><span>Mejor: {record.bestScore}</span></div>}
     </div>
