@@ -3,6 +3,9 @@ import { input, type Action } from '../../engine/input';
 import type { TouchMode } from '../../store/settings';
 import { TouchInput } from './touchInput';
 import { preventTouchZoom } from './preventTouchZoom';
+import { useAppStore } from '../../store/appStore';
+import { TouchButtonGroups, touchStyle } from './TouchLayout';
+import '../customControls.css';
 
 const ACTIONS: readonly Action[] = ['left', 'right', 'run', 'fire', 'jump'];
 
@@ -57,31 +60,17 @@ function useTouchPad() {
 }
 
 function TouchPad() {
+  const appearance = useAppStore(s => s.settings.touchAppearance);
   const { active, down, move, up, toggleRun } = useTouchPad();
   const padRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (padRef.current) return preventTouchZoom(padRef.current);
   }, []);
-  const button = (action: Action, label: string, text: string) => (
-    <button type="button" data-action={action} aria-label={label}
-      aria-pressed={action === 'run' ? active.includes('run') : undefined}
-      className={`pad pad--${action}${active.includes(action) ? ' pad--active' : ''}`}
-      onClick={(event) => { if (action === 'run' && event.detail === 0) toggleRun(); }}>
-      {text}
-    </button>
-  );
   return (
-    <div ref={padRef} className="touch" aria-label="Controles táctiles" onPointerDown={down} onPointerMove={move}
+    <div ref={padRef} className={`touch touch--custom touch--${appearance.layout}`} style={touchStyle(appearance)}
+      aria-label="Controles táctiles" onPointerDown={down} onPointerMove={move}
       onPointerUp={up} onPointerCancel={up} onLostPointerCapture={up} onContextMenu={(event) => event.preventDefault()}>
-      <div className="touch__movement">
-        {button('run', 'Correr', active.includes('run') ? 'CORRER ✓' : 'CORRER')}
-        {button('left', 'Izquierda', '◀')}
-        {button('right', 'Derecha', '▶')}
-      </div>
-      <div className="touch__actions">
-        {button('fire', 'Fuego', 'FUEGO')}
-        {button('jump', 'Saltar', '▲')}
-      </div>
+      <TouchButtonGroups active={active} onRun={event => { if (event.detail === 0) toggleRun(); }} />
     </div>
   );
 }

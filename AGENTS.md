@@ -65,7 +65,7 @@ Pila: React 19, Zustand 5, TypeScript (modo `strict`, `noUnusedLocals`, `noUnuse
 | Bola de fuego (con chile) | C / F / J |
 | Pausa / Silencio | P o Esc / M |
 
-En móviles hay controles táctiles (`src/ui/components/TouchControls.tsx`, configurables en Ajustes).
+La tabla muestra las teclas originales. Ajustes permite reasignar movimiento, salto, carrera, fuego/pelota, pausa y silencio; Esc siempre pausa. Los atajos secundarios de una acción se conservan mientras mantenga su tecla original. En móviles hay controles táctiles (`src/ui/components/TouchControls.tsx`): Ajustes permite cambiar tamaño, opacidad y lado del movimiento, con vista previa y restauración de valores originales.
 
 ### Árbol de carpetas real
 
@@ -90,6 +90,7 @@ temayin_juego/
       tiles.ts                 Leyenda de bloques, SOLID_TILES, ITEM_BLOCKS, ItemKind
       physics.ts (+ .test)     moveX / moveY / overlap contra la cuadrícula
       input.ts (+ .test)       Teclado y táctil
+      controls.ts (+ .test)    Mapa de teclas, atajos originales y validación sin DOM
       hud.ts                   HudState, BossHud, hudKey
       scoring.ts               Stars, LevelResult, computeStars, coinRatio
       audio.ts, assets.ts      Sonido y carga de imágenes (MANIFEST)
@@ -845,6 +846,11 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 - Pruebas: `data/gameplaySprites.test.ts` verifica archivos, recortes, anclas, prompts y precarga; `render/gameplaySprites.test.ts` verifica posición, orientación, respaldo y ausencia de mutación. `python imagenes/verify_gameplay_sprites.py` revisa siete recursos y dieciséis escenas en Chromium, con capturas en `imagenes/verificacion/sprites-jugables/`. Las escenas de ataques se preparan para inspección visual; los recorridos y combates asistidos se verifican aparte con `verify_world3.py`, `verify_world4.py`, `verify_world5.py` y `verify_bosses.py`.
 
 ### Controles móviles
+
+- `Settings.keyBindings` y `Settings.touchAppearance` guardan la personalización bajo `temayin:v3`. `sanitizeSettings` amplía los guardados antiguos con valores originales, valida las teclas y recupera un mapa jugable ante conflictos; acota tamaño a 80–120 % y opacidad a 40–100 %. No cambia progreso, cacao ni ids de nivel.
+- `KeyboardSettings` captura una tecla por acción, detecta conflictos también con atajos secundarios y permite cancelar con Esc o Tab y restaurar el mapa. `engine/controls.ts` resuelve las acciones sin React; `Input.setBindings` limpia las entradas al cambiar el mapa. `App` sincroniza el mapa con la entrada; `GameScreen` usa las mismas asignaciones para pausa y silencio, sin repetirlas al mantener una tecla. `ControlsHelp` muestra las teclas vigentes en la portada.
+- `TouchSettings` y `TouchControls` comparten `TouchButtonGroups` y las variables de `ui/customControls.css`. Tamaño, opacidad y distribución se aplican a la vista previa y al mando, con blancos de al menos 44 px y sin solapamientos al girar. Cambiar la apariencia no remonta el motor ni modifica la entrada multitáctil. Cada grupo mantiene el orden de sus botones al cambiar de lado.
+- Cobertura: `engine/controls.test.ts`, `engine/input.test.ts`, `store/settings.test.ts` y las pruebas existentes de entrada táctil y migración. `node imagenes/verify_custom_controls.mjs` revisa reasignación, conflictos, cancelación, recarga, acciones reales del motor, pausa y silencio, restauración y tres dedos en Chromium; comprueba tamaños mínimo/máximo y ambos lados en 320, 360, 390 y 844 px. Admite `TEMAYIN_QA_URL` y `PLAYWRIGHT_CHROMIUM_EXECUTABLE`; resultados en `imagenes/.temp/controles-personalizados/`.
 
 - `ui/usePortrait.ts` adapta la presentación al girar un dispositivo de hasta 900 px de ancho, sin reiniciar `Game` ni la cinemática. En vertical, `ui/portrait.css` distribuye HUD, área jugable y mando en tres filas con alturas dinámicas y márgenes seguros; los menús ocupan toda la pantalla. Oxígeno y poderes tienen espacio propio.
 - El lienzo vertical mide 480 × 560 px lógicos. `render/viewport.ts` sigue al jugador con un recorte de la vista original de 960 px; `Renderer` aplica únicamente una transformación de dibujo. Arenas cerradas y secuencia de meta conservan el encuadre completo. No se modifica `World.camX`, la activación de enemigos, la física ni el progreso. Pruebas sin DOM: `render/viewport.test.ts`.

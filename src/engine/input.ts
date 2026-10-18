@@ -1,21 +1,5 @@
-export type Action = 'left' | 'right' | 'jump' | 'run' | 'fire';
-
-export const KEYMAP: Readonly<Record<string, Action>> = {
-  ArrowLeft: 'left',
-  KeyA: 'left',
-  ArrowRight: 'right',
-  KeyD: 'right',
-  ArrowUp: 'jump',
-  KeyW: 'jump',
-  Space: 'jump',
-  KeyZ: 'jump',
-  ShiftLeft: 'run',
-  ShiftRight: 'run',
-  KeyX: 'run',
-  KeyC: 'fire',
-  KeyF: 'fire',
-  KeyJ: 'fire',
-};
+import { actionForKey, DEFAULT_KEY_BINDINGS, type Action, type KeyBindings } from './controls';
+export { KEYMAP, type Action } from './controls';
 
 const emptyHeld = (): Record<Action, boolean> => ({ left: false, right: false, jump: false, run: false, fire: false });
 
@@ -25,6 +9,7 @@ export class Input {
   private jumpEdge = false;
   private fireEdge = false;
   private target: Window | null = null;
+  private bindings: KeyBindings = DEFAULT_KEY_BINDINGS;
   private readonly sources = new Map<Action, Set<string>>();
 
   press(action: Action, source = 'manual'): void {
@@ -62,6 +47,11 @@ export class Input {
     this.fireEdge = false;
   }
 
+  setBindings(bindings: KeyBindings): void {
+    this.reset();
+    this.bindings = bindings;
+  }
+
   attach(target: Window = window): void {
     this.detach();
     this.target = target;
@@ -80,15 +70,15 @@ export class Input {
   }
 
   private onKeyDown = (e: KeyboardEvent): void => {
-    const action = KEYMAP[e.code];
-    if (!action) return;
+    const action = actionForKey(e.code, this.bindings);
+    if (!action || action === 'pause' || action === 'mute' || e.ctrlKey || e.altKey || e.metaKey || e.isComposing) return;
     this.press(action, e.code);
     e.preventDefault();
   };
 
   private onKeyUp = (e: KeyboardEvent): void => {
-    const action = KEYMAP[e.code];
-    if (action) this.release(action, e.code);
+    const action = actionForKey(e.code, this.bindings);
+    if (action && action !== 'pause' && action !== 'mute') this.release(action, e.code);
   };
 
   private onBlur = (): void => this.reset();

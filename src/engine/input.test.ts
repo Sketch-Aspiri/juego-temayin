@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Input } from './input';
+import { DEFAULT_KEY_BINDINGS } from './controls';
 
 describe('Input', () => {
   it('mantiene la acción hasta soltar todas sus fuentes y reset las limpia', () => {
@@ -27,5 +28,28 @@ describe('Input', () => {
     i.reset();
     expect(i.held.left).toBe(false);
     expect(i.consumeFire()).toBe(false);
+  });
+
+  it('recibe la tecla reasignada, ignora la anterior y limpia teclas al cambiar el mapa', () => {
+    const target = new EventTarget();
+    const input = new Input();
+    input.setBindings({ ...DEFAULT_KEY_BINDINGS, jump: 'KeyK' });
+    input.attach(target as unknown as Window);
+    const key = (type: string, code: string): void => {
+      const event = new Event(type, { cancelable: true });
+      Object.defineProperty(event, 'code', { value: code });
+      target.dispatchEvent(event);
+    };
+    key('keydown', 'Space');
+    expect(input.held.jump).toBe(false);
+    key('keydown', 'KeyK');
+    expect(input.consumeJump()).toBe(true);
+    key('keyup', 'KeyK');
+    expect(input.held.jump).toBe(false);
+    key('keydown', 'KeyK');
+    input.setBindings(DEFAULT_KEY_BINDINGS);
+    expect(input.held.jump).toBe(false);
+    expect(input.consumeJump()).toBe(false);
+    input.detach();
   });
 });

@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/appStore';
 import type { TouchMode } from '../../store/settings';
+import { KeyboardSettings } from '../components/KeyboardSettings';
+import { TouchSettings } from '../components/TouchSettings';
+import '../customControls.css';
 
 const TOUCH_OPTIONS: ReadonlyArray<{ value: TouchMode; label: string }> = [
   { value: 'auto', label: 'Automático' },
@@ -33,7 +36,7 @@ export function SettingsScreen() {
         </label>
         <label className="field field--row">
           <input type="checkbox" checked={settings.muted} onChange={(e) => updateSettings({ muted: e.target.checked })} />
-          <span>Silenciar sonido (tecla M)</span>
+          <span>Silenciar sonido</span>
         </label>
         <fieldset className="field">
           <legend>Controles táctiles</legend>
@@ -51,6 +54,8 @@ export function SettingsScreen() {
             ))}
           </div>
         </fieldset>
+        <KeyboardSettings />
+        <TouchSettings />
         <div className="field">
           <span>Progreso guardado</span>
           {confirmReset ? (

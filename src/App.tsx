@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { audio } from './engine/audio';
+import { input } from './engine/input';
 import { loadAssets, type Assets } from './engine/assets';
 import { CINEMATIC_FILES } from './data/cinematics';
 import { warmArt } from './engine/render/artCache';
@@ -43,6 +44,8 @@ export function App() {
     audio.muted = settings.muted;
     audio.volume = settings.volume;
   }, [settings.muted, settings.volume]);
+
+  useEffect(() => { input.setBindings(settings.keyBindings); }, [settings.keyBindings]);
 
   if (!assets || screen === 'loading') {
     return <LoadingScreen />;

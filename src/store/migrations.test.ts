@@ -77,7 +77,7 @@ describe('loadSaved con migración', () => {
     const state = loadSaved();
     expect(state.progress.levels['1-6']).toEqual(rec(300));
     expect(state.progress.levels['1-3']).toBeUndefined();
-    expect(state.settings).toEqual(settings);
+    expect(state.settings).toEqual({ ...DEFAULT_SETTINGS, ...settings });
     expect(JSON.parse(store.get(STORAGE_KEY) ?? 'null')).toEqual(state);
     expect(store.has(LEGACY_KEY)).toBe(true);
   });

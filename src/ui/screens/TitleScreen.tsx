@@ -4,6 +4,7 @@ import { VH, VW } from '../../engine/constants';
 import { Renderer } from '../../engine/render/Renderer';
 import { hiScore } from '../../store/progress';
 import { useAppStore } from '../../store/appStore';
+import { ControlsHelp } from '../components/ControlsHelp';
 import { useAssets } from '../assetsContext';
 import { VersionNote } from '../components/VersionNote';
 
@@ -46,13 +47,7 @@ export function TitleScreen() {
             <button type="button" className="btn" onClick={() => go('history')}>Historia</button>
             <button type="button" className="btn" onClick={() => go('settings')}>Ajustes</button>
           </nav>
-          <ul className="controls-help">
-            <li><kbd>←</kbd> <kbd>→</kbd> / <kbd>A</kbd> <kbd>D</kbd> moverse</li>
-            <li><kbd>Espacio</kbd> / <kbd>↑</kbd> / <kbd>Z</kbd> saltar</li>
-            <li><kbd>Shift</kbd> / <kbd>X</kbd> correr</li>
-            <li><kbd>C</kbd> / <kbd>F</kbd> bola de fuego (con el chile)</li>
-            <li><kbd>P</kbd> pausa · <kbd>M</kbd> silencio</li>
-          </ul>
+          <ControlsHelp />
           {best > 0 && <p className="title__record">RÉCORD: {best}</p>}
           <VersionNote />
         </div>

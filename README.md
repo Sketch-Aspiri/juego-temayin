@@ -21,7 +21,9 @@ npm test           # pruebas (vitest)
 | Bola de fuego (con chile) | C / F / J |
 | Pausa / Silencio | P o Esc / M |
 
-En móviles aparecen controles táctiles (configurables en Ajustes). **Correr** se activa o desactiva con un toque; no hay que mantenerlo pulsado. Se pueden combinar dirección, salto y fuego con varios dedos y deslizar entre botones sin levantar el dedo. El mando cancela los gestos de zoom para que los saltos rápidos no amplíen la pantalla. Al pausar o salir se liberan los controles.
+En **Ajustes** puedes reasignar las teclas de movimiento, salto, carrera, fuego/pelota, pausa y silencio. Pulsa el botón de una acción y luego su nueva tecla; Esc cancela. Se detectan teclas ocupadas y puedes restaurar el teclado original. Esc siempre permite pausar.
+
+Los botones táctiles permiten ajustar tamaño (80–120 %), opacidad (40–100 %) y colocar el movimiento a la izquierda o a la derecha, con vista previa. Las preferencias se guardan entre sesiones y se pueden restaurar. **Correr** se activa o desactiva con un toque; no hay que mantenerlo pulsado. Se pueden combinar dirección, salto y fuego con varios dedos y deslizar entre botones sin levantar el dedo. El mando cancela los gestos de zoom para que los saltos rápidos no amplíen la pantalla. Al pausar o salir se liberan los controles.
 
 ## Arquitectura
 

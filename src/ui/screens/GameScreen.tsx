@@ -5,6 +5,7 @@ import { audio } from '../../engine/audio';
 import { Game } from '../../engine/Game';
 import type { HudState } from '../../engine/hud';
 import { input } from '../../engine/input';
+import { actionForKey } from '../../engine/controls';
 import { VH, VW } from '../../engine/constants';
 import type { LevelResult } from '../../engine/scoring';
 import { useAppStore } from '../../store/appStore';
@@ -100,9 +101,11 @@ export function GameScreen() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent): void => {
-      if (cinematic) return;
-      if (e.code === 'KeyP' || e.code === 'Escape') togglePause();
-      if (e.code === 'KeyM') updateSettings({ muted: !useAppStore.getState().settings.muted });
+      if (cinematic || e.repeat || e.ctrlKey || e.altKey || e.metaKey || e.isComposing) return;
+      const settings = useAppStore.getState().settings;
+      const action = actionForKey(e.code, settings.keyBindings);
+      if (action === 'pause') { e.preventDefault(); togglePause(); }
+      if (action === 'mute') { e.preventDefault(); updateSettings({ muted: !settings.muted }); }
     };
     const onHidden = (): void => {
       if (document.hidden && !outcome) setPaused(true);

@@ -1,0 +1,29 @@
+/* La vista previa y el mando comparten tamaños, opacidad y distribución. */
+.touch.touch--custom {
+  --pad-size: min(clamp(44px, calc(10vw * var(--touch-scale)), calc(80px * var(--touch-scale))), calc((100vw - 68px) / 4));
+}
+.touch.touch--mirrored { flex-direction: row-reverse; }
+.touch--custom .pad { opacity: var(--touch-opacity); }
+.touch--custom .pad--run { height: max(44px, calc(44px * var(--touch-scale))); }
+.field.control-settings { padding: 18px; border: 1px solid #ffe17a44; border-radius: 18px; background: #102b20; gap: 14px; }
+.control-settings legend { padding: 0 8px; color: var(--gold); font-family: 'Bree Serif', serif; font-size: 18px; }
+.control-settings__hint, .control-settings__status { margin: 0; color: #cedcc9; font-size: 13px; font-weight: 400; line-height: 1.5; }
+.control-settings__status { min-height: 40px; color: #ffe17a; }
+.key-bindings { display: grid; gap: 8px; }
+.key-binding { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 14px; }
+.key-binding .btn { min-width: 140px; min-height: 44px; padding: 8px 12px; }
+.key-binding kbd { font: inherit; }
+.control-settings .btn { min-height: 44px; }
+.control-settings .btn:focus-visible { outline: 3px solid #fff0bd; outline-offset: 3px; }
+.touch-preview { border: 1px dashed #d8be6c88; border-radius: 14px; background: linear-gradient(#284e38, #102b20); padding: 8px; container-type: inline-size; }
+.touch.touch--preview { --pad-size: min(clamp(44px, calc(18cqw * var(--touch-scale)), calc(64px * var(--touch-scale))), calc((100cqw - 34px) / 4)); position: static; width: 100%; padding: 4px; gap: 10px; }
+.touch--preview :is(.touch__movement, .touch__actions) { gap: 8px; }
+.touch--preview .pad { display: grid; place-items: center; cursor: default; }
+@media (max-width: 900px) and (orientation: portrait) {
+  .game--portrait .touch.touch--custom { --pad-size: clamp(44px, calc(18vw * var(--touch-scale)), min(calc(76px * var(--touch-scale)), calc((100vw - 68px) / 4))); }
+}
+@media (max-width: 380px) {
+  .field.control-settings { padding: 12px; }
+  .key-binding .btn { min-width: 116px; }
+  .key-binding { font-size: 12px; gap: 6px; }
+}
