@@ -13,7 +13,7 @@ export function SeasonalLevelCard() {
     <div className="seasonal__copy">
       <p className="seasonal__eyebrow">Nivel especial de temporada</p>
       <h3 id="seasonal-title">Hanal Pixán</h3>
-      <p>Un camino de luz y memoria, con cinemática y personajes alebrije. Una aventura extra antes de Palenque.</p>
+      <p>Un gran paseo de luz y memoria: hamacas, columpios, tren, cenote y juego de pelota. Temayin alebrije tiene movimientos propios.</p>
       <button type="button" className="btn btn--primary" onClick={() => startLevel(HANAL_PIXAN_LEVEL.id)}>Jugar Hanal Pixán <span aria-hidden="true">→</span></button>
       {record && <div className="seasonal__record"><Stars value={record.stars} /><span>Mejor: {record.bestScore}</span></div>}
     </div>

@@ -5,8 +5,41 @@ import { HANAL_PIXAN_LEVEL as level } from './levels/seasonal/hanal-pixan';
 import { ALL_LEVELS, getLevel, nextLevelId, PLAYABLE_LEVELS } from './worlds';
 import { EMPTY_PROGRESS, isUnlocked, recordCompletion, sanitizeProgress } from '../store/progress';
 import { PAINTED_ART } from '../engine/render/artCache';
+import { HANAL_MOTION_FILE, HANAL_MOTION_FRAMES } from './hanalPixanPlayer';
+import { buildLevel } from '../engine/level/build';
 
 describe('Especial de temporada Hanal Pixán', () => {
+  it('amplía el paseo con retos variados y premios opcionales sin exigirlos para salir', () => {
+    const built = buildLevel(level);
+    expect(level.width).toBeGreaterThanOrEqual(3 * 116);
+    expect(level.time).toBeGreaterThanOrEqual(450);
+    expect(level.checkpoint).toBeGreaterThan(level.width * 0.4);
+    expect(level.checkpoint).toBeLessThan(level.width * 0.6);
+    expect(built.hammocks.length).toBeGreaterThanOrEqual(2);
+    expect(built.ropes.length).toBeGreaterThan(0);
+    expect(built.platforms.some(p => p.kind === 'train')).toBe(true);
+    expect(built.water).toHaveLength(1);
+    expect(built.bubbles.length).toBeGreaterThanOrEqual(3);
+    expect(built.hoops).toHaveLength(2);
+    expect(level.boss).toBeUndefined();
+    expect(built.totalCoins).toBeGreaterThan(100);
+  });
+
+  it('precarga las dieciséis poses completas y mantiene sus anclas dentro de la hoja', () => {
+    expect(PAINTED_ART).toContain(HANAL_MOTION_FILE);
+    expect(Object.keys(HANAL_MOTION_FRAMES)).toHaveLength(16);
+    const cuts = new Set<string>();
+    for (const f of Object.values(HANAL_MOTION_FRAMES)) {
+      cuts.add(`${f.x},${f.y},${f.w},${f.h}`);
+      expect(f.x + f.w).toBeLessThanOrEqual(1254);
+      expect(f.y + f.h).toBeLessThanOrEqual(1254);
+      expect(f.ax).toBeGreaterThanOrEqual(f.x);
+      expect(f.ax).toBeLessThanOrEqual(f.x + f.w);
+      expect(f.ay).toBeGreaterThanOrEqual(f.y);
+      expect(f.ay).toBeLessThanOrEqual(f.y + f.h);
+    }
+    expect(cuts.size).toBe(16);
+  });
   it('está disponible antes de Palenque sin alterar la campaña ni sus bloqueos', () => {
     expect(PLAYABLE_LEVELS[0]).toBe(level);
     expect(ALL_LEVELS[0].id).toBe('1-1');

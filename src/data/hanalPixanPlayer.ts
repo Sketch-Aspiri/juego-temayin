@@ -1,0 +1,24 @@
+import type { AtlasFrame } from '../engine/render/enemies/atlas';
+
+/** Recortes completos y anclas medidos por imagenes/import_hanal_motion.py. */
+export const HANAL_MOTION_FILE = 'temporada/hanal-pixan/temayin-movimientos.webp';
+export interface HanalMotionFrame extends AtlasFrame { readonly headWidth: number }
+export const HANAL_MOTION_FRAMES = {
+  idle1: { x: 30, y: 13, w: 247, h: 294, ax: 205, ay: 307, headWidth: 184 },
+  idle2: { x: 347, y: 12, w: 236, h: 295, ax: 514, ay: 307, headWidth: 185 },
+  run1: { x: 627, y: 20, w: 308, h: 277, ax: 828, ay: 297, headWidth: 181 },
+  run2: { x: 964, y: 17, w: 271, h: 281, ax: 1138, ay: 298, headWidth: 180 },
+  run3: { x: 19, y: 327, w: 301, h: 278, ax: 204, ay: 605, headWidth: 179 },
+  run4: { x: 345, y: 326, w: 273, h: 244, ax: 519, ay: 570, headWidth: 190 },
+  jump: { x: 645, y: 313, w: 286, h: 297, ax: 806, ay: 610, headWidth: 181 },
+  fall: { x: 972, y: 324, w: 267, h: 286, ax: 1137, ay: 610, headWidth: 174 },
+  land: { x: 22, y: 677, w: 296, h: 225, ax: 212, ay: 902, headWidth: 177 },
+  throw: { x: 336, y: 631, w: 333, h: 275, ax: 500, ay: 906, headWidth: 166 },
+  hang: { x: 676, y: 620, w: 254, h: 303, ax: 795, ay: 625, headWidth: 160 },
+  swing: { x: 970, y: 623, w: 267, h: 282, ax: 1102, ay: 627, headWidth: 160 },
+  swim1: { x: 22, y: 1006, w: 316, h: 169, ax: 186, ay: 1112, headWidth: 165 },
+  swim2: { x: 346, y: 1006, w: 308, h: 181, ax: 495, ay: 1112, headWidth: 165 },
+  death: { x: 647, y: 971, w: 297, h: 241, ax: 800, ay: 1212, headWidth: 180 },
+  win: { x: 967, y: 917, w: 263, h: 321, ax: 1135, ay: 1238, headWidth: 175 },
+} as const satisfies Readonly<Record<string, HanalMotionFrame>>;
+export type HanalMotionId = keyof typeof HANAL_MOTION_FRAMES;

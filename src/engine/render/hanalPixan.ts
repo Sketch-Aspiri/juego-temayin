@@ -6,11 +6,9 @@ import type { World } from '../World';
 import { bakedFrame, lazyImage } from './artCache';
 import type { Ctx } from './drawUtils';
 
-const PLAYER_HEIGHT = 86;
 const BACKDROP_WIDTH = VW * 1.5;
 const PARALLAX = 0.12;
 const FLOWER_STEP = 24;
-const RUN_CYCLE_FRAMES = 7;
 const FLOWER_COLORS = ['#ffb52f', '#f47d24', '#ffe18b'] as const;
 
 /** Recortes completos con apoyo común; no cambia ninguna caja de colisión. */
@@ -37,22 +35,7 @@ export function hanalPixanScenery(c: Ctx, cam: number): void {
   }
 }
 
-export function drawHanalPlayer(c: Ctx, world: World, now: number): boolean {
-  const p = world.player;
-  if (p.inv > 0 && Math.floor(p.inv * 12) % 2 === 0) return true;
-  c.save(); c.translate(p.x + p.w / 2 - world.camX, p.y + p.h);
-  const running = p.onGround && Math.abs(p.vx) > 10;
-  const stride = running ? Math.sin(p.runT * TAU / RUN_CYCLE_FRAMES) : Math.sin(now / 500) * 0.25;
-  c.scale(1 + stride * 0.025, 1 - stride * 0.025);
-  if (!p.onGround) c.rotate(p.face * -0.1);
-  if (world.phase === 'dying') c.rotate(world.phaseT * 2);
-  if (p.fire || p.shield) {
-    c.shadowColor = p.shield ? '#72fff0' : '#ffab32'; c.shadowBlur = 14;
-  }
-  const drawn = drawHanalSprite(c, HANAL_PIXAN_SPRITES.temayin, 0, 0, PLAYER_HEIGHT, p.face < 0);
-  c.restore();
-  return drawn;
-}
+export { drawHanalPlayer } from './hanalPlayer';
 
 export function drawHanalEnemy(c: Ctx, e: Enemy, cam: number): boolean {
   const sprite = HANAL_PIXAN_ENEMIES[e.id];

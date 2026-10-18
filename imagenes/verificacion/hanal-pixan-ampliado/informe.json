@@ -1,0 +1,648 @@
+{
+  "errores": [],
+  "recorrido": [
+    {
+      "phase": "play",
+      "x": 6.935763888888891,
+      "y": 10.35,
+      "pose": "run1",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 480
+    },
+    {
+      "phase": "play",
+      "x": 11.935763888888863,
+      "y": 10.35,
+      "pose": "run3",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 480
+    },
+    {
+      "phase": "play",
+      "x": 16.935763888888907,
+      "y": 10.35,
+      "pose": "run1",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 479
+    },
+    {
+      "phase": "play",
+      "x": 21.935763888888964,
+      "y": 5.538194444444452,
+      "pose": "fall",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 479
+    },
+    {
+      "phase": "play",
+      "x": 26.93576388888897,
+      "y": 9.052777777777791,
+      "pose": "jump",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 478
+    },
+    {
+      "phase": "play",
+      "x": 31.935763888888857,
+      "y": 9.613194444444442,
+      "pose": "jump",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 478
+    },
+    {
+      "phase": "play",
+      "x": 36.935763888888744,
+      "y": 5.894444444444453,
+      "pose": "fall",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 477
+    },
+    {
+      "phase": "play",
+      "x": 41.93576388888863,
+      "y": 6.647916666666667,
+      "pose": "fall",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 477
+    },
+    {
+      "phase": "play",
+      "x": 46.935763888888516,
+      "y": 10.35,
+      "pose": "run4",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 476
+    },
+    {
+      "phase": "play",
+      "x": 51.935763888888445,
+      "y": 8.268402777777776,
+      "pose": "jump",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 476
+    },
+    {
+      "phase": "play",
+      "x": 56.93576388888867,
+      "y": 4.35,
+      "pose": "land",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 475
+    },
+    {
+      "phase": "play",
+      "x": 61.9357638888889,
+      "y": 4.647916666666666,
+      "pose": "fall",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 475
+    },
+    {
+      "phase": "play",
+      "x": 66.11909722222222,
+      "y": 7.769444444444446,
+      "pose": "jump",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 474
+    },
+    {
+      "phase": "play",
+      "x": 69.6565972222223,
+      "y": 6.800694444444455,
+      "pose": "fall",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 474
+    },
+    {
+      "phase": "play",
+      "x": 74.65659722222253,
+      "y": 10.35,
+      "pose": "run4",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 473
+    },
+    {
+      "phase": "play",
+      "x": 79.65659722222276,
+      "y": 4.273611111111114,
+      "pose": "fall",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 473
+    },
+    {
+      "phase": "play",
+      "x": 84.65659722222298,
+      "y": 4.35,
+      "pose": "run1",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 472
+    },
+    {
+      "phase": "play",
+      "x": 89.65659722222321,
+      "y": 10.35,
+      "pose": "land",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 472
+    },
+    {
+      "phase": "play",
+      "x": 94.65659722222344,
+      "y": 5.918750000000005,
+      "pose": "jump",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 471
+    },
+    {
+      "phase": "play",
+      "x": 99.65659722222367,
+      "y": 9.533333333333347,
+      "pose": "fall",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 471
+    },
+    {
+      "phase": "play",
+      "x": 104.65659722222358,
+      "y": 9.73229166666668,
+      "pose": "fall",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 470
+    },
+    {
+      "phase": "play",
+      "x": 109.65659722222313,
+      "y": 5.918750000000005,
+      "pose": "jump",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 470
+    },
+    {
+      "phase": "play",
+      "x": 114.65659722222267,
+      "y": 7.35,
+      "pose": "run2",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 469
+    },
+    {
+      "phase": "play",
+      "x": 119.65659722222222,
+      "y": 3.9833333333333356,
+      "pose": "jump",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 469
+    },
+    {
+      "phase": "play",
+      "x": 124.65659722222176,
+      "y": 4.847916666666676,
+      "pose": "fall",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 468
+    },
+    {
+      "phase": "play",
+      "x": 129.6565972222213,
+      "y": 10.35,
+      "pose": "run3",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 468
+    },
+    {
+      "phase": "play",
+      "x": 134.65659722222085,
+      "y": 10.35,
+      "pose": "run1",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 467
+    },
+    {
+      "phase": "play",
+      "x": 139.6565972222204,
+      "y": 10.35,
+      "pose": "run3",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 467
+    },
+    {
+      "phase": "play",
+      "x": 144.65659722221994,
+      "y": 10.35,
+      "pose": "run1",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 466
+    },
+    {
+      "phase": "play",
+      "x": 149.6565972222195,
+      "y": 10.35,
+      "pose": "run3",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 466
+    },
+    {
+      "phase": "play",
+      "x": 154.65659722221903,
+      "y": 5.918750000000005,
+      "pose": "jump",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 465
+    },
+    {
+      "phase": "play",
+      "x": 159.6774305555519,
+      "y": 7.100694444444445,
+      "pose": "jump",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 465
+    },
+    {
+      "phase": "play",
+      "x": 164.67743055555144,
+      "y": 4.069444444444452,
+      "pose": "fall",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 464
+    },
+    {
+      "phase": "play",
+      "x": 169.69826388888433,
+      "y": 4.653125000000001,
+      "pose": "jump",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 464
+    },
+    {
+      "phase": "play",
+      "x": 174.69826388888387,
+      "y": 5.976041666666676,
+      "pose": "fall",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 463
+    },
+    {
+      "phase": "play",
+      "x": 179.69826388888342,
+      "y": 10.35,
+      "pose": "run4",
+      "checkpoint": false,
+      "oxygen": 10,
+      "time": 463
+    },
+    {
+      "phase": "play",
+      "x": 184.69826388888296,
+      "y": 10.35,
+      "pose": "run2",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 462
+    },
+    {
+      "phase": "play",
+      "x": 189.6982638888825,
+      "y": 10.35,
+      "pose": "run4",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 462
+    },
+    {
+      "phase": "play",
+      "x": 194.69826388888205,
+      "y": 10.35,
+      "pose": "run2",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 461
+    },
+    {
+      "phase": "play",
+      "x": 199.6982638888816,
+      "y": 5.535069444444451,
+      "pose": "jump",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 461
+    },
+    {
+      "phase": "play",
+      "x": 204.6956597222145,
+      "y": 4.37118055555557,
+      "pose": "jump",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 460
+    },
+    {
+      "phase": "play",
+      "x": 209.68975694443748,
+      "y": 6.81006944444446,
+      "pose": "jump",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 460
+    },
+    {
+      "phase": "play",
+      "x": 214.6897569444384,
+      "y": 4.88298611111113,
+      "pose": "fall",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 459
+    },
+    {
+      "phase": "play",
+      "x": 219.70037608744923,
+      "y": 3.9402777777777778,
+      "pose": "jump",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 459
+    },
+    {
+      "phase": "play",
+      "x": 224.69447330967228,
+      "y": 5.482638888888891,
+      "pose": "jump",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 458
+    },
+    {
+      "phase": "play",
+      "x": 229.69447330967319,
+      "y": 5.8472222222222285,
+      "pose": "fall",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 458
+    },
+    {
+      "phase": "play",
+      "x": 231.98993055555556,
+      "y": 4.047569444444454,
+      "pose": "fall",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 457
+    },
+    {
+      "phase": "play",
+      "x": 236.98993055555647,
+      "y": 10.35,
+      "pose": "land",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 457
+    },
+    {
+      "phase": "play",
+      "x": 241.98993055555738,
+      "y": 10.35,
+      "pose": "run1",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 456
+    },
+    {
+      "phase": "play",
+      "x": 246.9899305555583,
+      "y": 10.35,
+      "pose": "run3",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 456
+    },
+    {
+      "phase": "play",
+      "x": 251.9899305555592,
+      "y": 10.35,
+      "pose": "run1",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 455
+    },
+    {
+      "phase": "play",
+      "x": 256.98993055556014,
+      "y": 10.35,
+      "pose": "run3",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 455
+    },
+    {
+      "phase": "play",
+      "x": 261.98993055556105,
+      "y": 10.35,
+      "pose": "run1",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 454
+    },
+    {
+      "phase": "play",
+      "x": 266.98993055556195,
+      "y": 10.35,
+      "pose": "run3",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 454
+    },
+    {
+      "phase": "play",
+      "x": 271.98993055556286,
+      "y": 10.35,
+      "pose": "run1",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 453
+    },
+    {
+      "phase": "play",
+      "x": 276.9899305555638,
+      "y": 7.769444444444446,
+      "pose": "jump",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 453
+    },
+    {
+      "phase": "play",
+      "x": 281.9899305555647,
+      "y": 6.800694444444455,
+      "pose": "fall",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 452
+    },
+    {
+      "phase": "play",
+      "x": 286.9899305555656,
+      "y": 5.975000000000004,
+      "pose": "jump",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 452
+    },
+    {
+      "phase": "play",
+      "x": 291.9899305555665,
+      "y": 7.35,
+      "pose": "land",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 451
+    },
+    {
+      "phase": "play",
+      "x": 296.9899305555674,
+      "y": 10.35,
+      "pose": "run2",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 451
+    },
+    {
+      "phase": "play",
+      "x": 301.9899305555683,
+      "y": 6.475694444444447,
+      "pose": "jump",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 450
+    },
+    {
+      "phase": "play",
+      "x": 306.98993055556923,
+      "y": 8.256944444444457,
+      "pose": "fall",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 450
+    },
+    {
+      "phase": "play",
+      "x": 311.9839854133271,
+      "y": 3.679166666666673,
+      "pose": "fall",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 449
+    },
+    {
+      "phase": "play",
+      "x": 316.983985413328,
+      "y": 6.647916666666667,
+      "pose": "fall",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 449
+    },
+    {
+      "phase": "play",
+      "x": 321.9839854133289,
+      "y": 6.653125000000003,
+      "pose": "jump",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 448
+    },
+    {
+      "phase": "play",
+      "x": 326.98398541332983,
+      "y": 7.976041666666679,
+      "pose": "fall",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 448
+    },
+    {
+      "phase": "play",
+      "x": 331.98398541333074,
+      "y": 3.6197916666666727,
+      "pose": "fall",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 447
+    },
+    {
+      "phase": "play",
+      "x": 335.4265625,
+      "y": 4.482934027777779,
+      "pose": "jump",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 447
+    },
+    {
+      "phase": "play",
+      "x": 339.8232638888894,
+      "y": 6.0594965277777835,
+      "pose": "fall",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 446
+    },
+    {
+      "phase": "play",
+      "x": 344.8232638888903,
+      "y": 10.35,
+      "pose": "run1",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 446
+    },
+    {
+      "phase": "flag",
+      "x": 345.55,
+      "y": 10.35,
+      "pose": "idle1",
+      "checkpoint": true,
+      "oxygen": 10,
+      "time": 445
+    }
+  ],
+  "poses": 16,
+  "orientacionesPorPose": 2,
+  "contactoProtegido": true,
+  "colisionesSaltosOxigenoReales": true
+}

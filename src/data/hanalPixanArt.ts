@@ -1,5 +1,6 @@
 import type { SpriteRef } from './intro';
 import type { EnemyId } from '../engine/types';
+import { HANAL_MOTION_FILE } from './hanalPixanPlayer';
 
 /** Recortes alfa medidos por imagenes/import_hanal_pixan_art.mjs. */
 const sprite = (name: string, frame: SpriteRef['frame']): SpriteRef => ({
@@ -20,5 +21,5 @@ export const HANAL_PIXAN_ENEMIES: Readonly<Partial<Record<EnemyId, SpriteRef>>> 
   coati: HANAL_PIXAN_SPRITES.coati, bat: HANAL_PIXAN_SPRITES.bat,
   alux: HANAL_PIXAN_SPRITES.alux, ants: HANAL_PIXAN_SPRITES.ants,
 };
-export const HANAL_PIXAN_ART_FILES: readonly string[] = [HANAL_PIXAN_BACKGROUND,
+export const HANAL_PIXAN_ART_FILES: readonly string[] = [HANAL_PIXAN_BACKGROUND, HANAL_MOTION_FILE,
   ...Object.values(HANAL_PIXAN_SPRITES).map(art => art.file)];

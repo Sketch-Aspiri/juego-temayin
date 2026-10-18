@@ -27,7 +27,8 @@ try {
     const loaded = path => performance.getEntriesByType('resource').filter(e => new URL(e.name).pathname === path).at(-1)?.name ?? path;
     const { World } = await import(loaded('/src/engine/World.ts'));
     const { useAppStore } = await import(loaded('/src/store/appStore.ts'));
-    window.qa = { store: useAppStore, tick: World.prototype.update, world: null };
+    const { driveHanalRoute } = await import('/src/engine/testing/hanalRoute.ts');
+    window.qa = { store: useAppStore, tick: World.prototype.update, world: null, drive: driveHanalRoute };
     World.prototype.update = function () { qa.world = this; };
     qa.store.setState({ settings: { ...qa.store.getState().settings, muted: true, introSeen: false, touchControls: 'on' } });
   });
@@ -69,26 +70,17 @@ try {
   await page.waitForFunction(() => qa.world?.def.id === 'especial-hanal-pixan');
   await page.evaluate(() => {
     qa.advance = seconds => {
-      const w = qa.world, p = w.player, input = w.input;
+      const w = qa.world, p = w.player;
       for (let i = 0; i < seconds * 120 && w.phase === 'play'; i++) {
-        p.inv = 100; input.press('right'); input.press('run');
-        let jump = false;
-        if (p.onGround || p.coyote > 0) {
-          const front = p.x + p.w;
-          for (let x = Math.floor(front / 40); x <= Math.floor((front + 60) / 40); x++) {
-            if (!w.solid(x, 12) || w.solid(x, Math.floor((p.y + p.h - 3) / 40)) || w.solid(x, Math.floor(p.y / 40))) jump = true;
-          }
-        }
-        if (jump && !input.held.jump) input.press('jump');
-        else if (p.vy >= 0 || (!jump && p.onGround)) input.release('jump');
+        qa.drive(w);
         qa.tick.call(w, 1 / 120);
       }
-      input.reset(); p.inv = 0;
+      p.inv = 0;
       return { phase: w.phase, x: p.x / 40, checkpoint: w.checkpointReached, time: w.timeLeft };
     };
   });
   let reachedCheckpoint = false;
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 240; i++) {
     const report = await page.evaluate(() => qa.advance(0.5));
     reports.push(report);
     assert.notEqual(report.phase, 'dying', 'El recorrido debe poder cruzarse con saltos reales.');

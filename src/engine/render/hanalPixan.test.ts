@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { HANAL_PIXAN_LEVEL } from '../../data/levels/seasonal/hanal-pixan';
-import { HANAL_PIXAN_SPRITES } from '../../data/hanalPixanArt';
+import { HANAL_MOTION_FILE, HANAL_MOTION_FRAMES } from '../../data/hanalPixanPlayer';
+import { PLAYER_HEAD_WIDTH } from '../../data/playerScale';
 import { World } from '../World';
 import { Input } from '../input';
 import { AudioEngine } from '../audio';
@@ -22,16 +23,18 @@ beforeEach(() => {
 describe('Alebrijes jugables', () => {
   it('apoya los pies, conserva proporciones y gira el jugador sin mutar la simulación', () => {
     const w = world(), c = context();
+    w.player.onGround = true;
     w.player.face = -1;
     const before = structuredClone(w.player);
     expect(drawHanalPlayer(c as unknown as Ctx, w, 100)).toBe(true);
-    expect(mocks.frame).toHaveBeenCalledWith(HANAL_PIXAN_SPRITES.temayin.file,
-      HANAL_PIXAN_SPRITES.temayin.frame, 86 / HANAL_PIXAN_SPRITES.temayin.frame[3]);
+    const frame = HANAL_MOTION_FRAMES.idle1;
+    expect(mocks.frame).toHaveBeenCalledWith(HANAL_MOTION_FILE,
+      [frame.x, frame.y, frame.w, frame.h], PLAYER_HEAD_WIDTH / frame.headWidth, true);
     expect(c.translate).toHaveBeenCalledWith(w.player.x + w.player.w / 2, w.player.y + w.player.h);
     expect(c.scale).toHaveBeenCalledWith(-1, 1);
     const [image, x, y] = c.drawImage.mock.calls[0];
-    expect(x + image.width / 2).toBe(0);
-    expect(y + image.height).toBe(0);
+    expect(x).toBe(Math.round((frame.x - frame.ax) * PLAYER_HEAD_WIDTH / frame.headWidth));
+    expect(Math.abs(y + image.height)).toBeLessThanOrEqual(1);
     expect(w.player).toEqual(before);
   });
 
@@ -52,6 +55,6 @@ describe('Alebrijes jugables', () => {
       expect(drawHanalEnemy(c as unknown as Ctx, enemy, enemy.x)).toBe(true);
       expect(enemy).toEqual(before);
     }
-    expect(c.drawImage).toHaveBeenCalledTimes(4);
+    expect(c.drawImage).toHaveBeenCalledTimes(w.enemies.length);
   });
 });
