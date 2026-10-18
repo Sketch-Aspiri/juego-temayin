@@ -1,0 +1,60 @@
+{
+  "escenas": [
+    "fase1-idle-derecha.png",
+    "fase1-advance-derecha.png",
+    "fase1-warn-derecha.png",
+    "fase1-lunge-derecha.png",
+    "fase1-exposed-derecha.png",
+    "fase1-cannon-derecha.png",
+    "fase1-mast-derecha.png",
+    "fase1-hurt-derecha.png",
+    "fase1-dead-derecha.png",
+    "fase2-idle-derecha.png",
+    "fase2-advance-derecha.png",
+    "fase2-warn-derecha.png",
+    "fase2-lunge-derecha.png",
+    "fase2-exposed-derecha.png",
+    "fase2-cannon-derecha.png",
+    "fase2-mast-derecha.png",
+    "fase2-hurt-derecha.png",
+    "fase2-dead-derecha.png",
+    "fase2-rally-derecha.png",
+    "fase2-lunge-izquierda.png"
+  ],
+  "movil": [
+    {
+      "width": 844,
+      "height": 390,
+      "overflow": false,
+      "touch": 5,
+      "canvas": {
+        "x": 87.71875,
+        "y": 0,
+        "width": 668.5625,
+        "height": 389.984375,
+        "top": 0,
+        "right": 756.28125,
+        "bottom": 389.984375,
+        "left": 87.71875
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "touch": 5,
+      "canvas": {
+        "x": 8,
+        "y": 174.671875,
+        "width": 374,
+        "height": 436.328125,
+        "top": 174.671875,
+        "right": 382,
+        "bottom": 611,
+        "left": 8
+      }
+    }
+  ],
+  "errores": [],
+  "alcance": "Escenas preparadas; cobertura visual de poses, orientación, avisos y fases."
+}
