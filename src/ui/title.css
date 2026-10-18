@@ -1,0 +1,190 @@
+/* La luz de la ofrenda acompaña al menú sin cubrir el tren del fondo. */
+.title--hanal {
+  isolation: isolate;
+  background: #081b22;
+  --gold: #ffd88b;
+  --ink-dim: #cad2c5;
+}
+.title--hanal .title__backdrop {
+  position: fixed;
+  object-position: 65% center;
+  pointer-events: none;
+  z-index: -3;
+}
+.title--hanal::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: linear-gradient(90deg, #04161cbd, #05181b14 50%, transparent 75%),
+    linear-gradient(0deg, #05171dd9, transparent 28%);
+}
+.title--hanal .title__content {
+  display: grid;
+  grid-template-columns: minmax(340px, 490px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1rem, 3vw, 3rem);
+  max-width: 1580px;
+  margin: auto;
+  padding: clamp(24px, 5vh, 56px) clamp(24px, 5vw, 88px);
+}
+.title--hanal .title__panel {
+  position: relative;
+  gap: 14px;
+  padding: 32px 28px 24px;
+  border: 1px solid #e9bd7552;
+  border-top: 2px solid #f6c578b3;
+  border-radius: 100px 100px 24px 24px / 32px 32px 24px 24px;
+  background: linear-gradient(150deg, #0b2631ed, #081d25e3 65%, #17332ced);
+  box-shadow: 0 24px 70px #0005, inset 0 0 40px #284c3a29;
+  backdrop-filter: blur(6px);
+}
+.title__celebration {
+  display: grid;
+  gap: 3px;
+  margin: 0 0 8px;
+  text-align: center;
+  color: #edcd9f;
+  font-family: 'Bree Serif', Georgia, serif;
+  font-size: 0.95rem;
+}
+.title__celebration strong {
+  color: #ffd18c;
+  font-weight: 400;
+  font-size: 1.65rem;
+  letter-spacing: 0.06em;
+}
+.title--hanal .logo {
+  font-size: clamp(3.4rem, 6.5vw, 5.4rem);
+  max-width: 100%;
+  margin: 0;
+}
+.title--hanal .logo__sub { margin: 0 0 14px; font-size: clamp(1rem, 2vw, 1.4rem); }
+.title--hanal .title__menu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  gap: 12px;
+}
+.title--hanal .title__menu .btn {
+  min-height: 48px;
+  border-color: #ecc99361;
+  background: #28544755;
+  color: #fff1d7;
+}
+.title--hanal .title__menu .btn:hover { background: #47736677; border-color: #ffd88b; }
+.title--hanal .title__menu .btn--primary {
+  grid-column: 1 / -1;
+  min-height: 66px;
+  color: #261c16;
+  border: 2px solid #ffe0a0;
+  background: linear-gradient(#ffe09b, #f7b94b 55%, #e68b35);
+  text-shadow: 0 1px #fff7;
+  box-shadow: 0 4px 0 #854325, 0 8px 24px #ed9f2926;
+}
+.title--hanal .title__menu .btn--primary:hover { background: linear-gradient(#ffedbc, #ffd076 55%, #f5a442); }
+.title__controls { width: 100%; text-align: center; }
+.title__controls summary {
+  width: fit-content;
+  margin: auto;
+  padding: 8px 14px;
+  color: #e2d4b9;
+  font-family: 'Bree Serif', Georgia, serif;
+  cursor: pointer;
+}
+.title__controls summary:hover { color: #ffe0a0; }
+.title--hanal .version-note {
+  margin-top: 0;
+  padding: 12px 0 0;
+  border: 0;
+  border-top: 1px solid #ecc99333;
+  border-radius: 0;
+  background: transparent;
+  color: #d6dfd4;
+}
+.title--hanal .version-note__heading { color: #e7c18a; }
+.title--hanal .version-note__summary { font-size: 0.75rem; }
+.title__portrait {
+  display: grid;
+  justify-items: center;
+  align-self: end;
+  padding-top: 25vh;
+}
+.title--hanal .title__jaguar {
+  display: block;
+  width: min(42vw, 560px);
+  height: auto;
+  max-height: 60vh;
+  max-width: 100%;
+  filter: drop-shadow(0 16px 18px #0008) drop-shadow(0 0 28px #eab34924);
+  animation: title-breathe 5s ease-in-out infinite;
+}
+.title__place {
+  margin: 14px 0 0;
+  color: #ffe3af;
+  font-family: 'Bree Serif', Georgia, serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  text-shadow: 0 2px 6px #000;
+}
+.title__place span { padding: 0 8px; color: #eaaf6d; }
+.title__fireflies { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+.title__fireflies i {
+  position: absolute;
+  left: 48%;
+  top: 65%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffdf8c;
+  box-shadow: 0 0 12px 3px #ffd36a66;
+  animation: title-firefly 6s ease-in-out infinite;
+}
+.title__fireflies i:nth-child(2) { left: 80%; top: 46%; animation-delay: -2s; }
+.title__fireflies i:nth-child(3) { left: 60%; top: 84%; animation-delay: -4s; }
+.title__fireflies i:nth-child(4) { left: 92%; top: 69%; animation-delay: -1s; }
+.title__fireflies i:nth-child(5) { left: 38%; top: 26%; animation-delay: -3s; }
+@keyframes title-breathe { 50% { transform: translateY(-5px); } }
+@keyframes title-firefly {
+  0%, 100% { opacity: 0.2; transform: translate(0, 0); }
+  50% { opacity: 0.9; transform: translate(9px, -18px); }
+}
+@media (max-width: 700px) and (orientation: portrait) {
+  .title--hanal .title__backdrop { height: 370px; object-position: 75% center; }
+  .title--hanal::before { background: linear-gradient(0deg, #081b22 0%, #081b22 48%, transparent 82%); }
+  .title--hanal .title__content {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding: 110px max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  }
+  .title__portrait { grid-row: 1; padding: 0; position: relative; z-index: 1; }
+  .title--hanal .title__jaguar { width: 210px; max-height: none; }
+  .title__place { margin: -4px 0 14px; font-size: 0.75rem; }
+  .title--hanal .title__panel { padding: 22px 20px 18px; gap: 10px; width: min(100%, 430px); justify-self: center; }
+  .title__celebration { margin: 0; font-size: 0.8rem; }
+  .title__celebration strong { font-size: 1.3rem; }
+  .title--hanal .logo { font-size: clamp(2.9rem, 12vw, 4rem); }
+  .title--hanal .logo__sub { font-size: 1rem; margin-bottom: 8px; }
+  .title--hanal .title__menu .btn--primary { min-height: 58px; font-size: 1.45rem; }
+  .title--hanal .title__menu .btn { font-size: 1rem; }
+}
+/* El menú conserva altura táctil y permite desplazar pantallas apaisadas bajas. */
+@media (max-height: 600px) and (orientation: landscape) {
+  .title--hanal .title__content { grid-template-columns: minmax(300px, 390px) minmax(0, 1fr); padding: 20px 4vw; }
+  .title--hanal .title__panel { padding: 18px 24px; gap: 8px; }
+  .title__celebration { display: flex; align-items: baseline; gap: 6px; margin: 0; font-size: 0.8rem; }
+  .title__celebration strong { font-size: 1.1rem; }
+  .title--hanal .logo { font-size: 3.2rem; }
+  .title--hanal .logo__sub { font-size: 1rem; margin-bottom: 4px; }
+  .title--hanal .title__menu { gap: 8px; }
+  .title--hanal .title__menu .btn--primary { min-height: 48px; font-size: 1.3rem; padding: 6px 20px; }
+  .title--hanal .title__menu .btn { min-height: 44px; padding: 6px 12px; }
+  .title__controls summary { padding: 4px 12px; }
+  .title__portrait { padding-top: 22vh; position: sticky; bottom: 16px; }
+  .title--hanal .title__jaguar { width: min(36vw, 340px); max-height: 65vh; }
+  .title__place { font-size: 0.75rem; margin-top: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .title--hanal .title__jaguar, .title__fireflies i { animation: none; }
+}

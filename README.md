@@ -57,6 +57,8 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 
 ## Contenido actual
 
+- **Portada de Hanal Pixán:** Temayin alebrije frente a una selva nocturna de Palenque con ofrenda, flores, velas y Tren Maya iluminado al fondo. Menú de jade y ámbar, ayuda de controles desplegable y encuadres para escritorio y móvil; las luciérnagas y el personaje respetan movimiento reducido. Originales, prompt y exportación en [la guía del arte](imagenes/nuevos/portada-hanal-pixan/README.md); capturas y comprobaciones en [la revisión visual](imagenes/verificacion/portada-hanal-pixan/REVISION.md).
+
 - Pantalla de carga con el sprite del tren animado sobre vías y selva en movimiento, adaptable a móvil y respetuosa con movimiento reducido. La aventura comienza al terminar la carga real.
 
 - **Encuentros con Ek Chuah:** aparece en 16 niveles, de dos a tres por mundo disponible: 1-3/1-5/1-6, 2-3/2-5/2-7, 3-3/3-5, 4-2/4-5, 5-2/5-4/5-6 y 6-2/6-4/6-6. Ofrece fuego del habanero (30 cacao), escudo de jade (20) y vidas extra (50 cada una), con los sprites de chile, escudo y corazón de jade. Fuego y escudo se compran una vez por encuentro; las vidas admiten compras repetidas y un selector para comprar varias juntas, con precio total y contador de vidas pagadas. Comprar es opcional; el tiempo del nivel empieza al continuar. La deidad se muestra en el canvas con un sprite de caricatura acorde con Temayin y Toh, a la misma altura visible que Temayin y junto a un pequeño altar. Es una adaptación ficticia inspirada en su relación con el cacao y los comerciantes, documentada por el [INAH](https://www.inah.gob.mx/images/boletines/2024/753/Boletin%20753.pdf).

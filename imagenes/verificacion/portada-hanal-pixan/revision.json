@@ -1,0 +1,101 @@
+{
+  "layouts": [
+    {
+      "width": 1440,
+      "height": 900,
+      "overflow": false,
+      "hero": {
+        "x": 706.59375,
+        "y": 281,
+        "width": 560,
+        "height": 540
+      },
+      "logo": {
+        "x": 118.21427917480469,
+        "y": 272.267578125,
+        "width": 397.5714111328125,
+        "height": 125.79296875
+      },
+      "animation": "none",
+      "imagesLoaded": true
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "overflow": false,
+      "hero": {
+        "x": 949,
+        "y": 432,
+        "width": 560,
+        "height": 560
+      },
+      "logo": {
+        "x": 304.21429443359375,
+        "y": 362.267578125,
+        "width": 397.5714111328125,
+        "height": 125.79296875
+      },
+      "animation": "none",
+      "imagesLoaded": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "hero": {
+        "x": 90,
+        "y": 131.765625,
+        "width": 210,
+        "height": 210
+      },
+      "logo": {
+        "x": 87.32437133789062,
+        "y": 456.1153564453125,
+        "width": 215.33563232421875,
+        "height": 68.113037109375
+      },
+      "animation": "none",
+      "imagesLoaded": true
+    },
+    {
+      "width": 360,
+      "height": 640,
+      "overflow": false,
+      "hero": {
+        "x": 75,
+        "y": 110,
+        "width": 210,
+        "height": 210
+      },
+      "logo": {
+        "x": 73.24164581298828,
+        "y": 423.5218505859375,
+        "width": 213.5010986328125,
+        "height": 67.550048828125
+      },
+      "animation": "none",
+      "imagesLoaded": true
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "overflow": false,
+      "hero": {
+        "x": 477.734375,
+        "y": 105.796875,
+        "width": 303.828125,
+        "height": 253.5
+      },
+      "logo": {
+        "x": 110.94743347167969,
+        "y": 65.95463562011719,
+        "width": 235.60511779785156,
+        "height": 74.52821350097656
+      },
+      "animation": "none",
+      "imagesLoaded": true
+    }
+  ],
+  "navegacion": "Jugar, Historia, Ajustes y teclado correctos",
+  "errors": []
+}
