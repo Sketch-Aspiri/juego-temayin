@@ -53,7 +53,7 @@ export const LEVEL_6_2: LevelDef = {
     // Vagón 9.
     ['col', 187, 1], ['coins', 186, 8, 3], ['plat', 192, 6, 4],
     // Vagón 10 y último vagón.
-    ['plat', 210, 6, 5], ['row', 217, 8, '?F?'], ['coins', 223, 8, 4], ['coins', 230, 9, 4], ['coins', 238, 9, 3],
+    ['plat', 210, 6, 5], ['row', 217, 8, '?F?'], ['coins', 223, 8, 4], ['coins', 228, 9, 1], ['coins', 230, 9, 4], ['coins', 234, 9, 2],
     ['flag', 236], ['temple', 241],
     // Los coatíes patrullan las pasarelas: si se salen, caen al techo del vagón, nunca al enganche.
     ['spawn', 'coati', 30, 3], ['spawn', 'coati', 72, 3], ['spawn', 'coati', 165, 5], ['spawn', 'coati', 212, 5],

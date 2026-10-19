@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { GOAL_VIEW_WIDTH, GROUND, ROWS, T, WIND_MAX_VX } from '../engine/constants';
+import { GOAL_VIEW_WIDTH, GROUND, PLAYER_GRAVITY, ROWS, T, WIND_MAX_VX } from '../engine/constants';
 import { isAirborne } from '../engine/entities/enemies';
+import { HAMMOCK_BOUNCE } from '../engine/entities/hammocks';
 import { platformReach } from '../engine/entities/platforms';
 import { buildLevel } from '../engine/level/build';
 import { waterAt, waterColumn } from '../engine/level/zones';
@@ -11,6 +12,10 @@ import { ALL_LEVELS, nextLevelId, PLAYABLE_LEVELS, WORLDS } from './worlds';
 const MAX_PLAIN_PIT = 6;
 /** Un estromatolito debe quedar a más de estos bloques de un aterrizaje (orilla o borde de hoyo). */
 const MIN_LANDING_GAP = 2;
+/** Margen de seguridad: el tejado debe quedar al menos medio bloque por debajo del ápice del rebote. */
+const HAMMOCK_SAFETY_MARGIN = T / 2;
+/** Columnas a la derecha de una hamaca en las que un tejado se considera «su» destino. */
+const HAMMOCK_NEAR_COLUMNS = 8;
 
 describe('campaña', () => {
   it('los ids de nivel son únicos', () => {
@@ -64,6 +69,37 @@ describe.each(PLAYABLE_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, 
     // La pirámide completa cabe en el nivel, para que la cámara pueda encuadrarla.
     expect(lvl.templeX * T + GOAL_VIEW_WIDTH).toBeLessThanOrEqual(def.width * T);
     expect(solid(lvl.flagX, GROUND)).toBe(true);
+  });
+
+  // La bandera se activa al cruzar su columna sin importar la altura: lo que quede detrás no se puede recoger.
+  it('no hay cacao (granos, cofres ni aros) después de la bandera', () => {
+    // Organizar
+    const beyond: string[] = [];
+    // Actuar
+    lvl.grid.forEach((row, ty) => row.forEach((c, tx) => {
+      if ((c === 'o' || c === '?') && tx > lvl.flagX) beyond.push(`${tx},${ty}`);
+    }));
+    for (const h of lvl.hoops) if (h.x > lvl.flagX) beyond.push(`aro ${h.x},${h.y}`);
+    // Comprobar
+    expect(beyond, `cacao más allá de la bandera (columna ${lvl.flagX})`).toEqual([]);
+  });
+
+  // Un tejado cercano a una hamaca solo cuenta como alcanzable si el rebote llega a su altura.
+  it('las plataformas junto a una hamaca quedan por debajo de la altura de su rebote', () => {
+    // Organizar
+    const apex = (HAMMOCK_BOUNCE * HAMMOCK_BOUNCE) / (2 * PLAYER_GRAVITY);
+    const tooHigh: string[] = [];
+    // Actuar
+    for (const h of lvl.hammocks) {
+      const right = (h.x + h.w) / T;
+      for (const op of def.ops) {
+        if (op[0] !== 'plat' || op[1] < right || op[1] > right + HAMMOCK_NEAR_COLUMNS) continue;
+        const rise = h.y - op[2] * T;
+        if (rise >= apex - HAMMOCK_SAFETY_MARGIN) tooHigh.push(`hamaca ${h.x / T} -> plataforma ${op[1]},${op[2]} (sube ${rise} px, rebote ${apex} px)`);
+      }
+    }
+    // Comprobar
+    expect(tooHigh).toEqual([]);
   });
 
   it('el punto de inicio y el punto de control tienen suelo', () => {
