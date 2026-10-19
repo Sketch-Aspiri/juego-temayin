@@ -169,8 +169,14 @@ temayin_juego/
       persistence.ts           loadSaved / save en localStorage (clave 'temayin:v3'; migra 'temayin:v2')
     ui/
       assetsContext.tsx
-      screens/                 TitleScreen, LevelSelect, GameScreen, SettingsScreen, IntroScreen, HistoryScreen
+      screens/                 TitleScreen, LevelSelect, PeninsulaMap, GameScreen, SettingsScreen, IntroScreen, HistoryScreen
       components/              Hud, BossBanner, Overlays, Stars, TouchControls, CinematicPlayer
+      components/map/          Carta de la península: MapChart (atlas SVG y estaciones), mapGestures.ts (cámara: arrastre,
+                               zoom, pellizco, rueda, teclas; funciones puras), mapPointerSession.ts (máquina de punteros),
+                               mapListeners.ts (eventos nativos no pasivos), useMapGestures.ts y useMapViewport.ts (estado y
+                               tamaño), MapZoomControls, MapLandscape, StationMarkers, MapItinerary, MapNavigation,
+                               MapCurtain, MapAttribution, mapModel.ts (encuadres y descubrimiento de mundos)
+      peninsulaMap.css         Estilos de la carta: atlas con touch-action: none, controles de zoom, itinerario y cortina
 ```
 
 ### Flujo de datos
@@ -575,20 +581,31 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
 
 | Aspecto | Detalle |
 |---|---|
-| Dónde | UI de React: `src/ui/screens/PeninsulaMap.tsx` (+ componentes en `src/ui/components/map/`). Sustituye o complementa a `LevelSelect.tsx`. |
+| Dónde | UI de React: `src/ui/screens/PeninsulaMap.tsx` (+ componentes en `src/ui/components/map/`), montado por `LevelSelect.tsx`. Estilos en `src/ui/peninsulaMap.css`. |
 | Datos | `src/data/stations.ts`: registro inmutable de latitud, longitud, nombre y tipo de destino por id; `projectPosition` calcula coordenadas normalizadas (0..1). **No** meter coordenadas en `LevelDef` (es un dato de UI). Prueba: todo id de `ALL_LEVELS` tiene estación. |
 | Dibujo | SVG simplificado de la península (Chiapas/Tabasco, Campeche, Yucatán, Quintana Roo) con la vía; estaciones como botones accesibles (`<button>` con `aria-label`). |
 | Tren | El tren se coloca en la última estación desbloqueada (`isUnlocked`). Las transiciones de posición respetan `prefers-reduced-motion`; al volver desde una partida el selector se monta directamente en el nuevo destino. |
 | Store | Añadir `'map'` a `Screen` en `appStore.ts` o reutilizar `'levels'`. La lógica de desbloqueo sigue en `store/progress.ts`. |
 
-**Estado: implementado.** `LevelSelect.tsx` contiene `PeninsulaMap.tsx`: carta SVG con costa y fronteras reales de Natural Earth 1:10m, proyección equirectangular a 20° N y norte arriba. `data/peninsulaGeography.ts` se regenera con `python imagenes/import_peninsula_map.py`. Las estaciones utilizan coordenadas WGS84 de OpenStreetMap; Teya, Petenes y destinos turísticos conservan su referencia local, y Xibalbá se identifica como escenario ficticio. Fuentes y precisiones en `src/data/MAPA.md`.
+**Estado: implementado.** `LevelSelect.tsx` monta `PeninsulaMap.tsx`: carta SVG con costa y fronteras reales de Natural Earth 1:10m, proyección equirectangular a 20° N y norte arriba. `data/peninsulaGeography.ts` se regenera con `python imagenes/import_peninsula_map.py`. Las estaciones utilizan coordenadas WGS84 de OpenStreetMap; Teya, Petenes y destinos turísticos conservan su referencia local, y Xibalbá se identifica como escenario ficticio. Fuentes y precisiones en `src/data/MAPA.md`.
 
 - Puntos iluminados para niveles disponibles, apagados para bloqueados y marcas de completado. Las guías de rótulo separan destinos cercanos sin mover su ancla geográfica. El itinerario lateral permite seleccionar todos los puntos con teclado o toque y solo inicia niveles disponibles.
 - Los mundos sin ninguna estación disponible quedan cubiertos por nubes; completar el jefe anterior despeja el siguiente. Récords migrados y boletos descubren su propio mundo sin abrir los intermedios. Chetumal abre Xpujil y despeja el Mundo 7; la campaña completa tiene 39 destinos.
 - Vista general, acercamiento por tramo, siete pestañas de mundo, bolsa de cacao, estrellas, secretos con boleto y especial Hanal Pixán. La línea muestra el orden de la aventura, no el trazado ferroviario. Sin cambios al esquema de guardado ni a los ids.
 - El mapa ocupa todo el visor, con controles flotantes e itinerario desplegable. `fitMapView` adapta la cámara a escritorio, teléfono y panel lateral sin deformar las posiciones. Letras, números de estación, estrellas y cacao tienen tamaños ampliados. Chichén Itzá se identifica como zona arqueológica real; solo Xibalbá es un escenario de fantasía.
 - `MapCurtain.tsx` cubre todo el visor con dos bancos de nubes: entrada de 1,5 s y cierre de 0,9 s antes de volver al título o iniciar un nivel. Las duraciones se comparten con CSS y la interfaz permanece `inert` durante la transición. `prefers-reduced-motion` oculta la cortina y cambia de pantalla inmediatamente.
-- Pruebas: `data/stations.test.ts`, `ui/components/map/mapModel.test.ts` y `ui/screens/LevelSelect.test.tsx`. `python imagenes/verify_peninsula_map.py` revisa progreso inicial, fin de Mundo 1, récord migrado, campaña descubierta, siete secretos, zoom, escritorio y móvil; prepara perfiles de QA sin modificar las reglas del juego. Capturas e informe en `imagenes/verificacion/mapa-peninsula/`.
+- **Pan y zoom.** La cámara parte del encuadre de `fitMapView` (`data-map-camera="encuadre"`) y pasa a `libre` con el primer gesto. `mapGestures.ts` contiene las operaciones puras; `mapPointerSession.ts` decide si un puntero es toque, arrastre o pellizco; `mapListeners.ts` registra los eventos nativos no pasivos del atlas y `useMapGestures.ts` publica la cámara como máximo una vez por fotograma.
+  - **Arrastre** con ratón o tacto. Hasta `TAP_SLOP_PX` (8 px) el gesto sigue siendo un toque; al superarlo se aplica todo el desplazamiento desde el origen. El clic que sigue a un arrastre o pellizco se suprime (ventana de 50 ms) para no seleccionar la estación bajo el dedo.
+  - **Rueda** (`WHEEL_ZOOM_RATE` = 0,002; paso acotado entre 1/`WHEEL_MAX_STEP` y `WHEEL_MAX_STEP` = 2; líneas y páginas se convierten a píxeles). Con Ctrl, el pellizco de trackpad se amplifica (`CTRL_WHEEL_BOOST` = 10).
+  - **Pellizco** de dos dedos: la razón de distancias es el zoom y el punto medio arrastra la vista. Al levantar un dedo, el otro sigue arrastrando sin salto.
+  - Rueda y pellizco hacen zoom **centrado en el punto del gesto**. Los botones y el teclado lo centran en la parte visible del mapa, descontando el panel lateral (`zoomAnchor`).
+  - **Botones** (`MapZoomControls.tsx`): Acercar (+, paso `BUTTON_ZOOM_STEP` = 1,5), Alejar (−) y Reencuadrar (⟲). Son hermanos del atlas, no hijos, para que pulsarlos no inicie un arrastre. Usan `aria-disabled` en lugar de `disabled` para conservar el foco en los topes; sus `title` son «Acercar», «Alejar» y «Volver al encuadre». Reencuadrar solo se habilita con cámara libre. Conviven con el conmutador «+ Acercar al tramo» / «− Ver península» de la barra superior, que cambia la vista y no hace zoom. Con el itinerario abierto en pantallas de 600 px o menos (`panelCoversZoom`), los botones no se montan.
+  - **Teclado** con el foco en el atlas (no en una estación ni en un botón): flechas desplazan 80 px (`KEY_PAN_STEP_PX`), + y = acercan, − y _ alejan, 0 reencuadra. Las combinaciones con Alt, Ctrl o Meta se ignoran. La ayuda de teclas solo aparece con el foco.
+  - **Límites** (`zoomLimits`, `clampCamera`): el acercamiento llega a `MAX_ZOOM_IN` = 8 veces el encuadre de la península completa, también en vista de tramo; el alejamiento llega a `MAX_ZOOM_OUT` = 1,25 veces el encuadre más holgado (con el panel abierto). El centro no sale de la caja de la península, incluso tras arrastres extremos. Al cambiar el tamaño de la ventana la cámara libre se vuelve a acotar.
+  - **Reencuadre**: cambiar de pestaña de mundo, de vista o pulsar 0 descarta la cámara libre y vuelve al encuadre base (`frameKey`). Tocar una estación o abrir el itinerario no reencuadra.
+  - **Estilo**: `.atlas` tiene `touch-action: none` (el navegador no hace scroll ni zoom sobre la carta); el itinerario mantiene `pan-y`.
+- Pruebas: `data/stations.test.ts`, `ui/components/map/mapModel.test.ts` (encuadres y descubrimiento), `mapGestures.test.ts` (conversiones, topes, zoom en ancla, pellizco, rueda, teclas), `mapPointerSession.test.ts` (umbral de toque, supresión de clic, pellizco), `MapChart.test.tsx` (región enfocable, instrucciones, panel que tapa los controles), `MapZoomControls.test.tsx` (`aria-disabled`, títulos) y `ui/screens/LevelSelect.test.tsx`. `mapListeners.ts` y `useMapGestures.ts` no tienen prueba unitaria propia: los cubre el verificador.
+- Revisión: `python imagenes/verify_peninsula_map.py` revisa progreso inicial, fin de Mundo 1, récord migrado, campaña descubierta, siete secretos, zoom, escritorio y móvil. `python imagenes/verify_map_gestures.py` revisa en Chromium el arrastre frente al clic, la rueda, los botones y su estado, los topes, el teclado, el reencuadre y, en un contexto móvil con CDP táctil, el arrastre y el pellizco. Ambos preparan perfiles de QA sin modificar las reglas del juego. Capturas e informes en `imagenes/verificacion/mapa-peninsula/` (gestos en `gestos/`). La verificación es en Chromium emulado: **no se ha probado en un móvil físico y no se ha medido rendimiento**.
 
 ### 5.8 Encuentros con Ek Chuah y bolsa de cacao
 
