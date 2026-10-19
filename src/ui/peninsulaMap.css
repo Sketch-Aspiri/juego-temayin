@@ -30,7 +30,22 @@
 .map-chart__toolbar { position: absolute; z-index: 5; bottom: 91px; left: 26px; display: flex; flex-direction: column; align-items: start; gap: 10px; }
 .map-chart__toolbar > span { font-size: 13px; letter-spacing: .13em; color: #eee0b5; text-shadow: 0 2px 5px #000; }
 .map-chart__toolbar button { cursor: pointer; border: 1px solid #d0c09199; border-radius: 10px; background: #123b37ed; padding: 11px 16px; font-size: 17px; color: #f8e7b8; min-height: 48px; }
-.atlas { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; isolation: isolate; }
+.atlas { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; isolation: isolate; touch-action: none; overscroll-behavior: contain; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; cursor: grab; }
+.atlas[data-gesture] { cursor: grabbing; }
+.atlas:focus-visible { outline: 3px solid #ffe9ac; outline-offset: -5px; }
+.atlas__instructions { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* Ayuda de teclado: solo aparece mientras el atlas tiene el foco por teclado. */
+.atlas__keyhelp { position: absolute; z-index: 3; left: 50%; bottom: 92px; transform: translateX(-50%); margin: 0; padding: 7px 14px; border-radius: 8px; background: #102e2ef2; color: #fff1c7; font-size: 15px; white-space: nowrap; pointer-events: none; opacity: 0; }
+.atlas:focus-visible .atlas__keyhelp { opacity: 1; }
+/* Durante el gesto se retiran las sombras filtradas: repintarlas en cada fotograma es lo más caro del dibujo. */
+.atlas[data-gesture] .atlas__coasts, .atlas[data-gesture] [data-cloud-world] { filter: none; }
+/* Zoom por botón: hermano del atlas para que pulsarlo no inicie un arrastre. */
+.map-zoom { position: absolute; z-index: 6; right: 24px; top: max(275px, calc(50% - 80px)); display: flex; flex-direction: column; gap: 8px; }
+.peninsula--panel-open .map-zoom { right: 414px; }
+.map-zoom button { width: 48px; height: 48px; padding: 0; border: 1px solid #d0c09199; border-radius: 12px; background: #123b37ed; color: #f8e7b8; font-size: 26px; line-height: 1; cursor: pointer; box-shadow: 0 3px 10px #041c2655; }
+.map-zoom button:hover:not([aria-disabled='true']) { background: #1d5249ee; }
+.map-zoom button:focus-visible { outline: 3px solid #ffe9ac; outline-offset: 2px; }
+.map-zoom button[aria-disabled='true'] { opacity: .45; cursor: not-allowed; }
 .atlas__drawing, .atlas__markers { position: absolute; inset: 0; width: 100%; height: 100%; }
 .atlas__drawing { display: block; }
 .atlas__coasts { filter: drop-shadow(0 4px 0 #062d36) drop-shadow(0 0 7px #72a59a33); }
@@ -56,7 +71,7 @@
 .atlas-pin__label { position: absolute; left: var(--callout-x); top: calc(var(--callout-y) + 29px); transform: translateX(-50%); padding: 6px 10px; border-radius: 5px; background: #102e2ef2; color: #fff1c7; white-space: nowrap; font-size: 18px; pointer-events: none; opacity: 0; box-shadow: 0 3px 10px #0003; }
 .atlas-pin--selected .atlas-pin__label, .atlas-pin:focus-within .atlas-pin__label, .atlas-pin:hover .atlas-pin__label { opacity: 1; }
 .atlas-pin:focus-within, .atlas-pin:hover { z-index: 5; }
-.atlas__train { position: absolute; width: 45px; height: 35px; transform: translate(-50%, -155%); filter: drop-shadow(0 3px 3px #0006); pointer-events: none; transition: left 1s ease, top 1s ease; z-index: 2; }
+.atlas__train { position: absolute; width: 45px; height: 35px; transform: translate(-50%, -155%); filter: drop-shadow(0 3px 3px #0006); pointer-events: none; z-index: 2; }
 .atlas__compass { position: absolute; top: 185px; right: 30px; display: grid; justify-items: center; color: #ecdbac; font: 20px 'Bree Serif', serif; pointer-events: none; }
 .atlas__compass svg { width: 38px; height: 52px; }
 .atlas__scale { position: absolute; bottom: 30px; right: 27px; width: 14.95%; color: #dce3d2; font-size: 14px; text-align: right; pointer-events: none; }
@@ -112,6 +127,7 @@
   .peninsula__intro h2 { font-size: 30px; }
   .peninsula__intro { top: 178px; }
   .map-panel { width: 330px; }
+  .peninsula--panel-open .map-zoom { right: 384px; }
 }
 @media (max-width: 600px) {
   .level-map-menu .menu__header { height: 78px; padding: 10px 12px; grid-template-columns: auto 1fr auto; gap: 10px; }
@@ -145,6 +161,9 @@
   .map-dock .btn { font-size: 16px; padding: 8px 12px; }
   .map-dock__seasonal { position: fixed; bottom: 70px; right: 0; background: #123b37f5; }
   .map-panel { left: 10px; right: 10px; width: auto; top: 245px; bottom: 83px; }
+  /* Fila anclada por abajo, sobre la escala y el botón del tramo (que mide 48 px) y bajo la brújula; con el panel abierto no se monta. */
+  .map-zoom, .peninsula--panel-open .map-zoom { flex-direction: row; right: 12px; top: auto; bottom: 192px; }
+  .atlas__keyhelp { display: none; }
   .map-itinerary { padding: 20px; }
   .map-itinerary__heading h3 { font-size: 29px; }
 }
@@ -165,10 +184,13 @@
   .map-dock .btn { font-size: 15px; min-height: 44px; padding: 7px 12px; }
   .map-panel { top: 133px; bottom: 72px; right: 12px; }
   .atlas__scale { bottom: 20px; font-size: 12px; }
+  /* Fila horizontal sobre la escala y por encima del dock. */
+  .map-zoom, .peninsula--panel-open .map-zoom { flex-direction: row; top: auto; bottom: 76px; right: 27px; }
+  .atlas__keyhelp { bottom: 70px; }
+  .peninsula--panel-open .map-zoom { right: 354px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .level-map-menu, .level-map-menu--leaving, .map-panel { animation: none; }
-  .atlas__train { transition: none; }
 }
 /* Los nombres conservan un tamaño legible al cambiar el acercamiento. */
 .atlas__region-labels { font-size: calc(16px * var(--map-label-scale, 1)); }

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { PENINSULA_LAND } from '../../../data/peninsulaGeography';
 import { STATIONS } from '../../../data/stations';
 import { WORLDS } from '../../../data/worlds';
@@ -14,7 +15,8 @@ const REGION_LABELS = [
   { label: 'GUATEMALA', latitude: 17.27, longitude: -90.15 },
 ] as const;
 
-export function MapLandscape() {
+/** Capa pesada y estática: memoizada para no repintarla en cada fotograma de cámara. */
+export const MapLandscape = memo(function MapLandscape() {
   return <>
     <defs>
       <linearGradient id="map-land" x2="0.6" y2="1"><stop stopColor="#54826a" /><stop offset="0.6" stopColor="#315b48" /><stop offset="1" stopColor="#233f33" /></linearGradient>
@@ -34,11 +36,11 @@ export function MapLandscape() {
     <g className="atlas__sea-labels"><text x="190" y="220"><tspan x="190">Golfo de</tspan><tspan x="190" dy="1.15em">México</tspan></text>
       <text x="887" y="470" transform="rotate(-62 887 470)">Mar Caribe</text></g>
   </>;
-}
+});
 
 interface FogProps { progress: Progress; maskId: string }
 
-export function MapFog({ progress, maskId }: FogProps) {
+export const MapFog = memo(function MapFog({ progress, maskId }: FogProps) {
   const revealed = WORLDS.filter(world => worldDiscovered(progress, world));
   const hidden = WORLDS.filter(world => !worldDiscovered(progress, world));
   return <>
@@ -51,7 +53,7 @@ export function MapFog({ progress, maskId }: FogProps) {
       {hidden.map(world => <CloudBank key={world.id} id={world.id} points={routePoints(world.levels.map(level => STATIONS[level.id]))} />)}
     </g>
   </>;
-}
+});
 
 function CloudBank({ points, id }: { points: string; id: string }) {
   return <g data-cloud-world={id} filter="url(#map-cloud-shadow)">

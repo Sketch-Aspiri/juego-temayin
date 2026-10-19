@@ -11,6 +11,22 @@ const MOBILE_VIEWPORT_WIDTH = 760;
 const MOBILE_MAP_SCALE = 0.88;
 const DESKTOP_MAP_SCALE = 0.86;
 
+/** Ancho del panel de itinerario en escritorio; en pantallas estrechas el panel tapa el mapa y no se descuenta. */
+export const SIDE_PANEL_WIDTH = 390;
+
+/** Margen derecho que el panel abierto quita al mapa visible (0 en móvil o con el panel cerrado). */
+export function sidePanelInset(viewportWidth: number, panelOpen: boolean): number {
+  return panelOpen && viewportWidth > MOBILE_VIEWPORT_WIDTH ? SIDE_PANEL_WIDTH : 0;
+}
+
+/** Ancho máximo en que el panel abierto ocupa todo el ancho y tapa los controles de zoom (coincide con el CSS). */
+export const PANEL_FULL_WIDTH_MAX = 600;
+
+/** Con el panel tapando los botones de zoom no deben montarse: seguirían siendo tabulables sin verse. */
+export function panelCoversZoom(viewportWidth: number, panelOpen: boolean): boolean {
+  return panelOpen && viewportWidth <= PANEL_FULL_WIDTH_MAX;
+}
+
 /** Ajusta la cámara al tamaño de la pantalla sin estirar la geografía. */
 export function fitMapView(base: MapView, width: number, height: number, rightInset = 0): MapView {
   const padding = width < MOBILE_VIEWPORT_WIDTH ? MOBILE_MAP_SCALE : DESKTOP_MAP_SCALE;

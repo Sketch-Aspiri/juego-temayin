@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { ALL_LEVELS, WORLDS } from '../../../data/worlds';
 import { STATIONS } from '../../../data/stations';
 import { EMPTY_PROGRESS, type Progress } from '../../../store/progress';
-import { fitMapView, FULL_MAP, latestStation, mapPoint, worldDiscovered, worldView } from './mapModel';
+import { fitMapView, FULL_MAP, latestStation, mapPoint, panelCoversZoom, worldDiscovered, worldView } from './mapModel';
 import { MapFog } from './MapLandscape';
 import { StationMarkers } from './StationMarkers';
 import { createElement } from 'react';
@@ -71,5 +71,14 @@ describe('Descubrimiento de mundos en el mapa', () => {
     const completed: Progress = { levels: Object.fromEntries(ALL_LEVELS.map(level => [level.id, record])), tickets: [] };
     const html = renderToStaticMarkup(createElement(MapFog, { progress: completed, maskId: 'all-fog' }));
     expect(html.match(/data-cloud-world=/g) ?? []).toHaveLength(0);
+  });
+});
+
+describe('Panel que tapa los controles de zoom', () => {
+  it('lo cubre solo con el panel abierto y en pantallas de 600 px o menos', () => {
+    expect(panelCoversZoom(390, true)).toBe(true);
+    expect(panelCoversZoom(600, true)).toBe(true);
+    expect(panelCoversZoom(601, true)).toBe(false);
+    expect(panelCoversZoom(390, false)).toBe(false);
   });
 });
