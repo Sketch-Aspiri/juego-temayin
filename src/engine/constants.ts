@@ -21,8 +21,11 @@ export const DEATH_DELAY = 3;
 
 export const TAU = Math.PI * 2;
 
+/** Gravedad del jugador en el aire (px/s²); la usan `jumpStep` y las pruebas de alcance de saltos. */
+export const PLAYER_GRAVITY = 2200;
+
 // ---------- Nado y oxígeno (AGENTS.md §5.1) ----------
-/** Gravedad dentro del agua (px/s²); la normal es 2200. */
+/** Gravedad dentro del agua (px/s²); la normal es PLAYER_GRAVITY. */
 export const SWIM_GRAVITY = 600;
 /** Velocidad máxima de hundimiento (px/s): 3 bloques/s. */
 export const MAX_SINK_SPEED = 120;

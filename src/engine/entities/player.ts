@@ -1,4 +1,4 @@
-import { GROUND, OXYGEN_MAX, PLAYER_H, PLAYER_W, T } from '../constants';
+import { GROUND, OXYGEN_MAX, PLAYER_GRAVITY, PLAYER_H, PLAYER_W, T } from '../constants';
 import { slowFactorsFor } from '../level/slowZones';
 import { moveX, moveY } from '../physics';
 import type { World } from '../World';
@@ -114,7 +114,7 @@ function jumpStep(world: World, dt: number): void {
   // Salto variable; el salto para salir del agua (strokeT > 0) no se recorta, así un
   // toque basta para subir a la orilla.
   if (!world.input.held.jump && p.vy < -300 && p.strokeT <= 0) p.vy = -300;
-  p.vy = Math.min(p.vy + 2200 * dt, 1000);
+  p.vy = Math.min(p.vy + PLAYER_GRAVITY * dt, 1000);
 }
 
 /** Aplica velocidad + corriente contra la cuadrícula, el borde de la cámara y el fondo del agua. */

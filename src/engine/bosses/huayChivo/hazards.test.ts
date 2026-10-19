@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { getLevel } from '../../../data/worlds';
 import { AudioEngine } from '../../audio';
-import { GROUND, STEP, T } from '../../constants';
+import { GROUND, PLAYER_GRAVITY, STEP, T } from '../../constants';
 import { Input } from '../../input';
 import { makeRng } from '../../rng';
 import { World } from '../../World';
@@ -19,7 +19,6 @@ const LEFT = ARENA[0] * T;
 const RIGHT = (ARENA[1] + 1) * T;
 /** Salto normal del jugador (`entities/player.ts`): impulso y gravedad. */
 const PLAYER_JUMP = 830;
-const PLAYER_GRAVITY = 2200;
 
 function setup(): World {
   const def = getLevel('3-5');
