@@ -74,8 +74,8 @@ describe('Chetumal (6-6): victoria guionizada sin poderes', () => {
     expect(w.session.coins).toBeGreaterThan(0);
   });
 
-  it('Chetumal cierra el Mundo 6 y la campaña actual', () => {
+  it('Chetumal cierra el Mundo 6 y abre la ruta de Calakmul', () => {
     expect(nextLevelId('6-5')).toBe('6-6');
-    expect(nextLevelId('6-6')).toBeNull();
+    expect(nextLevelId('6-6')).toBe('7-1');
   });
 });

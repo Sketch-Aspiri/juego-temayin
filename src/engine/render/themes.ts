@@ -58,6 +58,31 @@ const caveArt = paintedScenery('cave.webp', caveScenery, { nearTop: 0.7 });
  * y registrarlo aquí.
  */
 export const THEMES: Readonly<Record<ThemeId, ThemeDef>> = {
+  rioBec: {
+    id: 'rioBec', sky: ['#64a9d4', '#efd1a3'], sun: false,
+    scenery: paintedScenery('rioBec.webp', ruinsScenery),
+    groundTop: 'limestoneTop', groundBody: 'limestone', platform: 'carved',
+  },
+  batCave: {
+    id: 'batCave', sky: ['#080d22', '#2e3a51'], sun: false,
+    scenery: paintedScenery('batCave.webp', caveScenery),
+    groundTop: 'rockTop', groundBody: 'rock', platform: 'stone',
+  },
+  deepJungle: {
+    id: 'deepJungle', sky: ['#071b26', '#263e3e'], sun: false,
+    scenery: paintedScenery('deepJungle.webp', jungleScenery),
+    groundTop: 'grass', groundBody: 'dirt', platform: 'wood',
+  },
+  throne: {
+    id: 'throne', sky: ['#2a1738', '#dd874f'], sun: false,
+    scenery: paintedScenery('throne.webp', ruinsScenery, { far: 0.025, near: 0.08 }),
+    groundTop: 'limestoneTop', groundBody: 'limestone', platform: 'carved',
+  },
+  calakmulDawn: {
+    id: 'calakmulDawn', sky: ['#90d5dc', '#ffe9a6'], sun: false,
+    scenery: paintedScenery('mundo7/calakmul-amanecer.webp', ruinsScenery),
+    groundTop: 'limestoneTop', groundBody: 'limestone', platform: 'carved',
+  },
   hanalPixan: {
     id: 'hanalPixan', sky: ['#092e32', '#184c49'], sun: false,
     scenery: hanalPixanScenery, groundTop: 'mudTop', groundBody: 'mud', platform: 'stone',

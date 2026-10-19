@@ -1,0 +1,44 @@
+{
+  "image": "efectos-camazotz.webp",
+  "width": 1536,
+  "height": 1024,
+  "frames": {
+    "bolt": [
+      0,
+      108,
+      581,
+      355
+    ],
+    "shard": [
+      644,
+      0,
+      413,
+      526
+    ],
+    "mote": [
+      1103,
+      35,
+      433,
+      464
+    ],
+    "gust": [
+      0,
+      550,
+      543,
+      444
+    ],
+    "wave": [
+      546,
+      568,
+      568,
+      416
+    ],
+    "sun": [
+      1117,
+      536,
+      419,
+      473
+    ]
+  },
+  "nota": "Recortes independientes; conservan glows y partículas, no aislar por componente."
+}

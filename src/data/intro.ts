@@ -42,7 +42,7 @@ export interface IntroActor {
 }
 
 /** Efectos de escena dibujados con CSS/SVG. */
-export type IntroEffect = 'sunrise' | 'bats' | 'eclipse' | 'train';
+export type IntroEffect = 'sunrise' | 'bats' | 'eclipse' | 'train' | 'epilogue-map';
 
 /** Luz de la escena (filtro de color sobre el fondo). */
 export type IntroTone = 'dawn' | 'day' | 'night' | 'eclipse' | 'dusk';

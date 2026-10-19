@@ -58,11 +58,8 @@ export const STATIONS: Readonly<Record<string, Station>> = {
   '6-4': { label: 'Limones', latitude: 19.027558, longitude: -88.118083, kind: 'station', osmWay: 1313270101, reference: 'Estación Limones / Chacchoben' },
   '6-5': { label: 'Bacalar', latitude: 18.708663, longitude: -88.397467, kind: 'station', osmWay: 1168901165 },
   '6-6': { label: 'Chetumal', latitude: 18.508162, longitude: -88.324237, kind: 'station', osmWay: 1161550501, reference: 'Estación Chetumal Aeropuerto' },
+  '7-1': { label: 'Xpujil', latitude: 18.526526, longitude: -89.396527, kind: 'station', osmWay: 1459941084 },
+  '7-2': { label: 'Conhuas', latitude: 18.535, longitude: -89.923, kind: 'place', reference: 'Localidad de Conhuas · región de Balam Kú' },
+  '7-3': { label: 'Calakmul', latitude: 18.531446, longitude: -89.903292, kind: 'station', osmWay: 1520678878, reference: 'Estación Calakmul · acceso a la reserva' },
+  '7-4': { label: 'Trono de Camazotz', latitude: 18.105, longitude: -89.810, kind: 'fiction', reference: 'Cima ficticia en el entorno arqueológico de Calakmul' },
 };
-
-/** Solo decorado futuro; no registra niveles ni altera el progreso. */
-export const CALAKMUL_REGION: readonly GeoPoint[] = [
-  { latitude: 18.526526, longitude: -89.396527 },
-  { latitude: 18.531446, longitude: -89.903292 },
-  { latitude: 18.105, longitude: -89.810 },
-];

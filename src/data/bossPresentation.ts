@@ -10,9 +10,15 @@ interface BossPresentation {
   readonly hint: string;
   readonly arena: string;
   readonly color: string;
+  readonly sheet?: readonly [number, number];
 }
 
 export const BOSS_PRESENTATIONS: Readonly<Record<BossId, BossPresentation>> = {
+  camazotz: {
+    image: 'bosses/camazotz.webp', frame: [19, 93, 373, 324], sheet: [1254, 1254],
+    hint: 'Esquiva la picada y pisa al aterrizar. Después, enciende cuatro antorchas con fuego. En el eclipse, reúne tres luces y usa los pilares contra el rayo.',
+    arena: 'Cima de Calakmul · Trono de fantasía', color: '#f4cf75',
+  },
   sargazo: {
     image: 'bosses/sargazo.webp', frame: [15, 69, 499, 447],
     hint: '¡Libera a las tortugas! Su pulso abre el núcleo: tócalo nadando. Cerca de ellas recuperas aire.',

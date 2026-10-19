@@ -4,6 +4,7 @@ import type { CinematicDef } from '../../data/cinematics';
 import { assetUrl } from '../../engine/assets';
 import { SpriteFrame } from './SpriteFrame';
 import { usePortrait } from '../usePortrait';
+import { EpilogueMap } from './EpilogueMap';
 
 /** Letras por segundo del efecto máquina de escribir. */
 const TYPE_RATE = 45;
@@ -43,6 +44,7 @@ function Actor({ actor, portrait }: { actor: IntroActor; portrait: boolean }) {
 
 function Effect({ effect }: { effect: IntroEffect }) {
   switch (effect) {
+    case 'epilogue-map': return <EpilogueMap />;
     case 'sunrise':
       return <div className="intro-sun" aria-hidden="true" />;
     case 'eclipse':

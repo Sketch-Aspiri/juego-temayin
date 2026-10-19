@@ -10,5 +10,5 @@ export function MapNavigation({ progress, selectedWorld, onSelect }: NavigationP
     return <button type="button" key={world.id} disabled={!discovered} aria-pressed={selectedWorld === world.id}
       onClick={() => onSelect(world.id)} title={discovered ? world.name : `Mundo ${world.number} · Por descubrir`}>
       <span>{String(world.number).padStart(2, '0')}</span>{discovered ? world.name : 'Por descubrir'}</button>;
-  })}<button type="button" disabled title="Mundo 7 · Próximamente"><span>07</span>Próximamente</button></nav>;
+  })}</nav>;
 }

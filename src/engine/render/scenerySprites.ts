@@ -21,6 +21,8 @@ export function drawScenerySprite(c: Ctx, id: ScenerySpriteId, x: number, y: num
 
 /** La llama queda exactamente sobre la fuente de luz usada por la máscara y las sombras. */
 export function drawTorches(c: Ctx, world: World, now: number): void {
+  // Las mechas de la cámara inferior aún están bajo el suelo de la cima.
+  if (world.boss?.id === 'camazotz' && world.boss.stage !== 2) return;
   for (const light of world.torches) {
     const x = light.x - world.camX;
     if (x < -TORCH_WIDTH || x > VW + TORCH_WIDTH) continue;

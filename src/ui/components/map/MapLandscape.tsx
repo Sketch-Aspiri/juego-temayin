@@ -1,5 +1,5 @@
 import { PENINSULA_LAND } from '../../../data/peninsulaGeography';
-import { CALAKMUL_REGION, STATIONS } from '../../../data/stations';
+import { STATIONS } from '../../../data/stations';
 import { WORLDS } from '../../../data/worlds';
 import type { Progress } from '../../../store/progress';
 import { mapPoint, routePoints, worldDiscovered } from './mapModel';
@@ -49,9 +49,7 @@ export function MapFog({ progress, maskId }: FogProps) {
     </mask></defs>
     <g mask={`url(#${maskId})`} className="atlas__fog" data-testid="map-fog">
       {hidden.map(world => <CloudBank key={world.id} id={world.id} points={routePoints(world.levels.map(level => STATIONS[level.id]))} />)}
-      <CloudBank id="calakmul" points={routePoints(CALAKMUL_REGION)} />
     </g>
-    <g className="atlas__future"><text x="470" y="620">MUNDO 7<tspan className="atlas__future-caption" x="470" dy="1.65em">Por descubrir · Próximamente</tspan></text></g>
   </>;
 }
 

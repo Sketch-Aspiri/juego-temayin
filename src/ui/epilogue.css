@@ -1,0 +1,17 @@
+.epilogue-map { position: absolute; inset: 0; display: grid; place-items: center; background: #103a43; }
+.epilogue-map > svg { height: 95%; width: 95%; overflow: hidden; }
+.epilogue-map__journey, .epilogue-map__return { fill: none; stroke: #ffe09b; stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+.epilogue-map__journey { stroke-dasharray: 100; animation: epilogue-route 4s linear both; }
+.epilogue-map__return { stroke: #a5f7ce; stroke-dasharray: 100; animation: epilogue-route 2s 4s linear both; }
+.epilogue-map__station { fill: #ffe68b; filter: drop-shadow(0 0 5px #ffe68b); animation: epilogue-light 500ms ease-out both; }
+.epilogue-map text { fill: #ffefbd; font: 19px 'Bree Serif', serif; text-anchor: middle; paint-order: stroke fill; stroke: #12392e; stroke-width: 4px; }
+.epilogue-map__train { offset-rotate: 0deg; animation: epilogue-train 2s 4s linear both; }
+.boss-bar__objective { display: block; color: #fff3cd; font-size: clamp(11px, 1.3cqw, 17px); line-height: 1.3; background: #102b2de8; border-radius: 6px; padding: 5px 8px; margin-top: 5px; text-shadow: 0 1px 2px #000; }
+.boss-bar:has(.boss-bar__objective) { width: min(62cqw, 620px); }
+@keyframes epilogue-route { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+@keyframes epilogue-light { from { opacity: .1; } to { opacity: 1; } }
+@keyframes epilogue-train { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+@media (prefers-reduced-motion: reduce) {
+  .epilogue-map__journey, .epilogue-map__return, .epilogue-map__station, .epilogue-map__train { animation: none; }
+  .epilogue-map__train { offset-distance: 100%; }
+}

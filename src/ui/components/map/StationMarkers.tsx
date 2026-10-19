@@ -15,6 +15,7 @@ interface MarkersProps {
 const CALLOUTS: Readonly<Record<string, readonly [number, number]>> = {
   '1-2': [-17, 20], '1-3': [17, -9], '3-2': [18, 20], '3-4': [-18, -20],
   '4-1': [16, -15], '4-2': [-16, 19], '5-3': [15, -10], '5-4': [-15, 16],
+  '7-2': [-25, -24], '7-3': [25, 24],
 };
 
 export function StationMarkers({ progress, view, selected, onSelect }: MarkersProps) {

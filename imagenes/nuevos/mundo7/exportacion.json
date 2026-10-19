@@ -1,0 +1,57 @@
+[
+  {
+    "archivo": "public\\assets\\mundo7\\efectos-camazotz.webp",
+    "tamaño": [
+      1536,
+      1024
+    ],
+    "alfa": [
+      0,
+      253
+    ]
+  },
+  {
+    "archivo": "public\\assets\\mundo7\\reencuentro.webp",
+    "tamaño": [
+      1536,
+      1024
+    ],
+    "alfa": [
+      0,
+      254
+    ]
+  },
+  {
+    "archivo": "public\\assets\\backgrounds\\rioBec.webp",
+    "tamaño": [
+      1672,
+      941
+    ],
+    "alfa": [
+      255,
+      255
+    ]
+  },
+  {
+    "archivo": "public\\assets\\mundo7\\calakmul-amanecer.webp",
+    "tamaño": [
+      1672,
+      941
+    ],
+    "alfa": [
+      255,
+      255
+    ]
+  },
+  {
+    "archivo": "public\\assets\\mundo7\\brasero-jade.webp",
+    "tamaño": [
+      1261,
+      1247
+    ],
+    "alfa": [
+      0,
+      255
+    ]
+  }
+]

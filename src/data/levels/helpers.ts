@@ -16,6 +16,8 @@ export const coati = spawnMany('coati');
 export const urchin = spawnMany('urchin');
 export const howler = spawnMany('howler');
 export const tarantula = spawnMany('tarantula');
+/** Tarántulas suspendidas de su hilo: pares [x, fila]. */
+export const tarantulas = spawnAt('tarantula');
 export const nauyaca = spawnMany('nauyaca');
 export const ants = spawnMany('ants');
 export const blueCrab = spawnMany('blueCrab');

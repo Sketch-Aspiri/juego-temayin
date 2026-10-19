@@ -23,7 +23,7 @@ export const BOSS_VICTORY_SPRITES = {
     defeated: { file: 'cinematicas/lorencillo-victoria.webp', sheetW: 1774, sheetH: 887, frame: [49, 215, 819, 597] },
     farewell: { file: 'cinematicas/lorencillo-victoria.webp', sheetW: 1774, sheetH: 887, frame: [986, 77, 750, 741] },
   },
-} as const satisfies Readonly<Record<Exclude<BossId, 'puas'>, Readonly<Record<'defeated' | 'farewell', SpriteRef>>>>;
+} as const satisfies Readonly<Record<Exclude<BossId, 'puas' | 'camazotz'>, Readonly<Record<'defeated' | 'farewell', SpriteRef>>>>;
 
 export const TEMAYIN_CINEMATIC_POSES = {
   celebrate: { file: 'cinematicas/temayin-emociones.webp', sheetW: 1774, sheetH: 887, frame: [53, 5, 731, 882] },

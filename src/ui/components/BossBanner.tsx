@@ -20,7 +20,7 @@ export function BossBanner({ boss }: BossBannerProps) {
             {presentation.cutout && <defs><clipPath id={clipId}>
               <path d={`${rectanglePath(presentation.frame)} ${rectanglePath(presentation.cutout)}`} clipRule="evenodd" />
             </clipPath></defs>}
-            <image href={assetUrl(presentation.image)} width="1536" height="1024"
+            <image href={assetUrl(presentation.image)} width={presentation.sheet?.[0] ?? 1536} height={presentation.sheet?.[1] ?? 1024}
               clipPath={presentation.cutout ? `url(#${clipId})` : undefined} />
           </svg>
         ) : <img src={assetUrl(presentation.image)} alt="" className="boss-intro__img" />}
@@ -38,6 +38,7 @@ export function BossBanner({ boss }: BossBannerProps) {
   return (
     <div className="boss-bar" role="progressbar" aria-label={boss.name} aria-valuemin={0} aria-valuemax={boss.maxHp} aria-valuenow={boss.hp}>
       <span className="boss-bar__name">{boss.name}</span>
+      {boss.objective && <span className="boss-bar__objective" aria-live="polite">{boss.objective}</span>}
       <div className="boss-bar__track">
         <div className={angry ? 'boss-bar__fill boss-bar__fill--angry' : 'boss-bar__fill'} style={{ width: `${pct}%` }} />
       </div>

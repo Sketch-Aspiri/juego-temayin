@@ -1,0 +1,13 @@
+{
+  "image": "brasero-jade.webp",
+  "width": 1261,
+  "height": 1247,
+  "frames": {
+    "brazier": [
+      256,
+      24,
+      752,
+      1128
+    ]
+  }
+}

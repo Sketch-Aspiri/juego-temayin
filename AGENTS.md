@@ -141,7 +141,9 @@ temayin_juego/
     data/                      CONTENIDO (aquí se añaden niveles y mundos)
       cinematics.ts            Catálogo, desbloqueos por nivel y precarga de cinemáticas
       puasVictory.ts           Cuatro escenas tras completar Escárcega
-      cinematics/              Cuatro escenas por victoria: Kaimán, Huay Chivo, Huay Pek, Sargazo y Lorencillo
+      cinematics/              Cuatro escenas por victoria: Kaimán, Huay Chivo, Huay Pek, Sargazo, Lorencillo y Camazotz
+      world7Art.ts             Nueve poses históricas de Camazotz y arte nuevo del final
+      epilogue.ts              Regreso geográfico por Centenario hasta Escárcega
       bossVictoryArt.ts        Diez poses narrativas de jefes, seis de Temayin y fondos de cubierta/tren
       gameplaySprites.ts       Recortes y anclas del arte de mecánicas existente
       newGameplaySprites.ts    Sprites nuevos (proyectiles, poses de Kaimán, ondas y toldo)
@@ -158,6 +160,7 @@ temayin_juego/
         world4/                4-1-chichen-itza.ts … 4-5-nuevo-xcan.ts (jefe Huay Pek)
         world5/                5-1-cancun.ts … 5-6-akumal.ts (jefe Capitán Sargazo)
         world6/                6-1-tulum.ts … 6-6-chetumal.ts (jefe Lorencillo); guía en README.md y pruebas en world6.test.ts
+        world7/                7-1-xpujil.ts … 7-4-trono.ts (Camazotz), secreto y guía en README.md
     store/                     Zustand + persistencia
       appStore.ts              useAppStore: screen, progress, settings, run, startLevel, finishLevel…
       progress.ts (+ .test)    Progress, LevelRecord, recordCompletion, isUnlocked, sanitizeProgress
@@ -228,9 +231,9 @@ data/worlds.ts (WORLDS) ──> store/appStore.ts (startLevel) ──> ui/screen
 | Rol | Personaje | Descripción | Estado en el código |
 |---|---|---|---|
 | Protagonista | **Temayin** | Jaguar guardián de Palenque. Corre, salta, pisa enemigos, lanza fuego con el chile. | Existe. Sprite `public/assets/guepardo.webp` (clave `player` en `assets.ts`), poses de nado, cuerda y lanzamiento en `personajes/jugador-mecanicas.webp`. |
-| Protagonista (rescatada) | **Temayina** | Jaguar, guardiana del Sol de Jade. Aparece en la intro, en el clímax y en el epílogo. | Sprite `personajes/temayina.webp` y presencia en la intro implementados; rescate y epílogo pendientes. |
+| Protagonista (rescatada) | **Temayina** | Jaguar, guardiana del Sol de Jade. Aparece en la intro, en el clímax y en el epílogo. | Intro, cautiverio, rescate y epílogo implementados; reencuentro en `mundo7/reencuentro.webp`. |
 | Aliado | **Toh, el pájaro reloj** | Motmot de cola en forma de péndulo. Da pistas, marca checkpoints, narra el mapa. | Sprite `personajes/toh.webp`, intro y checkpoints implementados. |
-| Villano | **Camazotz** | Señor murciélago de Xibalbá (Popol Vuh). Jefe final de 3 fases. | Sprite `bosses/camazotz.webp` e intro existentes; lógica de jefe final pendiente (`BossId` todavía no lo incluye). |
+| Villano | **Camazotz** | Señor murciélago de Xibalbá (Popol Vuh). Jefe final de 3 fases. | **Existe** (`bosses/camazotz/`, `'camazotz'`; nivel `7-4`), doce PV y desenlace de cuatro escenas. |
 | Jefe M1 | **Púas el puercoespín** | Embiste, rueda y dispara púas. | **Existe** (`bosses/puas.ts`, `BossId` `'puas'`). |
 | Jefe M2 | **Kaimán Moreleti** | Cocodrilo de pantano (*Crocodylus moreletii*). | **Existe** (`bosses/kaiman/`, `BossId` `'kaiman'`; nivel 2-7). |
 | Jefe M3 | **Huay Chivo** | Brujo-cabra del folclor yucateco. | **Existe** (`bosses/huayChivo/`, `'huayChivo'`; nivel 3-5). |
@@ -329,11 +332,11 @@ Temas (todos existen en `ThemeId`): `cliff`, `lagoon`, `jungle`, `jungleNight`, 
 
 #### Mundo 7 · Calakmul (Tramo Chetumal–Escárcega)
 
-Temas: `ruins` (estilo Río Bec), `batCave` (nuevo, variante de `cave`), `deepJungle` (nuevo), `throne` (nuevo).
+Temas implementados: `rioBec`, `batCave`, `deepJungle`, `throne` y `calakmulDawn` (amanecer tras la victoria). Cuatro niveles principales, más `7-extra` con boleto.
 
 | Id | Estación | Lugar real | Tema / ambiente | Tipo | Mecánica clave | Enemigos |
 |---|---|---|---|---|---|---|
-| 7-1 | Xpujil | Ruinas de estilo Río Bec con torres falsas | `ruins` | ruinas | Torres con escalinatas falsas (no se pueden subir: hay que buscar el camino) | tarántula, nauyaca, sombras de Xibalbá |
+| 7-1 | Xpujil | Ruinas de estilo Río Bec con torres falsas | `rioBec` | ruinas | Torres ornamentales al fondo; camino de columnas, saltos y losas frágiles | tarántula, nauyaca, sombras de Xibalbá |
 | 7-2 | Conhuas | Cerca de la «boca de los murciélagos» (Volcán de los Murciélagos), donde millones salen al atardecer | `batCave` | subterráneo | Oleadas de murciélagos; oscuridad | `bat` (enjambres), escorpión ciego, estalactita |
 | 7-3 | Calakmul | Reserva de la Biosfera; gran ciudad Kaan en la selva | `deepJungle`, noche | jungla | Selva nocturna con radio de luz; ascenso a la pirámide | todas las sombras de Xibalbá, saraguato, Xtabay |
 | 7-4 | Trono de Camazotz | Cima de la gran pirámide de Calakmul (nivel ficticio) | `throne` | jefe final | 3 fases (ver 4.4) | **Jefe final: Camazotz** (`'camazotz'`) → rescate de Temayina |
@@ -354,17 +357,17 @@ Todos implementan la interfaz `Boss` (`src/engine/bosses/types.ts`): `hp`, `maxH
 | **Huay Pek** (M4) | Claro en la selva con niebla | Ladra ondas de choque que viajan por el suelo (saltarlas); desaparece en la niebla y reaparece detrás | Ojos brillantes: solo es golpeable cuando están encendidos | 2: la niebla cubre la arena y solo se ve con radio de luz | Pelota de pok ta pok |
 | **Capitán Sargazo** (M5) | Bahía de Akumal completamente acuática, sin bloques de refugio | Salvas dirigidas, cortinas con hueco, embestidas, remolinos, lluvia de semillas y enredos de tortugas | Rescatar una tortuga envía un pulso que abre el núcleo: tocarlo nadando o dos impactos de fuego/pelota = 1 PV; máximo uno por ventana | 4 (12 PV), transiciones a 9, 6 y 3 PV; ataques más rápidos y nuevos patrones | Premio y mensaje ecológico; las tortugas nunca reciben daño. Boleto pendiente |
 | **Lorencillo** (M6, existe) | Cubierta pintada con jarcias en la bahía de Chetumal (`render/arenas/ship.ts`); muro en 178 | Estocada con sable-aleta y aviso de 0,8/0,65 s; cañonazos en arco con marcas en cubierta o cofas (2/3); trepa al mástil y lanza hasta 2 cangrejos desde su altura real | Espalda expuesta tras la última estocada: pisotón o dos impactos de fuego/pelota en la misma apertura = 1 PV, máximo uno por ventana. La pelota no devuelve balas | 2 (8 PV): a 4 PV, rugido seguro (`rally`), doble estocada con un aviso por carrera, salva durante el mástil y cubierta inclinada | Premio (`rewardBurst`) y apertura del muro de salida |
-| **Camazotz** (M7, final) | Cima de la pirámide de Calakmul bajo el eclipse | Ver fases | Ver fases | **3** | Rescate de Temayina + epílogo |
+| **Camazotz** (M7, final, existe) | Arena ficticia en Calakmul bajo el eclipse | Picada, enjambre, viento, fragmentos, rayo y seis ecos | Solo expuesto: pisotón o dos disparos, máximo un PV por ventana | **3**, doce PV; transiciones a ocho y cuatro | Rescate de Temayina + epílogo |
 
 #### Camazotz, el jefe final (3 fases)
 
 | Fase | Nombre | Arena | Ataques | Cómo dañarlo | Transición |
 |---|---|---|---|---|---|
-| 1 | **Señor de la Noche** | Plataforma superior del templo, oscuridad parcial | Vuela en arcos y se lanza en picada; invoca enjambres de `bat`; ráfagas de viento de alas que empujan | Pisarlo cuando aterriza tras la picada; bolas de fuego | A 2/3 de vida rompe el suelo: caída a la cámara interior |
-| 2 | **Cámara de Xibalbá** | Interior de la pirámide, oscuridad total con radio de luz; antorchas que se encienden con fuego | Se esconde en la oscuridad; ojos rojos delatan su posición; lluvia de estalactitas; sombras de Xibalbá | Encender las 4 antorchas con fuego lo deja expuesto y aturdido | A 1/3 de vida escapa a la cima |
-| 3 | **El Eclipse** | Cima con el Sol de Jade y Temayina atrapada en una jaula de sombra | Rayo de eclipse que barre la arena (saltar o agacharse tras pilares); invoca a ecos de los 6 lugartenientes (un ataque de cada uno) | El Sol de Jade se carga al recoger 3 rayos de luz; cuando brilla, Camazotz queda cegado y se le puede pisar | Al vencerlo el eclipse termina, la jaula se rompe: escena de rescate |
+| 1 | **Señor de la Noche** | Plataforma superior ficticia bajo el eclipse | Picada con aviso de 0,9 s, enjambres en tres alturas y viento que empuja | Aterriza y se expone durante 3,4 s: pisotón o dos disparos | A ocho PV desciende el suelo un bloque hasta la cámara |
+| 2 | **Cámara de Xibalbá** | Cámara ficticia oscura con cuatro antorchas; un brasero a la izquierda repone fuego perdido | Fragmentos que caen con marca luminosa; Camazotz permanece iluminado | Encender las cuatro antorchas con proyectiles reales abre una ventana. Se apagan después de cada herida o ventana agotada | A cuatro PV se restaura el suelo y se vuelve a la cima con protección durante la transición |
+| 3 | **El Eclipse** | Cima con el Sol de Jade y Temayina en su jaula de sombra | Rayo horizontal avisado, bloqueado por pilares sólidos (saltar o refugiarse detrás); seis ecos sucesivos de los lugartenientes | Recoger tres luces y resistir dos ecos por apertura. Pisotón o dos disparos cuando queda expuesto | Al vencerlo, amanecer persistente, premio, muro abierto y meta; luego rescate y epílogo |
 
-Implementación sugerida: `src/engine/bosses/camazotz/` con `index.ts` (clase), `phases.ts`, `attacks.ts`, `draw.ts` para respetar el límite de 400 líneas por archivo.
+Implementado en `src/engine/bosses/camazotz/`: `index.ts` (estados), `phases.ts`, `hazards.ts`, `draw.ts` y `tuning.ts`. `Boss.objective` se publica en `BossHud` y `hudKey`; `Boss.backdrop` permite cambiar el tema de toda la pantalla y conservar el amanecer hasta la bandera. `Boss.floor` ajusta el recorte del decorado durante el descenso. La arena no destruye monumentos reales ni añade una acción de agacharse.
 
 ### 4.5 Enemigos por bioma
 
@@ -428,7 +431,7 @@ Estado: **Existe** = id en `EnemyId` y en `ENEMIES`; **Nuevo** = id propuesto. L
 | **Pelota de pok ta pok** | Proyectil que rebota en paredes y suelo; activa aros | **Existe** | Bloque `P`, `ItemKind` `'ball'`, `player.ball` (se pierde al morir), `world.balls`, `entities/ball.ts`, dibujo en `render/ball.ts` (cuadro `ball` del atlas de objetos). La tecla de disparo lanza la pelota con **prioridad sobre el chile**: máx. `BALL_MAX_ACTIVE` = 1 en el aire; con ella volando, la tecla lanza fuego. Rebota `BALL_MAX_BOUNCES` = 5 veces (bote desde el suelo ≈ 3,4 bloques: alcanza aros en la fila 8; la fila 7 pide lanzar saltando). Derriba enemigos salvo `shade` (solo luz/fuego) y daña al jefe vulnerable. |
 | **Cuerda de henequén** | Gancho / columpio | Nuevo | Depende de 5.6. Puede ser habilidad permanente tras el jefe del M3 en lugar de objeto. |
 | **Glifos mayas** (coleccionable) | 3 ocultos por nivel | Nuevo | Ver abajo. |
-| **Boleto del Tren Maya** (coleccionable) | 1 oculto por mundo; desbloquea un nivel extra | **Existe** en los seis mundos jugables | Op `ticket`, guardado inmediato y nivel `bonus`. Ver abajo. |
+| **Boleto del Tren Maya** (coleccionable) | 1 oculto por mundo; desbloquea un nivel extra | **Existe** en los siete mundos jugables | Op `ticket`, guardado inmediato y nivel `bonus`. Ver abajo. |
 
 **Glifos integrados con las estrellas.** Hoy `computeStars(coinRatio, deaths)` (`src/engine/scoring.ts`) da 1 estrella por completar y 2–3 según monedas sin morir. Propuesta:
 - Añadir `glyphs: number` (0–3) a `LevelResult` y a `LevelRecord` (`store/progress.ts`), conservando el máximo como con `bestScore`.
@@ -453,8 +456,9 @@ Estado: **Existe** = id en `EnemyId` y en `ENEMIES`; **Nuevo** = id propuesto. L
 | 4 | Valladolid (`4-3`, 51/4) | `4-extra` · El cenote de luz | Nado, luces y burbujas |
 | 5 | Xcaret (`5-4`, 55/3) | `5-extra` · La caleta de las tortugas | Nado y tortugas protegidas |
 | 6 | Limones (`6-4`, 72/4) | `6-extra` · El vagón del tesoro | Cajas y saltos sobre el tren |
+| 7 | Calakmul (`7-3`, 154/4) | `7-extra` · El santuario del Sol de Jade | Camino alto opcional y santuario con luces |
 
-- Cada secreto vive en su archivo `data/levels/worldN/N-extra-*.ts`, con checkpoint y meta. El Mundo 7 sigue pendiente: al incorporarlo se debe añadir su boleto y `WorldDef.bonus`.
+- Cada secreto vive en su archivo `data/levels/worldN/N-extra-*.ts`, con checkpoint y meta. Los siete mundos tienen boleto y `WorldDef.bonus`.
 - Cobertura: `data/bonus.test.ts`, `data/levels.test.ts`, `engine/entities/tickets.test.ts`, `engine/Game.test.ts`, `store/tickets.test.ts` y `ui/screens/LevelSelect.test.tsx`. `python imagenes/verify_tickets.py` revisa seis recogidas desde plataformas/agua preparadas, persistencia tras muerte y recarga, acceso por los botones reales y seis recorridos completos desde inicio a checkpoint y meta con colisiones y oxígeno activos. Los niveles anfitriones se preparan con protección de contacto; no se mide dificultad humana. Capturas e informe en `imagenes/.temp/boletos/`.
 
 ### 4.7 Temas visuales (`ThemeId`)
@@ -481,9 +485,11 @@ Los temas implementados figuran en `ThemeId` (`src/engine/types.ts`) y en `THEME
 | `bay` | **Existe** | 6 (jefe 6-6) | Bahía pintada al atardecer | `shipDeck` / `shipHull` / `shipDeck`, agua de bahía | Jarcias pintadas y cubierta en `render/arenas/ship.ts`, con respaldo procedural |
 | `jungleTrain` | **Existe** | 6 (6-2) | Selva de día que corre junto al tren | `trainRoof` / `trainSide` / `trainRoof` | `motion` (`TRAIN_SCENERY_SPEED` = 240 en `themes.ts`) y `LevelDef.autoScroll` en el nivel |
 | `lagoon` | **Existe** | 6 | Degradado de los 7 azules de Bacalar | `sandTop` / `sand` / `wood`, agua clara | Agua navegable; estromatolitos (op `stromatolite`) |
-| `batCave` | Nuevo | 7 | Atardecer naranja → cueva | `rock` | `dark`, enjambres de fondo |
-| `deepJungle` | Nuevo | 7 | Noche estrellada | `grass` oscuro | `dark` |
-| `throne` | Nuevo | 7 | Eclipse (sol negro con corona) | Piedra de pirámide | `tint` rojo, `dark` en fase 2 |
+| `rioBec` | **Existe** | 7 | Xpujil con tres torres ornamentales | Caliza / piedra tallada | Fondo pintado propio |
+| `batCave` | **Existe** | 7 | Cueva pintada | Roca | `LevelDef.darkness`, luciérnagas |
+| `deepJungle` | **Existe** | 7 | Selva nocturna | Hierba / piedra | Oscuridad y luces |
+| `throne` | **Existe** | 7 | Eclipse (sol negro con corona) | Caliza / piedra tallada | Arena ficticia con pilares |
+| `calakmulDawn` | **Existe** | 7, victoria | Amanecer sobre la selva | Caliza / piedra tallada | `Boss.backdrop` conserva el tema hasta la meta |
 
 ---
 
@@ -578,15 +584,15 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
 **Estado: implementado.** `LevelSelect.tsx` contiene `PeninsulaMap.tsx`: carta SVG con costa y fronteras reales de Natural Earth 1:10m, proyección equirectangular a 20° N y norte arriba. `data/peninsulaGeography.ts` se regenera con `python imagenes/import_peninsula_map.py`. Las estaciones utilizan coordenadas WGS84 de OpenStreetMap; Teya, Petenes y destinos turísticos conservan su referencia local, y Xibalbá se identifica como escenario ficticio. Fuentes y precisiones en `src/data/MAPA.md`.
 
 - Puntos iluminados para niveles disponibles, apagados para bloqueados y marcas de completado. Las guías de rótulo separan destinos cercanos sin mover su ancla geográfica. El itinerario lateral permite seleccionar todos los puntos con teclado o toque y solo inicia niveles disponibles.
-- Los mundos sin ninguna estación disponible quedan cubiertos por nubes; completar el jefe anterior despeja el siguiente. Récords migrados y boletos descubren su propio mundo sin abrir los intermedios. El Mundo 7 permanece bajo nubes con «Próximamente» y no añade niveles a `WORLDS`.
+- Los mundos sin ninguna estación disponible quedan cubiertos por nubes; completar el jefe anterior despeja el siguiente. Récords migrados y boletos descubren su propio mundo sin abrir los intermedios. Chetumal abre Xpujil y despeja el Mundo 7; la campaña completa tiene 39 destinos.
 - Vista general, acercamiento por tramo, siete pestañas de mundo, bolsa de cacao, estrellas, secretos con boleto y especial Hanal Pixán. La línea muestra el orden de la aventura, no el trazado ferroviario. Sin cambios al esquema de guardado ni a los ids.
 - El mapa ocupa todo el visor, con controles flotantes e itinerario desplegable. `fitMapView` adapta la cámara a escritorio, teléfono y panel lateral sin deformar las posiciones. Letras, números de estación, estrellas y cacao tienen tamaños ampliados. Chichén Itzá se identifica como zona arqueológica real; solo Xibalbá es un escenario de fantasía.
 - `MapCurtain.tsx` cubre todo el visor con dos bancos de nubes: entrada de 1,5 s y cierre de 0,9 s antes de volver al título o iniciar un nivel. Las duraciones se comparten con CSS y la interfaz permanece `inert` durante la transición. `prefers-reduced-motion` oculta la cortina y cambia de pantalla inmediatamente.
-- Pruebas: `data/stations.test.ts`, `ui/components/map/mapModel.test.ts` y `ui/screens/LevelSelect.test.tsx`. `python imagenes/verify_peninsula_map.py` revisa progreso inicial, fin de Mundo 1, récord migrado, campaña descubierta, seis secretos, zoom, escritorio y móvil; prepara perfiles de QA sin modificar las reglas del juego. Capturas e informe en `imagenes/verificacion/mapa-peninsula/`.
+- Pruebas: `data/stations.test.ts`, `ui/components/map/mapModel.test.ts` y `ui/screens/LevelSelect.test.tsx`. `python imagenes/verify_peninsula_map.py` revisa progreso inicial, fin de Mundo 1, récord migrado, campaña descubierta, siete secretos, zoom, escritorio y móvil; prepara perfiles de QA sin modificar las reglas del juego. Capturas e informe en `imagenes/verificacion/mapa-peninsula/`.
 
 ### 5.8 Encuentros con Ek Chuah y bolsa de cacao
 
-- `LevelDef.offering?: OfferingConfig` activa el encuentro previo al nivel. `data/offerings.ts` contiene deidad, diálogos, precios y catálogo de bendiciones: fuego (30), escudo (20) y vida (50). Hay 16 encuentros, de dos a tres por mundo disponible: M1 (`1-3`, `1-5`, `1-6`), M2 (`2-3`, `2-5`, `2-7`), M3 (`3-3`, `3-5`), M4 (`4-2`, `4-5`), M5 (`5-2`, `5-4`, `5-6`) y M6 (`6-2`, `6-4`, `6-6`). El Mundo 7 sigue pendiente.
+- `LevelDef.offering?: OfferingConfig` activa el encuentro previo al nivel. `data/offerings.ts` contiene deidad, diálogos, precios y catálogo de bendiciones: fuego (30), escudo (20) y vida (50). Hay 18 encuentros, de dos a tres por mundo: M1 (`1-3`, `1-5`, `1-6`), M2 (`2-3`, `2-5`, `2-7`), M3 (`3-3`, `3-5`), M4 (`4-2`, `4-5`), M5 (`5-2`, `5-4`, `5-6`), M6 (`6-2`, `6-4`, `6-6`) y M7 (`7-3`, `7-4`).
 - `data/objectSprites.ts` reúne los recortes compartidos del atlas de objetos; `render/props.ts` los usa en el juego y `data/offerings.ts` en la tienda. `ui/components/BlessingCard.tsx` muestra chile, escudo y corazón de jade mediante `SpriteFrame`, con selector de cantidad, precio total y contador de vidas pagadas.
 - `OfferingScreen` es una pantalla React de ofertas accesibles por teclado y toque. `OfferingScene` presenta el mundo inmóvil; no llama a `World.update`, por lo que no corren tiempo, enemigos ni oxígeno. `render/offering.ts` dibuja altar, deidad y partículas en el canvas. Ek Chuah tiene la misma altura visible que el sprite de reposo de Temayin y ambos apoyan en el mismo suelo; el altar queda a un lado. El movimiento reducido congela el tiempo visual. Continuar o Escape permite empezar sin comprar; volver al mapa conserva las compras pendientes.
 - `store/wallet.ts` define `Wallet = { cacao, pending }`: saldo entero seguro no negativo y bendiciones pagadas por id de nivel. `sanitizeWallet` acepta guardados antiguos sin bolsa, descarta valores inválidos y conserva únicamente ofertas existentes: elimina duplicados de fuego y escudo y mantiene cada vida pagada, sin cambiar el esquema del guardado. Se guarda junto a progreso y ajustes bajo la misma clave `temayin:v3`; v2 sigue migrándose y conserva su clave original.
@@ -791,8 +797,8 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 | **5 · Mundo 4** | Cenotes y Xibalbá | Combinación oscuridad + agua, tema `xibalba`, `shade`, `axolotl`, `xtabay`, pelota de pok ta pok, jefe Huay Pek. Reubicar 2-1/2-2 si no se hizo en la fase 0. |
 | **6 · Mundo 5** | Riviera Maya | Zonas de sargazo, tema `reef`, `lionfish`, nivel submarino completo, jefe Capitán Sargazo. |
 | **7 · Mundo 6** | Costa Maya y Bacalar | Temas `cliff`, `lagoon`, `bay`, `jungleTrain`; tren en marcha (6-2, `autoScroll`); viento y térmicas; luciérnagas; estromatolitos; Lorencillo (8 PV, 2 fases). Arte completado y recorridos en Chromium hasta checkpoint y meta; combate con asistencia, sin medir dificultad humana (ver §10). |
-| **8 · Coleccionables** | Glifos y boletos | Boletos implementados: op `ticket`, `Progress.tickets`, seis secretos y saneamiento retrocompatible. Pendientes: glifos y boleto/secreto del futuro Mundo 7. |
-| **9 · Final** | Calakmul, Camazotz y epílogo | Temas `batCave`, `deepJungle`, `throne`, niveles 7-1 a 7-3, jefe final de 3 fases, escena de rescate de Temayina, epílogo en tren (Centenario → Escárcega), créditos. |
+| **8 · Coleccionables** | Glifos y boletos | Boletos implementados: op `ticket`, `Progress.tickets`, siete secretos y saneamiento retrocompatible. Pendientes: glifos. |
+| **9 · Final** | Calakmul, Camazotz y epílogo | **Implementado:** niveles 7-1 a 7-4 y secreto, temas propios, Camazotz de tres fases, rescate de Temayina, epílogo en tren (Centenario → Escárcega) y créditos. Ver guía y revisión del Mundo 7. |
 
 ---
 
@@ -816,13 +822,22 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 
 ## 10. Definición de terminado
 
+### Mundo 7 · Calakmul implementado
+
+- `data/levels/world7/` registra Xpujil, Conhuas, Calakmul, Trono de Camazotz y el santuario secreto. Guía de diseño, mecánicas y fuentes en su `README.md`. Campaña de 39 niveles, siete boletos y siete secretos. Chetumal continúa a `7-1`; `7-4` termina la aventura. Los guardados anteriores no se renumeran ni pierden récords.
+- `bosses/camazotz/` implementa doce PV, transiciones a ocho y cuatro, ventanas de un PV, fuego recuperable, antorchas reales, tres luces, seis ecos y rayo detenido por pilares sólidos. El checkpoint reinicia el combate completo. Toda la fase 2 y su descenso pertenecen a una arena ficticia.
+- `data/world7Art.ts` integra nueve poses existentes y cinco PNG nuevos: atlas de seis efectos, brasero, abrazo de la pareja, Xpujil Río Bec y Calakmul al amanecer. Generados con `image_gen` integrado; prompts y originales en `imagenes/nuevos/mundo7/PROMPTS.md`. `imagenes/import_world7_art.py` reproduce WebP sin pérdidas y verifica igualdad RGBA. La generación no sustituye recursos históricos.
+- `data/cinematics/camazotzVictory.ts`, `data/epilogue.ts` y `ui/components/EpilogueMap.tsx` cierran el rescate en cuatro escenas, con regreso geográfico por Centenario hasta Escárcega y créditos. El catálogo y la galería lo incorporan sin cambios de persistencia.
+- `World7.test.ts`, `bosses/camazotz/camazotz.test.ts` y `store/world7Progress.test.ts` cubren recorridos desde inicio/checkpoint, boleto, progreso anterior y las tres fases completas. Las pruebas generales incluyen todos los niveles nuevos.
+- `python imagenes/verify_world7.py` recorre los cinco niveles, captura fases, boleto y desenlace en escritorio y móvil. Usa contacto protegido y entradas físicas reales; el salto del boleto parte de una plataforma preparada. No mide dificultad humana. Capturas e informe en `imagenes/verificacion/mundo7/REVISION.md`. La revisión del selector cubre también los siete tramos y 39 puntos.
+
 ### Archivo de Historia y cinemáticas de victoria
 
-- El botón «Historia» abre `ui/screens/HistoryScreen.tsx`: muestra el prólogo, seis victorias y el especial de temporada, con los requisitos de cada capítulo. El prólogo está disponible desde el principio; cada jefe jugable tiene una victoria de cuatro escenas. Púas usa `data/puasVictory.ts`; Kaimán, Huay Chivo, Huay Pek, Sargazo y Lorencillo usan un archivo por jefe en `data/cinematics/`. La galería permite volver a verlas y regresar a la tarjeta seleccionada, con teclado o controles táctiles.
+- El botón «Historia» abre `ui/screens/HistoryScreen.tsx`: muestra el prólogo, siete victorias y el especial de temporada, con los requisitos de cada capítulo. El prólogo está disponible desde el principio; cada jefe jugable tiene una victoria de cuatro escenas. Púas usa `data/puasVictory.ts`; Kaimán, Huay Chivo, Huay Pek, Sargazo, Lorencillo y Camazotz usan un archivo por jefe en `data/cinematics/`. La galería permite volver a verlas y regresar a la tarjeta seleccionada, con teclado o controles táctiles.
 - `data/cinematics.ts` registra `CinematicDef` por `CinematicId`: título, capítulo, portada, escenas y `afterLevel` opcional. Para añadir una cinemática futura se incorpora su id y su entrada al registro. El menú, la precarga `CINEMATIC_FILES` y el disparador `cinematicAfterLevel` la incorporan automáticamente. Las escenas reutilizan los tipos de `data/intro.ts` y sus composiciones verticales.
-- `store/cinematics.ts` deriva el desbloqueo de `Progress.levels[afterLevel].completions > 0`. Los guardados v3 desbloquean automáticamente los capítulos de los jefes ya completados (`1-6`, `2-7`, `3-5`, `4-5`, `5-6`, `6-6`); los v2 migrados conservan el de Púas. No se modifica el esquema de persistencia ni se otorgan recompensas al reproducirlas desde Historia. Borrar el progreso vuelve a bloquear los capítulos de victoria.
+- `store/cinematics.ts` deriva el desbloqueo de `Progress.levels[afterLevel].completions > 0`. Los guardados v3 desbloquean automáticamente los capítulos de los jefes ya completados (`1-6`, `2-7`, `3-5`, `4-5`, `5-6`, `6-6`, `7-4`); los v2 migrados conservan el de Púas. No se modifica el esquema de persistencia ni se otorgan recompensas al reproducirlas desde Historia. Borrar el progreso vuelve a bloquear los capítulos de victoria.
 - `ui/components/CinematicPlayer.tsx` comparte el reproductor entre prólogo, galería y fin de nivel: texto progresivo, avance automático/manual, salto de escena, salida con Escape y respeto del movimiento reducido. `IntroScreen` conserva la entrada automática antes de Palenque. El tren permanece visible también con movimiento reducido.
-- `GameScreen` guarda la finalización antes de reproducir la cinemática asociada al nivel. Durante ella pausa el motor y deja inerte el juego; al terminar u omitirla muestra los resultados ya obtenidos. No remonta la partida, no duplica la finalización y conserva la sesión al continuar al siguiente nivel. Se reproduce tras alcanzar la meta de cualquiera de los seis niveles de jefe. Chetumal anticipa Calakmul; el final de Camazotz queda pendiente de su nivel jugable.
+- `GameScreen` guarda la finalización antes de reproducir la cinemática asociada al nivel. Durante ella pausa el motor y deja inerte el juego; al terminar u omitirla muestra los resultados ya obtenidos. No remonta la partida, no duplica la finalización y conserva la sesión al continuar al siguiente nivel. Se reproduce tras alcanzar la meta de cualquiera de los siete niveles de jefe. Chetumal continúa a Xpujil; `7-4` cierra la aventura con rescate, reencuentro, mapa iluminado y créditos. `EpilogueMap.tsx` reutiliza la geografía y anima el regreso; movimiento reducido muestra el trayecto completo con el tren en Escárcega.
 - `data/bossVictoryArt.ts` registra diez poses nuevas de jefes (derrota y despedida), seis de Temayin (celebración, agradecimiento, escucha, marcha, nado y sentado) y dos fondos (cubierta e interior del tren). Generados con `image_gen` integrado, sin sustituir los sprites del combate. Originales PNG, prompts y atlas: `imagenes/nuevos/cinematicas/`; WebP sin pérdidas: `public/assets/cinematicas/`. `imagenes/import_cinematic_art.py` localiza el pasillo transparente entre poses, mide alfa ≥ 8, conserva todas las siluetas y comprueba identidad de píxeles. La tortuga de Akumal reutiliza su pose de nado con `isolated: true` para excluir restos de otra pose. El eclipse de Calakmul está en el fondo y no se duplica con otro efecto.
 - `intro-stage--chapter` separa escenario y texto en móviles apaisados de hasta 500 px de altura (`ui/portrait.css`). Las composiciones verticales siguen en los datos y usan el diseño vertical existente. La pose sentada utiliza el nuevo interior del tren.
 - La portada del capítulo de Púas muestra su retrato `jefe_grande.webp`. Su despedida hacia Campeche usa el interior del tren y la pose sentada de Temayin, con los mismos encuadres de viaje que los demás capítulos.
@@ -879,7 +894,7 @@ Cada fase termina con build y pruebas en verde, revisión visual y un commit con
 
 - `data/gameplaySprites.ts` registra los recortes y anclas de barcos, tortugas, palapas, cañones, losas frágiles, aros, cuerdas, troncos, resina, sargazo y poses de agarre, balanceo y lanzamiento. `data/newGameplaySprites.ts` registra siete imágenes nuevas de `image_gen`: púa, zapote, fuego fatuo, bola de sargazo, ola de agua, onda espectral y toldo. Los PNG originales y prompts están en `imagenes/nuevos/proyectiles/` y `imagenes/nuevos/complementos/toldo.*`; los WebP sin pérdidas y atlas se sirven desde `public/assets/`.
 - `render/gameplaySprites.ts` comparte caché de recorte y escalado, con respaldo procedural al faltar una imagen. El fuego usa los cuatro cuadros de `mecanicas/efectos.webp`; los ataques de Kaimán, Huay Chivo, Huay Pek y Sargazo usan los sprites pintados. Los cañones conservan sus dos bloques sólidos; las losas frágiles se recortan por tramo, conservando su temblor y caída. Barcos y tortugas mantienen su superficie de apoyo y la inmersión protegida.
-- Las poses de cuerda anclan las manos en el extremo del péndulo; el recorte de lanzamiento excluye la pelota ilustrada para evitar un segundo proyectil visual. La física, los ids de nivel, el HUD y la persistencia no cambian. El arte del Mundo 7 sigue disponible para sus futuras mecánicas, todavía pendientes.
+- Las poses de cuerda anclan las manos en el extremo del péndulo; el recorte de lanzamiento excluye la pelota ilustrada para evitar un segundo proyectil visual. La física, los ids de nivel, el HUD y la persistencia no cambian. El Mundo 7 integra el arte histórico de Camazotz, sus fondos y la jaula, además de cinco recursos nuevos documentados en su guía de arte.
 - Pruebas: `data/gameplaySprites.test.ts` verifica archivos, recortes, anclas, prompts y precarga; `render/gameplaySprites.test.ts` verifica posición, orientación, respaldo y ausencia de mutación. `python imagenes/verify_gameplay_sprites.py` revisa siete recursos y dieciséis escenas en Chromium, con capturas en `imagenes/verificacion/sprites-jugables/`. Las escenas de ataques se preparan para inspección visual; los recorridos y combates asistidos se verifican aparte con `verify_world3.py`, `verify_world4.py`, `verify_world5.py` y `verify_bosses.py`.
 
 ### Controles móviles

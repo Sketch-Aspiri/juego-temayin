@@ -41,12 +41,16 @@ import { LEVEL_6_3 } from './levels/world6/6-3-felipe-carrillo-puerto';
 import { LEVEL_6_4 } from './levels/world6/6-4-limones';
 import { LEVEL_6_5 } from './levels/world6/6-5-bacalar';
 import { LEVEL_6_6 } from './levels/world6/6-6-chetumal';
+import { LEVEL_7_1 } from './levels/world7/7-1-xpujil';
+import { LEVEL_7_2 } from './levels/world7/7-2-conhuas';
+import { LEVEL_7_3 } from './levels/world7/7-3-calakmul';
+import { LEVEL_7_4 } from './levels/world7/7-4-trono';
+import { BONUS_7 } from './levels/world7/7-extra-santuario';
 
 /**
  * Campaña del Tren Maya (AGENTS.md §4.3). Un archivo por nivel en
  * `data/levels/world<N>/<id>-<estación>.ts`. Solo se registran mundos con niveles
- * (la prueba exige `levels.length > 0`). El Mundo 6 registra 6-1 a 6-6 (Chetumal, con el jefe
- * Lorencillo, lo cierra); el Mundo 7 llegará después.
+ * (la prueba exige `levels.length > 0`). Camazotz cierra la campaña en el Mundo 7.
  * El orden del array define el desbloqueo lineal y `nextLevelId`.
  */
 export const WORLDS: readonly WorldDef[] = [
@@ -75,6 +79,10 @@ export const WORLDS: readonly WorldDef[] = [
     id: 'costa-maya-bacalar', number: 6, name: 'Costa Maya y Bacalar',
     bonus: BONUS_6,
     levels: [LEVEL_6_1, LEVEL_6_2, LEVEL_6_3, LEVEL_6_4, LEVEL_6_5, LEVEL_6_6],
+  },
+  {
+    id: 'calakmul', number: 7, name: 'Calakmul', bonus: BONUS_7,
+    levels: [LEVEL_7_1, LEVEL_7_2, LEVEL_7_3, LEVEL_7_4],
   },
 ];
 

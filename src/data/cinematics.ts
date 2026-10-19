@@ -6,12 +6,14 @@ import { HUAY_CHIVO_VICTORY_SCENES } from './cinematics/huayChivoVictory';
 import { HUAY_PEK_VICTORY_SCENES } from './cinematics/huayPekVictory';
 import { SARGAZO_VICTORY_SCENES } from './cinematics/sargazoVictory';
 import { LORENCILLO_VICTORY_SCENES } from './cinematics/lorencilloVictory';
+import { CAMAZOTZ_VICTORY_SCENES } from './cinematics/camazotzVictory';
+import { REUNION_SPRITE } from './world7Art';
 import { HANAL_PIXAN_SCENES } from './cinematics/hanalPixan';
 import { HANAL_PIXAN_BACKGROUND, HANAL_PIXAN_SPRITES } from './hanalPixanArt';
 import { HANAL_PIXAN_LEVEL } from './levels/seasonal/hanal-pixan';
 
 export type CinematicId = 'intro' | 'puas-victory' | 'kaiman-victory' | 'huayChivo-victory'
-  | 'huayPek-victory' | 'sargazo-victory' | 'lorencillo-victory' | 'hanal-pixan';
+  | 'huayPek-victory' | 'sargazo-victory' | 'lorencillo-victory' | 'camazotz-victory' | 'hanal-pixan';
 
 export interface CinematicDef {
   readonly id: CinematicId;
@@ -75,6 +77,12 @@ export const CINEMATICS: Readonly<Record<CinematicId, CinematicDef>> = {
     description: 'Lorencillo cede el paso. Al otro lado de la selva, Camazotz aguarda.',
     cover: { background: CINEMATIC_DECK_BACKGROUND, actor: BOSS_VICTORY_SPRITES.lorencillo.farewell },
     scenes: LORENCILLO_VICTORY_SCENES, afterLevel: '6-6',
+  },
+  'camazotz-victory': {
+    id: 'camazotz-victory', chapter: 'Capítulo 7 · Calakmul', title: 'El Sol de Jade vuelve a brillar',
+    description: 'El rescate de Temayina, el regreso por Centenario y el final de la aventura.',
+    cover: { background: 'mundo7/calakmul-amanecer.webp', actor: REUNION_SPRITE },
+    scenes: CAMAZOTZ_VICTORY_SCENES, afterLevel: '7-4',
   },
 };
 

@@ -27,7 +27,7 @@ describe('Descubrimiento de mundos en el mapa', () => {
     expect(screenCenter).toBeCloseTo((1440 - inset) / 2, 8);
   });
   it('revela solo Palenque al comenzar, con un punto encendido y cinco apagados', () => {
-    expect(WORLDS.map(world => worldDiscovered(EMPTY_PROGRESS, world))).toEqual([true, false, false, false, false, false]);
+    expect(WORLDS.map(world => worldDiscovered(EMPTY_PROGRESS, world))).toEqual([true, false, false, false, false, false, false]);
     const html = renderToStaticMarkup(createElement(StationMarkers, {
       progress: EMPTY_PROGRESS, view: FULL_MAP, selected: '1-1', onSelect: () => undefined,
     }));
@@ -70,6 +70,6 @@ describe('Descubrimiento de mundos en el mapa', () => {
     }
     const completed: Progress = { levels: Object.fromEntries(ALL_LEVELS.map(level => [level.id, record])), tickets: [] };
     const html = renderToStaticMarkup(createElement(MapFog, { progress: completed, maskId: 'all-fog' }));
-    expect(html.match(/data-cloud-world=/g)).toHaveLength(1);
+    expect(html.match(/data-cloud-world=/g) ?? []).toHaveLength(0);
   });
 });

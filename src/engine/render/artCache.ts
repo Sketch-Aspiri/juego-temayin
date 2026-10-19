@@ -3,6 +3,7 @@ import { HANAL_PIXAN_ART_FILES } from '../../data/hanalPixanArt';
 import { CHIVO_ART_FILES } from '../../data/huayChivoArt';
 import { SARGAZO_ART_FILES } from '../../data/sargazoArt';
 import { WORLD6_ART_FILES } from '../../data/world6Art';
+import { WORLD7_ART_FILES } from '../../data/world7Art';
 import { assetUrl, isReady } from '../assets';
 import { GAMEPLAY_SPRITES } from '../../data/gameplaySprites';
 import { NEW_GAMEPLAY_SPRITES } from '../../data/newGameplaySprites';
@@ -50,6 +51,7 @@ export const PAINTED_ART: readonly string[] = [
   ...CHIVO_ART_FILES,
   ...SARGAZO_ART_FILES,
   ...WORLD6_ART_FILES,
+  ...WORLD7_ART_FILES,
   ...Object.values(MAYA_TILE_SPRITES).map(sprite => sprite.file),
   ...new Set(Object.values(TERRAIN_SPRITES).map(sprite => sprite.file)),
   ...new Set(Object.values(NEW_GAMEPLAY_SPRITES).map(sprite => sprite.file)),

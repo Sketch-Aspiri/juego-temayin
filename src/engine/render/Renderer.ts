@@ -87,9 +87,10 @@ export class Renderer {
   render(world: World, now: number, paused: boolean): void {
     const c = this.ctx;
     this.beginViewport(world);
-    const theme = THEMES[world.def.theme];
+    const themeId = world.boss?.backdrop ?? world.def.theme;
+    const theme = THEMES[themeId];
     const arenaPlatforms = arenaPlatformArt(world);
-    this.drawBackdrop(world.def.theme, world.camX, now);
+    this.drawBackdrop(themeId, world.camX, now);
     if (theme.water && !world.level.water.length && world.def.decorativeWater !== false) {
       this.drawWater(theme, world.camX, now);
     }

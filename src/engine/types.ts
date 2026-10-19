@@ -36,7 +36,7 @@ export type EnemyId =
   | 'axolotl'
   | 'lionfish'
   | 'jellyfish';
-export type BossId = 'puas' | 'kaiman' | 'huayChivo' | 'huayPek' | 'sargazo' | 'lorencillo';
+export type BossId = 'puas' | 'kaiman' | 'huayChivo' | 'huayPek' | 'sargazo' | 'lorencillo' | 'camazotz';
 export type ThemeId =
   | 'hanalPixan'
   | 'jungle' | 'beach' | 'lair' | 'cave' | 'river' | 'swamp' | 'palenque'
@@ -56,7 +56,8 @@ export type ThemeId =
   | 'cliff'
   | 'lagoon'
   | 'bay'
-  | 'jungleTrain';
+  | 'jungleTrain'
+  | 'rioBec' | 'batCave' | 'deepJungle' | 'throne' | 'calakmulDawn';
 
 /** Estado de una partida que se arrastra de un nivel al siguiente. */
 export interface Session {

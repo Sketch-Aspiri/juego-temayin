@@ -2,7 +2,7 @@
 
 El mapa utiliza coordenadas WGS84, norte arriba y proyección equirectangular con paralelo de referencia 20° N. Comparte límites y proyección para costa, fronteras, estaciones, guías y nubes. Los puntos no se desplazan para acomodar el orden de los niveles; únicamente algunos rótulos tienen una guía hasta su posición real.
 
-La línea une los destinos en el orden de la campaña. No es una representación del trazado de las vías. Los secretos son escenarios de fantasía y aparecen en la ficha del mundo, sin asignarles coordenadas inventadas. Calakmul es una región futura cubierta por nubes, sin niveles adicionales jugables.
+La línea une los 39 destinos en el orden de la campaña. No es una representación del trazado de las vías. Los siete secretos son escenarios de fantasía y aparecen en la ficha del mundo, sin asignarles coordenadas inventadas. Calakmul es el séptimo mundo jugable: sus nubes se despejan al completar Chetumal, siguiendo las mismas reglas de progreso que los demás mundos.
 
 ## Costa y fronteras
 
@@ -30,5 +30,9 @@ Mérida se ancla a la estación Teya-Mérida; Cancún y Chetumal a sus estacione
 | Xcaret | Localidad/caleta de Polé: 20°34′41″ N, 87°07′09″ O. [SECTUR, Riviera Maya](https://www.sectur.gob.mx/wp-content/uploads/2015/02/PDF-Riviera-Maya.pdf). |
 | Puerto Aventuras | Localidad: 20,5067 N, −87,2301 O; punto regional de la población, no edificio ferroviario. [OSM, localidad](https://www.openstreetmap.org/node/6209307874). |
 | Akumal | Bahía/localidad: 20°24′00″ N, 87°19′16″ O. [SECTUR, Riviera Maya](https://www.sectur.gob.mx/wp-content/uploads/2015/02/PDF-Riviera-Maya.pdf). |
+| Conhuas | Referencia regional de la localidad (18,535 N, −89,923 O), en el entorno de Balam Kú. No representa un edificio ferroviario ni afirma ser una estación operativa. |
+| Trono de Camazotz | Escenario ficticio en el entorno arqueológico de Calakmul (18,105 N, −89,810 O). La estación real de Calakmul se sitúa al norte y corresponde a `7-3`, con su propio ancla de OSM. |
 
 Estos matices conservan los nombres e ids publicados de la aventura sin atribuir precisión inexistente a escenarios regionales o ficticios. `stations.test.ts` exige cobertura de todos los niveles principales, posiciones dentro de la extensión y referencias distintas para los edificios ferroviarios.
+
+El epílogo reutiliza esta cartografía y las posiciones de la campaña. El regreso narrativo pasa por Centenario (18,655836 N, −90,285856 O) hasta Escárcega. Sus segmentos son una guía del relato, sin pretender describir la geometría exacta de la vía.

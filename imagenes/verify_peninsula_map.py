@@ -52,8 +52,9 @@ def animation_checks(page, results):
 
 def fixture(page, mode):
     page.evaluate('''async mode => {
-      const { useAppStore } = await import('/src/store/appStore.ts');
-      const { ALL_LEVELS, WORLDS } = await import('/src/data/worlds.ts');
+      const loaded = path => performance.getEntriesByType('resource').filter(entry => new URL(entry.name).pathname === path).at(-1)?.name ?? path;
+      const { useAppStore } = await import(loaded('/src/store/appStore.ts'));
+      const { ALL_LEVELS, WORLDS } = await import(loaded('/src/data/worlds.ts'));
       const state = useAppStore.getState();
       const levels = mode === 'migrado' ? { '5-3': { stars: 2, bestScore: 1200, completions: 1 } }
         : Object.fromEntries((mode === 'completo' ? ALL_LEVELS : WORLDS[0].levels).map(level =>
@@ -66,8 +67,18 @@ def fixture(page, mode):
     open_map(page)
 
 
+def return_to_map(page):
+    page.evaluate('''async () => {
+      const path = '/src/store/appStore.ts';
+      const url = performance.getEntriesByType('resource').filter(entry => new URL(entry.name).pathname === path).at(-1)?.name ?? path;
+      (await import(url)).useAppStore.getState().go('levels');
+    }''')
+    page.locator('.atlas').wait_for()
+    page.locator('.level-map-menu:not([inert])').wait_for()
+
+
 def fresh_checks(page, results):
-    check(page.locator('[data-cloud-world]').count() == 6, 'Cinco mundos futuros y Calakmul bajo nubes')
+    check(page.locator('[data-cloud-world]').count() == 6, 'Seis mundos sin descubrir bajo nubes')
     check(page.locator('.atlas-pin--lit').count() == 1, 'Solo Palenque está iluminado')
     page.locator('[data-station="1-2"]').click()
     check(page.get_by_role('button', name='Estación bloqueada').is_disabled(), 'No permite jugar un nivel bloqueado')
@@ -77,8 +88,7 @@ def fresh_checks(page, results):
     page.locator('[data-station="1-1"]').click()
     page.get_by_role('button', name='Jugar 1-1 →').click()
     page.locator('.intro-stage').wait_for()
-    page.evaluate("async () => (await import('/src/store/appStore.ts')).useAppStore.getState().go('levels')")
-    page.locator('.atlas').wait_for()
+    return_to_map(page)
     results.append('Partida nueva: iluminación, nubes, bloqueo, zoom y entrada al prólogo de Palenque.')
 
 
@@ -94,11 +104,11 @@ def progress_checks(page, results):
     check(page.locator('[data-cloud-world="golfo-campeche"]').count() == 1, 'No desbloquea mundos intermedios')
     results.append('Guardado con récord aislado de Playa del Carmen: conserva acceso y bloqueos intermedios.')
     fixture(page, 'completo')
-    check(page.locator('[data-cloud-world]').count() == 1, 'Solo Calakmul futuro mantiene nubes')
-    check(page.locator('.atlas-pin--lit').count() == 35, 'Todas las estaciones de campaña encendidas')
+    check(page.locator('[data-cloud-world]').count() == 0, 'La campaña completa queda sin nubes')
+    check(page.locator('.atlas-pin--lit').count() == 39, 'Todas las estaciones de campaña encendidas')
     screenshot(page, 'campana-descubierta.png')
     page.locator('.atlas').screenshot(path=str(OUTPUT / 'peninsula-completa.png'))
-    for number in range(1, 7):
+    for number in range(1, 8):
         page.get_by_role('navigation', name='Mundos de la aventura').get_by_role('button').nth(number - 1).click()
         if page.locator('.map-panel').get_attribute('hidden') is not None:
             page.get_by_role('button', name='Estaciones', exact=True).click()
@@ -106,10 +116,8 @@ def progress_checks(page, results):
         screenshot(page, f'tramo-{number}.png')
     page.locator('.map-itinerary .level-tile').click()
     page.locator('.game').wait_for()
-    page.evaluate("async () => (await import('/src/store/appStore.ts')).useAppStore.getState().go('levels')")
-    page.locator('.atlas').wait_for()
-    page.locator('.level-map-menu:not([inert])').wait_for()
-    results.append('Seis tramos, seis boletos y acceso real al secreto del Mundo 6.')
+    return_to_map(page)
+    results.append('Siete tramos, siete boletos y acceso real al secreto del Mundo 7.')
 
 
 def responsive_checks(page, results):

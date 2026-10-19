@@ -90,7 +90,7 @@ export function paintedScenery(file: string, fallback: Scenery, opts: PaintedOpt
   const near = opts.near ?? DEFAULT_NEAR;
   return (c, cam, now) => {
     if (!strips) {
-      const img = lazyImage(`backgrounds/${file}`);
+      const img = lazyImage(file.includes('/') ? file : `backgrounds/${file}`);
       if (!img) return fallback(c, cam, now);
       const farStrip = bakeMirrored(img, opts.haze);
       strips = { far: farStrip, near: bakeNear(farStrip, opts.nearTop ?? DEFAULT_NEAR_TOP) };

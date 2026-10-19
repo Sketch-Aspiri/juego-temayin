@@ -1,7 +1,7 @@
 import type { Assets } from '../assets';
 import type { BossConfig } from '../level/types';
 import type { LightSource } from '../render/lighting';
-import type { BossId, Rect } from '../types';
+import type { BossId, Rect, ThemeId } from '../types';
 import type { World } from '../World';
 
 /** Contrato que debe cumplir cada jefe. Se registra en `bosses/index.ts`. */
@@ -20,6 +20,12 @@ export interface Boss extends Rect {
   readonly hittable: boolean;
   /** Etapa actual de la pelea (1 = inicial) para que el decorado reaccione; opcional. */
   readonly stage?: number;
+  /** Consejo actual y contador de objetivos, publicado a React por HudState. */
+  readonly objective?: string;
+  /** Fondo según la fase; también conserva el amanecer tras abrir la salida. */
+  readonly backdrop?: ThemeId;
+  /** Suelo actual de una arena que desciende, en píxeles. */
+  readonly floor?: number;
   /** Escora visible de la cubierta (-1 izquierda … 1 derecha) para el decorado; opcional. */
   readonly lean?: number;
   /**
