@@ -41,7 +41,7 @@ describe('Mundo 7', () => {
     const first = makeWorld7('7-4');
     expect(first.boss).toBeInstanceOf(Camazotz);
     const next = makeWorld7('7-4', true);
-    expect(next.boss?.hp).toBe(12);
+    expect(next.boss?.hp).toBe(15);
     expect((next.boss as Camazotz).phase).toBe(1);
     expect(next.darkness).toBeNull();
   });

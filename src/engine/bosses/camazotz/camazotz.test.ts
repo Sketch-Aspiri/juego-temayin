@@ -27,22 +27,22 @@ describe('Camazotz: combate final', () => {
     const { world, boss } = setup();
     expect(until(world, () => boss.hittable)).toBe(true);
     boss.onFireball(world);
-    expect(boss.hp).toBe(12);
+    expect(boss.hp).toBe(K.HP);
     boss.onFireball(world);
-    expect(boss.hp).toBe(11);
+    expect(boss.hp).toBe(K.HP - 1);
     boss.onFireball(world); boss.onFireball(world);
-    expect(boss.hp).toBe(11);
+    expect(boss.hp).toBe(K.HP - 1);
     expect(until(world, () => boss.hittable)).toBe(true);
     boss.onFireball(world);
     advance(world, K.EXPOSED_TIME + STEP);
     expect(until(world, () => boss.hittable)).toBe(true);
     boss.onFireball(world);
-    expect(boss.hp).toBe(11);
+    expect(boss.hp).toBe(K.HP - 1);
   });
 
-  it('baja a la cámara a ocho PV, mantiene suelo y cierra también el paso inferior', () => {
+  it('baja a la cámara a diez PV, mantiene suelo y cierra también el paso inferior', () => {
     const { world, boss } = setup();
-    boss.hp = 9; boss.setState('exposed');
+    boss.hp = K.PHASE2_HP + 1; boss.setState('exposed');
     boss.onFireball(world); boss.onFireball(world);
     advance(world, K.HURT_TIME + STEP);
     expect(boss.phase).toBe(2);
@@ -64,7 +64,8 @@ describe('Camazotz: combate final', () => {
       updateFireballs(world, STEP);
     }
     boss.update(world, STEP);
-    expect(boss.hittable).toBe(true);
+    expect(boss.st).toBe('exposeWarn');
+    expect(until(world, () => boss.hittable)).toBe(true);
     expect(world.torches.every(torch => torch.lit)).toBe(true);
     expect(hudKey(world.hudState(1))).not.toBe(before);
     expect(world.hudState(1).boss?.objective).toContain('Pisotón');
@@ -77,7 +78,7 @@ describe('Camazotz: combate final', () => {
     world.player.x = boss.left + T * 1.8;
     boss.update(world, STEP);
     expect(world.player.fire).toBe(true);
-    expect(boss.hp).toBe(12);
+    expect(boss.hp).toBe(K.HP);
   });
 
   it.each([1, -1] as const)('el viento hacia %s empuja sin introducir el cuerpo en un pilar', face => {
@@ -106,8 +107,9 @@ describe('Camazotz: combate final', () => {
     expect(boss.hittable).toBe(false);
     boss.ritualEchoes = 2;
     boss.update(world, STEP);
+    expect(until(world, () => boss.hittable)).toBe(true);
     expect(boss.hittable).toBe(true);
-    expect(boss.hp).toBe(12);
+    expect(boss.hp).toBe(K.HP);
     expect(world.darkness).toBeNull();
   });
 

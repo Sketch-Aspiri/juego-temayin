@@ -1,5 +1,6 @@
 import type { SpriteRef } from './intro';
 import type { Frame } from '../engine/render/artCache';
+import { CAMAZOTZ_ART_FILES } from './camazotzArt';
 
 export const WORLD7_EFFECTS_FILE = 'mundo7/efectos-camazotz.webp';
 export const WORLD7_BRAZIER_FILE = 'mundo7/brasero-jade.webp';
@@ -12,6 +13,7 @@ export const REUNION_SPRITE: SpriteRef = {
   file: 'mundo7/reencuentro.webp', sheetW: 1536, sheetH: 1024, frame: [0, 0, 1536, 1024],
 };
 export const WORLD7_ART_FILES: readonly string[] = [
+  ...CAMAZOTZ_ART_FILES,
   WORLD7_EFFECTS_FILE, WORLD7_BRAZIER_FILE, REUNION_SPRITE.file, 'backgrounds/rioBec.webp',
   'bosses/camazotz.webp', 'backgrounds/batCave.webp', 'backgrounds/throne.webp',
   'mundo7/calakmul-amanecer.webp',

@@ -1,22 +1,23 @@
 import type { Assets } from '../../assets';
 import { GROUND, T } from '../../constants';
 import type { BossConfig } from '../../level/types';
-import { moveX, overlap } from '../../physics';
+import { overlap } from '../../physics';
 import type { LightSource } from '../../render/lighting';
 import type { World } from '../../World';
 import type { ThemeId } from '../../types';
 import { closeArena, entranceColumn, openExit, rewardBurst } from '../arena';
 import type { Boss } from '../types';
 import { drawCamazotz } from './draw';
-import { addHazard, beamRect, collectMotes, spawnMotes, stepHazards, summonEcho, type EclipseHazard, type LightMote } from './hazards';
+import { collectMotes, spawnMotes, stepHazards, summonEcho, type EclipseHazard, type LightMote } from './hazards';
 import { preparePhase, restoreShrine, torchesReady } from './phases';
 import * as K from './tuning';
+import { startDive, stepDive, stepSwarm, stepGust, stepChamber, startBeam, stepBeam } from './attacks';
 
 export type CamazotzState = 'sleep' | 'intro' | 'idle' | 'diveWarn' | 'dive' | 'swarmWarn' | 'swarm'
-  | 'gustWarn' | 'gust' | 'chamber' | 'beamWarn' | 'beam' | 'echoWarn' | 'echo' | 'exposed' | 'hurt' | 'transition' | 'dead' | 'gone';
+  | 'diveRecover' | 'exposeWarn' | 'gustWarn' | 'gust' | 'chamber' | 'beamWarn' | 'beam' | 'echoWarn' | 'echo' | 'exposed' | 'hurt' | 'transition' | 'dead' | 'gone';
 const CONTACT_STATES: ReadonlySet<CamazotzState> = new Set(['dive', 'swarm', 'gust', 'beam', 'echo']);
 
-/** Tres fases, cuatro PV por fase y una sola herida por apertura. */
+/** Tres fases, cinco PV por fase y una sola herida por apertura. */
 export class Camazotz implements Boss {
   readonly id = 'camazotz';
   readonly name = 'CAMAZOTZ';
@@ -35,6 +36,14 @@ export class Camazotz implements Boss {
   echo = 0;
   targetX = 0;
   diveFromX = 0;
+  diveCount = 0;
+  comboSize = 2;
+  shots = 0;
+  safeLane = 0;
+  chamberCycle = 0;
+  beamCount = 0;
+  beamTotal = 2;
+  descentFromY = 0;
   fireHits = 0;
   chamberClock = 0;
   litTorches = 0;
@@ -52,11 +61,12 @@ export class Camazotz implements Boss {
   get lockCamera(): boolean { return this.st !== 'sleep' && this.st !== 'gone'; }
   get hudVisible(): boolean { return this.lockCamera; }
   get intro(): boolean { return this.st === 'intro'; }
+  get exposedTime(): number { return K.EXPOSED_TIME - (this.phase - 1) * K.EXPOSURE_PHASE_REDUCTION; }
   get hittable(): boolean { return this.st === 'exposed'; }
   get objective(): string {
     if (this.st === 'dead') return '¡El Sol de Jade vuelve a brillar!';
     if (this.hittable) return '¡Ahora! Pisotón o dos disparos';
-    if (this.phase === 1) return 'Fase 1 · Esquiva la picada y pisa al aterrizar';
+    if (this.phase === 1) return 'Fase 1 · Esquiva las picadas; golpea tras la última';
     if (this.phase === 2) return `Fase 2 · Antorchas ${this.litTorches}/4 · Brasero: recupera fuego`;
     return `Fase 3 · Luces ${this.motes.filter(mote => mote.collected).length}/3 · Resiste los ecos y el rayo`;
   }
@@ -86,23 +96,28 @@ export class Camazotz implements Boss {
       case 'intro': if (this.t >= K.INTRO_TIME) this.setState('idle'); break;
       case 'idle': if (this.t >= K.IDLE_TIME) this.choose(world); break;
       case 'diveWarn': if (this.t >= K.WARN_TIME) this.setState('dive'); break;
-      case 'dive': this.dive(world); break;
-      case 'swarmWarn': if (this.t >= K.WARN_TIME) this.swarm(world); break;
-      case 'swarm': if (this.t >= K.SWARM_TIME) this.setState('idle'); break;
+      case 'dive': if (stepDive(this, world)) this.expose(world); break;
+      case 'diveRecover':
+        this.y = this.floor - this.h + (K.FLY_Y - this.floor + this.h) * Math.min(1, this.t / K.DIVE_RECOVERY);
+        if (this.t >= K.DIVE_RECOVERY) startDive(this, world);
+        break;
+      case 'swarmWarn': if (this.t >= K.WARN_TIME) this.setState('swarm'); break;
+      case 'swarm': stepSwarm(this); if (this.t >= K.SWARM_TIME) this.setState('idle'); break;
       case 'gustWarn': if (this.t >= K.WARN_TIME) this.setState('gust'); break;
-      case 'gust': this.gust(world, dt); break;
+      case 'gust': stepGust(this, world, dt); break;
       case 'chamber': this.chamber(world, dt); break;
       case 'beamWarn': if (this.t >= K.WARN_TIME) this.setState('beam'); break;
-      case 'beam': this.beam(world); break;
+      case 'beam': stepBeam(this, world); break;
       case 'echoWarn': if (this.t >= K.WARN_TIME) { summonEcho(this, world); this.setState('echo'); } break;
       case 'echo': if (this.t >= K.ECHO_TIME) { this.ritualEchoes++; this.setState('idle'); } break;
-      case 'exposed': if (this.t >= K.EXPOSED_TIME) this.closeWindow(world); break;
+      case 'exposeWarn': this.descend(world); break;
+      case 'exposed': if (this.t >= this.exposedTime) this.closeWindow(world); break;
       case 'hurt': if (this.t >= K.HURT_TIME) this.afterHurt(world); break;
       case 'transition': if (this.t >= K.TRANSITION_TIME) this.setState(this.phase === 2 ? 'chamber' : 'idle'); break;
       case 'dead': if (this.t >= K.DEAD_TIME) this.finish(world); break;
     }
-    if (this.phase === 3 && !['transition', 'hurt', 'dead', 'exposed'].includes(this.st)
-      && collectMotes(this, world) && this.ritualEchoes >= K.ECHOES_PER_WINDOW && this.st === 'idle') this.expose(world);
+    if (this.phase === 3 && !['transition', 'hurt', 'dead', 'exposed', 'exposeWarn'].includes(this.st)
+      && collectMotes(this, world) && this.ritualEchoes >= K.ECHOES_PER_WINDOW && this.st === 'idle') this.beginOpening(world);
   }
 
   private choose(world: World): void {
@@ -117,57 +132,39 @@ export class Camazotz implements Boss {
         world.popups.push({ x: this.left + T * 10, y: 100, t: 0, txt: `ECO DE ${K.ECHO_NAMES[this.echo].toUpperCase()}` });
         return this.setState('echoWarn');
       }
-      this.face = this.cycle % 4 ? 1 : -1;
-      return this.setState('beamWarn');
+      return startBeam(this, world);
     }
+    this.shots = 0; this.safeLane = this.cycle % 2;
     const attack = this.cycle % 3;
     if (attack === 2) return this.setState('swarmWarn');
     if (attack === 0) return this.setState('gustWarn');
-    this.targetX = this.clampTarget(world.player.x - this.w / 2);
-    this.diveFromX = this.x;
-    this.setState('diveWarn');
-  }
-
-  private dive(world: World): void {
-    const progress = Math.min(1, this.t / K.DIVE_TIME);
-    this.x = this.diveFromX + (this.targetX - this.diveFromX) * progress;
-    this.y = K.FLY_Y + (this.floor - this.h - K.FLY_Y) * progress * progress;
-    if (progress >= 1) this.expose(world);
-  }
-
-  private swarm(world: World): void {
-    const fromLeft = world.player.x > this.left + (this.right - this.left) / 2;
-    for (const height of [T * 2, T * 4, T * 6])
-      addHazard(this, 'bat', fromLeft ? this.left + T : this.right - T, this.floor - height, (fromLeft ? 1 : -1) * K.HAZARD_SPEED);
-    this.setState('swarm');
-  }
-
-  private gust(world: World, dt: number): void {
-    const player = world.player;
-    const push = this.face * K.WIND_FORCE * dt;
-    moveX(player, push, world.solidAt);
-    player.x = Math.max(this.left, Math.min(this.right - player.w, player.x));
-    if (this.t >= K.WIND_TIME) this.setState('idle');
+    this.diveCount = 0;
+    this.comboSize = this.hp <= K.TRIPLE_DIVE_HP ? 3 : 2;
+    startDive(this, world);
   }
 
   private chamber(world: World, dt: number): void {
-    if (torchesReady(this, world)) return this.expose(world);
-    this.chamberClock += dt;
-    if (this.chamberClock < K.CHAMBER_ATTACK_GAP) return;
-    this.chamberClock = 0;
-    // El brillo de la marca da 0,9 s para apartarse antes de la caída.
-    const target = this.clampTarget(world.player.x);
-    addHazard(this, 'shard', target, 80, 0, 70, 130);
+    if (torchesReady(this, world)) return this.beginOpening(world);
+    stepChamber(this, world, dt);
   }
 
-  private beam(world: World): void {
-    if (overlap(world.player, beamRect(this, world))) world.hurt();
-    if (this.t >= K.BEAM_TIME) this.setState('idle');
+  private beginOpening(world: World): void {
+    this.hazards.length = 0;
+    this.targetX = this.clampTarget(world.player.x);
+    this.diveFromX = this.x; this.descentFromY = this.y;
+    this.setState('exposeWarn');
+    world.audio.play('warn');
+  }
+
+  private descend(world: World): void {
+    const progress = Math.min(1, this.t / K.EXPOSE_DESCENT_TIME);
+    this.x = this.diveFromX + (this.targetX - this.diveFromX) * progress;
+    this.y = this.descentFromY + (this.floor - this.h - this.descentFromY) * progress;
+    if (progress >= 1) this.expose(world);
   }
 
   private expose(world: World): void {
     this.hazards.length = 0;
-    this.x = this.clampTarget(world.player.x);
     this.y = this.floor - this.h;
     this.setState('exposed');
     world.audio.play('stomp');

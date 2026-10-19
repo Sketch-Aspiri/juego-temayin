@@ -1,3 +1,4 @@
+import { CAMAZOTZ_FX, CAMAZOTZ_FX_FILE } from '../../../data/camazotzArt';
 import { SPRITES } from '../../../data/intro';
 import { WORLD7_BRAZIER_FILE, WORLD7_BRAZIER_FRAME, WORLD7_EFFECTS, WORLD7_EFFECTS_FILE } from '../../../data/world7Art';
 import { GROUND, T } from '../../constants';
@@ -25,6 +26,13 @@ export function drawThrone(c: Ctx, width: number, _now: number, world: World): v
     const rect = beamRect(boss, world);
     c.fillStyle = boss.st === 'beam' ? '#ffdf8d' : 'rgba(232,176,255,.28)';
     c.fillRect(rect.x - boss.left, rect.y, rect.w, rect.h);
+    if (boss.st === 'beam') {
+      const frame = Math.floor(boss.clock * 12) % 2 ? CAMAZOTZ_FX.beamA : CAMAZOTZ_FX.beamB;
+      const art = bakedFrame(CAMAZOTZ_FX_FILE, frame, 0.5);
+      c.save(); c.beginPath(); c.rect(rect.x - boss.left, rect.y - 10, rect.w, rect.h + 20); c.clip();
+      if (art) c.drawImage(art, rect.x - boss.left, rect.y - 38, rect.w, rect.h + 64);
+      c.restore();
+    }
     c.strokeStyle = '#c879ef'; c.lineWidth = 3;
     c.strokeRect(rect.x - boss.left, rect.y, rect.w, rect.h);
   }

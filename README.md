@@ -4,6 +4,8 @@ Juego de plataformas 2D con **React + TypeScript + Canvas**. React gestiona men√
 
 ## Comandos
 
+Camazotz cuenta con ocho poses nuevas, 15 PV y tres fases reforzadas: picadas encadenadas, lluvias dirigidas, seis ecos y rayos dobles o triples. Detalles y controles en [la gu√≠a del Mundo 7](src/data/levels/world7/README.md).
+
 ```bash
 npm install
 npm run dev        # servidor de desarrollo

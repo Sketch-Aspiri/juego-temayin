@@ -15,7 +15,7 @@ interface BossPresentation {
 
 export const BOSS_PRESENTATIONS: Readonly<Record<BossId, BossPresentation>> = {
   camazotz: {
-    image: 'bosses/camazotz.webp', frame: [19, 93, 373, 324], sheet: [1254, 1254],
+    image: 'mundo7/camazotz-combate-v2.webp', frame: [955, 163, 369, 292], sheet: [1774, 887],
     hint: 'Esquiva la picada y pisa al aterrizar. Después, enciende cuatro antorchas con fuego. En el eclipse, reúne tres luces y usa los pilares contra el rayo.',
     arena: 'Cima de Calakmul · Trono de fantasía', color: '#f4cf75',
   },

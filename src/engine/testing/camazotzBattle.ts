@@ -28,7 +28,10 @@ export function driveCamazotzBattle(world: World): void {
     }
   } else if (boss.phase === 3 && !['transition', 'hurt', 'dead'].includes(boss.st)) {
     const mote = boss.motes.find(mote => !mote.collected);
-    if (mote) target = mote.x - player.w / 2;
+    if (mote) {
+      target = mote.x - player.w / 2;
+      jump = Math.abs(target - player.x) < 70 && (player.onGround || player.vy < 0);
+    }
   }
   const direction = target - player.x;
   const input = world.input;
