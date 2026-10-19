@@ -296,7 +296,7 @@ Temas: `ruins`, `cave`, `xibalba` (nuevo), `jungle`. Cenotes azules, inframundo 
 | Id | Estación | Lugar real | Tema / ambiente | Tipo | Mecánica clave | Enemigos |
 |---|---|---|---|---|---|---|
 | 4-1 | Chichén Itzá | El Castillo (Kukulcán) y el Gran Juego de Pelota | `ruins` | ruinas | Aros del juego de pelota como objetivos de la pelota de pok ta pok | tarántula, nauyaca, sombras de Xibalbá |
-| 4-2 | Xibalbá | Paradero real cercano a Chichén Itzá; en el juego, entrada al inframundo | `xibalba` | subterráneo + acuático | Oscuridad + nado: cuevas inundadas | sombras de Xibalbá, ajolote fantasma, `bat` |
+| 4-2 | Xibalbá | Entrada ficticia al inframundo en el entorno de Chichén Itzá; el mapa no la presenta como estación vigente | `xibalba` | subterráneo + acuático | Oscuridad + nado: cuevas inundadas | sombras de Xibalbá, ajolote fantasma, `bat` |
 | 4-3 | Valladolid | Ciudad colonial con el cenote Zací en pleno centro | `cave` | acuático / subterráneo | Descenso al cenote; bolsas de aire | ajolote fantasma, `bat`, `urchin` |
 | 4-4 | Leona Vicario | Pueblo chiclero entre chicozapotes | `jungle`, lluvia | jungla | Resina de chicle pegajosa que frena (variante de zona lenta); árboles de chicozapote | saraguato, hormigas arrieras, Xtabay (trampa) |
 | 4-5 | Nuevo Xcán | Paradero en el límite Yucatán–Quintana Roo | `jungleNight`, noche | jefe | Arena con niebla y oscuridad parcial | **Jefe: Huay Pek** (`'huayPek'`) |
@@ -570,12 +570,19 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
 | Aspecto | Detalle |
 |---|---|
 | Dónde | UI de React: `src/ui/screens/PeninsulaMap.tsx` (+ componentes en `src/ui/components/map/`). Sustituye o complementa a `LevelSelect.tsx`. |
-| Datos | `src/data/stations.ts`: `Readonly<Record<string, { x: number; y: number; label: string }>>` con coordenadas normalizadas (0..1) por id de nivel. **No** meter coordenadas en `LevelDef` (es un dato de UI). Prueba: todo id de `ALL_LEVELS` tiene estación. |
+| Datos | `src/data/stations.ts`: registro inmutable de latitud, longitud, nombre y tipo de destino por id; `projectPosition` calcula coordenadas normalizadas (0..1). **No** meter coordenadas en `LevelDef` (es un dato de UI). Prueba: todo id de `ALL_LEVELS` tiene estación. |
 | Dibujo | SVG simplificado de la península (Chiapas/Tabasco, Campeche, Yucatán, Quintana Roo) con la vía; estaciones como botones accesibles (`<button>` con `aria-label`). |
-| Tren | El tren se coloca en la última estación desbloqueada (`isUnlocked`) y se anima hasta la siguiente al completar un nivel (transición CSS/SVG; respetar `prefers-reduced-motion`). |
+| Tren | El tren se coloca en la última estación desbloqueada (`isUnlocked`). Las transiciones de posición respetan `prefers-reduced-motion`; al volver desde una partida el selector se monta directamente en el nuevo destino. |
 | Store | Añadir `'map'` a `Screen` en `appStore.ts` o reutilizar `'levels'`. La lógica de desbloqueo sigue en `store/progress.ts`. |
 
-**Estado: pendiente.** `src/data/stations.ts` y `src/ui/screens/PeninsulaMap.tsx` no existen. El selector actual es `src/ui/screens/LevelSelect.tsx`, que lista los mundos registrados en `WORLDS` y marca como «Próximamente» los que no tienen niveles.
+**Estado: implementado.** `LevelSelect.tsx` contiene `PeninsulaMap.tsx`: carta SVG con costa y fronteras reales de Natural Earth 1:10m, proyección equirectangular a 20° N y norte arriba. `data/peninsulaGeography.ts` se regenera con `python imagenes/import_peninsula_map.py`. Las estaciones utilizan coordenadas WGS84 de OpenStreetMap; Teya, Petenes y destinos turísticos conservan su referencia local, y Xibalbá se identifica como escenario ficticio. Fuentes y precisiones en `src/data/MAPA.md`.
+
+- Puntos iluminados para niveles disponibles, apagados para bloqueados y marcas de completado. Las guías de rótulo separan destinos cercanos sin mover su ancla geográfica. El itinerario lateral permite seleccionar todos los puntos con teclado o toque y solo inicia niveles disponibles.
+- Los mundos sin ninguna estación disponible quedan cubiertos por nubes; completar el jefe anterior despeja el siguiente. Récords migrados y boletos descubren su propio mundo sin abrir los intermedios. El Mundo 7 permanece bajo nubes con «Próximamente» y no añade niveles a `WORLDS`.
+- Vista general, acercamiento por tramo, siete pestañas de mundo, bolsa de cacao, estrellas, secretos con boleto y especial Hanal Pixán. La línea muestra el orden de la aventura, no el trazado ferroviario. Sin cambios al esquema de guardado ni a los ids.
+- El mapa ocupa todo el visor, con controles flotantes e itinerario desplegable. `fitMapView` adapta la cámara a escritorio, teléfono y panel lateral sin deformar las posiciones. Letras, números de estación, estrellas y cacao tienen tamaños ampliados. Chichén Itzá se identifica como zona arqueológica real; solo Xibalbá es un escenario de fantasía.
+- `MapCurtain.tsx` cubre todo el visor con dos bancos de nubes: entrada de 1,5 s y cierre de 0,9 s antes de volver al título o iniciar un nivel. Las duraciones se comparten con CSS y la interfaz permanece `inert` durante la transición. `prefers-reduced-motion` oculta la cortina y cambia de pantalla inmediatamente.
+- Pruebas: `data/stations.test.ts`, `ui/components/map/mapModel.test.ts` y `ui/screens/LevelSelect.test.tsx`. `python imagenes/verify_peninsula_map.py` revisa progreso inicial, fin de Mundo 1, récord migrado, campaña descubierta, seis secretos, zoom, escritorio y móvil; prepara perfiles de QA sin modificar las reglas del juego. Capturas e informe en `imagenes/verificacion/mapa-peninsula/`.
 
 ### 5.8 Encuentros con Ek Chuah y bolsa de cacao
 

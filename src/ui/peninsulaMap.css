@@ -1,0 +1,196 @@
+﻿/* La carta ocupa el visor completo; los controles flotan sobre la geografía. */
+.level-map-menu { position: fixed; inset: 0; width: 100%; height: 100dvh; overflow: hidden; background: #103a43; }
+.level-map-menu--leaving { pointer-events: none; }
+.level-map-menu .menu__header { position: absolute; inset: 0 0 auto; z-index: 12; height: 82px; padding: 14px 24px; background: linear-gradient(#102d2df2, #102d2ddd 78%, transparent); border: 0; pointer-events: none; }
+.level-map-menu .menu__header > * { pointer-events: auto; }
+.level-map-menu .menu__header h2 { font: 30px 'Bree Serif', serif; color: #ffe5aa; text-shadow: 0 2px 8px #0008; }
+.level-map-menu .menu__header .btn { font-size: 19px; min-height: 48px; padding: 9px 18px; }
+.level-map-menu .menu__treasures { display: flex; align-items: center; justify-content: end; gap: 24px; font-size: 24px; }
+.level-map-menu .menu__stars { font: 32px 'Lilita One', sans-serif; color: #ffe28b; text-shadow: 0 0 18px #ffc95f55, 0 2px 4px #0009; }
+.level-map-menu .menu__wallet { font: 25px 'Lilita One', sans-serif; color: #f6e1ad; white-space: nowrap; text-shadow: 0 2px 5px #000a; }
+.level-map-menu .level-map-menu__body { position: absolute; inset: 0; max-width: none; width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden; touch-action: pan-y; }
+.peninsula { --map-paper: #eddcae; --map-muted: #a9c0b2; position: absolute; inset: 0; }
+.peninsula__intro { position: absolute; z-index: 3; left: 26px; top: 178px; pointer-events: none; }
+.peninsula__eyebrow { font-size: 12px; letter-spacing: .18em; color: #d8dcb9; margin: 0 0 7px; text-shadow: 0 1px 4px #000b; }
+.peninsula__intro h2 { font: 400 clamp(28px, 3vw, 42px)/1.1 'Lilita One', sans-serif; color: #f3e1b2; margin: 0 0 18px; text-shadow: 0 2px 10px #092728; }
+.map-legend { display: flex; flex-wrap: wrap; gap: 13px; font-size: 14px; color: #e3e9da; max-width: 330px; text-shadow: 0 1px 4px #000; }
+.map-legend span { display: flex; align-items: center; gap: 7px; }
+.map-legend i { width: 11px; height: 11px; border: 1px solid #94aa9f; border-radius: 50%; background: #233a36; }
+.map-legend .map-legend__lit { background: #ffe1a1; border-color: #fff3c1; box-shadow: 0 0 12px #ffde8177; }
+.map-legend .map-legend__cloud { width: 20px; border-radius: 8px; background: #c8d7d9; border: 0; }
+.map-worlds { position: absolute; z-index: 7; top: 90px; left: 24px; right: 24px; display: flex; gap: 8px; overflow-x: auto; padding: 2px 3px 10px; touch-action: pan-x; scrollbar-width: thin; }
+.map-worlds button { flex: 1 0 140px; display: flex; align-items: center; text-align: left; gap: 9px; min-height: 61px; border: 1px solid #8ca68b60; border-radius: 10px; background: #173c35ee; padding: 10px; font-size: 14px; cursor: pointer; box-shadow: 0 3px 12px #09252640; }
+.map-worlds button > span { font: 27px 'Lilita One', sans-serif; color: #b0c8ad; }
+.map-worlds button[aria-pressed='true'] { background: #4b5e3eee; border-color: #e2cc8d; color: #fff1c8; }
+.map-worlds button[aria-pressed='true'] > span { color: #ffe1a1; }
+.map-worlds button:disabled { color: #b3c1b9; background: #193b36e8; border-style: dashed; cursor: default; }
+.map-worlds button:disabled > span { color: #90a69a; }
+.peninsula__layout { display: contents; }
+.map-chart { position: absolute; inset: 0; background: #103a43; }
+.map-chart__toolbar { position: absolute; z-index: 5; bottom: 91px; left: 26px; display: flex; flex-direction: column; align-items: start; gap: 10px; }
+.map-chart__toolbar > span { font-size: 13px; letter-spacing: .13em; color: #eee0b5; text-shadow: 0 2px 5px #000; }
+.map-chart__toolbar button { cursor: pointer; border: 1px solid #d0c09199; border-radius: 10px; background: #123b37ed; padding: 11px 16px; font-size: 17px; color: #f8e7b8; min-height: 48px; }
+.atlas { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; isolation: isolate; }
+.atlas__drawing, .atlas__markers { position: absolute; inset: 0; width: 100%; height: 100%; }
+.atlas__drawing { display: block; }
+.atlas__coasts { filter: drop-shadow(0 4px 0 #062d36) drop-shadow(0 0 7px #72a59a33); }
+.atlas__region-labels { font: 19px 'Bree Serif', serif; letter-spacing: .16em; fill: #e4e5c1aa; text-anchor: middle; }
+.atlas__sea-labels { font: italic 29px 'Bree Serif', serif; letter-spacing: .06em; fill: #a1c0bbaa; text-anchor: middle; }
+.atlas__routes polyline { fill: none; stroke: #b1bca499; stroke-width: 2.5; stroke-dasharray: 4 5; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.atlas__routes .atlas__route-lit { stroke: #f3d491; stroke-width: 3; stroke-dasharray: none; }
+.atlas__future { fill: #354e55; font: 14px 'Bree Serif', serif; letter-spacing: .04em; text-anchor: middle; }
+.atlas__future text:first-child { font: 20px 'Lilita One', sans-serif; letter-spacing: .12em; }
+.atlas__markers { pointer-events: none; }
+.atlas-pin { position: absolute; width: 0; height: 0; color: #80958a; }
+.atlas-pin__position { display: block; position: absolute; width: 10px; height: 10px; transform: translate(-50%, -50%); border: 1.5px solid #9bb29a; border-radius: 50%; background: #243e35; box-shadow: 0 1px 3px #0008; }
+.atlas-pin__guide { position: absolute; left: -50px; top: -50px; width: 100px; height: 100px; overflow: visible; pointer-events: none; }
+.atlas-pin__guide line { stroke: currentColor; stroke-width: 1; }
+.atlas-pin__button { position: absolute; left: var(--callout-x); top: var(--callout-y); transform: translate(-50%, -50%); border: 1.5px solid #6d8b78; color: #bacabd; background: #213e34; border-radius: 50%; width: 38px; height: 38px; padding: 0; font-size: 12px; font-weight: 800; cursor: pointer; pointer-events: auto; box-shadow: 0 2px 5px #0a1d2488; }
+.atlas-pin__button::after { content: ''; position: absolute; inset: -3px; border-radius: 50%; }
+.atlas-pin--lit { color: #f7d595; }
+.atlas-pin--lit .atlas-pin__position { background: #ffdf8d; border-color: #fff2c0; box-shadow: 0 0 5px #ffe2a2, 0 0 18px #ffcf7388; }
+.atlas-pin--lit .atlas-pin__button { color: #283e2c; border-color: #f6e1ae; background: #efd796; box-shadow: 0 0 12px #f8d36b55; }
+.atlas-pin--done .atlas-pin__button { background: #a5d9a9; border-color: #d7f6b8; }
+.atlas-pin--selected { z-index: 4; }
+.atlas-pin--selected .atlas-pin__button { outline: 2px solid #ffe9ac; outline-offset: 4px; }
+.atlas-pin__label { position: absolute; left: var(--callout-x); top: calc(var(--callout-y) + 29px); transform: translateX(-50%); padding: 6px 10px; border-radius: 5px; background: #102e2ef2; color: #fff1c7; white-space: nowrap; font-size: 18px; pointer-events: none; opacity: 0; box-shadow: 0 3px 10px #0003; }
+.atlas-pin--selected .atlas-pin__label, .atlas-pin:focus-within .atlas-pin__label, .atlas-pin:hover .atlas-pin__label { opacity: 1; }
+.atlas-pin:focus-within, .atlas-pin:hover { z-index: 5; }
+.atlas__train { position: absolute; width: 45px; height: 35px; transform: translate(-50%, -155%); filter: drop-shadow(0 3px 3px #0006); pointer-events: none; transition: left 1s ease, top 1s ease; z-index: 2; }
+.atlas__compass { position: absolute; top: 185px; right: 30px; display: grid; justify-items: center; color: #ecdbac; font: 20px 'Bree Serif', serif; pointer-events: none; }
+.atlas__compass svg { width: 38px; height: 52px; }
+.atlas__scale { position: absolute; bottom: 30px; right: 27px; width: 14.95%; color: #dce3d2; font-size: 14px; text-align: right; pointer-events: none; }
+.atlas__scale i { display: block; height: 7px; border: solid #cfddc4; border-width: 0 1px 2px; margin-bottom: 5px; }
+.map-sources { position: absolute; z-index: 6; bottom: 23px; left: 26px; max-width: min(580px, 90vw); font-size: 14px; line-height: 1.6; color: #d2dfd1; border-radius: 10px; }
+.map-sources[open] { padding: 16px; background: #102f2ff5; box-shadow: 0 4px 30px #0006; }
+.map-sources summary { cursor: pointer; width: fit-content; min-height: 30px; text-shadow: 0 2px 5px #000; }
+.map-sources p { margin: 8px 0; }
+.map-sources a { color: #f0dda9; text-underline-offset: 2px; }
+.map-panel { position: absolute; z-index: 9; right: 24px; top: 176px; bottom: 88px; width: 360px; border-radius: 16px; overflow: auto; box-shadow: 0 12px 40px #031b27aa; touch-action: pan-y; animation: map-panel-open 220ms ease-out both; }
+.map-panel[hidden] { display: none; }
+.map-panel__close { position: sticky; float: right; top: 10px; margin: 10px 10px -54px 0; z-index: 2; width: 44px; height: 44px; border: 1px solid #d2cea76b; background: #12392f; border-radius: 50%; color: #ffedc2; font-size: 21px; cursor: pointer; }
+.map-itinerary { background: #17382df5; border: 1px solid #bdc49655; border-radius: 16px; padding: 22px; }
+.map-itinerary__heading { padding-right: 28px; }
+.map-itinerary__heading > span { font-size: 14px; letter-spacing: .15em; color: #d8c48f; }
+.map-itinerary__heading h3 { font: 30px/1.1 'Lilita One', sans-serif; color: #f4e5bc; margin: 10px 0; }
+.map-itinerary__heading p { color: #b5c9b6; font-size: 15px; margin: 9px 0 18px; }
+.map-itinerary__stops { list-style: none; padding: 0; margin: 0; }
+.map-itinerary__stops li + li { margin-top: 4px; }
+.map-itinerary__stops button { width: 100%; min-height: 63px; display: grid; grid-template-columns: 20px 1fr; gap: 0 10px; align-items: center; text-align: left; background: transparent; border: 1px solid transparent; border-radius: 9px; padding: 9px 10px; cursor: pointer; color: #bccbbd; }
+.map-itinerary__stops button:hover { background: #ffffff08; }
+.map-itinerary__stops .is-selected { background: #c7cd9c14; border-color: #cbb77d88; }
+.map-itinerary__dot { width: 15px; height: 15px; border-radius: 50%; background: #243d33; border: 1px solid #718b75; font-size: 11px; text-align: center; grid-row: 1 / 3; }
+.is-lit .map-itinerary__dot { background: #f4d58d; border-color: #ffedb5; color: #254132; box-shadow: 0 0 9px #f4d58d55; }
+.is-lit strong { color: #f0e8cb; }
+.map-itinerary__stops small { display: block; font-size: 12px; letter-spacing: .08em; color: #afc1a9; margin-bottom: 3px; }
+.map-itinerary__stops strong { display: block; font-size: 18px; font-weight: 600; }
+.map-itinerary__status { grid-column: 2; font-size: 12px; color: #adc0ac; margin-top: 3px; }
+.map-departure { margin-top: 18px; padding-top: 18px; border-top: 1px solid #adbc9440; }
+.map-departure p { font-size: 16px; color: #c4d3bd; line-height: 1.5; margin: 0 0 9px; }
+.map-departure h4 { font: 29px 'Bree Serif', serif; color: #f5e7bd; margin: 0 0 8px; }
+.map-departure__coordinates { display: block; color: #b6ccbe; font-size: 14px; font-variant-numeric: tabular-nums; }
+.map-departure .btn { width: 100%; margin-top: 17px; font-size: 19px; min-height: 50px; }
+.map-departure .btn:disabled { opacity: .5; cursor: not-allowed; }
+.map-departure .btn + p { margin-top: 12px; font-size: 14px; }
+.map-departure__record { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-size: 15px; margin-top: 14px; }
+.map-departure__record .stars { font-size: 30px; }
+.map-itinerary > .level-tile { margin-top: 20px; width: 100%; min-height: 145px; }
+.map-itinerary .level-tile__id { font-size: 17px; letter-spacing: .06em; }
+.map-itinerary .level-tile__name { font-size: 18px; }
+.map-itinerary .level-tile__secret { font-size: 14px; }
+.map-itinerary .level-tile__best { font-size: 15px; }
+.map-itinerary .level-tile .stars { font-size: 28px; }
+.map-dock { position: absolute; z-index: 10; left: 50%; bottom: 21px; transform: translateX(-50%); display: flex; gap: 9px; padding: 8px; border: 1px solid #aebc8c55; border-radius: 40px; background: #113b35ed; box-shadow: 0 8px 22px #041c2655; }
+.map-dock .btn { font-size: 18px; min-height: 48px; padding: 9px 18px; white-space: nowrap; }
+.map-dock .btn:disabled { opacity: .5; cursor: not-allowed; }
+@keyframes map-panel-open { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: translateX(0); } }
+@media (max-width: 1000px) {
+  .level-map-menu .menu__header h2 { font-size: 24px; }
+  .level-map-menu .menu__treasures { gap: 14px; }
+  .level-map-menu .menu__wallet { font-size: 21px; }
+  .level-map-menu .menu__stars { font-size: 29px; }
+  .peninsula__intro h2 { font-size: 30px; }
+  .peninsula__intro { top: 178px; }
+  .map-panel { width: 330px; }
+}
+@media (max-width: 600px) {
+  .level-map-menu .menu__header { height: 78px; padding: 10px 12px; grid-template-columns: auto 1fr auto; gap: 10px; }
+  .level-map-menu .menu__header h2 { font-size: 21px; text-align: center; }
+  .level-map-menu .menu__header .btn { font-size: 16px; padding: 7px 12px; }
+  .level-map-menu .menu__treasures { flex-direction: column; align-items: end; gap: 0; }
+  .level-map-menu .menu__stars { font-size: 28px; }
+  .level-map-menu .menu__wallet { font-size: 19px; }
+  .map-worlds { top: 84px; left: 10px; right: 10px; }
+  .map-worlds button { flex: 0 0 165px; font-size: 15px; min-height: 61px; }
+  .peninsula__intro { top: 166px; left: 15px; right: 15px; }
+  .peninsula__eyebrow { display: none; }
+  .peninsula__intro h2 { font-size: 29px; margin-bottom: 12px; }
+  .map-legend { gap: 9px 12px; font-size: 13px; }
+  .atlas-pin__button { width: 34px; height: 34px; font-size: 11px; }
+  .atlas-pin__button::after { inset: -5px; }
+  .atlas-pin__label { font-size: 16px; }
+  .atlas__train { width: 38px; height: 30px; }
+  .atlas__region-labels { font-size: 34px; letter-spacing: .08em; }
+  .atlas__sea-labels { font-size: 38px; }
+  .atlas__future { font-size: 22px; }
+  .atlas__future text:first-child { font-size: 29px; }
+  .atlas__compass { top: 235px; right: 17px; font-size: 18px; }
+  .atlas__compass svg { width: 25px; height: 34px; }
+  .map-chart__toolbar { left: 15px; bottom: 135px; }
+  .map-chart__toolbar > span { display: none; }
+  .map-chart__toolbar button { font-size: 16px; padding: 8px 13px; }
+  .map-sources { left: 15px; bottom: 86px; font-size: 13px; }
+  .atlas__scale { bottom: 142px; right: 15px; font-size: 12px; }
+  .map-dock { bottom: max(13px, env(safe-area-inset-bottom)); gap: 5px; padding: 6px; border-radius: 18px; max-width: calc(100% - 18px); }
+  .map-dock .btn { font-size: 16px; padding: 8px 12px; }
+  .map-dock__seasonal { position: fixed; bottom: 70px; right: 0; background: #123b37f5; }
+  .map-panel { left: 10px; right: 10px; width: auto; top: 245px; bottom: 83px; }
+  .map-itinerary { padding: 20px; }
+  .map-itinerary__heading h3 { font-size: 29px; }
+}
+@media (max-height: 520px) and (orientation: landscape) {
+  .level-map-menu .menu__header { height: 65px; padding: 8px 15px; }
+  .map-worlds { top: 67px; left: 12px; right: 12px; }
+  .map-worlds button { min-height: 51px; flex: 0 0 170px; }
+  .peninsula__intro { top: 135px; left: 15px; }
+  .peninsula__intro h2 { font-size: 25px; margin-bottom: 10px; }
+  .peninsula__eyebrow { display: none; }
+  .map-legend { max-width: 180px; font-size: 12px; }
+  .atlas__compass { top: 140px; }
+  .map-chart__toolbar { left: 15px; bottom: 67px; }
+  .map-chart__toolbar > span { display: none; }
+  .map-chart__toolbar button { font-size: 15px; }
+  .map-sources { bottom: 13px; left: 15px; font-size: 12px; max-width: 45vw; }
+  .map-dock { bottom: 10px; }
+  .map-dock .btn { font-size: 15px; min-height: 44px; padding: 7px 12px; }
+  .map-panel { top: 133px; bottom: 72px; right: 12px; }
+  .atlas__scale { bottom: 20px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .level-map-menu, .level-map-menu--leaving, .map-panel { animation: none; }
+  .atlas__train { transition: none; }
+}
+/* Los nombres conservan un tamaño legible al cambiar el acercamiento. */
+.atlas__region-labels { font-size: calc(16px * var(--map-label-scale, 1)); }
+.atlas__sea-labels { font-size: calc(26px * var(--map-label-scale, 1)); }
+.atlas__future { font-size: calc(13px * var(--map-label-scale, 1)); }
+.atlas__future text:first-child { font-size: calc(18px * var(--map-label-scale, 1)); }
+.atlas__future-caption { font: calc(13px * var(--map-label-scale, 1)) 'Bree Serif', serif; }
+/* Cortina de nubes: cubre el visor completo y se abre hacia los bordes. */
+.level-map-menu, .level-map-menu--leaving { animation: none; }
+.map-curtain { position: fixed; inset: 0; z-index: 100; pointer-events: none; overflow: hidden; }
+.map-curtain__bank { position: absolute; left: -10%; width: 120%; height: 78%; filter: drop-shadow(0 14px 14px #10323b44); will-change: transform; }
+.map-curtain__bank svg { display: block; width: 100%; height: 100%; }
+.map-curtain__bank--north { top: -10%; animation: map-clouds-reveal-north var(--map-reveal-duration) cubic-bezier(.45,0,.2,1) both; }
+.map-curtain__bank--south { bottom: -10%; animation: map-clouds-reveal-south var(--map-reveal-duration) cubic-bezier(.45,0,.2,1) both; }
+.map-curtain__bank--south svg { transform: rotate(180deg); }
+.level-map-menu--leaving .map-curtain__bank--north { animation: map-clouds-cover-north var(--map-cover-duration) cubic-bezier(.35,0,.55,1) both; }
+.level-map-menu--leaving .map-curtain__bank--south { animation: map-clouds-cover-south var(--map-cover-duration) cubic-bezier(.35,0,.55,1) both; }
+@keyframes map-clouds-reveal-north { 0%, 12% { transform: translateY(0); } 100% { transform: translateY(-115%); } }
+@keyframes map-clouds-reveal-south { 0%, 12% { transform: translateY(0); } 100% { transform: translateY(115%); } }
+@keyframes map-clouds-cover-north { 0% { transform: translateY(-115%); } 90%, 100% { transform: translateY(0); } }
+@keyframes map-clouds-cover-south { 0% { transform: translateY(115%); } 90%, 100% { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .map-curtain { display: none; }
+  .map-curtain__bank { animation: none !important; }
+}
