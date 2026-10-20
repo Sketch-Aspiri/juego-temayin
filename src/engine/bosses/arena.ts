@@ -5,7 +5,7 @@ import type { World } from '../World';
 
 /**
  * Utilidades comunes de las arenas de jefe: cerrar la entrada, abrir el muro de
- * salida y repartir el premio. (Púas aún tiene su propia copia; se pueden unificar.)
+ * salida y repartir el premio. (Púas aún tiene su propia copia de la apertura del muro de salida.)
  */
 
 /** Monedas que suma el jefe al desaparecer. */
@@ -17,10 +17,26 @@ const SPARK_COLORS = ['#ffd23f', '#e67e22', '#fff'] as const;
 /** Columna de muro a la izquierda de la arena que se cierra al empezar la pelea. */
 export const entranceColumn = (a0: number): number => a0 - 1;
 
-/** Cierra la arena detrás del jugador con un muro de piedra. */
-export function closeArena(world: World, a0: number): void {
+/**
+ * Retira los enemigos vivos cuyo cuerpo ya está dentro de la arena (columnas `a0..a1`).
+ * Tras reaparecer se conservan enemigos del tramo anterior al checkpoint; uno volador
+ * puede colarse en la arena antes de que el jefe despierte y quedaría encerrado con la
+ * cámara bloqueada. Solo toca `world.enemies`: lo que crea el jefe (p. ej. los cangrejos
+ * de Lorencillo) vive en su propia lista y aparece después.
+ */
+export function clearArenaEnemies(world: World, a0: number, a1: number): void {
+  const left = a0 * T;
+  const right = (a1 + 1) * T;
+  for (const e of world.enemies) {
+    if (e.alive && e.x + e.w > left && e.x < right) e.alive = false;
+  }
+}
+
+/** Cierra la arena detrás del jugador con un muro de piedra y la deja sin enemigos ajenos. */
+export function closeArena(world: World, a0: number, a1: number): void {
   const x = entranceColumn(a0);
   for (let y = 0; y < GROUND; y++) world.grid[y][x] = 'X';
+  clearArenaEnemies(world, a0, a1);
 }
 
 /** Rompe el muro de salida (columna `a1 + 1`) en ladrillos. */

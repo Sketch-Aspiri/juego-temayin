@@ -144,7 +144,7 @@ export class HuayPek implements Boss {
 
   private wake(world: World): void {
     if (world.player.x <= (this.a0 + 1) * T) return;
-    closeArena(world, this.a0);
+    closeArena(world, this.a0, this.a1);
     this.set('intro');
     world.audio.play('roar');
     world.shake = 0.5;

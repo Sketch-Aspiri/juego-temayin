@@ -29,7 +29,7 @@ function expectContained(w: World): void {
 describe('Orillas y apertura de arenas', () => {
   it.each(['2-7', '5-6'])('%s abre el paso conservando la orilla debajo de la salida', id => {
     const w = make(id), arena = w.def.boss!.arena;
-    closeArena(w, arena[0]);
+    closeArena(w, arena[0], arena[1]);
     if (id === '2-7') w.level.water = floodArena(w.level.water, arena[0], arena[1], 10.75);
     openExit(w, arena[1]);
     expect(w.solid(arena[1] + 1, 0)).toBe(false);

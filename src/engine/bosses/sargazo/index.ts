@@ -76,7 +76,7 @@ export class Sargazo implements Boss {
 
   private wake(world: World): void {
     if (world.player.x <= (this.arena[0] + 1) * T) return;
-    closeArena(world, this.arena[0]);
+    closeArena(world, this.arena[0], this.arena[1]);
     this.set('intro'); world.audio.play('roar');
   }
 

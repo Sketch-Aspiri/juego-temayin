@@ -4,6 +4,7 @@ import { makeParticle } from '../entities/particles';
 import type { BossConfig } from '../level/types';
 import { moveX, moveY, overlap } from '../physics';
 import type { World } from '../World';
+import { closeArena } from './arena';
 import { drawPuas } from './puasDraw';
 import type { Boss } from './types';
 
@@ -72,7 +73,7 @@ export class Puas implements Boss {
     if (this.st === 'sleep') {
       if (world.player.x > (this.a0 + 1) * T) {
         // Cierra la arena detrás del jugador.
-        for (let y = 0; y < GROUND; y++) world.grid[y][this.a0 - 1] = 'X';
+        closeArena(world, this.a0, this.a1);
         this.set('intro');
         world.audio.play('roar');
         world.shake = 0.5;
