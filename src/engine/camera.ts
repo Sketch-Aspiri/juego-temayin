@@ -8,11 +8,13 @@ const PLAYER_SCREEN_FRACTION = 0.4;
  * Nueva posición de la cámara. Solo avanza (nunca retrocede) y queda fija
  * mientras el jefe bloquea la cámara durante la pelea. Con `autoPx` > 0 (px que
  * empuja el nivel en este paso) avanza al menos esa distancia aunque el jugador
- * se quede atrás; siempre se detiene en el borde derecho del nivel.
+ * se quede atrás; siempre se detiene en el borde derecho del nivel. Con `canRetreat`
+ * (niveles con acertijos) sigue al jugador también hacia la izquierda, para volver a leer la estela.
  */
-export function followCamera(camX: number, playerCenterX: number, levelPx: number, locked: boolean, autoPx = 0): number {
+export function followCamera(camX: number, playerCenterX: number, levelPx: number, locked: boolean, autoPx = 0, canRetreat = false): number {
   if (locked) return camX;
   const target = playerCenterX - VW * PLAYER_SCREEN_FRACTION;
+  if (canRetreat) return Math.max(0, Math.min(target, levelPx - VW));
   const wanted = Math.max(camX + autoPx, target);
   return Math.max(camX, Math.min(wanted, levelPx - VW));
 }
@@ -36,7 +38,8 @@ function insideSolid(world: World): boolean {
 export function advanceCamera(world: World, dt: number): void {
   const p = world.player;
   const auto = (world.def.autoScroll ?? 0) * T * dt;
-  world.camX = followCamera(world.camX, p.x + p.w / 2, world.width * T, !!world.boss?.lockCamera, auto);
+  const canRetreat = world.level.riddles.length > 0;
+  world.camX = followCamera(world.camX, p.x + p.w / 2, world.width * T, !!world.boss?.lockCamera, auto, canRetreat);
   if (auto <= 0 || p.x >= world.camX) return;
   p.x = world.camX;
   p.vx = Math.max(0, p.vx);

@@ -8,6 +8,17 @@ import { World } from './World';
 
 const ANCHO_NIVEL = 4000;
 
+describe('followCamera con retroceso (niveles con acertijos)', () => {
+  it('sigue al jugador hacia la izquierda sin pasar del inicio', () => {
+    expect(followCamera(2000, 1000, ANCHO_NIVEL, false, 0, true)).toBe(1000 - VW * 0.4);
+    expect(followCamera(300, 100, ANCHO_NIVEL, false, 0, true)).toBe(0);
+  });
+
+  it('sin retroceso la cámara nunca vuelve atrás', () => {
+    expect(followCamera(2000, 1000, ANCHO_NIVEL, false)).toBe(2000);
+  });
+});
+
 describe('followCamera', () => {
   it('avanza hacia el jugador', () => {
     // Organizar / Actuar

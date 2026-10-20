@@ -64,6 +64,16 @@ describe('Acertijos de numerología maya', () => {
     expect(w.stoneCooldown.size).toBe(0);
   });
 
+  it('permite volver a la estela: la cámara y el jugador retroceden en un nivel con acertijo', () => {
+    const w = make();
+    w.player.x = 20 * T; w.player.y = GROUND * T - w.player.h; w.player.onGround = true; w.player.inv = 10;
+    w.camX = 20 * T - 400;
+    w.input.press('left');
+    for (let i = 0; i < 240; i++) w.update(STEP);
+    expect(w.player.x).toBeLessThan(14 * T);
+    expect(w.camX).toBeLessThan(10 * T);
+  });
+
   it('acepta la respuesta por valor aunque se escriba apilada o en cifras', () => {
     const w = new World({ def: { ...def, ops: [['riddle', 10, 11, 'r1', '1/3 = ?', '#23'],
       ['stone', 14, 8, '1/3', 'r1'], ['gate', 24, 'r1'], ['flag', 60]] }, input: new Input(), audio: new AudioEngine(),
