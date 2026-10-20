@@ -11,6 +11,8 @@ export const LEVEL_4_4: LevelDef = {
   weather: 'rain',
   hint: 'La resina frena tus pasos. ¡Sigue moviéndote junto a las ceibas encantadas!',
   ops: [
+    ['discovery', 54, 11, 'leona-cenotes'],
+    ['discovery', 143, 11, 'leona-tres-lagunas'],
     // Primer contacto con el chicle, sin hoyos bajo la resina.
     ['row', 10, 8, '?M?'], ['coins', 17, 9, 4],
     ['resin', 25, 30, 11], ['plat', 26, 8, 4], ['coins', 26, 7, 4],

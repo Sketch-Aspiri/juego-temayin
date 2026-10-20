@@ -65,6 +65,8 @@ export const LEVEL_1_5: LevelDef = {
   theme: 'river',
   checkpoint: 84,
   ops: [
+    ['discovery', 55, 7, 'candelaria-puerto'],
+    ['discovery', 123, 11, 'candelaria-mascarones'],
     // --- Orilla ---
     ['row', 10, 8, '?'], ['row', 14, 8, 'B?B?B'], ['row', 16, 4, '?'],
     ['coins', 20, 7, 3],

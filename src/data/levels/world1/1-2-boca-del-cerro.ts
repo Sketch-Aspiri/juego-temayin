@@ -37,6 +37,8 @@ export const LEVEL_1_2: LevelDef = {
   theme: 'river',
   checkpoint: 117,
   ops: [
+    ['discovery', 52, 11, 'boca-farallones'],
+    ['discovery', 135, 11, 'boca-pomona'],
     // Cañón seco
     ['row', 12, 8, '?'], ['row', 16, 8, 'B?B'], ['coins', 16, 4, 3],
     ['col', 23, 2], ['col', 28, 3], ['coins', 24, 7, 4],

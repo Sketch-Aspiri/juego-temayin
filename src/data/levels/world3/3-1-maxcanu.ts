@@ -21,6 +21,8 @@ export const LEVEL_3_1: LevelDef = {
   decorativeWater: false,
   hint: 'Los cristales iluminan el camino. Si una estalactita tiembla, ¡apártate!',
   ops: [
+    ['discovery', 42, 11, 'maxcanu-formaciones'],
+    ['discovery', 103, 11, 'maxcanu-murcielagos'],
     ['row', 10, 8, '?BM?'], ['coins', 14, 10, 5], ['torch', 8, 10],
     ['plat', 22, 9, 4], ['coins', 22, 7, 4], ['spawn', 'scorpion', 32],
     ...hangingStalactite(36, 3), ['coins', 39, 10, 3],

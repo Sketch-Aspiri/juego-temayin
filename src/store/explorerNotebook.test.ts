@@ -5,6 +5,8 @@ import { EMPTY_PROGRESS, recordCompletion, sanitizeProgress } from './progress';
 import { LEGACY_KEY, loadSaved, STORAGE_KEY } from './persistence';
 import { DEFAULT_SETTINGS } from './settings';
 import { EMPTY_WALLET } from './wallet';
+import { NOTEBOOK_ENTRIES } from '../data/explorerNotebook';
+import { BONUS_LEVELS, WORLDS } from '../data/worlds';
 
 const id = 'palenque-palacio';
 const record = { bestScore: 700, stars: 2 as const, completions: 1 };
@@ -49,6 +51,47 @@ describe('Cuaderno persistente', () => {
     storage.set(LEGACY_KEY, JSON.stringify({ progress: { levels: { '1-3': record } } }));
     expect(loadSaved().progress).toEqual({ ...EMPTY_PROGRESS, levels: { '1-6': record } });
     expect(storage.has(LEGACY_KEY)).toBe(true);
+  });
+
+  it('conserva las 29 páginas publicadas, sus lecturas y los récords al ampliar a cien', () => {
+    const published = ['palenque-palacio', 'palenque-saraguatos', 'palenque-orquideas',
+      'campeche-muralla', 'campeche-baluartes', 'campeche-puertas', 'bacalar-laguna', 'bacalar-estromatolitos',
+      'bacalar-fuerte', 'edzna-cinco-pisos', 'petenes-manglares', 'izamal-convento', 'chichen-castillo',
+      'valladolid-cacao', 'nuevo-xcan-mono-arana', 'morelos-arrecife', 'akumal-yalku', 'tulum-castillo',
+      'limones-chacchoben', 'xpujil-tres-torres', 'calakmul-estructura-2', 'codice-cuenta', 'codice-suma',
+      'codice-serie', 'codice-cero', 'codice-posicion', 'codice-uinal', 'codice-tzolkin', 'codice-haab'];
+    storage.set(STORAGE_KEY, JSON.stringify({ progress: { levels: { '1-1': record },
+      tickets: ['selva-palenque'], discoveries: published, readDiscoveries: published },
+      wallet: { cacao: 75, pending: {} }, settings: DEFAULT_SETTINGS }));
+    const saved = loadSaved();
+    expect(saved.progress.discoveries).toEqual(published);
+    expect(saved.progress.readDiscoveries).toEqual(published);
+    expect(saved.progress.levels['1-1']).toEqual(record);
+    expect(saved.progress.tickets).toEqual(['selva-palenque']);
+    expect(saved.wallet.cacao).toBe(75);
+    expect(NOTEBOOK_ENTRIES.length - saved.progress.discoveries.length).toBe(71);
+  });
+
+  it('permite guardar y leer la colección completa de cien páginas sin duplicados', () => {
+    const ids = NOTEBOOK_ENTRIES.map(entry => entry.id);
+    let progress = recordDiscoveries(EMPTY_PROGRESS, [...ids, ...ids]);
+    for (const entryId of ids) progress = readDiscovery(progress, entryId);
+    storage.set(STORAGE_KEY, JSON.stringify({ progress, settings: DEFAULT_SETTINGS }));
+    expect(loadSaved().progress.discoveries).toEqual(ids);
+    expect(loadSaved().progress.readDiscoveries).toEqual(ids);
+    expect(ids).toHaveLength(100);
+  });
+
+  it.each(BONUS_LEVELS)('$id guarda sus páginas nuevas por contacto publicado y conserva las lecturas al recargar', level => {
+    const entries = NOTEBOOK_ENTRIES.filter(entry => entry.levelId === level.id);
+    useAppStore.setState({ progress: { ...EMPTY_PROGRESS, tickets: WORLDS.map(world => world.id) } });
+    useAppStore.getState().startLevel(level.id);
+    const run = useAppStore.getState().run!;
+    expect(run.levelId).toBe(level.id);
+    useAppStore.getState().syncDiscoveries(run, [...entries.map(entry => entry.id), id]);
+    for (const entry of entries) useAppStore.getState().readDiscovery(entry.id);
+    expect(loadSaved().progress.discoveries).toEqual(entries.map(entry => entry.id));
+    expect(loadSaved().progress.readDiscoveries).toEqual(entries.map(entry => entry.id));
   });
 
   it('sanea listas corruptas independientemente y conserva lecturas válidas', () => {

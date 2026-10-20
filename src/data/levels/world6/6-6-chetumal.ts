@@ -31,6 +31,8 @@ export const LEVEL_6_6: LevelDef = {
   hint: 'Chetumal se asoma a su bahía. Lorencillo existió, pero en el juego es un pirata de cuento: ¡cuando falle su estocada, pisa su espalda!',
   boss: { id: 'lorencillo', x: 170, arena: [156, 177] },
   ops: [
+    ['discovery', 48, 8, 'chetumal-manati'],
+    ['discovery', 107, 11, 'chetumal-chultunes'],
     // --- Malecón ---
     ['row', 9, 8, '?M?'], ['coins', 14, 9, 4], ['row', 26, 8, 'B?B'],
     // --- Primer canal: dos barcas se relevan ---

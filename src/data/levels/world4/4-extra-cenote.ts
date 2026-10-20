@@ -7,6 +7,8 @@ export const BONUS_4: LevelDef = {
   darkness: { radius: 240, alpha: 0.55 },
   hint: 'Respira junto a las burbujas. Los mayas contaban de veinte en veinte y la concha vale cero: ¿cuánto falta para veinte?',
   ops: [
+    ['discovery', 15, 11, 'codice-cero-suma'],
+    ['discovery', 69, 11, 'codice-completar-veinte'],
     ['row', 10, 8, '?S?'], ['torch', 14, 9],
     ['pit', 20, 48], ['water', 20, 48, 7], ...waterBank(19, 7, 1), ...waterBank(49, 7, -1),
     ['bubbles', 24, 13], ['bubbles', 35, 13], ['bubbles', 45, 13],

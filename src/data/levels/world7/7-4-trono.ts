@@ -8,6 +8,7 @@ export const LEVEL_7_4: LevelDef = {
   hint: 'Esquiva la picada y pisa a Camazotz al aterrizar. En la cámara, enciende cuatro antorchas con fuego; el brasero de la entrada te lo devuelve. Al final, reúne tres luces y protégete con los pilares.',
   boss: { id: 'camazotz', x: 103, arena: [90, 112] },
   ops: [
+    ['discovery', 19, 11, 'trono-toh-real'],
     ['row', 10, 8, '?MF'], ['coins', 18, 9, 5], ['pit', 26, 30], ['coins', 26, 8, 5],
     ['plat', 36, 9, 4], ['pit', 43, 47], ['coins', 43, 8, 5],
     ['row', 60, 8, 'MF?'], ['coins', 67, 9, 5], ['row', 80, 8, 'MF?'],

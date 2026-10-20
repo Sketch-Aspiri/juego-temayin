@@ -34,6 +34,18 @@ def export_photo(entry, offline):
     return {'file': f'cuaderno/fotos/{target.name}', 'width': width, 'height': height, **metadata}
 
 
+def format_manifest(manifest):
+    """Agrupa propiedades del manifiesto generado para mantener el archivo legible y compacto."""
+    groups = [('file', 'width', 'height'), ('caption',), ('alt',),
+              ('scope', 'author', 'license'), ('sourceUrl',), ('licenseUrl',)]
+    entries = []
+    for entry_id, photo in manifest.items():
+        rows = [', '.join(f'{json.dumps(key)}: {json.dumps(photo[key], ensure_ascii=False)}' for key in group)
+                for group in groups]
+        entries.append('  ' + json.dumps(entry_id) + ': {\n    ' + ',\n    '.join(rows) + '\n  }')
+    return '{\n' + ',\n'.join(entries) + '\n}'
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--offline', action='store_true', help='Usa únicamente los originales ya descargados.')
@@ -49,7 +61,7 @@ def main():
         print(entry['id'], flush=True)
     output = ('// Generado por imagenes/import_notebook_photos.py; créditos en imagenes/fotos-cuaderno/sources.json.\n'
               "import type { StationPhoto } from '../stationInfo/photos';\n\nexport const NOTEBOOK_PHOTO_MANIFEST = "
-              + json.dumps(manifest, ensure_ascii=False, indent=2)
+              + format_manifest(manifest)
               + ' as const satisfies Readonly<Record<string, StationPhoto>>;\n')
     MANIFEST.write_text(output, encoding='utf-8')
 

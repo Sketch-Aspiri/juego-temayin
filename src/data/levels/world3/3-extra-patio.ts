@@ -5,6 +5,8 @@ export const BONUS_3: LevelDef = {
   id: '3-extra', name: 'El patio de las hamacas', width: 128, theme: 'hacienda', time: 240, checkpoint: 60,
   hint: 'Rebota en las hamacas. Al final, mira cuánto crece cada número de la estela: la serie sigue el mismo paso.',
   ops: [
+    ['discovery', 29, 11, 'codice-quince'],
+    ['discovery', 71, 11, 'codice-paso-serie'],
     ['row', 10, 8, '?M?'], ['hammock', 18, 12, 4], ['plat', 25, 6, 5], ['coins', 25, 4, 5],
     ['hammock', 37, 12, 4], ['plat', 44, 6, 5], ['coins', 44, 4, 5],
     ['coins', 53, 10, 6], ['row', 64, 8, '?L?'],

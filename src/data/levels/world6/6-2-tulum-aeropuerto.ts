@@ -27,6 +27,8 @@ export const LEVEL_6_2: LevelDef = {
   checkpoint: 96,
   hint: 'El tren no espera: sigue su ritmo y salta los enganches entre vagones. ¡Las señales altas dan cacao!',
   ops: [
+    ['discovery', 66, 11, 'aeropuerto-ecosistemas'],
+    ['discovery', 162, 11, 'aeropuerto-museo'],
     // Huecos de enganche entre vagones (2-3 bloques).
     ['pit', 20, 21], ['pit', 41, 43], ['pit', 63, 64], ['pit', 85, 87], ['pit', 109, 110],
     ['pit', 131, 133], ['pit', 154, 155], ['pit', 177, 179], ['pit', 201, 203], ['pit', 224, 226],

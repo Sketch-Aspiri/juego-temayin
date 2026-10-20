@@ -33,6 +33,10 @@ def opened(page):
     check(page.evaluate('document.querySelector("dialog.notebook").contains(document.activeElement)'), 'El foco entra en el cuaderno')
 
 
+def notebook_size(page):
+    return page.evaluate("async () => (await import('/src/data/explorerNotebook/index.ts')).NOTEBOOK_ENTRIES.length")
+
+
 def ready_art(page):
     page.wait_for_function('document.querySelector(".notebook-header .notebook-toh__image")?.naturalWidth > 0')
     page.wait_for_function('Array.from(document.querySelectorAll(".notebook-toh__image")).every(image => image.complete && image.naturalWidth > 0)')
@@ -53,7 +57,7 @@ def initial_checks(page):
     page.wait_for_load_state('networkidle')
     page.get_by_role('button', name='Cuaderno de Toh', exact=True).click()
     opened(page)
-    check(page.locator('[data-discovery]:disabled').count() == 9, 'Nueve páginas pendientes al comenzar')
+    check(page.locator('[data-discovery]:disabled').count() == notebook_size(page), 'Todas las páginas pendientes al comenzar')
     check(page.locator('.notebook-progress').inner_text().startswith('0'), 'Colección vacía')
     check(page.locator('.notebook .station-photo img').count() == 0, 'No descarga fotografías de páginas pendientes')
     page.wait_for_function('Array.from(document.querySelectorAll(".notebook-toh__image")).every(image => image.complete && image.naturalWidth > 0)')
@@ -183,18 +187,18 @@ def reload_checks(page):
     page.wait_for_load_state('networkidle')
     page.get_by_role('button', name='Cuaderno de Toh', exact=True).click()
     opened(page)
-    check(page.locator('[data-discovery]:disabled').count() == 0, 'Recupera todos los descubrimientos')
+    check(page.locator('[data-discovery]:disabled').count() == notebook_size(page) - 9, 'Recupera los nueve descubrimientos del recorrido piloto')
     check(page.locator('.notebook-entry em').count() == 0, 'Recupera las lecturas sin nuevas falsas')
     check(page.evaluate('localStorage.getItem("temayin:v3")') == before, 'Abrir el índice no modifica el guardado')
     page.keyboard.press('Escape')
-    page.route('**/assets/estaciones/6-5.webp', lambda route: route.abort())
+    page.route('**/assets/cuaderno/fotos/bacalar-estromatolitos.webp', lambda route: route.abort())
     page.get_by_role('button', name='Cuaderno de Toh', exact=True).click()
     page.locator('[data-discovery="bacalar-estromatolitos"]').click()
     page.get_by_text('Fotografía no disponible.', exact=False).wait_for()
     check(page.get_by_text('Los estromatolitos son estructuras minerales', exact=False).is_visible(), 'Un fallo de foto conserva la lectura')
     page.screenshot(path=str(OUTPUT / 'foto-fallida.png'))
     page.keyboard.press('Escape')
-    page.unroute('**/assets/estaciones/6-5.webp')
+    page.unroute('**/assets/cuaderno/fotos/bacalar-estromatolitos.webp')
     RESULTS.append('Recarga conserva colección y lecturas; fallo de fotografía recuperable sin perder texto, fuentes ni créditos.')
     return before
 

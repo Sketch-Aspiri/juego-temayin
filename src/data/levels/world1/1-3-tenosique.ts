@@ -29,6 +29,8 @@ export const LEVEL_1_3: LevelDef = {
   theme: 'jungle',
   checkpoint: 102,
   ops: [
+    ['discovery', 58, 11, 'tenosique-pocho'],
+    ['discovery', 140, 11, 'tenosique-cuevas'],
     // Orilla del pueblo
     ['row', 12, 8, '?B?'],
     ['row', 18, 8, 'B?B?B'], ['row', 20, 4, 'M'],

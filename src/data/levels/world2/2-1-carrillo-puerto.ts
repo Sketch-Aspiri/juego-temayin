@@ -33,6 +33,8 @@ export const LEVEL_2_1: LevelDef = {
   theme: 'jungle',
   checkpoint: 96,
   ops: [
+    ['discovery', 59, 11, 'carrillo-moch-cohuo'],
+    ['discovery', 139, 11, 'carrillo-xpicob'],
     // Andén del paradero
     ['row', 10, 8, '?B?'],
     ['row', 16, 8, 'B?M?B'], ['coins', 17, 4, 3],

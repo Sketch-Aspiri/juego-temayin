@@ -5,6 +5,7 @@ import { EMPTY_PROGRESS } from '../../../store/progress';
 import { NotebookCollection } from './ExplorerNotebook';
 import { NotebookPage } from './NotebookPage';
 import { recordDiscoveries } from '../../../store/explorerNotebook';
+import { getNotebookPhoto } from '../../../data/explorerNotebook/photos';
 
 describe('Lectura del cuaderno', () => {
   it('las páginas pendientes indican el nivel sin revelar el título', () => {
@@ -24,7 +25,7 @@ describe('Lectura del cuaderno', () => {
     expect(html).toContain('El Palacio de Palenque');
   });
 
-  it.each(NOTEBOOK_ENTRIES.filter(entry => entry.place !== 'Códice maya'))('$id conserva fuentes, créditos y su propia fotografía real', entry => {
+  it.each(NOTEBOOK_ENTRIES.filter(entry => getNotebookPhoto(entry.id)))('$id conserva fuentes, créditos y su propia fotografía real', entry => {
     const html = renderToStaticMarkup(<NotebookPage entry={entry} />);
     expect(html).toContain('Fuentes para seguir explorando');
     expect(html).toContain(`/assets/cuaderno/fotos/${entry.id}.webp`);
@@ -34,10 +35,22 @@ describe('Lectura del cuaderno', () => {
     expect(html).toContain('Fotografía real.');
   });
 
+  it.each(NOTEBOOK_ENTRIES.filter(entry => entry.format === 'field-note'))('$id identifica el apunte de campo y conserva su fuente', entry => {
+    const html = renderToStaticMarkup(<NotebookPage entry={entry} />);
+    expect(html).toContain('Apunte de campo');
+    expect(html).toContain(entry.title);
+    expect(html).toContain('Fuentes para seguir explorando');
+    expect(html).toContain('rel="noopener noreferrer"');
+    expect(html).toContain('Fotografía real.');
+  });
+
   it.each(NOTEBOOK_ENTRIES.filter(entry => entry.place === 'Códice maya'))('$id muestra el códice con fuentes y sin fotografía', entry => {
     const html = renderToStaticMarkup(<NotebookPage entry={entry} />);
     expect(html).toContain('Fuentes para seguir explorando');
     expect(html).toContain('rel="noopener noreferrer"');
     expect(html).not.toContain('Lo que descubriste');
+    expect(html).toContain('role="img"');
+    expect(html).toContain('Ejemplo de numeración maya:');
+    expect(html).toContain('Esquema didáctico');
   });
 });

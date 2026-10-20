@@ -16,6 +16,8 @@ export const LEVEL_1_6: LevelDef = {
   theme: 'lair',
   boss: { id: 'puas', x: 64, arena: [50, 71] },
   ops: [
+    ['discovery', 11, 11, 'escarcega-epifitas'],
+    ['discovery', 22, 11, 'escarcega-arboretum'],
     ['pit', 18, 20], ['coins', 18, 8, 3], ['row', 10, 8, '?MF'],
     ['pipe', 24, 3], ['row', 30, 8, 'BLB'], ['coins', 30, 4, 3],
     ['stairs', 36, 3, 1], ['coins', 39, 7, 2], ['stairs', 41, 3, -1],

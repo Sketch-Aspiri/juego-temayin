@@ -43,6 +43,8 @@ export const LEVEL_4_2: LevelDef = {
   time: 360,
   checkpoint: 106,
   ops: [
+    ['discovery', 54, 11, 'xibalba-nombre-chichen'],
+    ['discovery', 142, 11, 'xibalba-museo'],
     ['torch', 20, 10], ['torch', 72, 10], ['torch', 104, 10],
     ['torch', 160, 6], ['torch', 205, 10],
     // --- Entrada ---

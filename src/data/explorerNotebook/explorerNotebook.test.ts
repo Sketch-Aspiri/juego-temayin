@@ -3,22 +3,26 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { getNotebookEntry, NOTEBOOK_ENTRIES } from './index';
 import { getNotebookPhoto } from './photos';
-import { PLAYABLE_LEVELS, getLevel } from '../worlds';
+import { ALL_LEVELS, BONUS_LEVELS, PLAYABLE_LEVELS, getLevel } from '../worlds';
 import { STATION_PHOTOS } from '../stationInfo/photos';
 import { buildLevel } from '../../engine/level/build';
 import { T } from '../../engine/constants';
 import { isSolidTile } from '../../engine/tiles';
+import { NUMERAL_ILLUSTRATIONS } from './numeralIllustrations';
+import { parseTerm } from '../../engine/entities/numerals';
 
 describe('Catálogo del cuaderno de Toh', () => {
-  it('ofrece veintinueve páginas breves con referencias y su propia fotografía acreditada en las del entorno real', () => {
-    expect(NOTEBOOK_ENTRIES).toHaveLength(29);
-    expect(new Set(NOTEBOOK_ENTRIES.map(entry => entry.id)).size).toBe(29);
+  it('ofrece cien páginas breves con referencias, fotografías acreditadas, apuntes de campo y códice', () => {
+    expect(NOTEBOOK_ENTRIES).toHaveLength(100);
+    expect(new Set(NOTEBOOK_ENTRIES.map(entry => entry.id)).size).toBe(100);
+    expect(new Set(NOTEBOOK_ENTRIES.map(entry => entry.title)).size).toBe(100);
+    expect(new Set(NOTEBOOK_ENTRIES.map(entry => entry.text)).size).toBe(100);
     for (const entry of NOTEBOOK_ENTRIES) {
       expect(entry.text.split(/\s+/).length).toBeLessThanOrEqual(55);
       expect(entry.toh.length).toBeGreaterThan(20);
       expect(entry.sources.length).toBeGreaterThan(0);
       for (const source of entry.sources) expect(new URL(source.url).protocol).toBe('https:');
-      // Las páginas del códice de numerología viven en los niveles secretos y no llevan fotografía.
+      // El códice lleva ilustraciones de numerales; las páginas de campo conservan fotografías acreditadas.
       if (entry.place === 'Códice maya') expect(getNotebookPhoto(entry.id)).toBeUndefined();
       else expect(getNotebookPhoto(entry.id)?.license, entry.id).toBeTruthy();
     }
@@ -29,7 +33,7 @@ describe('Catálogo del cuaderno de Toh', () => {
       const photo = getNotebookPhoto(entry.id);
       return photo ? [{ entry, photo }] : [];
     });
-    expect(photos).toHaveLength(21);
+    expect(photos).toHaveLength(78);
     expect(new Set(photos.map(({ photo }) => photo.file)).size).toBe(photos.length);
     for (const { entry, photo } of photos) {
       expect(existsSync(resolve('public/assets', photo.file)), entry.id).toBe(true);
@@ -37,8 +41,26 @@ describe('Catálogo del cuaderno de Toh', () => {
       expect(photo.licenseUrl.startsWith('https://'), entry.id).toBe(true);
       expect(photo.sourceUrl.startsWith('https://commons.wikimedia.org/'), entry.id).toBe(true);
       expect(photo.alt.length, entry.id).toBeGreaterThan(20);
-      expect(photo.file, entry.id).not.toBe(STATION_PHOTOS[entry.levelId].file);
+      expect(photo.file, entry.id).not.toBe(STATION_PHOTOS[entry.levelId]?.file);
     }
+  });
+
+  it('ilustra las 22 páginas del códice con numerales válidos y no añade diagramas a páginas ajenas', () => {
+    const codex = NOTEBOOK_ENTRIES.filter(entry => entry.place === 'Códice maya');
+    expect(Object.keys(NUMERAL_ILLUSTRATIONS).sort()).toEqual(codex.map(entry => entry.id).sort());
+    for (const entry of codex) {
+      const tokens = NUMERAL_ILLUSTRATIONS[entry.id];
+      expect(tokens.length).toBeGreaterThan(1);
+      expect(() => tokens.forEach(parseTerm)).not.toThrow();
+    }
+  });
+
+  it('reparte 78 páginas por toda la campaña y 22 por los siete secretos', () => {
+    const count = (levelId: string) => NOTEBOOK_ENTRIES.filter(entry => entry.levelId === levelId).length;
+    expect(ALL_LEVELS.reduce((sum, level) => sum + count(level.id), 0)).toBe(78);
+    expect(BONUS_LEVELS.reduce((sum, level) => sum + count(level.id), 0)).toBe(22);
+    for (const level of ALL_LEVELS) expect(count(level.id), level.id).toBeGreaterThanOrEqual(1);
+    for (const level of BONUS_LEVELS) expect(count(level.id), level.id).toBe(level.id === '7-extra' ? 4 : 3);
   });
 
   it('cada página tiene exactamente una marca, en su nivel y fuera de bloques o de la meta', () => {

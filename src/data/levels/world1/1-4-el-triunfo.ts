@@ -26,6 +26,8 @@ export const LEVEL_1_4: LevelDef = {
   theme: 'swamp',
   checkpoint: 100,
   ops: [
+    ['discovery', 49, 11, 'triunfo-moral-reforma'],
+    ['discovery', 139, 11, 'triunfo-chaschoc'],
     // --- Orilla del pantano -------------------------------------------------
     ['row', 12, 8, '?'],
     ['row', 16, 8, 'B?BFB'],

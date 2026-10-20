@@ -1,21 +1,9 @@
-import { guide, guideUrl, pageLabel, type FactCategory } from '../stationInfo/types';
+import { guide, guideUrl, pageLabel } from '../stationInfo/types';
+import { FIELD_NOTES } from './fieldNotes';
+import { SECRET_NOTES } from './secretNotes';
+import type { DiscoverySource, NotebookEntry } from './types';
 
-export interface DiscoverySource {
-  readonly label: string;
-  readonly url: string;
-}
-
-export interface NotebookEntry {
-  readonly id: string;
-  readonly levelId: string;
-  readonly place: string;
-  readonly title: string;
-  readonly category: FactCategory;
-  readonly text: string;
-  /** Invitación a observar, no una afirmación histórica adicional. */
-  readonly toh: string;
-  readonly sources: readonly DiscoverySource[];
-}
+export type { DiscoverySource, NotebookEntry } from './types';
 
 const guideSource = (section: string, first: number, last = first): DiscoverySource => {
   const reference = guide(section, first, last);
@@ -31,7 +19,7 @@ const CALENDAR_SOURCE: DiscoverySource = {
   url: 'https://maya.nmai.si.edu/sites/default/files/resources/Sistema%20de%20calendario%20maya.pdf',
 };
 
-export const NOTEBOOK_ENTRIES = [
+export const NOTEBOOK_ENTRIES: readonly NotebookEntry[] = [
   { id: 'palenque-palacio', levelId: '1-1', place: 'Palenque', title: 'El Palacio de Palenque', category: 'Arquitectura',
     text: 'El Palacio reúne patios, pasadizos y una torre. Sus espacios fueron utilizados por los gobernantes de la antigua ciudad maya.',
     toh: 'Mira los patios y la torre: un edificio puede guardar muchas historias.',
@@ -152,6 +140,8 @@ export const NOTEBOOK_ENTRIES = [
     text: 'El Haab es el calendario solar: 18 meses de 20 días suman 360, y cinco días finales completan 365. Por eso 18 × 20 + 5 = 365.',
     toh: 'Primero multiplica los meses por sus días y no olvides los cinco días finales.',
     sources: [CALENDAR_SOURCE] },
+  ...FIELD_NOTES,
+  ...SECRET_NOTES,
 ] as const satisfies readonly NotebookEntry[];
 
 export type DiscoveryId = typeof NOTEBOOK_ENTRIES[number]['id'];

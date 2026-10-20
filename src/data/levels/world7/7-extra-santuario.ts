@@ -6,6 +6,8 @@ export const BONUS_7: LevelDef = {
   darkness: { radius: 190, alpha: 0.64 }, decorativeWater: false,
   hint: 'Dos puertas de jade guardan el santuario. Un numeral sobre una concha vale veinte veces más: 1 sobre la concha es 20. El Tzolk\'in suma 13 números por 20 nombres; el Haab, 18 meses de 20 días y 5 días más.',
   ops: [
+    ['discovery', 31, 11, 'codice-combinaciones'],
+    ['discovery', 78, 11, 'codice-wayeb'],
     ['row', 10, 8, '?M?'], ['torch', 16, 10], ['plat', 22, 9, 5], ['coins', 22, 8, 5],
     ['pit', 34, 38], ['coins', 34, 8, 5], ['plat', 44, 9, 4], ['plat', 50, 7, 5], ['coins', 50, 6, 5],
     ['torch', 59, 10], ['row', 70, 8, '?L?'], ['pit', 82, 87], ['coins', 82, 8, 6],

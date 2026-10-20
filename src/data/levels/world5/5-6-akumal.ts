@@ -9,6 +9,7 @@ export const LEVEL_5_6: LevelDef = {
   hint: 'Nada junto a las tortugas para respirar. Libera a la que esté enredada y sigue su pulso: ¡toca el núcleo abierto! Saltar cerca de una aliada te impulsa.',
   boss: { id: 'sargazo', x: 90, arena: [78, 100] },
   ops: [
+    ['discovery', 17, 11, 'akumal-kaan-luum'],
     ['discovery', 66, 11, 'akumal-yalku'],
     ['row', 9, 8, 'MSF'], ['coins', 16, 10, 5],
     ['pit', 24, 56], ['water', 24, 56, 7],

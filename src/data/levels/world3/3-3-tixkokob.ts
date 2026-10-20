@@ -8,6 +8,8 @@ export const LEVEL_3_3: LevelDef = {
   id: '3-3', name: 'Tixkokob', width: 166, theme: 'hacienda', time: 330, checkpoint: 80,
   hint: 'Cae sobre una hamaca para rebotar alto. Busca el cacao entre los tejados.',
   ops: [
+    ['discovery', 41, 11, 'tixkokob-hamacas'],
+    ['discovery', 104, 11, 'tixkokob-desfibradora'],
     ['row', 10, 8, '?M?'], ['hammock', 19, 12, 3],
     ['plat', 24, 6, 5], ['coins', 24, 4, 5], ['spawn', 'alux', 34],
     ['hammock', 41, 12, 3], ['plat', 47, 6, 4], ['row', 48, 3, '?L?'],

@@ -6,6 +6,8 @@ export const BONUS_1: LevelDef = {
   id: '1-extra', name: 'El dosel del jaguar', width: 120, theme: 'jungle', time: 240, checkpoint: 60,
   hint: 'Los mayas contaban con puntos (1) y rayas (5). Salta y toca la piedra que vale lo que dice la estela.',
   ops: [
+    ['discovery', 26, 11, 'codice-uno-cuatro'],
+    ['discovery', 66, 11, 'codice-cinco'],
     ['row', 10, 8, '?M?'], ['plat', 18, 9, 4], ['plat', 25, 6, 5], ['plat', 33, 3, 5],
     ['coins', 18, 8, 4], ['coins', 25, 5, 5], ['coins', 33, 2, 5],
     ['pit', 42, 46], ['plat', 42, 8, 5], ['coins', 42, 7, 5],

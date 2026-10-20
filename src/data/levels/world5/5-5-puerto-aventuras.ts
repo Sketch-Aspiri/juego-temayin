@@ -6,6 +6,8 @@ export const LEVEL_5_5: LevelDef = {
   id: '5-5', name: 'Puerto Aventuras', width: 205, theme: 'beach', checkpoint: 98, time: 340,
   hint: '¡De muelle en muelle! Los barcos se mecen: espera a que se acerquen para subir. Si caes al agua, busca las burbujas.',
   ops: [
+    ['discovery', 61, 8, 'aventuras-chunyaxche'],
+    ['discovery', 113, 8, 'aventuras-coba'],
     ['row', 10, 8, 'MFP'], ['plat', 21, 9, 4], ['coins', 21, 8, 4],
     ['pit', 30, 61], ['water', 30, 61, 10],
     ['plat', 30, 9, 3], ['boat', 34, 9, 5, 8, 0.6, 5],

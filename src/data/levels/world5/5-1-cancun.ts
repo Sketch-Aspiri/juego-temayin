@@ -8,6 +8,8 @@ export const LEVEL_5_1: LevelDef = {
   decorativeWater: false,
   hint: '¡Sube al tren para cruzar el primer foso! En el segundo, espera la plataforma móvil y salta sobre ella.',
   ops: [
+    ['discovery', 50, 11, 'cancun-san-miguelito'],
+    ['discovery', 131, 11, 'cancun-nichupte'],
     // Primer paseo: plataformas escalonadas como toldos sobre la arena.
     ['row', 10, 8, '?MF'], ['plat', 20, 9, 4], ['plat', 26, 7, 4],
     ['coins', 20, 8, 4], ['coins', 26, 6, 4],

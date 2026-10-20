@@ -6,6 +6,8 @@ export const BONUS_6: LevelDef = {
   decorativeWater: false,
   hint: 'Un uinal del calendario maya son 20 días. Los numerales apilados cuentan veintenas: ¿cuántos días suma el de la estela?',
   ops: [
+    ['discovery', 29, 11, 'codice-dias-uinal'],
+    ['discovery', 71, 11, 'codice-tres-uinales'],
     ['row', 10, 8, '?M?'], ['col', 20, 2], ['col', 21, 2], ['coins', 20, 8, 4],
     ['plat', 28, 8, 5], ['coins', 28, 7, 5],
     ['pit', 38, 42], ['coins', 38, 8, 5], ['plat', 48, 8, 5], ['coins', 48, 7, 5],

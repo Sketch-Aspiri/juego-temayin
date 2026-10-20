@@ -7,6 +7,7 @@ export const LEVEL_7_3: LevelDef = {
   offering: EK_CHUAH_OFFERING, darkness: { radius: 190, alpha: 0.74 },
   hint: 'Calakmul fue una gran ciudad del reino Kaan y hoy protege una selva extraordinaria. Sigue las luces hacia la cima; el boleto brilla sobre el sendero alto.',
   ops: [
+    ['discovery', 54, 11, 'calakmul-selvas'],
     ['discovery', 92, 11, 'calakmul-estructura-2'],
     ['row', 10, 8, '?MF'], ['coins', 19, 9, 5], ['pit', 32, 36], ['coins', 32, 8, 5],
     ['plat', 44, 9, 5], ['coins', 44, 8, 5], ['rope', 58, 2, 6],

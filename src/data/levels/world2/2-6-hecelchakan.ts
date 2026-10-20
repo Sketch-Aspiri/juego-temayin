@@ -34,6 +34,8 @@ export const LEVEL_2_6: LevelDef = {
   theme: 'ruinsDusk',
   checkpoint: 106,
   ops: [
+    ['discovery', 55, 11, 'hecelchakan-jaina'],
+    ['discovery', 139, 11, 'hecelchakan-caliza'],
     // Camino Real
     ['row', 10, 8, '?B?B?'], ['row', 12, 4, 'M'],
     ['coins', 18, 11, 6],

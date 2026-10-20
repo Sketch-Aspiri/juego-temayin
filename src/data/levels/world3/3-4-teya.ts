@@ -6,6 +6,8 @@ export const LEVEL_3_4: LevelDef = {
   darkness: { radius: 180, alpha: 0.85 },
   hint: 'Toca el extremo de la cuerda en el aire. Usa ← → y pulsa salto para soltarla.',
   ops: [
+    ['discovery', 54, 11, 'teya-cuxtal'],
+    ['discovery', 132, 11, 'teya-maya-viva'],
     ['torch', 8, 10], ['row', 11, 8, '?M?'], ['plat', 19, 9, 4],
     ['rope', 26, 3, 6], ['pit', 24, 28], ['plat', 25, 10, 2], ['coins', 29, 8, 4],
     ['spawn', 'alux', 36], ['torch', 39, 10], ['row', 43, 8, 'BFB'],

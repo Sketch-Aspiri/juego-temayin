@@ -33,6 +33,7 @@ export const LEVEL_2_2: LevelDef = {
   theme: 'ruins',
   checkpoint: 112,
   ops: [
+    ['discovery', 36, 11, 'edzna-estilos'],
     ['discovery', 64, 11, 'edzna-cinco-pisos'],
     // Plaza de entrada
     ['row', 12, 8, '?B?'],

@@ -28,6 +28,8 @@ export const LEVEL_6_3: LevelDef = {
   // y debe revisarse con fuentes y voces mayas antes de añadir cualquier dato histórico.
   hint: 'En esta selva hay cenotes y ceibas, el árbol sagrado maya. Nada con calma: el aire está en la superficie.',
   ops: [
+    ['discovery', 55, 11, 'felipe-chan-santa-cruz'],
+    ['discovery', 136, 11, 'felipe-mayapax'],
     ['row', 9, 8, '?M?'], ['coins', 13, 9, 4],
     // Cenote 1.
     ['pit', 24, 29], ['water', 24, 29, 10], ['plat', 25, 8, 3], ['coins', 25, 7, 3], ['coins', 25, 11, 4],

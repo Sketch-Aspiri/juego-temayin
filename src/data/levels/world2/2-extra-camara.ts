@@ -6,6 +6,8 @@ export const BONUS_2: LevelDef = {
   id: '2-extra', name: 'La cámara de jade', width: 128, theme: 'ruins', time: 240, checkpoint: 60,
   hint: 'Cruza el escombro antes de que caiga. Al final, suma con rayas y puntos para abrir la puerta de jade.',
   ops: [
+    ['discovery', 29, 8, 'codice-diez'],
+    ['discovery', 70, 11, 'codice-cambio'],
     ['row', 10, 8, '?M?'], ['stairs', 18, 4, 1], ['coins', 21, 6, 4],
     ['pit', 28, 39], ['crumble', 28, 9, 4], ['crumble', 33, 9, 3], ['plat', 38, 9, 2],
     ['coins', 28, 7, 4], ['coins', 33, 7, 3], ['coins', 38, 7, 2],

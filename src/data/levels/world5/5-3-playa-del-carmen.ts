@@ -10,6 +10,8 @@ export const LEVEL_5_3: LevelDef = {
   checkpoint: 94,
   hint: 'Salta por las pasarelas para evitar el sargazo que frena tus pasos. El fuego lo elimina solo en esta aventura: en la vida real, cuidamos la playa y el mar.',
   ops: [
+    ['discovery', 42, 8, 'playa-puerto'],
+    ['discovery', 157, 11, 'playa-portal'],
     ['pit', 20, 22], ['pit', 40, 49], ['pit', 70, 73], ['pit', 98, 111], ['pit', 140, 143], ['pit', 160, 164],
     ['row', 12, 8, '?MF'], ['coins', 20, 8, 3],
     ['water', 40, 49, 10], ['water', 98, 111, 10],

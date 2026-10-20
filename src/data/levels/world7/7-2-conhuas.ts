@@ -6,6 +6,8 @@ export const LEVEL_7_2: LevelDef = {
   darkness: { radius: 195, alpha: 0.82 }, decorativeWater: false,
   hint: 'Cerca de Conhuas está el Volcán de los Murciélagos. Los reales ayudan a la selva; estos guardianes de sombra son fantasía. Las luces marcan el camino.',
   ops: [
+    ['discovery', 52, 11, 'conhuas-espiral'],
+    ['discovery', 121, 11, 'conhuas-balamku'],
     ['row', 10, 8, '?MF'], ['coins', 18, 9, 5], ['pit', 30, 34], ['coins', 30, 8, 5],
     ['plat', 43, 9, 5], ['torch', 46, 8], ['coins', 43, 8, 5],
     ['spawn', 'stalactite', 55, 3], ['spawn', 'scorpion', 63], ['pit', 73, 78],

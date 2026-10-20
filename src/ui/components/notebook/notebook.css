@@ -85,6 +85,9 @@
 .notebook-page a { color: #285d49; }
 .notebook-photo-label { position: absolute; bottom: 8px; left: 10px; padding: 4px 8px; color: #fff1ca; background: #173e32e6; font-size: 11px; }
 .notebook-page__context { font-size: 11px; line-height: 1.7; color: #6d5c3d; }
+.notebook-numerals { margin: 0 0 24px; padding: 14px 10px; border: 1px solid var(--line); background: #fff4d35c; color: var(--ink); }
+.notebook-numerals svg { display: block; width: 100%; max-height: 210px; font-family: 'Bree Serif', Georgia, serif; }
+.notebook-numerals figcaption { padding: 8px 4px 0; font-size: 12px; line-height: 1.6; color: #6d5c3d; }
 .notebook-sources { border-top: 1px solid var(--line); padding-top: 15px; margin-top: 20px; font-size: 13px; }
 .notebook-sources summary { cursor: pointer; padding: 8px 0; }
 .notebook-sources li { margin: 10px 0; line-height: 1.5; overflow-wrap: anywhere; }

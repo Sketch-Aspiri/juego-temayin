@@ -6,6 +6,8 @@ export const LEVEL_3_2: LevelDef = {
   id: '3-2', name: 'Mérida', width: 178, theme: 'hacienda', time: 340, checkpoint: 87,
   hint: 'Sube a las vagonetas; las ruedas de henequén se esquivan o se queman con fuego.',
   ops: [
+    ['discovery', 38, 11, 'merida-fundacion'],
+    ['discovery', 117, 11, 'merida-ferrocarriles'],
     ['row', 10, 8, '?BMB'], ['coins', 15, 10, 5],
     ['stairs', 25, 3, 1], ['stairs', 29, 3, -1], ['spawn', 'wheel', 35],
     ['row', 36, 8, 'BFB'],

@@ -32,6 +32,8 @@ export const LEVEL_2_7: LevelDef = {
   checkpoint: 54,
   boss: { id: 'kaiman', x: 74, arena: [62, 83] },
   ops: [
+    ['discovery', 17, 11, 'calkini-nunkini'],
+    ['discovery', 39, 11, 'calkini-remate'],
     // --- Orilla del pantano ---
     ['row', 9, 8, '?B?'], ['coins', 9, 4, 3],
     ['water', 16, 22, 11], ['coins', 16, 9, 3], ['coins', 20, 9, 3],

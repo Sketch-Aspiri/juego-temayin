@@ -6,6 +6,8 @@ export const BONUS_5: LevelDef = {
   id: '5-extra', name: 'La caleta de las tortugas', width: 132, theme: 'reef', time: 300, checkpoint: 60,
   hint: 'Nada entre las tortugas: nunca reciben daño. En la orilla, lee el numeral de abajo hacia arriba: abajo van las unidades y arriba las veintenas.',
   ops: [
+    ['discovery', 15, 11, 'codice-veintena'],
+    ['discovery', 69, 11, 'codice-cuarenta-tres'],
     ['row', 10, 8, '?S?'], ['pit', 20, 48], ['water', 20, 48, 6],
     ...waterBank(19, 6, 1), ...waterBank(49, 6, -1),
     ['turtle', 25, 7, 3, 5, 0.3, 6], ['turtle', 38, 8, 3, 4, -0.3, 7],

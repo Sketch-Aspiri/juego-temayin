@@ -17,6 +17,8 @@ export const LEVEL_5_4: LevelDef = {
   darkness: { radius: 220, alpha: 0.78 },
   hint: 'Sigue las antorchas por el río subterráneo. Las burbujas y las bolsas de aire te permiten respirar; nada contra las corrientes con calma.',
   ops: [
+    ['discovery', 12, 11, 'xcaret-muyil'],
+    ['discovery', 102, 11, 'xcaret-xelha'],
     ['row', 9, 8, 'MSF'], ['torch', 13, 9], ...cavernCeiling(5, 92, 2),
     ['pit', 18, 90], ['water', 18, 90, 5],
     ...floodedTunnel(28, 77, 5, [38, 54, 70]),

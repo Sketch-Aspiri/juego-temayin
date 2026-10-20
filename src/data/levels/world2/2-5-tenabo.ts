@@ -40,6 +40,8 @@ export const LEVEL_2_5: LevelDef = {
   theme: 'hacienda',
   checkpoint: 118,
   ops: [
+    ['discovery', 57, 11, 'tenabo-tejidos'],
+    ['discovery', 151, 11, 'tenabo-kanki'],
     // Camino Real
     ['row', 11, 8, '?M?'],
     ['row', 18, 8, 'B?B'], ['coins', 18, 4, 3],
