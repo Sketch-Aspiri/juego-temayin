@@ -54,6 +54,7 @@ def main():
         page.on('response', lambda r: errors.append(f'{r.status}: {r.url}') if r.status >= 400 else None)
         page.goto(args.url)
         page.wait_for_load_state('networkidle')
+        page.locator('.title__version > summary').click()
         page.wait_for_selector('.version-note')
         fonts = page.evaluate("""async()=>{
           await document.fonts.ready;

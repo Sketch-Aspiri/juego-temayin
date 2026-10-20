@@ -40,11 +40,11 @@ try {
         const { x, y, width, height } = element.getBoundingClientRect();
         return { x, y, width, height };
       };
-      return { width: innerWidth, height: innerHeight, overflow: title.scrollWidth > innerWidth,
+      return { width: innerWidth, height: innerHeight, overflow: title.scrollWidth > innerWidth || title.scrollHeight > title.clientHeight,
         hero: bounds(hero), logo: bounds(logo), animation: getComputedStyle(hero).animationName,
         imagesLoaded: [...title.querySelectorAll('img')].every(image => image.complete && image.naturalWidth > 0) };
     });
-    assert(!layout.overflow, 'La portada no debe desbordar horizontalmente.');
+    assert(!layout.overflow, 'La portada debe caber sin desplazamiento.');
     assert(layout.imagesLoaded);
     assert.equal(layout.animation, 'none');
     assert(layout.hero.x >= 0 && layout.hero.x + layout.hero.width <= width + 1);
@@ -61,9 +61,9 @@ try {
   }
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.getByText('Cómo jugar', { exact: true }).click();
-  assert(await page.locator('.title .controls-help').isVisible());
-  await page.getByText('Cómo jugar', { exact: true }).click();
-  for (const [label, selector] of [['Historia', '.history'], ['Ajustes', '.settings'], ['Jugar', '.world']]) {
+  assert(await page.locator('.tutorial .controls-help').isVisible());
+  await page.getByRole('button', { name: 'Volver al menú', exact: true }).click();
+  for (const [label, selector] of [['Historia', '.history'], ['Ajustes', '.settings'], ['Jugar', '.peninsula']]) {
     await page.getByRole('button', { name: label, exact: true }).click();
     if (label === 'Ajustes') await page.getByRole('heading', { name: 'Ajustes' }).waitFor();
     else await page.locator(selector).first().waitFor();
@@ -72,7 +72,7 @@ try {
   }
   await page.getByRole('button', { name: 'Jugar', exact: true }).focus();
   await page.keyboard.press('Enter');
-  await page.locator('.world').first().waitFor();
+  await page.locator('.peninsula').first().waitFor();
   assert.deepEqual(errors, []);
   await writeFile(new URL('revision.json', output), `${JSON.stringify({ layouts, navegacion: 'Jugar, Historia, Ajustes y teclado correctos', errors }, null, 2)}\n`);
 } finally {

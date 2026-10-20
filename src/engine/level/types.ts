@@ -163,6 +163,8 @@ export interface BossConfig {
 }
 
 export interface LevelDef {
+  /** Práctica aislada: sin límite de tiempo, con chile y objetivos antes de la meta. No se guarda. */
+  readonly tutorial?: boolean;
   /** Encuentro opcional antes de empezar; sus precios y diálogos viven en src/data. */
   readonly offering?: import('../blessings').OfferingConfig;
   /** Identificador único, p. ej. "1-2". */

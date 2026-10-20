@@ -59,6 +59,8 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 
 ## Contenido actual
 
+- **Cómo jugar:** cuarto botón del menú, con pantalla propia de controles y consejos. Incluye un minitutorial jugable con Toh para caminar, saltar, correr, recoger cacao y lanzar fuego; tiene pausa, reinicio y controles táctiles. La práctica es segura, sin límite de tiempo y no modifica el progreso ni la bolsa. El menú inicial se adapta a la altura disponible sin scroll; las notas de versión se abren en un desplegable flotante. Revisión: `python imagenes/verify_tutorial.py`.
+
 - **Arte del cuaderno de Toh:** pergamino con bordes gastados y grecas en jade/terracota, índice verde y retrato ilustrado de Toh en portada, encabezado y consejos. Recursos nuevos de `image_gen` integrado, con [originales, prompts y guía](imagenes/nuevos/cuaderno-toh/README.md), WebP sin pérdidas y respaldo con el sprite existente. El marco conserva una zona limpia de lectura en escritorio y móvil.
 
 - **Cuaderno de explorador de Toh:** nueve páginas opcionales en Palenque, Campeche y Bacalar. Las marcas de pluma registran observaciones al tocarlas y se guardan al instante, incluso al morir o salir. Incluye filtros, páginas nuevas, fotografías acreditadas del entorno y fuentes; se consulta desde menú, mapa, pausa y resultados. Cerrar conserva el nivel y la pausa. Los guardados anteriores mantienen sus datos y comienzan con la colección vacía. [Contenido y ampliación](src/data/explorerNotebook/README.md). Revisión: `python imagenes/verify_explorer_notebook.py`.

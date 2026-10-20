@@ -7,6 +7,7 @@ import { buildLevel } from '../engine/level/build';
 import { waterAt, waterColumn } from '../engine/level/zones';
 import { isSolidTile } from '../engine/tiles';
 import { ALL_LEVELS, nextLevelId, PLAYABLE_LEVELS, WORLDS } from './worlds';
+import { TUTORIAL_LEVEL } from './tutorial';
 
 /** Salto en carrera: ~8 bloques de alcance horizontal; dejamos margen. */
 const MAX_PLAIN_PIT = 6;
@@ -30,7 +31,7 @@ describe('campaña', () => {
   });
 });
 
-describe.each(PLAYABLE_LEVELS.map((l) => [l.id, l] as const))('nivel %s', (_id, def) => {
+describe.each([...PLAYABLE_LEVELS, TUTORIAL_LEVEL].map((l) => [l.id, l] as const))('nivel %s', (_id, def) => {
   const lvl = buildLevel(def);
   const solid = (x: number, y: number): boolean => y >= 0 && y < ROWS && x >= 0 && x < lvl.width && isSolidTile(lvl.grid[y][x]);
 

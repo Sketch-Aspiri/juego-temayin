@@ -39,6 +39,7 @@ import { waterAt } from './level/zones';
 import type { SolidFn } from './physics';
 import { ITEM_BLOCKS, isSolidTile } from './tiles';
 import type { Session } from './types';
+import { observeTutorial, TUTORIAL_OBJECTIVES, type TutorialObjective } from './tutorial';
 
 export type Phase = 'play' | 'dying' | 'flag' | 'done';
 
@@ -111,6 +112,7 @@ export class World {
   offeringActive = false;
 
   private timeAcc = 0;
+  private tutorial: readonly TutorialObjective[] | undefined;
 
   readonly solidAt: SolidFn = (tx, ty) => this.solid(tx, ty);
 
@@ -140,6 +142,7 @@ export class World {
 
     const startTile = init.fromCheckpoint ? this.checkpointTile : PLAYER_START_TILE;
     this.player = createPlayer(startTile);
+    if (init.def.tutorial) { this.tutorial = []; this.player.fire = true; }
     if (startTile !== PLAYER_START_TILE) this.placeOnGround(startTile);
 
     this.enemies = this.level.enemies
@@ -292,7 +295,7 @@ export class World {
       return;
     }
 
-    this.timeAcc += dt;
+    if (!this.def.tutorial) this.timeAcc += dt;
     if (this.timeAcc >= 1) {
       this.timeAcc -= 1;
       if (--this.timeLeft <= 0) return this.die();
@@ -308,10 +311,15 @@ export class World {
     collectTicket(this);
     collectDiscoveries(this);
     updateRiddles(this, dt);
+    if (this.tutorial) this.tutorial = observeTutorial(this, this.tutorial);
 
     if (p.y > ROWS * T + 40) return this.die();
     if (p.x > this.checkpointTile * T) this.checkpointReached = true;
-    if (p.x + p.w >= this.level.flagX * T + T / 2 - 3) return this.reachFlag();
+    if (p.x + p.w >= this.level.flagX * T + T / 2 - 3) {
+      if (!this.tutorial || this.tutorial.length === TUTORIAL_OBJECTIVES.length) return this.reachFlag();
+      p.x = this.level.flagX * T + T / 2 - p.w - 4;
+      p.vx = 0;
+    }
 
     const swimmers = swimmerPositions(this.enemies);
     updateEnemies(this, dt);
@@ -374,6 +382,7 @@ export class World {
   hudState(spawnId: number): HudState {
     const b = this.boss;
     return {
+      ...(this.tutorial ? { tutorial: [...this.tutorial] } : {}),
       score: this.session.score,
       coins: this.session.coins,
       lives: this.session.lives,

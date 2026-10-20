@@ -1,4 +1,5 @@
 import type { BossId } from './types';
+import type { TutorialObjective } from './tutorial';
 
 export interface BossHud {
   id: BossId;
@@ -13,6 +14,8 @@ export interface BossHud {
 
 /** Datos que el motor publica a la interfaz React (solo cuando cambian). */
 export interface HudState {
+  /** Acciones demostradas en la práctica; ausente durante la campaña. */
+  tutorial?: readonly TutorialObjective[];
   score: number;
   coins: number;
   lives: number;
@@ -43,6 +46,7 @@ export const hudKey = (h: HudState): string =>
   [
     h.score, h.coins, h.lives, h.time, h.levelId, h.shield ? 1 : 0, h.fire ? 1 : 0, h.spawnId, h.ticket ? 1 : 0,
     JSON.stringify(h.discoveries),
+    h.tutorial?.join(',') ?? '-',
     h.oxygen === null ? '-' : Math.round(h.oxygen * OXYGEN_HUD_STEPS), h.snorkel ? 1 : 0, h.ball ? 1 : 0,
     h.boss ? `${h.boss.id}/${h.boss.name}/${h.boss.hp}/${h.boss.maxHp}/${h.boss.intro ? 1 : 0}/${h.boss.objective ?? ''}` : '-',
   ].join('|');

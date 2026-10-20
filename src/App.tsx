@@ -14,6 +14,7 @@ import { IntroScreen } from './ui/screens/IntroScreen';
 import { HistoryScreen } from './ui/screens/HistoryScreen';
 import { OfferingScreen } from './ui/screens/OfferingScreen';
 import { LoadingScreen } from './ui/screens/LoadingScreen';
+import { TutorialScreen } from './ui/screens/TutorialScreen';
 
 /** Duración mínima de la pantalla de carga al abrir el juego. */
 const STARTUP_LOADING_MS = 5000;
@@ -58,6 +59,7 @@ export function App() {
       {screen === 'history' && <HistoryScreen />}
       {screen === 'levels' && <LevelSelect />}
       {screen === 'settings' && <SettingsScreen />}
+      {screen === 'tutorial' && <TutorialScreen />}
       {screen === 'offering' && <OfferingScreen />}
       {screen === 'game' && <GameScreen />}
     </AssetsContext.Provider>

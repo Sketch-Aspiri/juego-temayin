@@ -14,7 +14,7 @@ import { rewardBlessings } from './rewards';
 import { firstSecretReward } from './secretRewards';
 import { readDiscovery, recordDiscoveries } from './explorerNotebook';
 
-export type Screen = 'loading' | 'title' | 'intro' | 'history' | 'levels' | 'offering' | 'game' | 'settings';
+export type Screen = 'loading' | 'title' | 'intro' | 'history' | 'levels' | 'offering' | 'game' | 'settings' | 'tutorial';
 
 /** Partida en curso: nivel + estado arrastrado. `attempt` fuerza a reiniciar el motor. */
 export interface Run {

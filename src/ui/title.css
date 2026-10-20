@@ -4,6 +4,8 @@
   background: #081b22;
   --gold: #ffd88b;
   --ink-dim: #cad2c5;
+  height: 100dvh;
+  overflow: hidden;
 }
 .title--hanal .title__backdrop {
   position: fixed;
@@ -27,12 +29,14 @@
   gap: clamp(1rem, 3vw, 3rem);
   max-width: 1580px;
   margin: auto;
-  padding: clamp(24px, 5vh, 56px) clamp(24px, 5vw, 88px);
+  height: 100%;
+  min-height: 0;
+  padding: clamp(12px, 3dvh, 40px) clamp(20px, 5vw, 88px);
 }
 .title--hanal .title__panel {
   position: relative;
-  gap: 14px;
-  padding: 32px 28px 24px;
+  gap: clamp(6px, 1.6dvh, 14px);
+  padding: clamp(16px, 3dvh, 32px) 28px clamp(12px, 2dvh, 24px);
   border: 1px solid #e9bd7552;
   border-top: 2px solid #f6c578b3;
   border-radius: 100px 100px 24px 24px / 32px 32px 24px 24px;
@@ -84,16 +88,32 @@
   box-shadow: 0 4px 0 #854325, 0 8px 24px #ed9f2926;
 }
 .title--hanal .title__menu .btn--primary:hover { background: linear-gradient(#ffedbc, #ffd076 55%, #f5a442); }
-.title__controls { width: 100%; text-align: center; }
-.title__controls summary {
+.title__version { width: 100%; text-align: center; }
+.title__version > summary {
   width: fit-content;
   margin: auto;
-  padding: 8px 14px;
+  padding: 6px 14px;
   color: #e2d4b9;
   font-family: 'Bree Serif', Georgia, serif;
   cursor: pointer;
 }
-.title__controls summary:hover { color: #ffe0a0; }
+.title__version > summary:hover { color: #ffe0a0; }
+.title__version-popover {
+  position: absolute;
+  z-index: 5;
+  bottom: 52px;
+  left: 16px;
+  right: 16px;
+  max-height: min(60dvh, 360px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  padding: 16px;
+  border: 1px solid #e9bd7580;
+  border-radius: 14px;
+  background: #0b2631;
+  box-shadow: 0 12px 40px #0009;
+}
 .title--hanal .version-note {
   margin-top: 0;
   padding: 12px 0 0;
@@ -156,20 +176,22 @@
   .title--hanal .title__content {
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
-    padding: 110px max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+    grid-template-rows: minmax(0, 1fr) auto;
+    align-content: center;
+    padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
   }
-  .title__portrait { grid-row: 1; padding: 0; position: relative; z-index: 1; }
-  .title--hanal .title__jaguar { width: 210px; max-height: none; }
-  .title__place { margin: -4px 0 14px; font-size: 0.75rem; }
-  .title--hanal .title__panel { padding: 22px 20px 18px; gap: 10px; width: min(100%, 430px); justify-self: center; }
+  .title__portrait { grid-row: 1; min-height: 0; align-self: center; padding: 0; position: relative; z-index: 1; }
+  .title--hanal .title__jaguar { width: min(210px, 25dvh); max-height: 100%; }
+  .title__place { margin: -4px 0 8px; font-size: 0.75rem; }
+  .title--hanal .title__panel { padding: clamp(12px, 2dvh, 22px) 20px; gap: clamp(6px, 1dvh, 10px); width: min(100%, 430px); justify-self: center; }
   .title__celebration { margin: 0; font-size: 0.8rem; }
   .title__celebration strong { font-size: 1.3rem; }
-  .title--hanal .logo { font-size: clamp(2.9rem, 12vw, 4rem); }
+  .title--hanal .logo { font-size: clamp(2.6rem, min(12vw, 7dvh), 4rem); }
   .title--hanal .logo__sub { font-size: 1rem; margin-bottom: 8px; }
   .title--hanal .title__menu .btn--primary { min-height: 58px; font-size: 1.45rem; }
   .title--hanal .title__menu .btn { font-size: 1rem; }
 }
-/* El menú conserva altura táctil y permite desplazar pantallas apaisadas bajas. */
+/* Se compacta la ornamentación para conservar todos los botones sin desplazamiento. */
 @media (max-height: 600px) and (orientation: landscape) {
   .title--hanal .title__content { grid-template-columns: minmax(300px, 390px) minmax(0, 1fr); padding: 20px 4vw; }
   .title--hanal .title__panel { padding: 18px 24px; gap: 8px; }
@@ -180,10 +202,26 @@
   .title--hanal .title__menu { gap: 8px; }
   .title--hanal .title__menu .btn--primary { min-height: 48px; font-size: 1.3rem; padding: 6px 20px; }
   .title--hanal .title__menu .btn { min-height: 44px; padding: 6px 12px; }
-  .title__controls summary { padding: 4px 12px; }
   .title__portrait { padding-top: 22vh; position: sticky; bottom: 16px; }
   .title--hanal .title__jaguar { width: min(36vw, 340px); max-height: 65vh; }
   .title__place { font-size: 0.75rem; margin-top: 4px; }
+}
+@media (max-height: 740px) and (orientation: portrait) {
+  .title--hanal .title__content { grid-template-rows: minmax(0, 1fr); }
+  .title__portrait { display: none; }
+  .title--hanal .title__panel { align-self: center; }
+}
+@media (max-height: 440px) and (orientation: landscape) {
+  .title--hanal .title__content { padding: max(6px, env(safe-area-inset-top)) 3vw max(6px, env(safe-area-inset-bottom)); grid-template-columns: minmax(290px, 390px) minmax(0, 1fr); }
+  .title--hanal .title__panel { padding: 10px 20px; gap: 4px; }
+  .title--hanal .logo { font-size: 2.5rem; line-height: 1; }
+  .title--hanal .logo__sub { font-size: .9rem; margin: 0; }
+  .title--hanal .title__menu { gap: 6px; }
+  .title--hanal .title__menu .btn { font-size: .95rem; min-height: 44px; padding: 4px 8px; }
+  .title--hanal .title__menu .btn--primary { font-size: 1.15rem; }
+  .title__record { font-size: .75rem; margin: 0; }
+  .title__version > summary { font-size: .75rem; padding: 3px 10px; }
+  .title__portrait { padding-top: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .title--hanal .title__jaguar, .title__fireflies i { animation: none; }
