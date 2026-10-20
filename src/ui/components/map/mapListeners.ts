@@ -56,8 +56,10 @@ export function attachMapListeners(element: HTMLElement, deps: MapListenerDeps):
     if (effect.kind === 'begin-drag') {
       capturePointer(element, effect.pointerId); deps.setGesturing(true); deps.commit(panCamera(deps.current(), effect.delta));
     } else if (effect.kind === 'pan') deps.commit(panCamera(deps.current(), effect.delta));
-    else if (effect.kind === 'pinch-start') deps.setGesturing(true);
-    else if (effect.kind === 'pinch') {
+    else if (effect.kind === 'pinch-start') {
+      for (const id of effect.pointerIds) capturePointer(element, id);
+      deps.setGesturing(true);
+    } else if (effect.kind === 'pinch') {
       deps.commit(pinchCamera(deps.current(), effect.previous, effect.current, deps.getViewport(), deps.getLimits()));
     } else if (effect.kind === 'end') { deps.setGesturing(false); if (effect.suppressClick) suppressor.arm(); }
   };
@@ -73,6 +75,11 @@ export function attachMapListeners(element: HTMLElement, deps: MapListenerDeps):
     apply(pointerMove(deps.getSession(), event.pointerId, pointAt(event), TAP_SLOP_PX));
   };
   const onUp = (event: PointerEvent) => apply(pointerUp(deps.getSession(), event.pointerId));
+  const onCaptureLost = (event: PointerEvent) => {
+    // El tacto captura primero el hijo pulsado. Al pasar la captura al atlas,
+    // su lostpointercapture burbujea aquí, pero el dedo sigue arrastrando.
+    if (event.target === element && !element.hasPointerCapture(event.pointerId)) onUp(event);
+  };
   const onCancel = () => apply(pointerCancel(deps.getSession()));
   const onWheel = (event: WheelEvent) => {
     event.preventDefault();
@@ -86,7 +93,7 @@ export function attachMapListeners(element: HTMLElement, deps: MapListenerDeps):
   element.addEventListener('pointermove', onMove);
   element.addEventListener('pointerup', onUp);
   element.addEventListener('pointercancel', onCancel);
-  element.addEventListener('lostpointercapture', onUp);
+  element.addEventListener('lostpointercapture', onCaptureLost);
   element.addEventListener('keydown', suppressor.clear);
   element.addEventListener('wheel', onWheel, { passive: false });
   return () => {
@@ -95,7 +102,7 @@ export function attachMapListeners(element: HTMLElement, deps: MapListenerDeps):
     element.removeEventListener('pointermove', onMove);
     element.removeEventListener('pointerup', onUp);
     element.removeEventListener('pointercancel', onCancel);
-    element.removeEventListener('lostpointercapture', onUp);
+    element.removeEventListener('lostpointercapture', onCaptureLost);
     element.removeEventListener('keydown', suppressor.clear);
     element.removeEventListener('wheel', onWheel);
     suppressor.clear();

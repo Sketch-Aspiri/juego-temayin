@@ -9,7 +9,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 URL = os.environ.get('TEMAYIN_QA_URL', 'http://127.0.0.1:5199')
-OUTPUT = Path(__file__).resolve().parent / 'verificacion' / 'mapa-peninsula' / 'gestos'
+OUTPUT = Path(os.environ.get('TEMAYIN_MAP_QA_OUTPUT', str(Path(__file__).resolve().parent / 'verificacion' / 'mapa-peninsula' / 'gestos')))
 OUTPUT.mkdir(parents=True, exist_ok=True)
 RESULTS, ERRORS = [], []
 NAV = 'Mundos de la aventura'
@@ -406,6 +406,65 @@ def reduced_motion_checks(browser, state):
 
 
 # ---------------------------------------------------------------- tacto
+def continuous_touch_checks(page, cdp):
+    """Regresión: transferir la captura del SVG al atlas no debe soltar el dedo."""
+    reset_camera(page)
+    before, selected = vb(page), selected_station(page)
+    width = page.locator('.atlas').bounding_box()['width']
+    cdp.send('Emulation.setCPUThrottlingRate', {'rate': 4})
+    page.evaluate("""() => {
+      window.__mapFrames = { active: true, intervals: [], last: performance.now() };
+      const tick = now => { const s = window.__mapFrames; s.intervals.push(now - s.last); s.last = now;
+        if (s.active) requestAnimationFrame(tick); }; requestAnimationFrame(tick);
+    }""")
+    touch = lambda kind, x: cdp.send('Input.dispatchTouchEvent', {
+        'type': kind, 'touchPoints': [] if kind == 'touchEnd' else [{'x': x, 'y': 420, 'id': 1}]})
+    errors = []
+    touch('touchStart', 120)
+    for step in range(1, 49):
+        touch('touchMove', 120 + step * 2)
+        settle(page, 1)
+        if step >= 5:
+            actual = (before['x'] - vb(page)['x']) * width / before['width']
+            errors.append(abs(actual - step * 2))
+    active = page.locator('.atlas').get_attribute('data-gesture') is not None
+    shot(page, 'tactil-arrastre-continuo.png')
+    touch('touchEnd', 216)
+    settle(page)
+    stats = page.evaluate("""() => { const s = window.__mapFrames; s.active = false;
+      const a = s.intervals.slice(2).sort((a,b) => a-b);
+      return { frames: a.length, medianaMs: a[Math.floor(a.length * .5)], p95Ms: a[Math.floor(a.length * .95)] }; }""")
+    record(page, 'Táctil con CPU 4×: el mapa sigue todos los pasos del arrastre de 96 px',
+           active and max(errors) < 1, {'errorMaxPx': max(errors), 'fotogramasObservados': stats})
+    record(page, 'Táctil: soltar termina el arrastre continuo sin seleccionar estaciones',
+           page.locator('.atlas').get_attribute('data-gesture') is None and selected_station(page) == selected)
+    cdp.send('Emulation.setCPUThrottlingRate', {'rate': 1})
+    reset_camera(page)
+
+
+def pinch_to_drag_checks(page, cdp):
+    """Al soltar uno de los dos dedos, el otro conserva el arrastre completo."""
+    def touch(kind, points):
+        cdp.send('Input.dispatchTouchEvent', {'type': kind, 'touchPoints': points})
+    def pt(x, ident):
+        return {'x': x, 'y': 420, 'id': ident}
+    reset_camera(page)
+    touch('touchStart', [pt(140, 1), pt(240, 2)])
+    touch('touchMove', [pt(120, 1), pt(260, 2)])
+    # CDP recibe aquí el contacto que se levanta; el segundo sigue apoyado.
+    touch('touchEnd', [pt(120, 1)])
+    settle(page)
+    before = vb(page)
+    for step in range(1, 11):
+        touch('touchMove', [pt(260 + step * 3, 2)])
+    settle(page)
+    actual = (before['x'] - vb(page)['x']) * 390 / before['width']
+    record(page, 'Táctil: el dedo restante arrastra 30 px después del pellizco', abs(actual - 30) < 1, actual)
+    touch('touchEnd', [])
+    settle(page)
+    reset_camera(page)
+
+
 def touch_checks(browser, state):
     context = browser.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True, storage_state=state)
     page = context.new_page()
@@ -413,6 +472,8 @@ def touch_checks(browser, state):
     open_map(page)
     close_panel(page)
     cdp = context.new_cdp_session(page)
+    continuous_touch_checks(page, cdp)
+    pinch_to_drag_checks(page, cdp)
 
     def touch(kind, points):
         cdp.send('Input.dispatchTouchEvent', {'type': kind, 'touchPoints': points})
@@ -492,6 +553,8 @@ def main():
                'limites': 'Chromium emulado (ratón y CDP táctil); no sustituye un móvil físico ni mide la sensación de uso.'}
     (OUTPUT / 'informe.json').write_text(json.dumps(informe, ensure_ascii=False, indent=2), encoding='utf-8')
     print(f'{len(RESULTS) - len(failures)}/{len(RESULTS)} OK')
+    if failures:
+        raise SystemExit(1)
 
 
 if __name__ == '__main__':
