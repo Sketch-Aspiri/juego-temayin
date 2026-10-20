@@ -3,6 +3,7 @@ import type { LevelResult } from '../../engine/scoring';
 import { Stars } from './Stars';
 import { HANAL_REWARD } from '../../data/hanalReward';
 import { HanalReward } from './HanalReward';
+import { SecretReward } from './SecretReward';
 import { NotebookButton } from './notebook/NotebookButton';
 
 interface PanelProps {
@@ -53,12 +54,15 @@ interface LevelCompleteProps {
   isBonus?: boolean;
   isSeasonal?: boolean;
   discoveryCount?: number;
+  /** Premio de la primera vez de un secreto y si con él se completan los siete sellos. */
+  secretCacao?: number;
+  allSeals?: boolean;
   onNext: () => void;
   onRetry: () => void;
   onExit: () => void;
 }
 
-export function LevelComplete({ result, levelName, hasNext, isBonus, isSeasonal, discoveryCount = 0, onNext, onRetry, onExit }: LevelCompleteProps) {
+export function LevelComplete({ result, levelName, hasNext, isBonus, isSeasonal, discoveryCount = 0, secretCacao = 0, allSeals = false, onNext, onRetry, onExit }: LevelCompleteProps) {
   return (
     <Panel title="¡NIVEL COMPLETADO!" tone="win">
       <p className="panel__sub">{isSeasonal ? 'Especial de temporada' : result.levelId} · {levelName}</p>
@@ -69,6 +73,7 @@ export function LevelComplete({ result, levelName, hasNext, isBonus, isSeasonal,
         <div><dt>Muertes</dt><dd>{result.deaths}</dd></div>
       </dl>
       {result.levelId === HANAL_REWARD.levelId && <HanalReward />}
+      {isBonus && <SecretReward cacao={secretCacao} allSeals={allSeals} />}
       {discoveryCount > 0 && <div className="panel__sub"><p>{discoveryCount} {discoveryCount === 1 ? 'nuevo descubrimiento registrado' : 'nuevos descubrimientos registrados'} en este intento.</p>
         <NotebookButton label="Leer descubrimientos" /></div>}
       {!hasNext && <p className="panel__sub">{isBonus ? '¡Has completado el nivel secreto! Vuelve al mapa para seguir tu aventura.' : '¡Temayin ha completado toda la aventura!'}</p>}

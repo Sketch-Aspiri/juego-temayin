@@ -19,6 +19,7 @@ export function LevelTile({ level, bonus = false, unlocked, record, onPlay }: Le
     {bonus && <TicketIcon />}
     <span className="level-tile__name">{bonus && !unlocked ? 'Destino secreto' : level.name}</span>
     {bonus && <span className="level-tile__secret">{unlocked ? 'Boleto encontrado · ¡A explorar!' : 'Encuentra el boleto de este mundo'}</span>}
+    {bonus && record && <span className="level-tile__seal">◆ Sello de jade</span>}
     {level.boss && <span className="level-tile__badge">JEFE</span>}
     {unlocked ? <Stars value={record?.stars ?? 0} /> : <span className="level-tile__lock" aria-label="Bloqueado">🔒</span>}
     {record && <span className="level-tile__best">Mejor: {record.bestScore}</span>}

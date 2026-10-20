@@ -172,7 +172,7 @@ export function CinematicPlayer({ cinematic, onFinish, finishLabel }: CinematicP
 
   return (
     <main className="intro" aria-label={cinematic.title} ref={ref} onClick={playback.advance}>
-      <div className={`intro-stage${cinematic.afterLevel || cinematic.beforeLevel ? ' intro-stage--chapter' : ''}`}>
+      <div className={`intro-stage${cinematic.afterLevel || cinematic.beforeLevel || cinematic.afterAllSecrets ? ' intro-stage--chapter' : ''}`}>
         <Scene key={playback.scene.id} scene={playback.scene} portrait={portrait} />
         <Caption cinematic={cinematic} playback={playback} onFinish={onFinish} finishLabel={finishLabel} />
         <button type="button" className="btn btn--ghost intro-skip" onClick={(e) => { e.stopPropagation(); onFinish(); }}>

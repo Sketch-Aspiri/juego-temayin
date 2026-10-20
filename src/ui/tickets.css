@@ -10,3 +10,6 @@
 @media (max-width: 900px) and (orientation: portrait) {
   .game--portrait .hud__powers .ticket-icon { height: 18px; }
 }
+
+.level-tile__seal { color: #8be0b8; font-size: 12px; font-weight: 700; }
+.menu__seals { color: #8be0b8; font-weight: 700; white-space: nowrap; }

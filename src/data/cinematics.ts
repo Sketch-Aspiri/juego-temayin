@@ -1,6 +1,7 @@
 import { INTRO_FILES, INTRO_SCENES, SPRITES, type IntroScene, type SpriteRef } from './intro';
 import { PUAS_COVER, PUAS_VICTORY_SCENES } from './puasVictory';
-import { BOSS_VICTORY_SPRITES, CINEMATIC_DECK_BACKGROUND } from './bossVictoryArt';
+import { BOSS_VICTORY_SPRITES, CINEMATIC_DECK_BACKGROUND, TEMAYIN_CINEMATIC_POSES } from './bossVictoryArt';
+import { SECRETOS_SCENES } from './cinematics/secretos';
 import { KAIMAN_VICTORY_SCENES } from './cinematics/kaimanVictory';
 import { HUAY_CHIVO_VICTORY_SCENES } from './cinematics/huayChivoVictory';
 import { HUAY_PEK_VICTORY_SCENES } from './cinematics/huayPekVictory';
@@ -13,7 +14,7 @@ import { HANAL_PIXAN_BACKGROUND, HANAL_PIXAN_SPRITES } from './hanalPixanArt';
 import { HANAL_PIXAN_LEVEL } from './levels/seasonal/hanal-pixan';
 
 export type CinematicId = 'intro' | 'puas-victory' | 'kaiman-victory' | 'huayChivo-victory'
-  | 'huayPek-victory' | 'sargazo-victory' | 'lorencillo-victory' | 'camazotz-victory' | 'hanal-pixan';
+  | 'huayPek-victory' | 'sargazo-victory' | 'lorencillo-victory' | 'camazotz-victory' | 'hanal-pixan' | 'secretos-victory';
 
 export interface CinematicDef {
   readonly id: CinematicId;
@@ -26,6 +27,8 @@ export interface CinematicDef {
   readonly afterLevel?: string;
   /** Se presenta antes de cada visita al especial, sin marcar el prólogo como visto. */
   readonly beforeLevel?: string;
+  /** Se desbloquea y reproduce al completar por primera vez los siete niveles secretos. */
+  readonly afterAllSecrets?: boolean;
 }
 
 /** Orden narrativo del menú. Añadir una entrada conecta también desbloqueo y reproducción. */
@@ -83,6 +86,12 @@ export const CINEMATICS: Readonly<Record<CinematicId, CinematicDef>> = {
     description: 'El rescate de Temayina, el regreso por Centenario y el final de la aventura.',
     cover: { background: 'mundo7/calakmul-amanecer.webp', actor: REUNION_SPRITE },
     scenes: CAMAZOTZ_VICTORY_SCENES, afterLevel: '7-4',
+  },
+  'secretos-victory': {
+    id: 'secretos-victory', chapter: 'Desvíos secretos', title: 'Los siete sellos de jade',
+    description: 'Toh celebra los acertijos de numerología maya y el Corazón de jade.',
+    cover: { background: 'backgrounds/ruins.webp', actor: TEMAYIN_CINEMATIC_POSES.celebrate },
+    scenes: SECRETOS_SCENES, afterAllSecrets: true,
   },
 };
 

@@ -14,6 +14,7 @@ export const BONUS_2: LevelDef = {
     ['coins', 72, 7, 3], ['coins', 76, 7, 4], ['coins', 82, 7, 2],
     ['stairs', 90, 4, 1], ['coins', 93, 6, 4],
     ...riddle({ id: '2-suma', prompt: '9 + 8 = ?', answer: '17', stela: 96, firstStone: 98, stones: ['17', '16', '19', '15'], gate: 106 }),
-    ['flag', 110], ['temple', 114],
+    ['discovery', 108, 10, 'codice-suma'],
+    ['flag', 112], ['temple', 116],
   ],
 };

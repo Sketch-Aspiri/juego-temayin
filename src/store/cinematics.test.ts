@@ -1,3 +1,4 @@
+import { SECRET_LEVEL_IDS } from '../data/secretRewards';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ALL_CINEMATICS, CINEMATICS } from '../data/cinematics';
 import type { LevelResult } from '../engine/scoring';
@@ -29,7 +30,8 @@ describe('Cinemáticas desbloqueadas por progreso', () => {
   });
 
   it('cargar un guardado v3 anterior desbloquea todos los capítulos ya ganados', () => {
-    const levels = Object.fromEntries(ALL_CINEMATICS.flatMap(cinematic => cinematic.afterLevel ? [[cinematic.afterLevel, record]] : []));
+    const levels = Object.fromEntries([...ALL_CINEMATICS.flatMap(cinematic => cinematic.afterLevel ? [cinematic.afterLevel] : []), ...SECRET_LEVEL_IDS]
+      .map(id => [id, record]));
     const storage = new Map([[STORAGE_KEY, JSON.stringify({ progress: { levels } })]]);
     vi.stubGlobal('localStorage', { getItem: (key: string) => storage.get(key) ?? null });
     const saved = loadSaved();

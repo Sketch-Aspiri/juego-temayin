@@ -11,6 +11,7 @@ import { EMPTY_PROGRESS, isUnlocked, recordCompletion, recordTicket, type Progre
 import type { Settings } from './settings';
 import { EMPTY_WALLET, isCacao, type Wallet } from './wallet';
 import { rewardBlessings } from './rewards';
+import { firstSecretReward } from './secretRewards';
 import { readDiscovery, recordDiscoveries } from './explorerNotebook';
 
 export type Screen = 'loading' | 'title' | 'intro' | 'history' | 'levels' | 'offering' | 'game' | 'settings';
@@ -57,6 +58,8 @@ const newSession = (coins: number): Session => ({ score: 0, coins, lives: START_
 const saved = loadSaved();
 
 export const useAppStore = create<AppState>((set, get) => {
+  /** Partida cuyo resultado ya se registró: sus publicaciones posteriores de cacao se ignoran. */
+  let settledRun: Run | null = null;
   const persist = (): void => {
     const { progress, settings, wallet } = get();
     save({ progress, settings, wallet });
@@ -113,7 +116,8 @@ export const useAppStore = create<AppState>((set, get) => {
     },
 
     syncCacao: (run, cacao) => {
-      if (get().run !== run || !isCacao(cacao) || get().wallet.cacao === cacao) return;
+      // Tras terminar el nivel el saldo ya incluye el premio: el último HUD del motor no debe pisarlo.
+      if (get().run !== run || run === settledRun || !isCacao(cacao) || get().wallet.cacao === cacao) return;
       set({ wallet: { ...get().wallet, cacao } });
       persist();
     },
@@ -165,7 +169,11 @@ export const useAppStore = create<AppState>((set, get) => {
     },
 
     finishLevel: (result) => {
-      set({ progress: recordCompletion(get().progress, result) });
+      const { progress, wallet, run } = get();
+      // El premio de la primera vez se evalúa con el progreso previo y se guarda junto al récord.
+      const reward = firstSecretReward(progress, result.levelId);
+      settledRun = run;
+      set({ progress: recordCompletion(progress, result), wallet: { ...wallet, cacao: wallet.cacao + reward } });
       persist();
     },
 

@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getLevel, getWorldForLevel, isSeasonalLevel, nextLevelId } from '../../data/worlds';
 import { hasTicket } from '../../store/progress';
-import { cinematicAfterLevel, cinematicBeforeLevel, type CinematicDef } from '../../data/cinematics';
+import { cinematicAfterLevel, cinematicBeforeLevel, CINEMATICS, type CinematicDef } from '../../data/cinematics';
+import { completesAllSeals, firstSecretReward } from '../../store/secretRewards';
 import { audio } from '../../engine/audio';
 import { Game } from '../../engine/Game';
 import type { HudState } from '../../engine/hud';
@@ -25,7 +26,7 @@ import { DiscoveryNotice } from '../components/notebook/DiscoveryNotice';
 /** Tiempo mínimo de la pantalla de carga antes de cada nivel, para que no parpadee. */
 const LEVEL_LOADING_MIN_MS = 900;
 
-type Outcome = { kind: 'complete'; result: LevelResult } | { kind: 'gameover'; score: number };
+type Outcome = { kind: 'complete'; result: LevelResult; secretCacao: number; allSeals: boolean } | { kind: 'gameover'; score: number };
 
 export function GameScreen() {
   const portrait = usePortrait();
@@ -88,9 +89,11 @@ export function GameScreen() {
           },
           onComplete: (result) => {
             useAppStore.getState().syncCacao(run, result.session.coins);
+            const before = useAppStore.getState().progress;
             finishLevel(result);
-            setOutcome({ kind: 'complete', result });
-            setCinematic(cinematicAfterLevel(result.levelId) ?? null);
+            const allSeals = completesAllSeals(before, useAppStore.getState().progress);
+            setOutcome({ kind: 'complete', result, secretCacao: firstSecretReward(before, result.levelId), allSeals });
+            setCinematic(cinematicAfterLevel(result.levelId) ?? (allSeals ? CINEMATICS['secretos-victory'] : null));
           },
           onGameOver: (score) => setOutcome({ kind: 'gameover', score }),
         },
@@ -189,6 +192,8 @@ export function GameScreen() {
             hasNext={!!nextId}
             isBonus={isBonus}
             isSeasonal={isSeasonalLevel(level.id)}
+            secretCacao={outcome.secretCacao}
+            allSeals={outcome.allSeals}
             discoveryCount={hud?.discoveries.filter(id => !discoveryStart.ids.includes(id)).length ?? 0}
             onNext={() => goNext(outcome.result)}
             onRetry={retryLevel}

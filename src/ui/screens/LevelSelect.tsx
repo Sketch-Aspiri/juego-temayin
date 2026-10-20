@@ -1,3 +1,5 @@
+import { SECRET_LEVEL_IDS } from '../../data/secretRewards';
+import { sealCount } from '../../store/secretRewards';
 import { useEffect, useState, type CSSProperties } from 'react';
 import { useAppStore } from '../../store/appStore';
 import { totalStars } from '../../store/progress';
@@ -13,6 +15,7 @@ export function LevelSelect() {
   const startLevel = useAppStore(state => state.startLevel);
   const stars = useAppStore(state => totalStars(state.progress));
   const cacao = useAppStore(state => state.wallet.cacao);
+  const seals = useAppStore(state => sealCount(state.progress));
   const [exitAction, setExitAction] = useState<(() => void) | null>(null);
   const [entering, setEntering] = useState(true);
   useEffect(() => {
@@ -32,7 +35,8 @@ export function LevelSelect() {
     <header className="menu__header">
       <button type="button" className="btn btn--ghost" disabled={!!exitAction} onClick={() => setExitAction(() => () => go('title'))}>← Volver</button>
       <h2>Elige tu nivel</h2>
-      <div className="menu__treasures"><span className="menu__stars">★ {stars}</span><span className="menu__wallet">CACAO · {cacao}</span></div>
+      <div className="menu__treasures"><span className="menu__stars">★ {stars}</span><span className="menu__wallet">CACAO · {cacao}</span>
+        <span className="menu__seals" aria-label={`Sellos de jade: ${seals} de ${SECRET_LEVEL_IDS.length}`}>◆ {seals}/{SECRET_LEVEL_IDS.length}{seals === SECRET_LEVEL_IDS.length ? ' · Corazón de jade' : ''}</span></div>
     </header>
     <div className="menu__body level-map-menu__body">
       <PeninsulaMap onPlay={id => setExitAction(() => () => startLevel(id))} />

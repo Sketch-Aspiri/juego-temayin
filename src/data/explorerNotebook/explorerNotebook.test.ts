@@ -7,21 +7,23 @@ import { T } from '../../engine/constants';
 import { isSolidTile } from '../../engine/tiles';
 
 describe('Catálogo del cuaderno de Toh', () => {
-  it('ofrece nueve páginas breves con referencias y fotografía acreditada del entorno', () => {
-    expect(NOTEBOOK_ENTRIES).toHaveLength(9);
-    expect(new Set(NOTEBOOK_ENTRIES.map(entry => entry.id)).size).toBe(9);
+  it('ofrece diecisiete páginas breves con referencias y fotografía acreditada en las del entorno real', () => {
+    expect(NOTEBOOK_ENTRIES).toHaveLength(17);
+    expect(new Set(NOTEBOOK_ENTRIES.map(entry => entry.id)).size).toBe(17);
     for (const entry of NOTEBOOK_ENTRIES) {
       expect(entry.text.split(/\s+/).length).toBeLessThanOrEqual(55);
       expect(entry.toh.length).toBeGreaterThan(20);
       expect(entry.sources.length).toBeGreaterThan(0);
       for (const source of entry.sources) expect(new URL(source.url).protocol).toBe('https:');
-      expect(STATION_PHOTOS[entry.levelId].license).toBeTruthy();
+      // Las páginas del códice de numerología viven en los niveles secretos y no llevan fotografía.
+      if (entry.place !== 'Códice maya') expect(STATION_PHOTOS[entry.levelId].license).toBeTruthy();
+      else expect(STATION_PHOTOS[entry.levelId]).toBeUndefined();
     }
   });
 
   it('cada página tiene exactamente una marca, en su nivel y fuera de bloques o de la meta', () => {
     const marks = PLAYABLE_LEVELS.flatMap(def => buildLevel(def).discoveries.map(mark => ({ ...mark, levelId: def.id })));
-    expect(marks).toHaveLength(9);
+    expect(marks).toHaveLength(17);
     for (const entry of NOTEBOOK_ENTRIES) {
       const matching = marks.filter(mark => mark.id === entry.id);
       expect(matching).toHaveLength(1);

@@ -28,7 +28,8 @@ export function HistoryCard({ cinematic, unlocked, onPlay }: HistoryCardProps) {
         <p>{cinematic.description}</p>
         <p className="history-card__requirement">
           {unlocked ? `${cinematic.scenes.length} escenas · Puedes verla cuando quieras`
-            : `Completa ${cinematic.afterLevel} · ${level ? level.name : 'el nivel'} para verla.`}
+            : cinematic.afterAllSecrets ? 'Completa los siete niveles secretos para verla.'
+              : `Completa ${cinematic.afterLevel} · ${level ? level.name : 'el nivel'} para verla.`}
         </p>
         <button type="button" className={`btn${unlocked ? ' btn--primary' : ''}`} disabled={!unlocked}
           data-cinematic={cinematic.id} aria-label={`${unlocked ? 'Ver' : 'Bloqueada'}: ${cinematic.title}`} onClick={() => onPlay(cinematic)}>

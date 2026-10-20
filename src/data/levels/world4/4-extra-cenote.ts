@@ -3,7 +3,7 @@ import { riddle } from '../riddles';
 import { waterBank } from '../waterBanks';
 
 export const BONUS_4: LevelDef = {
-  id: '4-extra', name: 'El cenote de luz', width: 128, theme: 'cave', time: 300, checkpoint: 60,
+  id: '4-extra', name: 'El cenote de luz', width: 132, theme: 'cave', time: 300, checkpoint: 60,
   darkness: { radius: 240, alpha: 0.55 },
   hint: 'Respira junto a las burbujas. Los mayas contaban de veinte en veinte y la concha vale cero: ¿cuánto falta para veinte?',
   ops: [
@@ -16,6 +16,7 @@ export const BONUS_4: LevelDef = {
     ['bubbles', 78, 13], ['bubbles', 89, 13], ['coins', 78, 10, 6], ['coins', 86, 11, 7],
     ['torch', 98, 9], ['torch', 101, 9], ['torch', 107, 9],
     ...riddle({ id: '4-cero', prompt: '14 + ? = #20', answer: '6', stela: 100, firstStone: 102, stones: ['0', '5', '7', '6'], gate: 110 }),
-    ['flag', 112], ['temple', 117],
+    ['discovery', 112, 10, 'codice-cero'],
+    ['flag', 115], ['temple', 120],
   ],
 };

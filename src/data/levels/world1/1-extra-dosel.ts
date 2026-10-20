@@ -14,6 +14,7 @@ export const BONUS_1: LevelDef = {
     ['coins', 72, 8, 4], ['coins', 79, 5, 5], ['coins', 87, 2, 5],
     ['coins', 95, 10, 5],
     ...riddle({ id: '1-cuenta', prompt: '#13 = ?', answer: '13', stela: 89, firstStone: 92, stones: ['8', '12', '13', '18'], gate: 100 }),
-    ['flag', 102], ['temple', 107],
+    ['discovery', 102, 10, 'codice-cuenta'],
+    ['flag', 105], ['temple', 110],
   ],
 };

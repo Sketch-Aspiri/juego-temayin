@@ -11,6 +11,7 @@ export const BONUS_3: LevelDef = {
     ['hammock', 72, 12, 4], ['plat', 79, 6, 5], ['coins', 79, 4, 5],
     ['hammock', 87, 12, 4], ['plat', 94, 6, 5], ['coins', 94, 4, 5],
     ...riddle({ id: '3-serie', prompt: '3 8 13 ?', answer: '18', stela: 100, firstStone: 102, stones: ['19', '18', '16'], gate: 108 }),
-    ['flag', 111], ['temple', 116],
+    ['discovery', 110, 10, 'codice-serie'],
+    ['flag', 113], ['temple', 118],
   ],
 };
