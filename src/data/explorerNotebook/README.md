@@ -1,6 +1,6 @@
 # Cuaderno de explorador de Toh
 
-Piloto de nueve páginas: tres en Palenque (`1-1`), tres en San Francisco de Campeche (`2-3`) y tres en Bacalar (`6-5`). Se abre desde título, mapa, pausa y resumen de nuevos descubrimientos al completar un nivel.
+Veintiuna páginas de lugares reales: tres en Palenque (`1-1`), tres en San Francisco de Campeche (`2-3`), tres en Bacalar (`6-5`) y doce repartidas por los demás mundos (Edzná, Petenes, Izamal, Chichén Itzá, Valladolid, Nuevo Xcán, Puerto Morelos, Akumal, Tulum, Limones, Xpujil y Calakmul). Se abre desde título, mapa, pausa y resumen de nuevos descubrimientos al completar un nivel.
 
 ## Contenido y fuentes
 
@@ -10,7 +10,7 @@ Las referencias conservan sección y páginas de la Gran Guía Tren Maya del INA
 
 Los estromatolitos se explican como estructuras minerales construidas por comunidades de microbios, cuya superficie viva debe cuidarse. Fuente: [Tarjeta de Reporte de laguna Bacalar (2021), sección Estromatolitos, páginas impresas 10–11, página 5 del PDF](https://sedeturqroo.gob.mx/pmts2030/documentos/marco_normativo/TARJETA-DE-REPORTE-DE-LAGUNA-BACALAR-DIGITAL-2021.pdf#page=5). No se atribuye una edad concreta a todos los ejemplares.
 
-Las fotos locales de `STATION_PHOTOS` conservan texto alternativo, autor, procedencia y licencia. La leyenda identifica el entorno y aclara que no representa necesariamente la especie o detalle descrito. La lectura no consulta servicios externos; los enlaces de ampliación requieren conexión. No se añade un modo sin conexión al arranque ni se incluyen grabaciones de audio.
+**Cada página tiene su propia fotografía** del tema que describe (el saraguato, la orquídea, el baluarte…), no la de la estación. Se registran en `photoManifest.ts` (generado) y se leen con `getNotebookPhoto(id)` de `photos.ts`; conservan texto alternativo, autor, procedencia y licencia, y el pie de foto aclara cuando es una imagen de referencia de la especie (p. ej. el saraguato fotografiado en el Petén). Créditos y archivos de Commons en `imagenes/fotos-cuaderno/sources.json`; se reproducen con `python imagenes/import_notebook_photos.py` (`--offline` usa la caché). Las páginas del códice no llevan foto. La lectura no consulta servicios externos; los enlaces de ampliación requieren conexión. No se añade un modo sin conexión al arranque ni se incluyen grabaciones de audio.
 
 ## Marcas y guardado
 
@@ -27,6 +27,18 @@ Las fotos locales de `STATION_PHOTOS` conservan texto alternativo, autor, proced
 | Una laguna de agua dulce | 6-5 | 32/11 |
 | Los estromatolitos | 6-5 | 60/10 |
 | El Fuerte de San Felipe | 6-5 | 154/11 |
+| El Edificio de los Cinco Pisos | 2-2 | 64/11 |
+| Tres tipos de mangle | 2-4 | 16/11 |
+| El convento sobre un centro de peregrinación | 3-5 | 40/11 |
+| El Castillo y la serpiente de luz | 4-1 | 136/11 |
+| El cacao, ofrenda y moneda | 4-3 | 108/11 |
+| Monos araña de Punta Laguna | 4-5 | 46/11 |
+| El arrecife de Puerto Morelos (bajo el agua) | 5-2 | 76/11 |
+| Las aguas claras de Yal-kú | 5-6 | 66/11 |
+| El Castillo de Tulum | 6-1 | 122/11 |
+| Chacchoben y sus lagunas | 6-4 | 80/11 |
+| Las Tres Torres de Xpuhil | 7-1 | 102/11 |
+| La gran Estructura II | 7-3 | 92/11 |
 
 `World` limita los ids a marcas del nivel y `Game` los conserva al reaparecer. `HudState.discoveries` publica una copia completa y participa en `hudKey`, sin perder recogidas entre publicaciones. `GameScreen` entrega el progreso inicial y llama a `syncDiscoveries(run, ids)`; el store ignora partidas antiguas e ids ajenos al nivel. Solo escribe si hay páginas nuevas. El aviso tiene cola, se oculta en pausa/resultados y no captura entradas.
 
@@ -44,8 +56,8 @@ El diálogo tiene nombre accesible, foco contenido con Tab/Mayús+Tab, cierre co
 
 1. Añade una entrada con id estable y fuentes verificadas. Nunca reutilices ids publicados.
 2. Coloca su op en el nivel correspondiente, en una zona accesible que permita observar sin dañar fauna o patrimonio. El nivel debe estar en `PLAYABLE_LEVELS`.
-3. Si necesita otra fotografía, usa el catálogo de procedencias y conserva créditos/licencias. Revisa contenido cultural sensible con especialistas o hablantes.
-4. Amplía las pruebas de catálogo, recogidas y recorridos; actualiza el número esperado del piloto.
+3. Añade su fotografía a `imagenes/fotos-cuaderno/sources.json` (archivo de Commons con licencia libre, que muestre el tema de la página, con pie y texto alternativo honestos) y ejecuta `python imagenes/import_notebook_photos.py`. Nunca reutilices la foto de la estación. Revisa contenido cultural sensible con especialistas o hablantes.
+4. Amplía las pruebas de catálogo, recogidas y recorridos; actualiza el número esperado en `explorerNotebook.test.ts` (que también exige foto propia, archivo existente y crédito).
 
 Pruebas en `explorerNotebook.test.ts`, `store/explorerNotebook.test.ts`, `engine/entities/discoveries.test.ts`, `engine/Game.test.ts` y `ui/components/notebook/ExplorerNotebook.test.tsx`: saneamiento, guardados anteriores, publicaciones antiguas, duplicados, muerte, HUD, créditos y aproximación a las nueve marcas con física real.
 

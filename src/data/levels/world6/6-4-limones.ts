@@ -26,6 +26,7 @@ export const LEVEL_6_4: LevelDef = {
   darkness: { radius: 190, alpha: 0.82 },
   hint: 'Las luciérnagas marcan los bordes y los peligros. Si ves una luz quieta, ¡hay algo cerca!',
   ops: [
+    ['discovery', 80, 11, 'limones-chacchoben'],
     ['row', 12, 8, '?M?'], ['coins', 16, 9, 4],
     // Fosos con luciérnagas en sus bordes.
     ['pit', 30, 34], ['pit', 58, 63], ['pit', 86, 91], ['pit', 118, 123], ['pit', 140, 149], ['pit', 176, 180],

@@ -80,6 +80,7 @@ export const LEVEL_2_4: LevelDef = {
   theme: 'mangrove',
   checkpoint: 124,
   ops: [
+    ['discovery', 16, 11, 'petenes-manglares'],
     // --- Orilla de lodo ---
     ['row', 9, 8, '?M?'], ['coins', 14, 7, 3],
     ['col', 19, 2], ['coins', 19, 4, 2],

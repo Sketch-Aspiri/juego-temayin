@@ -9,6 +9,7 @@ export const LEVEL_5_2: LevelDef = {
   checkpoint: 98, time: 360,
   hint: 'Usa el snorkel de caracol y detente en las burbujas para recuperar oxígeno. ¡Cuidemos el arrecife del pez león invasor!',
   ops: [
+    ['discovery', 76, 11, 'morelos-arrecife'],
     // Preparación en tierra; cada respiradero queda a doce bloques del siguiente.
     ['row', 9, 8, 'MS'], ['row', 11, 6, 'F'], ['pit', 16, 92], ['water', 16, 92, 3],
     ['bubbles', 20, 11], ['bubbles', 32, 11], ['bubbles', 44, 11],

@@ -8,6 +8,7 @@ export const LEVEL_3_5: LevelDef = {
   hint: 'Los ojos anuncian el arco real. Reenciende antorchas con fuego y salta las ondas. ¡Písalo cuando vea estrellas!',
   boss: { id: 'huayChivo', x: 75, arena: [63, 85] },
   ops: [
+    ['discovery', 40, 11, 'izamal-convento'],
     ['row', 10, 8, '?BM?'], ['coins', 15, 10, 5], ['spawn', 'alux', 24],
     ['stairs', 29, 3, 1], ['stairs', 33, 3, -1], ['coins', 29, 6, 6],
     ['row', 43, 8, 'BFB'], ['coins', 49, 10, 5], ['row', 57, 8, 'M'], ['row', 58, 9, 'F'],

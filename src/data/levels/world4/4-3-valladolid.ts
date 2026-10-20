@@ -13,6 +13,7 @@ export const LEVEL_4_3: LevelDef = {
   darkness: { radius: 230, alpha: 0.5 },
   hint: 'Busca las bolsas de aire sobre el agua para recuperar el oxígeno.',
   ops: [
+    ['discovery', 108, 11, 'valladolid-cacao'],
     // Plaza de entrada y terrazas de descenso al cenote Zací.
     ['row', 9, 8, '?M?'], ['coins', 14, 5, 4],
     ['stairs', 18, 4, 1], ...mesa(22, 4, 8),

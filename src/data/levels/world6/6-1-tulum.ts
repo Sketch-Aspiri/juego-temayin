@@ -29,6 +29,7 @@ export const LEVEL_6_1: LevelDef = {
   // TODO(cultura): confirmar con fuentes del INAH la redacción sobre Tulum (muralla, acantilado, nombre maya Zamá).
   hint: 'Tulum, la ciudad amurallada, vigila el Caribe desde su acantilado. Salta dentro de las térmicas para llegar más lejos.',
   ops: [
+    ['discovery', 122, 11, 'tulum-castillo'],
     // Llanura de entrada.
     ['row', 9, 8, '?M?'], ['coins', 14, 9, 5],
     // Terrazas de ascenso hasta la cima (fila 3) y descenso a la meseta de la grieta.

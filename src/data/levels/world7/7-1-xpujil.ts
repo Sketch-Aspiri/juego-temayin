@@ -5,6 +5,7 @@ export const LEVEL_7_1: LevelDef = {
   id: '7-1', name: 'Xpujil', theme: 'rioBec', width: 188, time: 360, checkpoint: 88,
   hint: 'Las tres torres de Xpuhil pertenecen al estilo Río Bec. Sus escalinatas son decorativas: sigue los senderos y las plataformas junto a ellas.',
   ops: [
+    ['discovery', 102, 11, 'xpujil-tres-torres'],
     ['row', 10, 8, '?MF'], ['coins', 18, 9, 5], ['stairs', 22, 3, 1],
     ['pit', 32, 36], ['coins', 32, 8, 5], ['plat', 42, 9, 5], ['coins', 42, 8, 5],
     ['col', 54, 2], ['col', 55, 2], ['coins', 54, 8, 4], ['pit', 68, 72],

@@ -37,6 +37,7 @@ export const LEVEL_4_1: LevelDef = {
   theme: 'ruins',
   checkpoint: 112,
   ops: [
+    ['discovery', 136, 11, 'chichen-castillo'],
     // Gran Explanada: la pelota y un aro de práctica
     ['row', 10, 8, 'B?P?B'],
     ['coins', 17, 9, 3],

@@ -38,6 +38,7 @@ export const LEVEL_4_5: LevelDef = {
   checkpoint: 50,
   boss: { id: 'huayPek', x: 76, arena: [62, 83] },
   ops: [
+    ['discovery', 46, 11, 'nuevo-xcan-mono-arana'],
     // --- Camino entre la selva ---
     ['row', 8, 8, '?B?'], ['coins', 8, 4, 3],
     ['pit', 18, 21], ['coins', 18, 8, 4],
