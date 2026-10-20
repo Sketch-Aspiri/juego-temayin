@@ -21,7 +21,7 @@ Abre [galeria.html](galeria.html) para revisar las imágenes y sus recortes. [ca
 | Toldo de Cancún | 1 |
 | **Total** | **77** |
 
-Los originales se conservan en `originales/`. Los prompts están junto a cada PNG o en `actualizados/prompts/`. Las variantes descartadas se conservan fuera del catálogo final.
+Los originales utilizados por los importadores, el catálogo y las pruebas se conservan en `nuevos/` y `actualizados/`. Los prompts están junto a cada PNG o en `actualizados/prompts/`. Las copias históricas de `originales/` y las variantes descartadas sin referencias se retiraron; se pueden recuperar del historial de Git. Todo el material de Hanal Pixán se conserva.
 
 ## Uso de los atlas
 

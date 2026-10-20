@@ -5,6 +5,8 @@ Resume la arquitectura real, las convenciones, la **biblia del juego** (historia
 
 > Si algo de este documento contradice al código, **el código manda**: corrige el documento en el mismo cambio.
 
+> Recursos tras la limpieza: se conservan los archivos utilizados por el juego, los importadores, el catálogo y las pruebas, junto con sus prompts, atlas, licencias y todo Hanal Pixán. Las rutas de capturas e informes de verificación que aparecen en esta guía son destinos regenerables de `imagenes/verify_*.py`; salvo Hanal Pixán, sus salidas antiguas se retiraron y permanecen los resúmenes Markdown. Las copias históricas sin lectores y las variantes descartadas quedan en el historial de Git.
+
 ---
 
 ## Índice
