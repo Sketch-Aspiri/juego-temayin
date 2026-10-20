@@ -6,6 +6,8 @@ Piloto de nueve páginas en Palenque, Campeche y Bacalar. Comprobado mediante pr
 
 ## Resultados
 
+- Revisión estética: pergamino nuevo con marco de nueve zonas, grecas confinadas al borde e índice jade. Retrato nuevo de Toh visible en encabezado, portada y consejos. PNG y WebP comparados píxel a píxel; transparencia del retrato conservada. Un fallo forzado de ambos recursos mantiene papel legible y utiliza el sprite original de Toh.
+
 - Colección inicial vacía, nueve páginas pendientes sin títulos revelados y sin cargar fotografías innecesarias.
 - Nueve marcas recogidas por contacto desde aproximaciones preparadas, con física y oxígeno activos. No se inyectan descubrimientos en el guardado. La marca de estromatolitos se alcanza sin dañar ningún tramo.
 - Guardado inmediato, conservación al morir/reaparecer, recarga con las nueve páginas y persistencia de lectura. Las pruebas de store cubren v3 anterior, migración v2, bolsa, ajustes y boletos, saneamiento independiente, duplicados y publicaciones antiguas.
@@ -22,3 +24,5 @@ Piloto de nueve páginas en Palenque, Campeche y Bacalar. Comprobado mediante pr
 3. `npm test` y `npm run build`
 
 Capturas e informe JSON regenerables en `imagenes/.temp/cuaderno-explorador/`. `TEMAYIN_QA_URL` cambia el servidor. Los recorridos no evalúan dificultad humana ni sustituyen pruebas en un teléfono físico. No se añaden audio ni insignias en este piloto.
+
+Arte sobre producción: `python imagenes/verify_notebook_art.py`, contra `npm run preview -- --port 5195` (o `TEMAYIN_NOTEBOOK_ART_URL`). Capturas e informe en `imagenes/.temp/cuaderno-pergamino/`. Usa colecciones de QA preparadas para comprobar portada, nueve lecturas, decodificación real del pergamino, retrato de Toh, teclado y tres tamaños táctiles; fuerza el fallo de los recursos nuevos para comprobar sus respaldos.

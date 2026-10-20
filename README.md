@@ -59,6 +59,8 @@ El motor publica a React un `HudState` solo cuando cambia, por lo que la interfa
 
 ## Contenido actual
 
+- **Arte del cuaderno de Toh:** pergamino con bordes gastados y grecas en jade/terracota, índice verde y retrato ilustrado de Toh en portada, encabezado y consejos. Recursos nuevos de `image_gen` integrado, con [originales, prompts y guía](imagenes/nuevos/cuaderno-toh/README.md), WebP sin pérdidas y respaldo con el sprite existente. El marco conserva una zona limpia de lectura en escritorio y móvil.
+
 - **Cuaderno de explorador de Toh:** nueve páginas opcionales en Palenque, Campeche y Bacalar. Las marcas de pluma registran observaciones al tocarlas y se guardan al instante, incluso al morir o salir. Incluye filtros, páginas nuevas, fotografías acreditadas del entorno y fuentes; se consulta desde menú, mapa, pausa y resultados. Cerrar conserva el nivel y la pausa. Los guardados anteriores mantienen sus datos y comienzan con la colección vacía. [Contenido y ampliación](src/data/explorerNotebook/README.md). Revisión: `python imagenes/verify_explorer_notebook.py`.
 
 - **Fichas de viaje de Toh:** seleccionar cualquiera de los 39 destinos abre una fotografía real acreditada, un dato curioso, una descripción y dos datos adicionales. Incluye enlaces a secciones y páginas de la Gran Guía Tren Maya del INAH, avisos de contexto regional y distinción entre lugares reales y ficción. Las fotos se incluyen en el build y el botón Jugar permanece fijo al leer. Conserva progreso, bloqueos y secretos. [Contenido y fuentes](src/data/stationInfo/README.md), [créditos fotográficos](imagenes/fotos-estaciones/README.md). Revisión: `python imagenes/verify_station_info.py`.

@@ -1,6 +1,7 @@
 import type { NotebookEntry } from '../../../data/explorerNotebook';
 import { STATION_PHOTOS } from '../../../data/stationInfo/photos';
 import { StationPhoto } from '../map/StationPhoto';
+import { NotebookToh } from './NotebookToh';
 
 export function NotebookPage({ entry, onIndex }: { entry: NotebookEntry; onIndex?: () => void }) {
   const photo = STATION_PHOTOS[entry.levelId];
@@ -9,7 +10,7 @@ export function NotebookPage({ entry, onIndex }: { entry: NotebookEntry; onIndex
     <p className="notebook-eyebrow">{entry.category} <span> / </span> {entry.place}</p>
     <h3 id="notebook-page-title">{entry.title}</h3>
     <p className="notebook-page__text">{entry.text}</p>
-    <aside className="notebook-page__toh"><span aria-hidden="true">✦</span><div><strong>Una pista de Toh</strong><p>{entry.toh}</p></div></aside>
+    <aside className="notebook-page__toh"><NotebookToh portrait decorative /><div><strong>Una pista de Toh</strong><p>{entry.toh}</p></div></aside>
     <div className="notebook-page__photo">
       <p className="notebook-eyebrow">El lugar real</p>
       <StationPhoto key={entry.id} photo={photo}><span className="notebook-photo-label">Entorno del descubrimiento</span></StationPhoto>

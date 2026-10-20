@@ -33,6 +33,21 @@ def opened(page):
     check(page.evaluate('document.querySelector("dialog.notebook").contains(document.activeElement)'), 'El foco entra en el cuaderno')
 
 
+def ready_art(page):
+    page.wait_for_function('document.querySelector(".notebook-header .notebook-toh__image")?.naturalWidth > 0')
+    page.wait_for_function('Array.from(document.querySelectorAll(".notebook-toh__image")).every(image => image.complete && image.naturalWidth > 0)')
+    width = page.evaluate('''async () => {
+      const source = getComputedStyle(document.querySelector('.notebook')).borderImageSource;
+      const image = new Image(); image.src = source.slice(5, -2);
+      await image.decode(); return image.naturalWidth;
+    }''')
+    check(width == 1536, 'Textura del pergamino descargada y decodificada')
+    page.evaluate('''async () => {
+      await Promise.all(Array.from(document.querySelectorAll('.notebook img')).map(image => image.decode()));
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    }''')
+
+
 def initial_checks(page):
     page.goto(URL)
     page.wait_for_load_state('networkidle')
@@ -40,7 +55,10 @@ def initial_checks(page):
     opened(page)
     check(page.locator('[data-discovery]:disabled').count() == 9, 'Nueve páginas pendientes al comenzar')
     check(page.locator('.notebook-progress').inner_text().startswith('0'), 'Colección vacía')
-    check(page.locator('.notebook img').count() == 0, 'No descarga fotografías de páginas pendientes')
+    check(page.locator('.notebook .station-photo img').count() == 0, 'No descarga fotografías de páginas pendientes')
+    page.wait_for_function('Array.from(document.querySelectorAll(".notebook-toh__image")).every(image => image.complete && image.naturalWidth > 0)')
+    check(page.locator('.notebook-header .notebook-toh__image').is_visible(), 'Retrato de Toh visible en el encabezado')
+    check(page.locator('.notebook-cover .notebook-toh__image').is_visible(), 'Toh completo visible en la portada')
     page.screenshot(path=str(OUTPUT / 'cuaderno-inicial.png'))
     page.keyboard.press('Escape')
     check(page.locator('dialog').count() == 0, 'Escape cierra el cuaderno')
@@ -152,7 +170,7 @@ def collection_checks(page):
     for mark_id in [item for ids in marks.values() for item in ids]:
         page.locator(f'[data-discovery="{mark_id}"]').click()
         page.locator(f'[data-notebook-page="{mark_id}"]').wait_for()
-        page.wait_for_function('document.querySelector(".notebook-page img")?.naturalWidth > 0')
+        page.wait_for_function('document.querySelector(".notebook-page .station-photo img")?.naturalWidth > 0')
     page.screenshot(path=str(OUTPUT / 'cuaderno-completo.png'))
     page.keyboard.press('Escape')
     check(page.evaluate('qa.store.getState().progress.readDiscoveries.length') == 9, 'Guarda las nueve lecturas')
@@ -198,6 +216,21 @@ def route_checks(page):
     RESULTS.append('Tres recorridos desde inicio a checkpoint y meta, y tres desde checkpoint; entradas físicas con contacto protegido, sin teletransporte.')
 
 
+def art_fallback_checks(page):
+    page.route('**/assets/cuaderno/*.webp', lambda route: route.abort())
+    page.reload()
+    page.wait_for_load_state('networkidle')
+    page.get_by_role('button', name='Cuaderno de Toh', exact=True).click()
+    opened(page)
+    page.locator('.notebook-cover .notebook-toh__fallback').wait_for()
+    page.wait_for_function('getComputedStyle(document.querySelector(".notebook-toh__fallback")).backgroundImage !== "none"')
+    check(page.locator('.notebook-cover h3').is_visible(), 'Sin el arte nuevo sigue disponible la lectura')
+    page.screenshot(path=str(OUTPUT / 'arte-respaldo.png'))
+    page.keyboard.press('Escape')
+    page.unroute('**/assets/cuaderno/*.webp')
+    RESULTS.append('Pergamino e ilustraciones nuevos, retratos de Toh y respaldo al fallar el arte: papel legible y sprite original.')
+
+
 def mobile_checks(browser, saved):
     for width, height in [(390, 844), (320, 740), (844, 390)]:
         context = browser.new_context(viewport={'width': width, 'height': height}, has_touch=True, is_mobile=True, reduced_motion='reduce')
@@ -217,6 +250,8 @@ def mobile_checks(browser, saved):
         opened(page)
         page.locator('[data-discovery="bacalar-estromatolitos"]').tap()
         page.locator('[data-notebook-page="bacalar-estromatolitos"]').wait_for()
+        ready_art(page)
+        page.wait_for_function('document.querySelector(".notebook-page .station-photo img")?.naturalWidth > 0')
         check(page.evaluate('document.documentElement.scrollWidth <= innerWidth'), 'Sin desbordamiento horizontal')
         close = page.get_by_role('button', name='Cerrar cuaderno').bounding_box()
         check(close['y'] >= 0 and close['y'] + close['height'] <= height, 'Cierre siempre visible')
@@ -238,6 +273,7 @@ def main():
             collection_checks(page)
             saved = reload_checks(page)
             mobile_checks(browser, saved)
+            art_fallback_checks(page)
             route_checks(page)
         except Exception:
             page.screenshot(path=str(OUTPUT / 'fallo.png'))

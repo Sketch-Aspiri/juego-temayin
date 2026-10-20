@@ -1,12 +1,24 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { getNotebookEntry, NOTEBOOK_ENTRIES, type NotebookEntry } from '../../../data/explorerNotebook';
+import { NOTEBOOK_ART } from '../../../data/explorerNotebook/art';
+import { assetUrl } from '../../../engine/assets';
 import { useAppStore } from '../../../store/appStore';
 import type { Progress } from '../../../store/progress';
 import { NotebookPage } from './NotebookPage';
+import { NotebookCover } from './NotebookCover';
+import { NotebookToh } from './NotebookToh';
 import '../map/stationInfo.css';
 
 const CATEGORIES = [...new Set(NOTEBOOK_ENTRIES.map(entry => entry.category))];
 const PLACES = [...new Set(NOTEBOOK_ENTRIES.map(entry => entry.place))];
+
+/** La URL absoluta evita resolver la textura respecto al archivo CSS del build. */
+function showNotebook(element: HTMLDialogElement | null): void {
+  if (!element) return;
+  const paperUrl = new URL(assetUrl(NOTEBOOK_ART.parchment), document.baseURI).href;
+  element.style.setProperty('--notebook-paper', `url("${paperUrl}")`);
+  element.showModal();
+}
 
 /** Evita que Tab deje el foco en la barra del navegador al llegar al extremo del diálogo. */
 function containNotebookFocus(event: KeyboardEvent<HTMLDialogElement>): void {
@@ -52,6 +64,7 @@ interface NotebookIndexProps extends NotebookCollectionProps {
 
 function NotebookIndex({ progress, category, place, onCategory, onPlace, ...collection }: NotebookIndexProps) {
   return <section className="notebook-index" aria-label="Colección de descubrimientos">
+    <p className="notebook-index__title">Índice del viaje</p>
     <div className="notebook-progress"><strong>{progress.discoveries.length}<span> / {NOTEBOOK_ENTRIES.length}</span></strong><p>descubrimientos registrados</p></div>
     <progress value={progress.discoveries.length} max={NOTEBOOK_ENTRIES.length} aria-label="Descubrimientos registrados" />
     <div className="notebook-filters"><label>Categoría<select aria-label="Categoría" value={category} onChange={event => onCategory(event.target.value)}>
@@ -76,7 +89,7 @@ export function ExplorerNotebook({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     const element = dialog.current;
     const previousOverflow = document.body.style.overflow;
-    element?.showModal();
+    showNotebook(element);
     document.body.style.overflow = 'hidden';
     return () => { element?.close(); document.body.style.overflow = previousOverflow; };
   }, []);
@@ -95,8 +108,8 @@ export function ExplorerNotebook({ onClose }: { onClose: () => void }) {
 
   return <dialog ref={dialog} className="notebook" aria-labelledby="notebook-title"
     onCancel={event => { event.preventDefault(); onClose(); }} onKeyDown={containNotebookFocus}>
-    <header className="notebook-header"><div><p className="notebook-eyebrow">Temayin · Diario de viaje</p>
-      <h2 id="notebook-title">Cuaderno de explorador</h2><p>Las pequeñas maravillas que Toh guarda contigo.</p></div>
+    <header className="notebook-header"><div className="notebook-header__identity"><NotebookToh portrait decorative /><div><p className="notebook-eyebrow">Temayin · Las notas de Toh</p>
+      <h2 id="notebook-title">Cuaderno de explorador</h2><p>Un viaje para observar, descubrir y cuidar.</p></div></div>
       <button type="button" className="notebook-close" onClick={onClose} aria-label="Cerrar cuaderno">✕</button></header>
     <div className="notebook-body"><NotebookIndex progress={progress} entries={entries} selected={selected} onSelect={select}
       category={category} place={place} onCategory={setCategory} onPlace={setPlace} /><div className="notebook-reading" ref={reading}>
@@ -104,12 +117,4 @@ export function ExplorerNotebook({ onClose }: { onClose: () => void }) {
     </div></div>
     <footer className="notebook-footer"><span>Observa · Descubre · Cuida</span><span>Selecciona una página para leerla</span></footer>
   </dialog>;
-}
-
-function NotebookCover() {
-  return <div className="notebook-cover"><div className="notebook-cover__seal" aria-hidden="true">✦</div>
-    <p className="notebook-eyebrow">Una aventura para mirar de cerca</p><h3>Cada lugar<br />guarda una historia.</h3>
-    <p>Busca las marcas de pluma en Palenque, Campeche y Bacalar. Al tocarlas registrarás una observación para leer aquí, cuando quieras.</p>
-    <p className="notebook-cover__note">Los descubrimientos se guardan al encontrarlos, aunque pierdas una vida o salgas del nivel.</p>
-    <span className="notebook-cover__signature">Con cariño, Toh</span></div>;
 }

@@ -34,6 +34,8 @@ Las fotos locales de `STATION_PHOTOS` conservan texto alternativo, autor, proced
 
 ## Lectura e interacción
 
+El diseño utiliza una textura nueva de pergamino con grecas en jade/terracota, enmarcada por nueve zonas para conservar espacio limpio de lectura. Una ilustración nueva de Toh aparece completa en portada y como retrato en encabezado y consejos; si falla, se recupera su sprite original. Arte generado con `image_gen` integrado, PNG originales, prompts y exportación WebP sin pérdidas en [la guía de arte](../../../imagenes/nuevos/cuaderno-toh/README.md). Es una interpretación de aventura, sin presentar adornos como escritura maya auténtica. Los recursos se registran en `art.ts` y se sirven respetando la ruta base de Vite.
+
 `NotebookButton` monta un diálogo nativo modal compartido. No cambia `Screen` ni desmonta `GameScreen`: cerrar devuelve a pausa/resultados y únicamente Continuar reanuda la simulación. El índice filtra por lugar y categoría, explica combinaciones vacías y oculta el título de las páginas pendientes. Abrir el índice no marca páginas leídas; seleccionarlas sí.
 
 El diálogo tiene nombre accesible, foco contenido con Tab/Mayús+Tab, cierre con Escape y restauración del foco al origen. Las teclas del cuaderno no llegan al juego. En escritorio, índice y lectura se desplazan por separado; en móvil, la selección lleva a la lectura en una columna con cierre siempre visible. Utiliza fuentes locales y no añade animaciones.
