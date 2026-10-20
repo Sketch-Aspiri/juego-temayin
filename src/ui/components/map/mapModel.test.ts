@@ -39,7 +39,7 @@ describe('Descubrimiento de mundos en el mapa', () => {
   });
 
   it('retira las nubes del siguiente mundo al completar el jefe', () => {
-    const progress: Progress = { levels: { '1-6': record }, tickets: [] };
+    const progress: Progress = { ...EMPTY_PROGRESS, levels: { '1-6': record }, tickets: [] };
     const html = renderToStaticMarkup(createElement(MapFog, { progress, maskId: 'test-fog' }));
     expect(worldDiscovered(progress, WORLDS[1])).toBe(true);
     expect(html).not.toContain('data-cloud-world="golfo-campeche"');
@@ -49,7 +49,7 @@ describe('Descubrimiento de mundos en el mapa', () => {
   });
 
   it('respeta récords migrados y boletos aunque falten estaciones anteriores', () => {
-    const progress: Progress = { levels: { '5-3': record }, tickets: ['yucatan-haciendas'] };
+    const progress: Progress = { ...EMPTY_PROGRESS, levels: { '5-3': record }, tickets: ['yucatan-haciendas'] };
     expect(worldDiscovered(progress, WORLDS[4])).toBe(true);
     expect(worldDiscovered(progress, WORLDS[2])).toBe(true);
     expect(worldDiscovered(progress, WORLDS[1])).toBe(false);
@@ -68,7 +68,7 @@ describe('Descubrimiento de mundos en el mapa', () => {
         expect(point.y).toBeLessThan(view.y + view.height);
       }
     }
-    const completed: Progress = { levels: Object.fromEntries(ALL_LEVELS.map(level => [level.id, record])), tickets: [] };
+    const completed: Progress = { ...EMPTY_PROGRESS, levels: Object.fromEntries(ALL_LEVELS.map(level => [level.id, record])), tickets: [] };
     const html = renderToStaticMarkup(createElement(MapFog, { progress: completed, maskId: 'all-fog' }));
     expect(html.match(/data-cloud-world=/g) ?? []).toHaveLength(0);
   });

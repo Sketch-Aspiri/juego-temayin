@@ -32,11 +32,11 @@ describe('Progreso de boletos', () => {
   });
 
   it('carga récords antiguos sin boletos y sanea boletos sin descartar los nuevos récords', () => {
-    expect(sanitizeProgress({ levels: { '1-6': record } })).toEqual({ levels: { '1-6': record }, tickets: [] });
+    expect(sanitizeProgress({ levels: { '1-6': record } })).toEqual({ ...EMPTY_PROGRESS, levels: { '1-6': record }, tickets: [] });
     const raw = { levels: { [first.bonus!.id]: record, '1-1': record },
       tickets: [first.id, first.id, 3, null, 'desconocido', WORLDS[1].id] };
     const before = structuredClone(raw);
-    expect(sanitizeProgress(raw)).toEqual({ levels: raw.levels, tickets: [first.id, WORLDS[1].id] });
+    expect(sanitizeProgress(raw)).toEqual({ ...EMPTY_PROGRESS, levels: raw.levels, tickets: [first.id, WORLDS[1].id] });
     expect(raw).toEqual(before);
     for (const tickets of [null, 'selva-palenque', {}, 4])
       expect(sanitizeProgress({ levels: {}, tickets }).tickets).toEqual([]);

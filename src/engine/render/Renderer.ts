@@ -37,6 +37,7 @@ import { drawWind } from './wind';
 import { drawFireflies } from './fireflies';
 import { drawStromatolites } from './stromatolites';
 import { drawTickets } from './tickets';
+import { drawDiscoveries } from './discoveries';
 import { drawHanalDecorations, drawHanalEnemy, drawHanalPlayer } from './hanalPixan';
 
 const BUMP_HEIGHT = 10;
@@ -118,6 +119,7 @@ export class Renderer {
     drawWind(c, world, now);
     drawWaterLayer(c, world, theme.water, now);
     drawTickets(c, world, now);
+    drawDiscoveries(c, world);
     drawParticles(c, world.particles, world.popups, world.camX);
     c.restore();
     this.lighting.draw(c, world);

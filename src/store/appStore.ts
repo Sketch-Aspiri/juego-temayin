@@ -11,6 +11,7 @@ import { EMPTY_PROGRESS, isUnlocked, recordCompletion, recordTicket, type Progre
 import type { Settings } from './settings';
 import { EMPTY_WALLET, isCacao, type Wallet } from './wallet';
 import { rewardBlessings } from './rewards';
+import { readDiscovery, recordDiscoveries } from './explorerNotebook';
 
 export type Screen = 'loading' | 'title' | 'intro' | 'history' | 'levels' | 'offering' | 'game' | 'settings';
 
@@ -33,6 +34,8 @@ interface AppState {
   /** Solo se aceptan publicaciones del motor de la partida vigente. */
   syncCacao: (run: Run, cacao: number) => void;
   syncTicket: (run: Run, collected: boolean) => void;
+  syncDiscoveries: (run: Run, ids: readonly string[]) => void;
+  readDiscovery: (id: string) => void;
   /** Nivel que empieza al terminar la cinemática (`null`: volver al título). */
   introNext: string | null;
   introCarry: Session | null;
@@ -121,6 +124,22 @@ export const useAppStore = create<AppState>((set, get) => {
       // Solo un nivel con boleto puede originar el desbloqueo.
       if (!world || !getLevel(run.levelId)?.ops.some(op => op[0] === 'ticket')) return;
       const progress = recordTicket(get().progress, world.id);
+      if (progress === get().progress) return;
+      set({ progress });
+      persist();
+    },
+
+    syncDiscoveries: (run, ids) => {
+      if (get().run !== run) return;
+      const allowed = getLevel(run.levelId)?.ops.filter(op => op[0] === 'discovery').map(op => op[3]) ?? [];
+      const progress = recordDiscoveries(get().progress, ids.filter(id => allowed.includes(id)));
+      if (progress === get().progress) return;
+      set({ progress });
+      persist();
+    },
+
+    readDiscovery: (id) => {
+      const progress = readDiscovery(get().progress, id);
       if (progress === get().progress) return;
       set({ progress });
       persist();

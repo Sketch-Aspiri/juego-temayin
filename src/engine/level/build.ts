@@ -9,6 +9,7 @@ import { CRUMBLE_TILE, type CrumbleSpan } from '../entities/crumble';
 import { STROMATOLITE_TILE } from '../entities/stromatolites';
 import { HOOP_COINS, type HoopSpec } from '../entities/hoops';
 import { createTicket, type Ticket } from '../entities/tickets';
+import { createDiscovery, type Discovery } from '../entities/discoveries';
 import type { SlowZone } from './slowZones';
 import type { LevelDef } from './types';
 import type { BubbleVent, CurrentZone, WaterZone } from './zones';
@@ -20,6 +21,7 @@ export interface EnemySpawn {
 }
 
 export interface BuiltLevel {
+  readonly discoveries: readonly Discovery[];
   readonly tickets: readonly Ticket[];
   /** Hamacas, columpios y luces independientes de la cuadrícula. */
   hammocks: readonly Hammock[];
@@ -72,6 +74,7 @@ export function buildLevel(def: LevelDef): BuiltLevel {
 
   const enemies: EnemySpawn[] = [];
   const tickets: Ticket[] = [];
+  const discoveries: Discovery[] = [];
   const hammocks: Hammock[] = [];
   const ropes: RopeDef[] = [];
   const lights: LightSource[] = [];
@@ -91,6 +94,7 @@ export function buildLevel(def: LevelDef): BuiltLevel {
 
   for (const op of def.ops) {
     switch (op[0]) {
+      case 'discovery': discoveries.push(createDiscovery(op[1], op[2], op[3])); break;
       case 'ticket': tickets.push(createTicket(op[1], op[2])); break;
       case 'truck': platforms.push({ kind: 'mover', appearance: 'truck', x: op[1], y: op[2], length: op[3], dx: op[4], dy: 0, period: op[5] }); break;
       case 'hammock': hammocks.push(createHammock(op[1], op[2], op[3])); break;
@@ -202,5 +206,5 @@ export function buildLevel(def: LevelDef): BuiltLevel {
   for (const row of grid) for (const c of row) if (c === 'o' || c === '?') totalCoins++;
   totalCoins += hoops.length * HOOP_COINS; // cacao que suelta cada aro al encestar
 
-  return { tickets, grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles, crumbles, platforms, hammocks, ropes, lights, hoops, slowZones, cannons, winds, fireflies, stromatolites };
+  return { discoveries, tickets, grid, width: W, enemies, flagX, templeX, totalCoins, water, currents, bubbles, crumbles, platforms, hammocks, ropes, lights, hoops, slowZones, cannons, winds, fireflies, stromatolites };
 }

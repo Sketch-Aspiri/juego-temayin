@@ -23,6 +23,9 @@ export const LEVEL_6_5: LevelDef = {
   // TODO(cultura): revisar con especialistas el dato sobre los estromatolitos (edad, nombre maya de Bacalar).
   hint: 'Los estromatolitos de Bacalar los construyen microbios vivos, y algunos tienen miles de años. ¡Nada por encima y no los pises!',
   ops: [
+    ['discovery', 32, 11, 'bacalar-laguna'],
+    ['discovery', 60, 10, 'bacalar-estromatolitos'],
+    ['discovery', 154, 11, 'bacalar-fuerte'],
     ['row', 10, 8, '?M?'], ['coins', 14, 9, 4], ['row', 24, 8, 'B?B'],
     // Laguna A.
     ['pit', 36, 72], ['water', 36, 72, 10],

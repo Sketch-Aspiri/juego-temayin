@@ -7,6 +7,7 @@ import { MapAttribution } from '../components/map/MapAttribution';
 import { MapChart } from '../components/map/MapChart';
 import { MapItinerary } from '../components/map/MapItinerary';
 import { MapNavigation } from '../components/map/MapNavigation';
+import { NotebookButton } from '../components/notebook/NotebookButton';
 import { fitMapView, FULL_MAP, latestStation, panelCoversZoom, sidePanelInset, worldForStation, worldView } from '../components/map/mapModel';
 import { useMapViewport } from '../components/map/useMapViewport';
 import '../peninsulaMap.css';
@@ -55,6 +56,7 @@ export function PeninsulaMap({ onPlay }: { onPlay: (id: string) => void }) {
     </div></div>
     <div className="map-dock"><button ref={dockRef} type="button" className="btn" aria-expanded={panelOpen} aria-controls="station-panel"
       onClick={() => panelOpen ? closePanel() : setPanelOpen(true)}>Estaciones</button>
+      <NotebookButton className="btn map-dock__notebook" />
       {!panelOpen && <button type="button" className="btn btn--primary" disabled={!isUnlocked(progress, selected.id)} onClick={() => onPlay(selected.id)}>Jugar {selected.id} →</button>}
       {!panelOpen && <button type="button" className="btn map-dock__seasonal" onClick={() => onPlay(HANAL_PIXAN_LEVEL.id)}>✦ Hanal Pixán</button>}</div>
   </section>;

@@ -103,7 +103,10 @@ import type { Darkness } from '../render/lighting';
  *                                           su centro se enciende una vez: +2000 puntos y
  *                                           5 granos de cacao (incluidos en `totalCoins`)
  */
+/** `discovery`: marca de observación no sólida en columna/fila, con id estable de página;
+ * se registra al tocarla, sin cambiar terreno, cacao ni estrellas. */
 export type Op =
+  | readonly ['discovery', number, number, string]
   | readonly ['ticket', number, number]
   | readonly ['boat' | 'turtle', number, number, number, number, number, number]
   // Vagoneta: ['truck', x, y, largo, recorridoHorizontal, periodoEnSegundos].

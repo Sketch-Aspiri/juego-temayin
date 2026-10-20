@@ -30,12 +30,12 @@ describe('Bendiciones durante la partida', () => {
   });
   afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
-  function make(): Game {
+  function make(levelId = '1-3', discoveries: readonly string[] = []): Game {
     const input = new Input();
     vi.spyOn(input, 'attach').mockImplementation(() => undefined);
     vi.spyOn(input, 'detach').mockImplementation(() => undefined);
     return new Game({ canvas: {} as HTMLCanvasElement, assets: {} as Assets, input, audio: new AudioEngine(),
-      level: getLevel('1-3')!, session: { score: 0, coins: 150, lives: START_LIVES },
+      level: getLevel(levelId)!, discoveries, session: { score: 0, coins: 150, lives: START_LIVES },
       initialBlessings: ['fire', 'shield', 'life'], callbacks: { onHud, onComplete, onGameOver } });
   }
 
@@ -77,6 +77,17 @@ describe('Bendiciones durante la partida', () => {
     expect(onHud).toHaveBeenLastCalledWith(expect.objectContaining({ ticket: true }));
     game.stop();
     expect(onHud).toHaveBeenLastCalledWith(expect.objectContaining({ ticket: true }));
+  });
+
+  it('conserva observaciones guardadas y nuevas al morir y al publicar antes de salir', () => {
+    const game = make('1-1', ['palenque-orquideas']); game.start(); advance(0.1);
+    current.player.x = 10 * 40; advance(0.1);
+    expect(current.discoveries).toEqual(['palenque-orquideas', 'palenque-palacio']);
+    current.checkpointReached = true;
+    current.die(); advance(DEATH_DELAY + 0.2);
+    expect(current.discoveries).toEqual(['palenque-orquideas', 'palenque-palacio']);
+    game.stop();
+    expect(onHud).toHaveBeenLastCalledWith(expect.objectContaining({ discoveries: ['palenque-orquideas', 'palenque-palacio'] }));
   });
 
   it('publica el último saldo al salir y lo conserva al perder todas las vidas', () => {

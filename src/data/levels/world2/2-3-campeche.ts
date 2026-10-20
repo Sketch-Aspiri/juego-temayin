@@ -46,6 +46,9 @@ export const LEVEL_2_3: LevelDef = {
   theme: 'fortress',
   checkpoint: 112,
   ops: [
+    ['discovery', 25, 11, 'campeche-muralla'],
+    ['discovery', 111, 11, 'campeche-baluartes'],
+    ['discovery', 174, 11, 'campeche-puertas'],
     // --- Extramuros y Puerta de Tierra ---
     ['row', 9, 8, '?B?'], ['coins', 9, 4, 3],
     ['row', 16, 8, 'BMB'],

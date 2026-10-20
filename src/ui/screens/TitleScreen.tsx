@@ -3,6 +3,7 @@ import { hiScore } from '../../store/progress';
 import { useAppStore } from '../../store/appStore';
 import { ControlsHelp } from '../components/ControlsHelp';
 import { VersionNote } from '../components/VersionNote';
+import { NotebookButton } from '../components/notebook/NotebookButton';
 
 export function TitleScreen() {
   const go = useAppStore((s) => s.go);
@@ -22,6 +23,7 @@ export function TitleScreen() {
           <nav className="title__menu" aria-label="Menú principal">
             <button type="button" className="btn btn--primary btn--big" onClick={() => go('levels')} autoFocus>Jugar</button>
             <button type="button" className="btn" onClick={() => go('history')}>Historia</button>
+            <NotebookButton />
             <button type="button" className="btn" onClick={() => go('settings')}>Ajustes</button>
           </nav>
           <details className="title__controls">

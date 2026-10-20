@@ -1,5 +1,6 @@
 import type { AudioEngine } from './audio';
 import { collectTicket } from './entities/tickets';
+import { collectDiscoveries } from './entities/discoveries';
 import { createRope, type Rope } from './entities/ropes';
 import type { Torch } from './entities/torches';
 import { lightSources, type Darkness, type LightSource } from './render/lighting';
@@ -48,6 +49,7 @@ export interface WorldInit {
   /** Reaparecer en el punto de control. */
   fromCheckpoint?: boolean;
   ticketCollected?: boolean;
+  discoveries?: readonly string[];
 }
 
 const BUMP_TIME = 0.15;
@@ -98,6 +100,7 @@ export class World {
   coinsCollected = 0;
   /** Se conserva al reaparecer y se publica para guardar el desbloqueo de inmediato. */
   ticketCollected: boolean;
+  discoveries: readonly string[];
   /** Presentación del encuentro: solo dibujo, sin avanzar la simulación. */
   offeringActive = false;
 
@@ -112,6 +115,7 @@ export class World {
     this.input = init.input;
     this.audio = init.audio;
     this.level = buildLevel(init.def);
+    this.discoveries = [...new Set((init.discoveries ?? []).filter(id => this.level.discoveries.some(mark => mark.id === id)))];
     this.ropes = this.level.ropes.map(createRope);
     this.torches = this.level.lights.map(light => ({ ...light, lit: true }));
     this.darkness = init.def.darkness ?? null;
@@ -294,6 +298,7 @@ export class World {
     updateStromatolites(this, dt);
     this.collectLooseCoins();
     collectTicket(this);
+    collectDiscoveries(this);
 
     if (p.y > ROWS * T + 40) return this.die();
     if (p.x > this.checkpointTile * T) this.checkpointReached = true;
@@ -372,6 +377,7 @@ export class World {
       snorkel: this.player.snorkel > 0,
       ball: this.player.ball,
       ticket: this.ticketCollected,
+      discoveries: [...this.discoveries],
       boss: b && b.hudVisible ? { id: b.id, name: b.name, hp: Math.max(0, b.hp), maxHp: b.maxHp, intro: b.intro, objective: b.objective } : null,
       spawnId,
     };

@@ -20,6 +20,7 @@ import { usePortrait } from '../usePortrait';
 import { CinematicPlayer } from '../components/CinematicPlayer';
 import { LoadingScreen } from './LoadingScreen';
 import { artReady } from '../../engine/render/artCache';
+import { DiscoveryNotice } from '../components/notebook/DiscoveryNotice';
 
 /** Tiempo mínimo de la pantalla de carga antes de cada nivel, para que no parpadee. */
 const LEVEL_LOADING_MIN_MS = 900;
@@ -40,6 +41,7 @@ export function GameScreen() {
   const [cinematic, setCinematic] = useState<CinematicDef | null>(null);
   const [loading, setLoading] = useState(true);
   const [openingDone, setOpeningDone] = useState<Run | null>(null);
+  const [discoveryStart, setDiscoveryStart] = useState<{ run: Run | null; ids: readonly string[] }>({ run: null, ids: [] });
   const opening = run && openingDone !== run ? cinematicBeforeLevel(run.levelId) : undefined;
   const activeCinematic = opening ?? cinematic;
   const finishCinematic = useCallback(() => {
@@ -57,6 +59,8 @@ export function GameScreen() {
     setCinematic(null);
     setPaused(false);
     setLoading(true);
+    const discoveries = useAppStore.getState().progress.discoveries;
+    setDiscoveryStart({ run, ids: discoveries });
     let cancelled = false;
     let game: Game | null = null;
     const minimumShown = new Promise<void>((resolve) => setTimeout(resolve, LEVEL_LOADING_MIN_MS));
@@ -73,11 +77,13 @@ export function GameScreen() {
         // La simulación recibe su propia copia; publicar el cacao no sustituye ni muta Run.
         session: { ...run.session },
         initialBlessings: run.initialBlessings,
+        discoveries,
         ticketCollected: hasTicket(useAppStore.getState().progress, getWorldForLevel(level.id)?.id ?? ''),
         callbacks: {
           onHud: (state) => {
             useAppStore.getState().syncCacao(run, state.coins);
             useAppStore.getState().syncTicket(run, state.ticket);
+            useAppStore.getState().syncDiscoveries(run, state.discoveries);
             setHud(state);
           },
           onComplete: (result) => {
@@ -174,6 +180,8 @@ export function GameScreen() {
             onExit={() => go('levels')}
           />
         )}
+        {hud && discoveryStart.run === run && <DiscoveryNotice ids={hud.discoveries} initial={discoveryStart.ids} run={run}
+          paused={paused || !!outcome || !!activeCinematic} />}
         {outcome?.kind === 'complete' && !cinematic && (
           <LevelComplete
             result={outcome.result}
@@ -181,6 +189,7 @@ export function GameScreen() {
             hasNext={!!nextId}
             isBonus={isBonus}
             isSeasonal={isSeasonalLevel(level.id)}
+            discoveryCount={hud?.discoveries.filter(id => !discoveryStart.ids.includes(id)).length ?? 0}
             onNext={() => goNext(outcome.result)}
             onRetry={retryLevel}
             onExit={() => go('levels')}

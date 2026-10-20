@@ -1,5 +1,6 @@
 import { ALL_LEVELS, getWorldForLevel, isSeasonalLevel, PLAYABLE_LEVELS, WORLDS } from '../data/worlds';
 import type { LevelResult, Stars } from '../engine/scoring';
+import { sanitizeNotebook, type NotebookProgress } from './explorerNotebook';
 
 export interface LevelRecord {
   bestScore: number;
@@ -7,12 +8,12 @@ export interface LevelRecord {
   completions: number;
 }
 
-export interface Progress {
+export interface Progress extends NotebookProgress {
   levels: Readonly<Record<string, LevelRecord>>;
   tickets: readonly string[];
 }
 
-export const EMPTY_PROGRESS: Progress = { levels: {}, tickets: [] };
+export const EMPTY_PROGRESS: Progress = { levels: {}, tickets: [], discoveries: [], readDiscoveries: [] };
 
 export const hasTicket = (progress: Progress, worldId: string): boolean => progress.tickets.includes(worldId);
 
@@ -75,5 +76,5 @@ export function sanitizeProgress(raw: unknown): Progress {
   const worldIds = new Set(WORLDS.map(w => w.id));
   const tickets = Array.isArray(rawTickets)
     ? [...new Set(rawTickets.filter((id): id is string => typeof id === 'string' && worldIds.has(id)))] : [];
-  return { levels: out, tickets };
+  return { levels: out, tickets, ...sanitizeNotebook(raw as Record<string, unknown>) };
 }

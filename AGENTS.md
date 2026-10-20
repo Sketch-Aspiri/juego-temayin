@@ -503,6 +503,15 @@ Los temas implementados figuran en `ThemeId` (`src/engine/types.ts`) y en `THEME
 
 ## 5. Mecánicas nuevas del motor
 
+### Cuaderno de explorador de Toh (piloto implementado)
+
+- `src/data/explorerNotebook/` define nueve páginas opcionales con textos breves y fuentes: tres en Palenque (`1-1`), tres en Campeche (`2-3`) y tres en Bacalar (`6-5`). Las fotos reutilizan `STATION_PHOTOS` con autor/licencia y aviso de que muestran el entorno. Se distingue la fauna real de sus acciones de fantasía. Fuentes y ampliación en su `README.md`.
+- Op `['discovery', x, y, id]`: marca de pluma no sólida en bloques; `buildLevel` la convierte en `BuiltLevel.discoveries`. `entities/discoveries.ts` recoge solo en `play` y `render/discoveries.ts` distingue pendientes/registradas. No altera terreno, estrellas, puntos, cacao ni boletos. El motor no importa React ni el catálogo editorial.
+- `World.discoveries` limita ids al nivel; `Game` los conserva al reaparecer. `HudState.discoveries` publica una copia completa e integra `hudKey`. `GameScreen` entrega el progreso inicial y llama a `syncDiscoveries(run, ids)`, que ignora partidas antiguas y marcas ajenas al nivel. El aviso tiene cola y se oculta en pausa/resultados; el resumen cuenta solo páginas nuevas del intento.
+- `Progress.discoveries` y `readDiscoveries` son listas de ids. `store/explorerNotebook.ts` registra de forma inmutable e idempotente; sanea duplicados, ids desconocidos y lecturas inválidas. Guardados v3 anteriores y v2 migrados empiezan con listas vacías sin perder récords, boletos, cacao ni ajustes. Se mantiene `temayin:v3`; borrar progreso vacía el cuaderno.
+- `ui/components/notebook/` comparte diálogo nativo desde título, mapa, pausa y resultados. No cambia `Screen` ni desmonta `GameScreen`: cerrar conserva pausa/resultados. Filtros, estado nuevo/leído, pendientes sin título y foto con respaldo. Foco contenido, Escape, retorno del foco, lectura móvil en una columna y fuentes locales sin animaciones nuevas.
+- Pruebas: catálogo/colocación, progreso y guardados anteriores, publicaciones antiguas, recogidas, `hudKey`, muerte, lectura y créditos. `python imagenes/verify_explorer_notebook.py` usa Chromium aislado y `imagenes/explorer_notebook_routes.js` prepara entradas de QA. Evidencia regenerable en `imagenes/.temp/cuaderno-explorador/`; no evalúa dificultad humana ni sustituye un móvil físico.
+
 Principio general: **cada mecánica en su propio módulo del motor**, expuesta al nivel mediante **ops nuevas del DSL** (documentadas en el comentario de `engine/level/types.ts`), traducidas por `buildLevel` a la cuadrícula o a una lista de zonas/objetos en `BuiltLevel`, y actualizadas desde `World.update`. Nada de esto toca React salvo lo que se publique en `HudState`.
 
 ### 5.1 Nado y oxígeno

@@ -157,9 +157,9 @@
   .map-chart__toolbar button { font-size: 16px; padding: 8px 13px; }
   .map-sources { left: 15px; bottom: 86px; font-size: 13px; }
   .atlas__scale { bottom: 142px; right: 15px; font-size: 12px; }
-  .map-dock { bottom: max(13px, env(safe-area-inset-bottom)); gap: 5px; padding: 6px; border-radius: 18px; max-width: calc(100% - 18px); }
-  .map-dock .btn { font-size: 16px; padding: 8px 12px; }
-  .map-dock__seasonal { position: fixed; bottom: 70px; right: 0; background: #123b37f5; }
+  .map-dock { bottom: max(13px, env(safe-area-inset-bottom)); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; padding: 6px; border-radius: 18px; width: min(380px, calc(100% - 18px)); }
+  .map-dock .btn { font-size: 14px; padding: 8px; white-space: normal; }
+  .map-dock__seasonal { background: #123b37f5; }
   .map-panel { left: 10px; right: 10px; width: auto; top: 245px; bottom: 83px; }
   /* Fila anclada por abajo, sobre la escala y el botón del tramo (que mide 48 px) y bajo la brújula; con el panel abierto no se monta. */
   .map-zoom, .peninsula--panel-open .map-zoom { flex-direction: row; right: 12px; top: auto; bottom: 192px; }

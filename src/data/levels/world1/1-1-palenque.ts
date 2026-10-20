@@ -12,6 +12,9 @@ export const LEVEL_1_1: LevelDef = {
   width: 205,
   theme: 'palenque',
   ops: [
+    ['discovery', 10, 11, 'palenque-palacio'],
+    ['discovery', 90, 11, 'palenque-saraguatos'],
+    ['discovery', 130, 11, 'palenque-orquideas'],
     ['pit', 50, 52], ['pit', 95, 97], ['pit', 138, 141],
     ['row', 15, 8, '?'], ['row', 19, 8, 'B?BMB'], ['row', 21, 4, 'L'],
     ['pipe', 28, 2], ['pipe', 37, 3], ['pipe', 46, 4],
