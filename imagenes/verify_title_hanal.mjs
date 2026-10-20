@@ -11,7 +11,7 @@ const { chromium } = (() => {
   try { return require('playwright'); }
   catch { return require(join(homedir(), '.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright')); }
 })();
-const output = new URL('./verificacion/portada-hanal-pixan/', import.meta.url);
+const output = new URL(process.env.TEMAYIN_TITLE_QA_OUTPUT ?? './verificacion/portada-hanal-pixan/', import.meta.url);
 await mkdir(output, { recursive: true });
 const errors = [];
 const layouts = [];
@@ -47,6 +47,9 @@ try {
     assert(!layout.overflow, 'La portada debe caber sin desplazamiento.');
     assert(layout.imagesLoaded);
     assert.equal(layout.animation, 'none');
+    assert(await page.locator('.title__jaguar').isVisible(), 'Temayin debe permanecer visible también en móviles bajos.');
+    assert(layout.hero.width > 0 && layout.hero.height > 0, 'El retrato debe ocupar espacio visible.');
+    assert(layout.hero.y >= 0 && layout.hero.y + layout.hero.height <= height + 1);
     assert(layout.hero.x >= 0 && layout.hero.x + layout.hero.width <= width + 1);
     assert(layout.logo.x >= 0 && layout.logo.x + layout.logo.width <= width + 1);
     await page.screenshot({ path: fileURLToPath(new URL(`${width}x${height}.png`, output)), fullPage: true });
