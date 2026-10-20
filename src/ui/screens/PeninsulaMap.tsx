@@ -1,4 +1,4 @@
-import { useCallback, useReducer, useState } from 'react';
+import { useCallback, useReducer, useRef, useState } from 'react';
 import { ALL_LEVELS, getLevel, WORLDS } from '../../data/worlds';
 import { HANAL_PIXAN_LEVEL } from '../../data/levels/seasonal/hanal-pixan';
 import { useAppStore } from '../../store/appStore';
@@ -10,12 +10,15 @@ import { MapNavigation } from '../components/map/MapNavigation';
 import { fitMapView, FULL_MAP, latestStation, panelCoversZoom, sidePanelInset, worldForStation, worldView } from '../components/map/mapModel';
 import { useMapViewport } from '../components/map/useMapViewport';
 import '../peninsulaMap.css';
+import '../components/map/stationInfo.css';
 
 export function PeninsulaMap({ onPlay }: { onPlay: (id: string) => void }) {
   const progress = useAppStore(state => state.progress);
   const [selectedId, selectStation] = useState(() => latestStation(progress));
   const [closeView, setCloseView] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
+  const dockRef = useRef<HTMLButtonElement>(null);
+  const closePanel = () => { setPanelOpen(false); dockRef.current?.focus({ preventScroll: true }); };
   // Cambia solo al cambiar de tramo o de vista: tocar una estación o abrir el panel no reencuadra.
   const [frameKey, reframe] = useReducer((key: number) => key + 1, 0);
   const viewport = useMapViewport();
@@ -28,7 +31,7 @@ export function PeninsulaMap({ onPlay }: { onPlay: (id: string) => void }) {
   const chooseWorld = (id: string) => {
     const destination = WORLDS.find(entry => entry.id === id)!;
     const current = destination.levels.filter(level => isUnlocked(progress, level.id)).at(-1) ?? destination.levels[0];
-    selectStation(current.id);
+    chooseStation(current.id);
     setCloseView(true);
     reframe();
   };
@@ -44,11 +47,14 @@ export function PeninsulaMap({ onPlay }: { onPlay: (id: string) => void }) {
       <MapChart progress={progress} base={base} frameKey={frameKey} selected={selected.id} onSelect={chooseStation}
         closeView={closeView} viewport={viewport} sidePanel={sidePanel} zoomHidden={panelCoversZoom(viewport.width, panelOpen)} />
       <MapAttribution />
-    </div><div className="map-panel" hidden={!panelOpen}>
-      <button className="map-panel__close" type="button" onClick={() => setPanelOpen(false)} aria-label="Cerrar itinerario">✕</button>
-      <MapItinerary world={world} selected={selected} progress={progress} onSelect={selectStation} onPlay={onPlay} />
+    </div><div className="map-panel" id="station-panel" hidden={!panelOpen} onKeyDown={event => {
+      if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closePanel(); }
+    }}>
+      <button className="map-panel__close" type="button" onClick={closePanel} aria-label="Cerrar itinerario">✕</button>
+      <MapItinerary world={world} selected={selected} progress={progress} visible={panelOpen} onSelect={selectStation} onPlay={onPlay} />
     </div></div>
-    <div className="map-dock"><button type="button" className="btn" aria-expanded={panelOpen} onClick={() => setPanelOpen(!panelOpen)}>Estaciones</button>
+    <div className="map-dock"><button ref={dockRef} type="button" className="btn" aria-expanded={panelOpen} aria-controls="station-panel"
+      onClick={() => panelOpen ? closePanel() : setPanelOpen(true)}>Estaciones</button>
       {!panelOpen && <button type="button" className="btn btn--primary" disabled={!isUnlocked(progress, selected.id)} onClick={() => onPlay(selected.id)}>Jugar {selected.id} →</button>}
       {!panelOpen && <button type="button" className="btn map-dock__seasonal" onClick={() => onPlay(HANAL_PIXAN_LEVEL.id)}>✦ Hanal Pixán</button>}</div>
   </section>;
