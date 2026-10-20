@@ -8,14 +8,21 @@ import { World } from './World';
 
 const ANCHO_NIVEL = 4000;
 
-describe('followCamera con retroceso (niveles con acertijos)', () => {
-  it('sigue al jugador hacia la izquierda sin pasar del inicio', () => {
-    expect(followCamera(2000, 1000, ANCHO_NIVEL, false, 0, true)).toBe(1000 - VW * 0.4);
-    expect(followCamera(300, 100, ANCHO_NIVEL, false, 0, true)).toBe(0);
+describe('followCamera con retroceso', () => {
+  const PASO = 20;
+
+  it('retrocede hasta el jugador a lo sumo `retreatPx` por paso y nunca pasa del inicio', () => {
+    expect(followCamera(2000, 1000, ANCHO_NIVEL, false, 0, PASO)).toBe(1980);
+    expect(followCamera(2000, 1990, ANCHO_NIVEL, false, 0, 1000)).toBe(1990 - VW * 0.4);
+    expect(followCamera(10, 100, ANCHO_NIVEL, false, 0, PASO)).toBe(0);
   });
 
   it('sin retroceso la cámara nunca vuelve atrás', () => {
     expect(followCamera(2000, 1000, ANCHO_NIVEL, false)).toBe(2000);
+  });
+
+  it('el jefe que bloquea la cámara la mantiene fija aunque pueda retroceder', () => {
+    expect(followCamera(2000, 1000, ANCHO_NIVEL, true, 0, PASO)).toBe(2000);
   });
 });
 
@@ -122,5 +129,21 @@ describe('cámara automática en el mundo', () => {
     world.phase = 'flag';
     run(world, 1);
     expect(world.camX).toBe(3000);
+  });
+
+  it('en un nivel normal la cámara acompaña al jugador hacia atrás', () => {
+    const world = make(levelWith([]));
+    world.player.x = 30 * T; world.camX = 30 * T - 400;
+    world.input.press('left');
+    run(world, 3);
+    expect(world.camX).toBeLessThan(25 * T);
+    expect(world.player.x).toBeGreaterThanOrEqual(world.camX);
+  });
+
+  it('con desplazamiento automático la cámara nunca retrocede', () => {
+    const world = make(levelWith([], AUTO_BLOCKS_PER_SECOND));
+    world.camX = 10 * T; world.player.x = 20 * T;
+    run(world, 1);
+    expect(world.camX).toBeGreaterThanOrEqual(10 * T);
   });
 });
