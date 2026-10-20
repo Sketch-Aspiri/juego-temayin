@@ -102,12 +102,26 @@ import type { Darkness } from '../render/lighting';
  *                                           pasar la pelota de pok ta pok (bloque `P`) por
  *                                           su centro se enciende una vez: +2000 puntos y
  *                                           5 granos de cacao (incluidos en `totalCoins`)
+ *
+ * Acertijos de numerología maya (niveles secretos, ver `entities/riddles.ts` y `entities/numerals.ts`).
+ *  ['riddle', x, y, id, enunciado, respuesta]  estela no sólida de pie sobre la fila y. El enunciado son
+ *                                           términos separados por espacio: `13` numeral maya (punto 1,
+ *                                           raya 5, concha 0; 0..19), `1/3` apilados en base 20, `#40` cifras
+ *                                           arábigas, y `+ × = ?`
+ *  ['stone', x, y, termino, id]             piedra de respuesta sobre la fila y: tocarla con el término
+ *                                           de la respuesta abre las puertas del acertijo; una errónea se
+ *                                           apaga 1,2 s sin quitar vida ni cacao
+ *  ['gate', x, id]                          puerta de jade: muro de arriba abajo que se retira al
+ *                                           resolver el acertijo `id`
  */
 /** `discovery`: marca de observación no sólida en columna/fila, con id estable de página;
  * se registra al tocarla, sin cambiar terreno, cacao ni estrellas. */
 export type Op =
   | readonly ['discovery', number, number, string]
   | readonly ['ticket', number, number]
+  | readonly ['riddle', number, number, string, string, string]
+  | readonly ['stone', number, number, string, string]
+  | readonly ['gate', number, string]
   | readonly ['boat' | 'turtle', number, number, number, number, number, number]
   // Vagoneta: ['truck', x, y, largo, recorridoHorizontal, periodoEnSegundos].
   | readonly ['truck', number, number, number, number, number]

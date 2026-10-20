@@ -106,6 +106,7 @@ temayin_juego/
         cannons.ts             Cañones de baluarte que avisan y disparan balas rectas (op `cannon`)
         wind.ts (+ .test)      Viento y térmicas (op `wind`): deriva del jugador que no nada
         stromatolites.ts (+ .test) Estromatolitos de Bacalar (op `stromatolite`): penalizan puntos al pisarlos
+        numerals.ts, riddles.ts (+ .test) Acertijos de numerología maya de los secretos (ops `riddle`, `stone`, `gate`)
         particles.ts           Partículas y popups
         types.ts               Player, Enemy, Item, Particle, Popup, Fireball, Quill
       bosses/
@@ -138,6 +139,7 @@ temayin_juego/
         wind.ts                Rayas de viento y térmicas, dibujadas solo en las zonas visibles
         fireflies.ts           Luciérnagas (op `firefly`): cuadros de `mecanicas/efectos.webp`
         stromatolites.ts       Estromatolitos de Bacalar (cuadro del atlas de mecánicas, con grietas al dañarse)
+        numerals.ts, riddles.ts Numerales mayas (puntos, rayas, concha), estelas, piedras de respuesta y puertas de jade
         trainTextures.ts       Chapa y costado del vagón (`trainRoof`, `trainSide`) del tema `jungleTrain`
         arenas/                Decorados de arena: ship.ts (cubierta de Lorencillo), akumal.ts, atrium.ts
     data/                      CONTENIDO (aquí se añaden niveles y mundos)
@@ -466,6 +468,7 @@ Estado: **Existe** = id en `EnemyId` y en `ENEMIES`; **Nuevo** = id propuesto. L
 | 6 | Limones (`6-4`, 72/4) | `6-extra` · El vagón del tesoro | Cajas y saltos sobre el tren |
 | 7 | Calakmul (`7-3`, 154/4) | `7-extra` · El santuario del Sol de Jade | Camino alto opcional y santuario con luces |
 
+- **Acertijos de numerología maya.** Los siete secretos cierran el camino a la meta con una puerta de jade que se abre resolviendo un acertijo (`7-extra` tiene dos): contar puntos y rayas, sumar, completar una serie, la concha como cero, valor posicional en base 20, veintenas del uinal y los calendarios Tzolk'in (13 × 20 = 260) y Haab (18 × 20 + 5 = 365). Se declaran con el atajo `riddle({...})` de `data/levels/riddles.ts`; el dibujo procedural de numerales está en `engine/render/numerals.ts` y `render/riddles.ts`. Sin penalización por error y sin cambios en `Progress`. Pruebas: `entities/riddles.test.ts` y `data/levels/riddles.test.ts` (una sola respuesta correcta, aritmética esperada, orden estela-piedras-puerta y recorrido saltando bajo la piedra con `engine/testing/riddleRoute.ts`). Revisión visual: `imagenes/verificacion/acertijos-mayas/`. Los niveles `2-extra` a `6-extra` se ensancharon a 128 bloques y `7-extra` a 160 (tiempo 360 s) para alojarlos.
 - Cada secreto vive en su archivo `data/levels/worldN/N-extra-*.ts`, con checkpoint y meta. Los siete mundos tienen boleto y `WorldDef.bonus`.
 - Cobertura: `data/bonus.test.ts`, `data/levels.test.ts`, `engine/entities/tickets.test.ts`, `engine/Game.test.ts`, `store/tickets.test.ts` y `ui/screens/LevelSelect.test.tsx`. `python imagenes/verify_tickets.py` revisa seis recogidas desde plataformas/agua preparadas, persistencia tras muerte y recarga, acceso por los botones reales y seis recorridos completos desde inicio a checkpoint y meta con colisiones y oxígeno activos. Los niveles anfitriones se preparan con protección de contacto; no se mide dificultad humana. Capturas e informe en `imagenes/.temp/boletos/`.
 
@@ -716,6 +719,9 @@ El fondo del nivel actúa como suelo mientras se nada: un hoyo lleno de agua no 
    | `wind` | `['wind', x0, x1, y0, y1, vx, vy]` | Zona de viento o térmica en el rectángulo de bloques (inclusive), en bloques/s. Solo empuja a quien no nada; `vy` solo actúa en el aire (`entities/wind.ts`). Va a `BuiltLevel.winds`. |
    | `firefly` | `['firefly', x, y]` | Luciérnaga en el bloque (x, y). Solo alumbra si el nivel tiene `darkness` (`render/fireflies.ts`). Va a `BuiltLevel.fireflies`. |
    | `stromatolite` | `['stromatolite', x, y, largo]` | Tramo de estromatolito: bloques sólidos `E` sobre suelo o lecho. Apoyarse más de 0,25 s resta 500 puntos, sin quitar vida (`entities/stromatolites.ts`). Va a `BuiltLevel.stromatolites`. |
+   | `riddle` | `['riddle', x, y, id, enunciado, respuesta]` | Estela no sólida de acertijo de numerología maya (niveles secretos, `entities/riddles.ts`). Términos separados por espacio: `13` numeral maya (punto 1, raya 5, concha 0; 0..19), `1/3` apilados en base 20, `#40` cifras arábigas, `+ × = ?`. Va a `BuiltLevel.riddles`. |
+   | `stone` | `['stone', x, y, término, id]` | Piedra de respuesta que cuelga en la fila `y` (usa 8): se activa al saltar bajo ella. La correcta (mismo valor que la respuesta) abre las puertas; una errónea se apaga 1,2 s sin quitar vida, cacao ni puntos. Va a `BuiltLevel.stones`. |
+   | `gate` | `['gate', x, id]` | Puerta de jade: muro `X` de arriba abajo que se retira al resolver el acertijo `id`. El acertijo resuelto se conserva al reaparecer (`World.riddlesSolved`, `Game.spawn`). Va a `BuiltLevel.gates`. |
 
    Campo de `LevelDef` (no es op): `autoScroll` (bloques/s) hace avanzar la cámara sola; ver 5.12. Las demás ops de agua, resina, hamacas, cuerdas, antorchas, vagonetas, barcas y tortugas están documentadas en `engine/level/types.ts`.
 

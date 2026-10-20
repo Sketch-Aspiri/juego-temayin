@@ -38,6 +38,7 @@ import { drawFireflies } from './fireflies';
 import { drawStromatolites } from './stromatolites';
 import { drawTickets } from './tickets';
 import { drawDiscoveries } from './discoveries';
+import { drawRiddles, drawRiddleStelae } from './riddles';
 import { drawHanalDecorations, drawHanalEnemy, drawHanalPlayer } from './hanalPixan';
 
 const BUMP_HEIGHT = 10;
@@ -115,11 +116,13 @@ export class Renderer {
     drawCannonFx(c, world.cannons, world.camX, now);
     drawHaciendaProps(c, world, now);
     drawSlowZones(c, world.slowZones, world.camX, now);
+    drawRiddleStelae(c, world);
     this.drawActors(world, now);
     drawWind(c, world, now);
     drawWaterLayer(c, world, theme.water, now);
     drawTickets(c, world, now);
     drawDiscoveries(c, world);
+    drawRiddles(c, world, now);
     drawParticles(c, world.particles, world.popups, world.camX);
     c.restore();
     this.lighting.draw(c, world);

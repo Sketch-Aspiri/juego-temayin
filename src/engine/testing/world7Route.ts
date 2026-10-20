@@ -1,12 +1,14 @@
 import { T } from '../constants';
 import type { World } from '../World';
 import { driveHanalRoute } from './hanalRoute';
+import { driveRiddles } from './riddleRoute';
 
 const STEP_LOOKAHEAD = 105;
 
 /** Recorrido de QA: anticipa los peldaños de ascenso; no mueve al jugador ni altera colisiones. */
 export function driveWorld7Route(world: World): void {
   driveHanalRoute(world);
+  driveRiddles(world);
   const player = world.player;
   if (!player.onGround || player.swinging !== null) return;
   const floor = Math.round((player.y + player.h) / T);

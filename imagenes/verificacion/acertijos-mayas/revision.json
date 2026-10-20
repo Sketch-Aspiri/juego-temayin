@@ -1,0 +1,472 @@
+{
+  "niveles": [
+    {
+      "nivel": "1-extra",
+      "dark": false,
+      "acertijos": [
+        {
+          "riddle": "1-cuenta",
+          "wrong": [
+            {
+              "token": "8",
+              "idx": 0,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            },
+            {
+              "token": "12",
+              "idx": 1,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            },
+            {
+              "token": "18",
+              "idx": 3,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            }
+          ],
+          "correct": {
+            "token": "13",
+            "idx": 2,
+            "wrong": false,
+            "cd": 0,
+            "lives0": 3,
+            "lives1": 3,
+            "solved0": 0,
+            "solved1": 1,
+            "phase": "play",
+            "puerta_abierta": true
+          }
+        }
+      ],
+      "meta": {
+        "phase": "flag",
+        "px": 101.55,
+        "flag": 102
+      }
+    },
+    {
+      "nivel": "2-extra",
+      "dark": false,
+      "acertijos": [
+        {
+          "riddle": "2-suma",
+          "wrong": [
+            {
+              "token": "16",
+              "idx": 1,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            },
+            {
+              "token": "19",
+              "idx": 2,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            },
+            {
+              "token": "15",
+              "idx": 3,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            }
+          ],
+          "correct": {
+            "token": "17",
+            "idx": 0,
+            "wrong": false,
+            "cd": 0,
+            "lives0": 3,
+            "lives1": 3,
+            "solved0": 0,
+            "solved1": 1,
+            "phase": "play",
+            "puerta_abierta": true
+          }
+        }
+      ],
+      "meta": {
+        "phase": "flag",
+        "px": 109.55,
+        "flag": 110
+      }
+    },
+    {
+      "nivel": "3-extra",
+      "dark": false,
+      "acertijos": [
+        {
+          "riddle": "3-serie",
+          "wrong": [
+            {
+              "token": "19",
+              "idx": 0,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            },
+            {
+              "token": "16",
+              "idx": 2,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            }
+          ],
+          "correct": {
+            "token": "18",
+            "idx": 1,
+            "wrong": false,
+            "cd": 0,
+            "lives0": 3,
+            "lives1": 3,
+            "solved0": 0,
+            "solved1": 1,
+            "phase": "play",
+            "puerta_abierta": true
+          }
+        }
+      ],
+      "meta": {
+        "phase": "flag",
+        "px": 110.55,
+        "flag": 111
+      }
+    },
+    {
+      "nivel": "4-extra",
+      "dark": true,
+      "acertijos": [
+        {
+          "riddle": "4-cero",
+          "wrong": [
+            {
+              "token": "0",
+              "idx": 0,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            },
+            {
+              "token": "5",
+              "idx": 1,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            },
+            {
+              "token": "7",
+              "idx": 2,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            }
+          ],
+          "correct": {
+            "token": "6",
+            "idx": 3,
+            "wrong": false,
+            "cd": 0,
+            "lives0": 3,
+            "lives1": 3,
+            "solved0": 0,
+            "solved1": 1,
+            "phase": "play",
+            "puerta_abierta": true
+          }
+        }
+      ],
+      "meta": {
+        "phase": "flag",
+        "px": 111.55,
+        "flag": 112
+      }
+    },
+    {
+      "nivel": "5-extra",
+      "dark": false,
+      "acertijos": [
+        {
+          "riddle": "5-posicion",
+          "wrong": [
+            {
+              "token": "#4",
+              "idx": 0,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            },
+            {
+              "token": "#60",
+              "idx": 2,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            },
+            {
+              "token": "#13",
+              "idx": 3,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            }
+          ],
+          "correct": {
+            "token": "#23",
+            "idx": 1,
+            "wrong": false,
+            "cd": 0,
+            "lives0": 3,
+            "lives1": 3,
+            "solved0": 0,
+            "solved1": 1,
+            "phase": "play",
+            "puerta_abierta": true
+          }
+        }
+      ],
+      "meta": {
+        "phase": "flag",
+        "px": 111.55,
+        "flag": 112
+      }
+    },
+    {
+      "nivel": "6-extra",
+      "dark": false,
+      "acertijos": [
+        {
+          "riddle": "6-uinal",
+          "wrong": [
+            {
+              "token": "#2",
+              "idx": 0,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            },
+            {
+              "token": "#22",
+              "idx": 1,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            },
+            {
+              "token": "#400",
+              "idx": 3,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            }
+          ],
+          "correct": {
+            "token": "#40",
+            "idx": 2,
+            "wrong": false,
+            "cd": 0,
+            "lives0": 3,
+            "lives1": 3,
+            "solved0": 0,
+            "solved1": 1,
+            "phase": "play",
+            "puerta_abierta": true
+          }
+        }
+      ],
+      "meta": {
+        "phase": "flag",
+        "px": 110.55,
+        "flag": 111
+      }
+    },
+    {
+      "nivel": "7-extra",
+      "dark": true,
+      "acertijos": [
+        {
+          "riddle": "7-tzolkin",
+          "wrong": [
+            {
+              "token": "#33",
+              "idx": 0,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            },
+            {
+              "token": "#26",
+              "idx": 1,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            },
+            {
+              "token": "#360",
+              "idx": 2,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 0,
+              "solved1": 0,
+              "phase": "play"
+            }
+          ],
+          "correct": {
+            "token": "#260",
+            "idx": 3,
+            "wrong": false,
+            "cd": 0,
+            "lives0": 3,
+            "lives1": 3,
+            "solved0": 0,
+            "solved1": 1,
+            "phase": "play",
+            "puerta_abierta": true
+          }
+        },
+        {
+          "riddle": "7-haab",
+          "wrong": [
+            {
+              "token": "#360",
+              "idx": 5,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 1,
+              "solved1": 1,
+              "phase": "play"
+            },
+            {
+              "token": "#380",
+              "idx": 6,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 1,
+              "solved1": 1,
+              "phase": "play"
+            },
+            {
+              "token": "#265",
+              "idx": 7,
+              "wrong": true,
+              "cd": 1.2,
+              "lives0": 3,
+              "lives1": 3,
+              "solved0": 1,
+              "solved1": 1,
+              "phase": "play"
+            }
+          ],
+          "correct": {
+            "token": "#365",
+            "idx": 4,
+            "wrong": false,
+            "cd": 0,
+            "lives0": 3,
+            "lives1": 3,
+            "solved0": 1,
+            "solved1": 2,
+            "phase": "play",
+            "puerta_abierta": true
+          }
+        }
+      ],
+      "meta": {
+        "phase": "flag",
+        "px": 137.55,
+        "flag": 138
+      }
+    }
+  ],
+  "errores": [],
+  "consola": []
+}

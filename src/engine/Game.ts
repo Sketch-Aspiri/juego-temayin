@@ -79,7 +79,7 @@ export class Game {
     this.last = performance.now();
   }
 
-  private spawn(fromCheckpoint: boolean, ticketCollected: boolean, discoveries: readonly string[]): World {
+  private spawn(fromCheckpoint: boolean, ticketCollected: boolean, discoveries: readonly string[], riddles: readonly string[] = []): World {
     this.spawnId++;
     return new World({
       def: this.opts.level,
@@ -89,6 +89,7 @@ export class Game {
       fromCheckpoint,
       ticketCollected,
       discoveries,
+      riddles,
     });
   }
 
@@ -124,7 +125,7 @@ export class Game {
       callbacks.onGameOver(session.score);
       return;
     }
-    this.world = this.spawn(this.world.checkpointReached, this.world.ticketCollected, this.world.discoveries);
+    this.world = this.spawn(this.world.checkpointReached, this.world.ticketCollected, this.world.discoveries, this.world.riddlesSolved);
   }
 
   private handleComplete(): void {

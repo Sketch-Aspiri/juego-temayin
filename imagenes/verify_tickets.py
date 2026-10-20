@@ -14,6 +14,7 @@ async () => {
   const {World} = await import(loaded('/src/engine/World.ts'));
   const {useAppStore} = await import(loaded('/src/store/appStore.ts'));
   const {WORLDS} = await import(loaded('/src/data/worlds.ts'));
+  const {driveRiddles} = await import(loaded('/src/engine/testing/riddleRoute.ts'));
   window.qa = {store: useAppStore, worlds: WORLDS, world: null, tick: World.prototype.update, step: 0};
   World.prototype.update = function() { qa.world = this; };
   qa.report = () => {
@@ -33,6 +34,7 @@ async () => {
     }
     if (jump && !input.held.jump) input.press('jump');
     else if (p.vy >= 0 || (!jump && p.onGround)) input.release('jump');
+    driveRiddles(w); // los secretos cierran la meta con una puerta de jade: hay que resolver su acertijo
   };
   qa.advance = seconds => {
     for (let i = 0; i < seconds * 120 && qa.world.phase === 'play'; i++) {

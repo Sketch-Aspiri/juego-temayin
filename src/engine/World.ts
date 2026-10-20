@@ -1,6 +1,7 @@
 import type { AudioEngine } from './audio';
 import { collectTicket } from './entities/tickets';
 import { collectDiscoveries } from './entities/discoveries';
+import { openGates, updateRiddles } from './entities/riddles';
 import { createRope, type Rope } from './entities/ropes';
 import type { Torch } from './entities/torches';
 import { lightSources, type Darkness, type LightSource } from './render/lighting';
@@ -50,6 +51,8 @@ export interface WorldInit {
   fromCheckpoint?: boolean;
   ticketCollected?: boolean;
   discoveries?: readonly string[];
+  /** Acertijos ya resueltos: sus puertas nacen abiertas al reaparecer. */
+  riddles?: readonly string[];
 }
 
 const BUMP_TIME = 0.15;
@@ -101,6 +104,9 @@ export class World {
   /** Se conserva al reaparecer y se publica para guardar el desbloqueo de inmediato. */
   ticketCollected: boolean;
   discoveries: readonly string[];
+  /** Ids de acertijos resueltos (se conservan al reaparecer) y piedras apagadas por un error (índice -> s). */
+  riddlesSolved: readonly string[];
+  readonly stoneCooldown = new Map<number, number>();
   /** Presentación del encuentro: solo dibujo, sin avanzar la simulación. */
   offeringActive = false;
 
@@ -121,6 +127,8 @@ export class World {
     this.darkness = init.def.darkness ?? null;
     this.grid = this.level.grid;
     this.width = this.level.width;
+    this.riddlesSolved = [...new Set((init.riddles ?? []).filter(id => this.level.riddles.some(r => r.id === id)))];
+    for (const id of this.riddlesSolved) openGates(this, id);
     this.slowZones = this.level.slowZones;
     this.timeLeft = init.def.time ?? DEFAULT_LEVEL_TIME;
     this.checkpointReached = !!init.fromCheckpoint;
@@ -299,6 +307,7 @@ export class World {
     this.collectLooseCoins();
     collectTicket(this);
     collectDiscoveries(this);
+    updateRiddles(this, dt);
 
     if (p.y > ROWS * T + 40) return this.die();
     if (p.x > this.checkpointTile * T) this.checkpointReached = true;
