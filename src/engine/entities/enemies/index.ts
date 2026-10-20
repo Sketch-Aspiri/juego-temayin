@@ -11,6 +11,8 @@ export type { EnemyDef, EnemyMove } from './types';
 const DEAD_FALL_GRAVITY = 1800;
 const DEAD_FADE_TIME = 0.5;
 const ACTIVATION_MARGIN = 60;
+/** Margen (px) a la izquierda de la cámara dentro del cual un enemigo sigue activo. */
+const LEFT_MARGIN = 200;
 /** Margen (px) entre los pies del jugador y el lomo de lo que pisa para contar como pisotón. */
 export const STOMP_TOLERANCE = 22;
 /** Rebote tras un pisotón con el salto pulsado / sin pulsar (px/s). */
@@ -69,19 +71,34 @@ function touchPlayer(world: World, e: Enemy): void {
   else world.hurt();
 }
 
+/**
+ * Ventana de activación a ambos lados de la cámara. Quien queda por detrás se
+ * desactiva (no se elimina) y despierta si la cámara vuelve; quien está por
+ * delante se activa al acercarse. Devuelve false si debe saltarse este paso.
+ */
+function inActivationWindow(e: Enemy, camX: number): boolean {
+  if (e.x < camX - LEFT_MARGIN) {
+    e.active = false;
+    return false;
+  }
+  if (!e.active) {
+    if (e.x >= camX + VW + ACTIVATION_MARGIN) return false;
+    e.active = true;
+  }
+  return true;
+}
+
 export function updateEnemies(world: World, dt: number): void {
   for (const e of world.enemies) {
     if (!e.alive) continue;
-    if (!e.active) {
-      if (e.x < world.camX + VW + ACTIVATION_MARGIN) e.active = true;
-      else continue;
-    }
-    e.t += dt;
-
+    // Una muerte en curso termina aunque salga de la ventana, para no quedar congelada.
     if (e.dead) {
+      e.t += dt;
       updateDying(e, dt);
       continue;
     }
+    if (!inActivationWindow(e, world.camX)) continue;
+    e.t += dt;
 
     ENEMIES[e.id].move(e, world, dt);
     // Una sombra disuelta por la luz no puede herir en el mismo paso.
@@ -90,7 +107,7 @@ export function updateEnemies(world: World, dt: number): void {
     for (const o of world.enemies) {
       if (o !== e && o.alive && !o.dead && o.active && overlap(e, o) && e.x < o.x === e.vx > 0) e.vx = -e.vx;
     }
-    if (e.y > ROWS * T + 50 || e.x < world.camX - 200) {
+    if (e.y > ROWS * T + 50) {
       e.alive = false;
       continue;
     }

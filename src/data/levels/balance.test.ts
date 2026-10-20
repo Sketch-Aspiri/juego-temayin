@@ -218,7 +218,8 @@ function riderObstacles(lvl: BuiltLevel): string[] {
 function shadeWithoutFire(def: LevelDef): number | null {
   const world = makeWorld(def, true);
   world.update(STEP);
-  const shades = world.enemies.filter((e) => e.id === 'shade').map((e) => Math.floor(e.x / T));
+  // Solo las del camino hacia la meta: las del tramo anterior (ahora conservadas al reaparecer) son opcionales.
+  const shades = world.enemies.filter((e) => e.id === 'shade' && e.x > world.player.x).map((e) => Math.floor(e.x / T));
   // Todas las sombras quedan antes del punto de control: nada que comprobar.
   if (shades.length === 0) return null;
   const firstShade = Math.min(...shades);

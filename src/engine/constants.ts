@@ -74,3 +74,7 @@ export const WIND_MAX_VX = 3;
 export const STROMATOLITE_GRACE = 0.25;
 /** Puntos que cuesta dañar un tramo (nunca baja de 0 ni quita vida). */
 export const STROMATOLITE_PENALTY = 500;
+
+// ---------- Enemigos y reaparición ----------
+/** Distancia mínima (px) entre un enemigo y el jugador al reaparecer, en ambos sentidos: no nacer encima de él. */
+export const SAFE_RESPAWN_GAP = 300;

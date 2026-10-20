@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ALL_LEVELS } from '../data/worlds';
 import { AudioEngine } from './audio';
-import { START_LIVES, STEP, T } from './constants';
+import { SAFE_RESPAWN_GAP, START_LIVES, STEP, T } from './constants';
 import { Input } from './input';
 import { World } from './World';
 
@@ -83,10 +83,10 @@ describe('World', () => {
     expect(world.phase).toBe('dying');
   });
 
-  it('reaparece en el punto de control con los enemigos de delante', () => {
+  it('reaparece en el punto de control sin enemigos encima del jugador (en ambos sentidos)', () => {
     const { world } = make('1-1', true);
     expect(world.player.x).toBeGreaterThanOrEqual(world.checkpointTile * T);
-    expect(world.enemies.every((e) => e.x > world.player.x)).toBe(true);
+    expect(world.enemies.every((e) => Math.abs(e.x - world.player.x) > SAFE_RESPAWN_GAP)).toBe(true);
   });
 
   it('la sala del jefe despierta a Púas al entrar en la arena', () => {

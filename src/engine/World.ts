@@ -14,6 +14,7 @@ import {
   OXYGEN_MAX,
   PLAYER_START_TILE,
   ROWS,
+  SAFE_RESPAWN_GAP,
   T,
 } from './constants';
 import { updateBalls, type Ball } from './entities/ball';
@@ -146,7 +147,7 @@ export class World {
     if (startTile !== PLAYER_START_TILE) this.placeOnGround(startTile);
 
     this.enemies = this.level.enemies
-      .filter((e) => e.tx * T > this.player.x + 300)
+      .filter((e) => Math.abs(e.tx * T - this.player.x) > SAFE_RESPAWN_GAP)
       .map(createEnemy);
     this.boss = init.def.boss ? createBoss(init.def.boss) : null;
     this.platforms = this.level.platforms.map(createPlatform);
@@ -335,7 +336,7 @@ export class World {
     if (this.shake > 0) this.shake -= dt;
     animatePlayer(p, dt);
 
-    // La cámara solo avanza (nunca retrocede) y queda fija durante la pelea con el jefe.
+    // La cámara también retrocede (salvo con `autoScroll`) y queda fija durante la pelea con el jefe.
     advanceCamera(this, dt);
   }
 
